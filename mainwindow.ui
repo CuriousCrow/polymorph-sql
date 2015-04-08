@@ -6,20 +6,57 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>608</width>
+    <height>398</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Demalex manager</string>
+   <string>Demalex SQL manager</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QTreeView" name="tvDatabaseStructure">
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+      <attribute name="headerVisible">
+       <bool>false</bool>
+      </attribute>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="tabPosition">
+        <enum>QTabWidget::South</enum>
+       </property>
+       <property name="currentIndex">
+        <number>-1</number>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>608</width>
      <height>21</height>
     </rect>
    </property>
@@ -31,10 +68,48 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="aAddDatabase"/>
+   <addaction name="aRemoveDatabase"/>
+   <addaction name="aEditDatabase"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="aAddDatabase">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/database_add.png</normaloff>:/icons/database_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add database</string>
+   </property>
+   <property name="toolTip">
+    <string>Add database connection</string>
+   </property>
+  </action>
+  <action name="aRemoveDatabase">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/database_delete.png</normaloff>:/icons/database_delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove database</string>
+   </property>
+   <property name="toolTip">
+    <string>Unregister database connection</string>
+   </property>
+  </action>
+  <action name="aEditDatabase">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/database_edit.png</normaloff>:/icons/database_edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit Database</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

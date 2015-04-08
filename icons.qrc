@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/column.png</file>
+        <file>icons/column_add.png</file>
+        <file>icons/column_delete.png</file>
+        <file>icons/database.png</file>
+        <file>icons/database_add.png</file>
+        <file>icons/database_delete.png</file>
+        <file>icons/database_edit.png</file>
+        <file>icons/table.png</file>
+        <file>icons/table_add.png</file>
+        <file>icons/table_delete.png</file>
+        <file>icons/table_edit.png</file>
+        <file>icons/table_row_add.png</file>
+        <file>icons/table_row_delete.png</file>
+    </qresource>
+</RCC>
