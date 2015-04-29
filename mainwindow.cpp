@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlField>
+#include <QMessageBox>
 #include "tablebrowserwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -12,13 +13,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  //Настройки для подключения к СУБД Interbase/Firebird
+  qDebug() << QSqlDatabase::drivers();
+  //Connection to properies DB
   appDB = QSqlDatabase::addDatabase("QSQLITE");
-  appDB.setDatabaseName("properties.sqlite"); //Ваш путь к файлу БД
+  appDB.setDatabaseName("properties.sqlite");
 
-  //Проверка соединения с БД
+  //Trying to connect
   if (!appDB.open()){
-    qDebug() << appDB.lastError().text();
+    QMessageBox::critical(this, "Error", appDB.lastError().text());
     return;
   }
   qDebug() << "Success!";

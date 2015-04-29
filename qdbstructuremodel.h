@@ -2,7 +2,7 @@
 #define QDBSTRUCTUREMODEL_H
 
 #include <QObject>
-#include "../../Qt/LSqlTableModel/trunk/lsqltreemodel.h"
+#include "lsqltreemodel.h"
 
 class QDBStructureModel : public LSqlTreeModel
 {
