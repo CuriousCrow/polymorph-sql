@@ -15,19 +15,40 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     connectioneditdialog.cpp \
-    lsqltreemodel.cpp \
-    qdbstructuremodel.cpp \
-    tablebrowserwindow.cpp
+    tablebrowserwindow.cpp \
+    lsqltablemodel.cpp \
+    qstructureitemmodel.cpp \
+    qdbobjectitem.cpp \
+    qdbdatabaseitem.cpp \
+    qdbtableitem.cpp \
+    queryeditorwindow.cpp \
+    lstandardtreemodel.cpp \
+    qfoldertreeitem.cpp \
+    ldatawidgetmapper.cpp \
+    qsqlqueryhelper.cpp \
+    qsqlsyntaxhighlighter.cpp \
+    qactiveconnectionmodel.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
-    lsqltreemodel.h \
-    qdbstructuremodel.h \
-    tablebrowserwindow.h
+    tablebrowserwindow.h \
+    lsqltablemodel.h \
+    qstructureitemmodel.h \
+    qdbobjectitem.h \
+    qdbdatabaseitem.h \
+    qdbtableitem.h \
+    queryeditorwindow.h \
+    lstandardtreemodel.h \
+    qfoldertreeitem.h \
+    ldatawidgetmapper.h \
+    qsqlqueryhelper.h \
+    qsqlsyntaxhighlighter.h \
+    qactiveconnectionmodel.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
-    tablebrowserwindow.ui
+    tablebrowserwindow.ui \
+    queryeditorwindow.ui
 
 RESOURCES += \
     icons.qrc

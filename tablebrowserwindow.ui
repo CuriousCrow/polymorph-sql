@@ -36,6 +36,8 @@
    </attribute>
    <addaction name="aAddRow"/>
    <addaction name="aDeleteRow"/>
+   <addaction name="aSubmit"/>
+   <addaction name="aRevert"/>
   </widget>
   <action name="aAddRow">
    <property name="icon">
@@ -43,10 +45,10 @@
      <normaloff>:/icons/table_row_add.png</normaloff>:/icons/table_row_add.png</iconset>
    </property>
    <property name="text">
-    <string>Добавить запись</string>
+    <string>Add row</string>
    </property>
    <property name="toolTip">
-    <string>Добавить запись</string>
+    <string>Add row</string>
    </property>
   </action>
   <action name="aDeleteRow">
@@ -55,7 +57,34 @@
      <normaloff>:/icons/table_row_delete.png</normaloff>:/icons/table_row_delete.png</iconset>
    </property>
    <property name="text">
-    <string>Удалить запись</string>
+    <string>Delete row</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete row</string>
+   </property>
+  </action>
+  <action name="aSubmit">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/commit.png</normaloff>:/icons/commit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Submit changes</string>
+   </property>
+   <property name="toolTip">
+    <string>Submit changes</string>
+   </property>
+  </action>
+  <action name="aRevert">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/rollback.png</normaloff>:/icons/rollback.png</iconset>
+   </property>
+   <property name="text">
+    <string>Revert changes</string>
+   </property>
+   <property name="toolTip">
+    <string>Revert changes</string>
    </property>
   </action>
  </widget>

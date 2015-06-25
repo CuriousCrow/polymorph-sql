@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QSortFilterProxyModel>
+#include "qdbtableitem.h"
 
 namespace Ui {
 class TableBrowserWindow;
@@ -15,15 +16,24 @@ class TableBrowserWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  explicit TableBrowserWindow(QWidget *parent, QSqlDatabase db, QString table);
+  explicit TableBrowserWindow(QWidget *parent, QDBTableItem* tableItem);
   ~TableBrowserWindow();
+
+private slots:
+  void on_aSubmit_triggered();
+
+  void on_aRevert_triggered();
+
+  void on_aAddRow_triggered();
+
+  void on_aDeleteRow_triggered();
 
 private:
   Ui::TableBrowserWindow *ui;
-  QString table;
-  QSqlDatabase db;
-  QSqlTableModel* sourceModel;
-  QSortFilterProxyModel* proxyModel;
+  QString _tableName;
+  QString _connectionName;
+  QSqlTableModel* _sourceModel;
+  QSortFilterProxyModel* _proxyModel;
 };
 
 #endif // TABLEBROWSERWINDOW_H

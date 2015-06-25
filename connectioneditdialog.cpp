@@ -2,6 +2,8 @@
 #include "ui_connectioneditdialog.h"
 #include <QDebug>
 #include <QFileDialog>
+#include "qsqlqueryhelper.h"
+#include "qdbdatabaseitem.h"
 
 ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
   QDialog(parent),
@@ -9,8 +11,8 @@ ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
 {
   ui->setupUi(this);
   on_cbServerType_activated(0);
-  mapper = new QDataWidgetMapper(this);
-  mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+  _mapper = new LDataWidgetMapper(this);
+  _mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 }
 
 ConnectionEditDialog::~ConnectionEditDialog()
@@ -18,15 +20,22 @@ ConnectionEditDialog::~ConnectionEditDialog()
   delete ui;
 }
 
-void ConnectionEditDialog::setModel(QSqlTableModel *sqlmodel)
+void ConnectionEditDialog::setModel(QStructureItemModel *model)
 {
-  model = sqlmodel;
-  mapper->setModel(model);
-  mapper->addMapping(ui->edtDatabaseName, model->fieldIndex("NAME"));
-  mapper->addMapping(ui->edtHostAddress, model->fieldIndex("HOST_ADDRESS"));
-  mapper->addMapping(ui->edtLocalAddress, model->fieldIndex("LOCAL_PATH"));
-  mapper->addMapping(ui->edtUserName, model->fieldIndex("USERNAME"));
-  mapper->addMapping(ui->edtPassword, model->fieldIndex("PASSWORD"));
+  _model = model;
+  _mapper->setModel(_model);
+  _mapper->setRootIndex(QModelIndex());
+  _mapper->addMapping(ui->edtDatabaseName, 0);
+  _mapper->addMapping(ui->edtHostAddress, 1);
+  _mapper->addMapping(ui->edtUserName, 2);
+  _mapper->addMapping(ui->edtPassword, 3);
+  _mapper->addMapping(ui->edtLocalAddress, 4);
+  _mapper->addMapping(ui->cmbDriverName, 5);
+}
+
+LDataWidgetMapper *ConnectionEditDialog::mapper()
+{
+  return _mapper;
 }
 
 void ConnectionEditDialog::on_cbServerType_activated(int index)
@@ -41,14 +50,15 @@ void ConnectionEditDialog::on_cbServerType_activated(int index)
 
 void ConnectionEditDialog::onDatabaseIndexChanged(QModelIndex idx)
 {
-  mapper->setCurrentModelIndex(idx);
+  _mapper->setCurrentModelIndex(idx);
 }
 
 void ConnectionEditDialog::on_btnOk_clicked()
-{
-  mapper->submit();
-  model->submit();
-  accept();
+{  
+  _mapper->submit();
+  QDBObjectItem* item = (QDBObjectItem*)_model->itemByIndex(_model->index(_mapper->currentIndex(),0, _mapper->rootIndex()));
+  if (item->updateMe())
+    accept();
 }
 
 void ConnectionEditDialog::on_btnBrowseLocalAddress_clicked()
@@ -57,4 +67,9 @@ void ConnectionEditDialog::on_btnBrowseLocalAddress_clicked()
   if (localPath.isEmpty())
     return;
   ui->edtLocalAddress->setText(localPath);
+}
+
+void ConnectionEditDialog::on_btnTryToConnect_clicked()
+{
+
 }
