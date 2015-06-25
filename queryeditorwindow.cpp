@@ -1,0 +1,70 @@
+#include "queryeditorwindow.h"
+#include "ui_queryeditorwindow.h"
+
+#include <QDebug>
+#include <QSqlQuery>
+#include <QSqlError>
+
+QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
+  QMainWindow(parent),
+  ui(new Ui::QueryEditorWindow)
+{
+  ui->setupUi(this);
+
+  _resultModel = new QSqlQueryModel(this);
+  ui->tvResultSet->setModel(_resultModel);
+
+  _activeConnectionModel = new QActiveConnectionModel(this);
+  ui->cmbDatabase->setModel(_activeConnectionModel);
+  ui->cmbDatabase->setModelColumn(0);
+
+  QSqlSyntaxHighlighter* highlighter = new QSqlSyntaxHighlighter(this);
+  highlighter->setDocument(ui->teQueryEditor->document());
+}
+
+QueryEditorWindow::~QueryEditorWindow()
+{
+  delete ui;
+}
+
+void QueryEditorWindow::setStructureModel(QStructureItemModel *model)
+{
+  _model = model;
+  _activeConnectionModel->setSourceModel(_model);
+}
+
+void QueryEditorWindow::on_aExecuteQuery_triggered()
+{
+  QSqlQuery query =
+    QSqlDatabase::database(connectionName()).exec(ui->teQueryEditor->toPlainText());
+  if (!query.lastError().isValid()){
+    _resultModel->setQuery(query);
+    ui->tabWidget->setCurrentWidget(ui->tabResult);
+  }
+  ui->statusbar->showMessage(query.lastError().text());
+}
+
+QString QueryEditorWindow::connectionName()
+{
+  QModelIndex proxyIndex = _activeConnectionModel->index(ui->cmbDatabase->currentIndex(), 0);
+  QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
+
+  QDBObjectItem* databaseItem =
+      (QDBObjectItem*)_model->itemByIndex(sourceIndex);
+  return (databaseItem) ? databaseItem->connectionName() : "";
+}
+
+void QueryEditorWindow::on_aCommit_triggered()
+{
+  QSqlDatabase::database(connectionName()).commit();
+}
+
+void QueryEditorWindow::on_aRollback_triggered()
+{
+  QSqlDatabase::database(connectionName()).rollback();
+}
+
+void QueryEditorWindow::refreshConnectionList()
+{
+  _activeConnectionModel->invalidate();
+}

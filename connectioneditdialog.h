@@ -2,8 +2,8 @@
 #define CONNECTIONEDITDIALOG_H
 
 #include <QDialog>
-#include <QSqlTableModel>
-#include <QDataWidgetMapper>
+#include "qstructureitemmodel.h"
+#include "ldatawidgetmapper.h"
 
 namespace Ui {
 class ConnectionEditDialog;
@@ -16,19 +16,21 @@ class ConnectionEditDialog : public QDialog
 public:
   explicit ConnectionEditDialog(QWidget *parent = 0);
   ~ConnectionEditDialog();
-  void setModel(QSqlTableModel* sqlmodel);
+  void setModel(QStructureItemModel* model);
+  LDataWidgetMapper *mapper();
 private slots:
   void on_cbServerType_activated(int index);
   void on_btnOk_clicked();
 
   void on_btnBrowseLocalAddress_clicked();
 
+  void on_btnTryToConnect_clicked();
 public slots:
   void onDatabaseIndexChanged(QModelIndex idx);
 private:
   Ui::ConnectionEditDialog *ui;
-  QSqlTableModel* model;
-  QDataWidgetMapper* mapper;
+  QStructureItemModel* _model;
+  LDataWidgetMapper* _mapper;
 };
 
 #endif // CONNECTIONEDITDIALOG_H

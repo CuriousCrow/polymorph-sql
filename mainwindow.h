@@ -4,8 +4,11 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
-#include <qdbstructuremodel.h>
+#include <lsqltablemodel.h>
 #include "connectioneditdialog.h"
+#include <QMenu>
+#include "qstructureitemmodel.h"
+#include "queryeditorwindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,18 +29,21 @@ private slots:
 
   void on_tvDatabaseStructure_doubleClicked(const QModelIndex &index);
 
+  void on_tvDatabaseStructure_clicked(const QModelIndex &index);
+
+  void removeTabByIndex(int index);
+
+  void removeTabsByItemUrl(QString url);
+
+  void on_aRemoveDatabase_triggered();
+
 private:
   Ui::MainWindow *ui;
   QSqlDatabase appDB;
-  QMap<qlonglong, QSqlDatabase> databasePool;
-  QDBStructureModel* mDbStructure;
-  QSqlTableModel* mDatabases;
-  QSqlTableModel* mTables;
-  ConnectionEditDialog* connectionEditDialog;
-  void initDatabaseItems();
-  void loadDatabaseItems(qlonglong dbId);
-  QVariant tableData(QSqlTableModel* model, int row, QString field);
-  int databaseRowById(qlonglong id);
+  QStructureItemModel* _structureModel;
+  ConnectionEditDialog* _connectionEditDialog;
+  QueryEditorWindow* _queryEditorWindow;
+  void addDatabase();
 };
 
 #endif // MAINWINDOW_H

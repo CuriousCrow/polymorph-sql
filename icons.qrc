@@ -13,5 +13,8 @@
         <file>icons/table_edit.png</file>
         <file>icons/table_row_add.png</file>
         <file>icons/table_row_delete.png</file>
+        <file>icons/commit.png</file>
+        <file>icons/rollback.png</file>
+        <file>icons/run.png</file>
     </qresource>
 </RCC>

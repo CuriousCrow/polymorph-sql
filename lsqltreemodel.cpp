@@ -13,7 +13,7 @@ LSqlTreeModel::~LSqlTreeModel()
 {
 }
 
-qlonglong LSqlTreeModel::itemParentId(LSqlRecord rec) const
+qlonglong LSqlTreeModel::itemParentId(LSqlTreeRecord rec) const
 {
   return rec.value(_parentField).toLongLong();
 }
@@ -22,14 +22,14 @@ QModelIndex LSqlTreeModel::indexById(qlonglong id)
 {
   if (!_recMap.contains(id))
     return QModelIndex();
-  LSqlRecord itemRec = _recMap[id];
+  LSqlTreeRecord itemRec = _recMap[id];
   qlonglong parentId = itemParentId(itemRec);
   int row;
   if (parentId == 0){
     row = _rootRecList.indexOf(id);
   }
   else {
-    LSqlRecord parentRec = _recMap[parentId];
+    LSqlTreeRecord parentRec = _recMap[parentId];
     row = parentRec.childIndex(id);
   }
   return createIndex(row, 0, id);
@@ -41,7 +41,7 @@ void LSqlTreeModel::clear()
   _rootRecList.clear();
 }
 
-void LSqlTreeModel::addRecord(LSqlRecord rec)
+void LSqlTreeModel::addRecord(LSqlTreeRecord rec)
 {
   qlonglong parentId = itemParentId(rec);
 
@@ -54,7 +54,8 @@ void LSqlTreeModel::addRecord(LSqlRecord rec)
     _recMap[parentId].addChild(rec.id());
   }
   QModelIndex parentIdx = indexById(parentId);
-  beginInsertRows(parentIdx, rowCount(parentIdx) - 1, rowCount(parentIdx) - 1);
+  int childCount = rowCount(parentIdx);
+  beginInsertRows(parentIdx, childCount - 1, rowCount(parentIdx) - 1);
   _recMap.insert(rec.id(), rec);
   endInsertRows();
 }
@@ -83,14 +84,14 @@ bool LSqlTreeModel::select()
       _recMap[id].copyValues(_query.record());
     }
     else {
-      _recMap.insert(id, LSqlRecord(_query.record()));
+      _recMap.insert(id, LSqlTreeRecord(_query.record()));
     }
     if (parentId == 0){
       _rootRecList.append(id);
     }
     else {
       if (!_recMap.contains(parentId)){
-        _recMap.insert(parentId, LSqlRecord(_patternRec));
+        _recMap.insert(parentId, LSqlTreeRecord(_patternRec));
       }
       _recMap[parentId].addChild(id);
     }
@@ -113,7 +114,7 @@ QModelIndex LSqlTreeModel::index(int row, int column, const QModelIndex &parent)
     }
     //получаем элемент родителя и по номеру элемента получает ID
     else {
-      LSqlRecord parentRec = _recMap[parent.internalId()];
+      LSqlTreeRecord parentRec = _recMap[parent.internalId()];
       childId = parentRec.childByIndex(row);
     }        
     if (childId > 0)
@@ -128,7 +129,7 @@ QModelIndex LSqlTreeModel::parent(const QModelIndex &child) const
     return QModelIndex();
 
   //получаем ID родительского элемента
-  LSqlRecord childItem = _recMap[child.internalId()];
+  LSqlTreeRecord childItem = _recMap[child.internalId()];
   qlonglong parentId = itemParentId(childItem);
   //если PARENT_ID не заполнен, значит родительского элемента нет
   if (parentId == 0){
@@ -136,7 +137,7 @@ QModelIndex LSqlTreeModel::parent(const QModelIndex &child) const
   }
   else {
     //получаем ID дедушки
-    LSqlRecord parentRec = _recMap[parentId];
+    LSqlTreeRecord parentRec = _recMap[parentId];
     qlonglong grandParentId = itemParentId(parentRec);
     int parentRowIndex;
     //если не удалось получить ID дедушки, значит родитель - корневой элемент
@@ -145,7 +146,7 @@ QModelIndex LSqlTreeModel::parent(const QModelIndex &child) const
     }
     else {      
       //находим номер родителя в списке дедушкиных детей
-      LSqlRecord grandParentItem = _recMap[grandParentId];
+      LSqlTreeRecord grandParentItem = _recMap[grandParentId];
       parentRowIndex = grandParentItem.childIndex(parentId);
     }
     return createIndex(parentRowIndex, 0, parentId);
@@ -164,7 +165,7 @@ int LSqlTreeModel::rowCount(const QModelIndex &parent) const
   }
   else {
     //возвращаем кол-во дочерних элементов
-    LSqlRecord parentRec = _recMap[parent.internalId()];
+    LSqlTreeRecord parentRec = _recMap[parent.internalId()];
     return parentRec.childCount();
   }
 }
@@ -181,7 +182,7 @@ QVariant LSqlTreeModel::data(const QModelIndex &index, int role) const
     return QVariant();
 
   //получаем запись таблицы по ID
-  LSqlRecord rec = _recMap[index.internalId()];
+  LSqlTreeRecord rec = _recMap[index.internalId()];
   int column = index.column();
 
   switch (role) {
@@ -199,7 +200,7 @@ void LSqlTreeModel::setParentField(QString name)
   _parentField = name;
 }
 
-LSqlRecord LSqlTreeModel::patternRec() const
+LSqlTreeRecord LSqlTreeModel::patternRec() const
 {
   return _patternRec;
 }
@@ -209,7 +210,7 @@ int LSqlTreeModel::fieldIndex(QString fieldName) const
   return _patternRec.indexOf(fieldName);
 }
 
-LSqlRecord LSqlTreeModel::recById(qlonglong id) const
+LSqlTreeRecord LSqlTreeModel::recById(qlonglong id) const
 {
   return _recMap[id];
 }
@@ -234,46 +235,46 @@ QVariant LSqlTreeModel::execQuery(const QString &sql, QString resColumn)
   }
 }
 
-LSqlRecord::LSqlRecord(): QSqlRecord()
+LSqlTreeRecord::LSqlTreeRecord(): QSqlRecord()
 {
 }
 
-LSqlRecord::LSqlRecord(const QSqlRecord &rec): QSqlRecord(rec)
+LSqlTreeRecord::LSqlTreeRecord(const QSqlRecord &rec): QSqlRecord(rec)
 {
 }
 
-LSqlRecord::~LSqlRecord()
+LSqlTreeRecord::~LSqlTreeRecord()
 {
 }
 
-void LSqlRecord::copyValues(const QSqlRecord &rec)
+void LSqlTreeRecord::copyValues(const QSqlRecord &rec)
 {
   for (int i=0; i<rec.count(); i++){
     setValue(i, rec.value(i));
   }
 }
 
-void LSqlRecord::addChild(long childId)
+void LSqlTreeRecord::addChild(long childId)
 {
   _childIdList.append(childId);
 }
 
-void LSqlRecord::removeChild(long childId)
+void LSqlTreeRecord::removeChild(long childId)
 {
   _childIdList.removeOne(childId);
 }
 
-int LSqlRecord::childIndex(qlonglong childId)
+int LSqlTreeRecord::childIndex(qlonglong childId)
 {
   return _childIdList.indexOf(childId);
 }
 
-qlonglong LSqlRecord::childByIndex(int index)
+qlonglong LSqlTreeRecord::childByIndex(int index)
 {
   return _childIdList.value(index);
 }
 
-int LSqlRecord::childCount()
+int LSqlTreeRecord::childCount()
 {
   return _childIdList.count();
 }
@@ -287,4 +288,42 @@ QVariant LSqlTreeModel::headerData(int section, Qt::Orientation orientation, int
   default:
     return QVariant();
   }
+}
+
+
+bool LSqlTreeModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+  LSqlTreeRecord& parentRec = _recMap[parent.internalId()];
+  beginRemoveRows(parent, row, row + count);
+  for(int i=0; i<count; i++){
+    qlonglong childId = parentRec.childByIndex(row);
+    parentRec.removeChild(childId);
+    removeChildren(childId);
+    _recMap.remove(childId);
+  }
+  endRemoveRows();
+  return true;
+}
+
+bool LSqlTreeModel::removeChildren(qlonglong parentId)
+{
+  LSqlTreeRecord parentRec = recById(parentId);
+  while(parentRec.childCount() > 0){
+    qlonglong childId = parentRec.childByIndex(0);
+    parentRec.removeChild(childId);
+    removeChildren(childId);
+    _recMap.remove(childId);
+  }
+  return true;
+}
+
+bool LSqlTreeModel::removeAllChildren(const QModelIndex &parent)
+{
+  int childCount = recById(parent.internalId()).childCount();
+  removeRows(0, childCount, parent);
+}
+
+bool LSqlTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+
 }
