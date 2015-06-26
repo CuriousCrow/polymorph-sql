@@ -10,6 +10,8 @@ public:
   QSqlSyntaxHighlighter(QObject *parent);
   ~QSqlSyntaxHighlighter();
 
+  QStringList keyWords();
+
   // QSyntaxHighlighter interface
 protected:
   virtual void highlightBlock(const QString &text);

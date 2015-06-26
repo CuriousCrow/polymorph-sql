@@ -7,12 +7,17 @@ QSqlSyntaxHighlighter::QSqlSyntaxHighlighter(QObject *parent):
   //TODO: Keywords should be loaded depending on database type
   _sqlKeyWords << "SELECT" << "FROM" << "WHERE" << "INSERT" << "INTO" << "ORDER"
                << "BY" << "ASC" << "DESC" << "UPDATE" << "DELETE" << "CREATE"
-               << "OR" << "AND" << "DISTINCT" << "TABLE";
+               << "OR" << "AND" << "DISTINCT" << "TABLE" << "VALUES";
 
 }
 
 QSqlSyntaxHighlighter::~QSqlSyntaxHighlighter()
 {
+}
+
+QStringList QSqlSyntaxHighlighter::keyWords()
+{
+  return _sqlKeyWords;
 }
 
 void QSqlSyntaxHighlighter::highlightBlock(const QString &text)

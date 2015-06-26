@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     ldatawidgetmapper.cpp \
     qsqlqueryhelper.cpp \
     qsqlsyntaxhighlighter.cpp \
-    qactiveconnectionmodel.cpp
+    qactiveconnectionmodel.cpp \
+    ltextcompleter.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -43,7 +44,8 @@ HEADERS  += mainwindow.h \
     ldatawidgetmapper.h \
     qsqlqueryhelper.h \
     qsqlsyntaxhighlighter.h \
-    qactiveconnectionmodel.h
+    qactiveconnectionmodel.h \
+    ltextcompleter.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

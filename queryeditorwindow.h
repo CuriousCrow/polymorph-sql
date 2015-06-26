@@ -5,6 +5,7 @@
 #include <QSqlQueryModel>
 #include "qstructureitemmodel.h"
 #include "qsqlsyntaxhighlighter.h"
+#include "ltextcompleter.h"
 #include "qactiveconnectionmodel.h"
 
 namespace Ui {

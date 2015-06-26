@@ -20,6 +20,12 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
 
   QSqlSyntaxHighlighter* highlighter = new QSqlSyntaxHighlighter(this);
   highlighter->setDocument(ui->teQueryEditor->document());
+
+  //Simple keywords autocompleter
+  //TODO: Dynamic autocomplete depending on syntax and database objects
+  LTextCompleter* completer = new LTextCompleter(highlighter->keyWords(), this);
+  completer->setCaseSensitivity(Qt::CaseInsensitive);
+  completer->setWidget(ui->teQueryEditor);
 }
 
 QueryEditorWindow::~QueryEditorWindow()
