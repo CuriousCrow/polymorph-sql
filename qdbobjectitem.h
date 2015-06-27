@@ -12,6 +12,9 @@ public:
   enum ItemType {
     Database,
     Table,
+    Sequence,
+    Trigger,
+    Procedure,
     Folder
   };
 

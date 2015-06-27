@@ -28,7 +28,10 @@ SOURCES += main.cpp\
     qsqlqueryhelper.cpp \
     qsqlsyntaxhighlighter.cpp \
     qactiveconnectionmodel.cpp \
-    ltextcompleter.cpp
+    ltextcompleter.cpp \
+    qdbsequenceitem.cpp \
+    qdbtriggeritem.cpp \
+    qdbprocedureitem.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -45,7 +48,10 @@ HEADERS  += mainwindow.h \
     qsqlqueryhelper.h \
     qsqlsyntaxhighlighter.h \
     qactiveconnectionmodel.h \
-    ltextcompleter.h
+    ltextcompleter.h \
+    qdbsequenceitem.h \
+    qdbtriggeritem.h \
+    qdbprocedureitem.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

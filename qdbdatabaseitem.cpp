@@ -7,18 +7,18 @@
 #include <QIcon>
 #include "qdbtableitem.h"
 #include "qfoldertreeitem.h"
+#include "qdbsequenceitem.h"
+#include "qdbtriggeritem.h"
+#include "qdbprocedureitem.h"
 
-#include <QMetaProperty>
 
 QDBDatabaseItem::QDBDatabaseItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
 {
-
 }
 
 QDBDatabaseItem::~QDBDatabaseItem()
 {
-
 }
 
 QString QDBDatabaseItem::hostName() const
@@ -100,19 +100,42 @@ bool QDBDatabaseItem::loadChildren()
   if (!children().isEmpty())
     return false;
 
-  //Folder items for each database object type
-  QFolderTreeItem* tableFolderItem = new QFolderTreeItem("Tables", this);
-  QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem("Sequences", this);
-  QFolderTreeItem* viewFolderItem = new QFolderTreeItem("Views", this);
-  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem("Triggers", this);
-  QFolderTreeItem* procedureFolderItem = new QFolderTreeItem("Procedures", this);
-
   //Creating table items
+  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this);
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
     QDBTableItem* tableItem = new QDBTableItem(name, tableFolderItem);
     tableItem->updateObjectName();
   }
+
+  //Creating views items
+  QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
+  QStringList viewNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
+  foreach (QString name, viewNames){
+    QDBTableItem* tableItem = new QDBTableItem(name, viewFolderItem);
+    tableItem->updateObjectName();
+  }
+
+  //Creating system table items
+  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
+  QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
+  foreach (QString name, sysTableNames){
+    QDBTableItem* tableItem = new QDBTableItem(name, systemFolderItem);
+    tableItem->updateObjectName();
+  }
+
+  //Creating sequence items
+  QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Sequences"), this);
+  loadSequenceItems(sequenceFolderItem);
+
+  //Creating trigger items
+  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this);
+  loadTriggerItems(triggerFolderItem);
+
+  //Creating procedure items
+  QFolderTreeItem* procedureFolderItem = new QFolderTreeItem(tr("Procedures"), this);
+  loadProcedureItems(procedureFolderItem);
+
   return true;
 }
 
@@ -225,4 +248,52 @@ bool QDBDatabaseItem::setData(int column, QVariant value, int role)
 QString QDBDatabaseItem::fillSqlPattern(QString pattern)
 {
   return QSqlQueryHelper::fillSqlPattern(pattern, this);
+}
+
+void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
+{
+  QString sql;
+
+  if (objectUrl().scheme().toUpper() == "QIBASE"){
+    sql = "select rdb$generator_id id, trim(rdb$generator_name) name from rdb$generators where rdb$system_flag = 0";
+    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    while (resultSet.next()){
+      QDBSequenceItem* sequenceItem
+          = new QDBSequenceItem(resultSet.value("name").toString(), parentItem);
+      sequenceItem->updateObjectName();
+    }
+  }
+}
+
+void QDBDatabaseItem::loadTriggerItems(QDBObjectItem *parentItem)
+{
+  QString sql = "";
+  if (_driverName == "QIBASE")
+    sql = "select trim(rdb$trigger_name) name from rdb$triggers where rdb$system_flag = 0";
+  else if (_driverName == "QSQLITE")
+    sql = "select name name from sqlite_master where type = 'trigger'";
+
+  if (!sql.isEmpty()){
+    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    while (resultSet.next()){
+      QDBTriggerItem* sequenceItem
+          = new QDBTriggerItem(resultSet.value("name").toString(), parentItem);
+      sequenceItem->updateObjectName();
+    }
+  }
+}
+
+void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
+{
+  QString sql;
+
+  if (objectUrl().scheme().toUpper() == "QIBASE"){
+    sql = "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
+    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    while (resultSet.next()){
+      QDBProcedureItem* sequenceItem
+          = new QDBProcedureItem(resultSet.value("name").toString(), parentItem);
+      sequenceItem->updateObjectName();
+    }
+  }
 }
