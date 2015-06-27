@@ -46,6 +46,7 @@ private:
   QString _password;
 protected:
   QString fillSqlPattern(QString pattern);
+  void loadViewItems(QDBObjectItem* parentItem);
   void loadSequenceItems(QDBObjectItem* parentItem);
   void loadTriggerItems(QDBObjectItem* parentItem);
   void loadProcedureItems(QDBObjectItem* parentItem);

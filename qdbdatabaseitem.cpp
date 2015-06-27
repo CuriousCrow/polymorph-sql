@@ -6,6 +6,7 @@
 #include <QUrl>
 #include <QIcon>
 #include "qdbtableitem.h"
+#include "qdbviewitem.h"
 #include "qfoldertreeitem.h"
 #include "qdbsequenceitem.h"
 #include "qdbtriggeritem.h"
@@ -110,11 +111,7 @@ bool QDBDatabaseItem::loadChildren()
 
   //Creating views items
   QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
-  QStringList viewNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
-  foreach (QString name, viewNames){
-    QDBTableItem* tableItem = new QDBTableItem(name, viewFolderItem);
-    tableItem->updateObjectName();
-  }
+  loadViewItems(viewFolderItem);
 
   //Creating system table items
   QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
@@ -250,11 +247,40 @@ QString QDBDatabaseItem::fillSqlPattern(QString pattern)
   return QSqlQueryHelper::fillSqlPattern(pattern, this);
 }
 
+void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
+{
+  QString sql = "";
+  if (_driverName == "QIBASE"){
+    sql = "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations "
+          "where rdb$relation_type=1";
+  }
+  if (_driverName == "QSQLITE") {
+    sql = "select trim(name) name, sql queryText from sqlite_master where type='view'";
+  }
+
+  if (sql.isEmpty()){
+    QStringList viewNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
+    foreach (QString name, viewNames){
+      QDBViewItem* viewItem = new QDBViewItem(name, parentItem);
+      viewItem->updateObjectName();
+    }
+  }
+  else {
+    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    while (resultSet.next()){
+      QDBViewItem* viewItem
+          = new QDBViewItem(resultSet.value("name").toString(), parentItem);
+      viewItem->setQueryText(resultSet.value("queryText").toString());
+      viewItem->updateObjectName();
+    }
+  }
+}
+
 void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
 {
   QString sql;
 
-  if (objectUrl().scheme().toUpper() == "QIBASE"){
+  if (_driverName == "QIBASE"){
     sql = "select rdb$generator_id id, trim(rdb$generator_name) name from rdb$generators where rdb$system_flag = 0";
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
@@ -287,7 +313,7 @@ void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
 {
   QString sql;
 
-  if (objectUrl().scheme().toUpper() == "QIBASE"){
+  if (_driverName == "QIBASE"){
     sql = "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){

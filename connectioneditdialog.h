@@ -25,6 +25,8 @@ private slots:
   void on_btnBrowseLocalAddress_clicked();
 
   void on_btnTryToConnect_clicked();
+  void on_btnCancel_clicked();
+
 public slots:
   void onDatabaseIndexChanged(QModelIndex idx);
 private:

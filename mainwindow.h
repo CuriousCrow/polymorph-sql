@@ -6,9 +6,11 @@
 #include <QSqlTableModel>
 #include <lsqltablemodel.h>
 #include "connectioneditdialog.h"
+#include "vieweditdialog.h"
 #include <QMenu>
 #include "qstructureitemmodel.h"
 #include "queryeditorwindow.h"
+#include "vieweditdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -37,13 +39,23 @@ private slots:
 
   void on_aRemoveDatabase_triggered();
 
+  void on_tvDatabaseStructure_pressed(const QModelIndex &index);
+
+  void showEditorForCurrentItem();
+
+  void dropCurrentDatabaseObject();
 private:
   Ui::MainWindow *ui;
   QSqlDatabase appDB;
   QStructureItemModel* _structureModel;
   ConnectionEditDialog* _connectionEditDialog;
   QueryEditorWindow* _queryEditorWindow;
+  ViewEditDialog* _viewEditorWindow;
+  QMenu* _structureContextMenu;
   void addDatabase();
+  QDBObjectItem* itemByIndex(QModelIndex index);
+protected:
+
 };
 
 #endif // MAINWINDOW_H

@@ -39,9 +39,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tvDatabaseStructure->hideColumn(i);
   }
 
+  _structureContextMenu = new QMenu(ui->tvDatabaseStructure);
+  _structureContextMenu->addAction("Edit object", this, SLOT(showEditorForCurrentItem()));
+  _structureContextMenu->addAction("Drop object", this, SLOT(dropCurrentDatabaseObject()));
+
   //Создаем окно редактирования соединений с БД
   _connectionEditDialog = new ConnectionEditDialog(this);
   _connectionEditDialog->setModel(_structureModel);
+
+  //View editor window
+  _viewEditorWindow = new ViewEditDialog(this);
+  _viewEditorWindow->setModel(_structureModel);
 
   //Создаем вкладку с редактором SQL-запросов
   _queryEditorWindow = new QueryEditorWindow(this);
@@ -79,14 +87,14 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
 {
   if (!index.isValid())
     return;
-  QDBObjectItem* objectItem = (QDBObjectItem*)_structureModel->itemByIndex(index);
-  //Double click on database item
-  if (objectItem->type() == QDBObjectItem::Database){
-    QDBDatabaseItem* dbItem = (QDBDatabaseItem*)_structureModel->itemByIndex(index);
+  QDBObjectItem* objectItem = itemByIndex(index);
+  switch (objectItem->type()) {
+  case QDBObjectItem::Database: {
+    QDBDatabaseItem* dbItem = (QDBDatabaseItem*)objectItem;
     //Database connection (loading database items)
     if (dbItem->children().isEmpty()){
       if (!dbItem->createDbConnection())
-        return;
+        break;
       dbItem->loadChildren();
       ui->tvDatabaseStructure->expand(index);
     }
@@ -96,11 +104,12 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
     _queryEditorWindow->refreshConnectionList();
+    break;
   }
-  //Double click on table item
-  else if (objectItem->type() == QDBObjectItem::Table){
+  case QDBObjectItem::Table:
+  case QDBObjectItem::View:
     //Создаем вкладку с таблицей
-    QDBTableItem* tableItem = (QDBTableItem*)_structureModel->itemByIndex(index);
+    QDBTableItem* tableItem = (QDBTableItem*)objectItem;
     QString itemUrl = tableItem->objectUrl().url();
     QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
     if (!tableWidget){
@@ -108,6 +117,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       ui->tabWidget->addTab(tableWidget, tableItem->caption());
     }
     ui->tabWidget->setCurrentWidget(tableWidget);
+    break;
   }
 }
 
@@ -137,10 +147,47 @@ void MainWindow::removeTabsByItemUrl(QString url)
 void MainWindow::on_aRemoveDatabase_triggered()
 {
   //TODO: Here should be existance check
-  QDBObjectItem* itemToRemove = (QDBObjectItem*)_structureModel->itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  QDBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   if (itemToRemove->type() == QDBObjectItem::Database){
     if (itemToRemove->deleteMe())
       _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                             QModelIndex());
   }
+}
+
+void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
+{
+  //Show context menu by right mouse click
+  if (QApplication::mouseButtons().testFlag(Qt::RightButton)){
+    if (itemByIndex(index)->type() == QDBObjectItem::View){
+      _structureContextMenu->popup(QCursor::pos());
+    }
+  }
+}
+
+void MainWindow::showEditorForCurrentItem()
+{
+  //Show view editor window
+  if (itemByIndex(ui->tvDatabaseStructure->currentIndex())->type() == QDBObjectItem::View){
+    _viewEditorWindow->onModelIndexChanged(ui->tvDatabaseStructure->currentIndex());
+    _viewEditorWindow->show();
+  }
+  //TODO: Implementation for other DB objects
+}
+
+void MainWindow::dropCurrentDatabaseObject()
+{
+  //Drop database object
+  QDBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  if (itemToRemove->type() == QDBObjectItem::View){
+    if (itemToRemove->deleteMe())
+      _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
+                            ui->tvDatabaseStructure->currentIndex().parent());
+  }
+  //TODO: Implementation for other DB objects
+}
+
+QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)
+{
+  return qobject_cast<QDBObjectItem*>(_structureModel->itemByIndex(index));
 }

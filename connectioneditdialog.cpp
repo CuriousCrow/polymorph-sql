@@ -73,3 +73,9 @@ void ConnectionEditDialog::on_btnTryToConnect_clicked()
 {
 
 }
+
+void ConnectionEditDialog::on_btnCancel_clicked()
+{
+  _mapper->revert();
+  reject();
+}

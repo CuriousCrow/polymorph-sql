@@ -89,10 +89,10 @@
      <normaloff>:/icons/database_add.png</normaloff>:/icons/database_add.png</iconset>
    </property>
    <property name="text">
-    <string>Add database</string>
+    <string>Register database</string>
    </property>
    <property name="toolTip">
-    <string>Add database connection</string>
+    <string>Register database</string>
    </property>
   </action>
   <action name="aRemoveDatabase">
@@ -101,10 +101,10 @@
      <normaloff>:/icons/database_delete.png</normaloff>:/icons/database_delete.png</iconset>
    </property>
    <property name="text">
-    <string>Remove database</string>
+    <string>Unregister database</string>
    </property>
    <property name="toolTip">
-    <string>Unregister database connection</string>
+    <string>Unregister database</string>
    </property>
   </action>
   <action name="aEditDatabase">
@@ -113,7 +113,10 @@
      <normaloff>:/icons/database_edit.png</normaloff>:/icons/database_edit.png</iconset>
    </property>
    <property name="text">
-    <string>Edit Database</string>
+    <string>Edit connection</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit connection preperties</string>
    </property>
   </action>
  </widget>

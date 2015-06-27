@@ -31,7 +31,9 @@ SOURCES += main.cpp\
     ltextcompleter.cpp \
     qdbsequenceitem.cpp \
     qdbtriggeritem.cpp \
-    qdbprocedureitem.cpp
+    qdbprocedureitem.cpp \
+    qdbviewitem.cpp \
+    vieweditdialog.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -51,12 +53,15 @@ HEADERS  += mainwindow.h \
     ltextcompleter.h \
     qdbsequenceitem.h \
     qdbtriggeritem.h \
-    qdbprocedureitem.h
+    qdbprocedureitem.h \
+    qdbviewitem.h \
+    vieweditdialog.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
     tablebrowserwindow.ui \
-    queryeditorwindow.ui
+    queryeditorwindow.ui \
+    vieweditdialog.ui
 
 RESOURCES += \
     icons.qrc
