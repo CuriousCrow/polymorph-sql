@@ -19,7 +19,6 @@ public:
   void setModel(QStructureItemModel* model);
   LDataWidgetMapper *mapper();
 private slots:
-  void on_cbServerType_activated(int index);
   void on_btnOk_clicked();
 
   void on_btnBrowseLocalAddress_clicked();
@@ -33,6 +32,7 @@ private:
   Ui::ConnectionEditDialog *ui;
   QStructureItemModel* _model;
   LDataWidgetMapper* _mapper;
+  void removeUnavailableDriversFromCombobox();
 };
 
 #endif // CONNECTIONEDITDIALOG_H
