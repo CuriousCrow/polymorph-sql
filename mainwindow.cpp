@@ -99,6 +99,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     //Database disconnection (clear all database items)
     else {
       _structureModel->deleteChildren(index);
+      removeTabsByItemUrl(dbItem->objectUrl().url());
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
     _queryEditorWindow->refreshConnectionList();

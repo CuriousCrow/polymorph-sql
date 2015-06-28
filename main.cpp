@@ -4,6 +4,9 @@
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
+  //TODO: Loading of full-featured style sheet
+  //from resource file
+  a.setStyleSheet("* { font-size: 14px }");
   MainWindow w;
   w.show();
 
