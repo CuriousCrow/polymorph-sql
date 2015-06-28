@@ -59,8 +59,6 @@ MainWindow::MainWindow(QWidget *parent) :
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(removeTabByIndex(int)));
-
-  connect(_structureModel, SIGNAL(itemAboutToBeRemoved(QString)), this, SLOT(removeTabsByItemUrl(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -149,6 +147,7 @@ void MainWindow::on_aRemoveDatabase_triggered()
   //TODO: Here should be existance check
   QDBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   if (itemToRemove->type() == QDBObjectItem::Database){
+    removeTabsByItemUrl(itemToRemove->objectUrl().url());
     if (itemToRemove->deleteMe())
       _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                             QModelIndex());
@@ -180,6 +179,7 @@ void MainWindow::dropCurrentDatabaseObject()
   //Drop database object
   QDBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   if (itemToRemove->type() == QDBObjectItem::View){
+    removeTabsByItemUrl(itemToRemove->objectUrl().url());
     if (itemToRemove->deleteMe())
       _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                             ui->tvDatabaseStructure->currentIndex().parent());
