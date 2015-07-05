@@ -10,6 +10,8 @@
 #include <QSqlField>
 #include <QSqlIndex>
 
+#define DEBUG_SQL //All queries are shown by qDebug()
+
 QT_BEGIN_NAMESPACE
 
 class QSqlHelper

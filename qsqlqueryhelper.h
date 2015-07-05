@@ -8,6 +8,8 @@
 #include <QSqlError>
 #include <QDebug>
 
+#define DEBUG_SQL
+
 class QSqlQueryHelper
 {
 public:

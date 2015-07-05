@@ -16,5 +16,6 @@
         <file>icons/commit.png</file>
         <file>icons/rollback.png</file>
         <file>icons/run.png</file>
+        <file>icons/refresh.png</file>
     </qresource>
 </RCC>

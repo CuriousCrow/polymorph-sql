@@ -16,11 +16,15 @@ QSqlQueryHelper::~QSqlQueryHelper()
 
 QSqlQuery QSqlQueryHelper::execSql(QString sql, QString connectionName)
 {
+#ifdef DEBUG_SQL
   qDebug() << QString("SQL(%1): %2").arg(connectionName).arg(sql);
+#endif
   QSqlQuery sqlResult = QSqlDatabase::database(connectionName).exec(sql);
+#ifdef DEBUG_SQL
   if (sqlResult.lastError().isValid()){
     qWarning() << "Error" << sqlResult.lastError().text();
   }
+#endif
   return sqlResult;
 }
 

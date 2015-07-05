@@ -38,6 +38,8 @@
    <addaction name="aDeleteRow"/>
    <addaction name="aSubmit"/>
    <addaction name="aRevert"/>
+   <addaction name="separator"/>
+   <addaction name="aRefresh"/>
   </widget>
   <action name="aAddRow">
    <property name="icon">
@@ -85,6 +87,15 @@
    </property>
    <property name="toolTip">
     <string>Revert changes</string>
+   </property>
+  </action>
+  <action name="aRefresh">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>Refresh data</string>
    </property>
   </action>
  </widget>

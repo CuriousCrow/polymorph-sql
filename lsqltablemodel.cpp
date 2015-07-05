@@ -594,10 +594,12 @@ bool LSqlTableModel::returningInsertMode()
 bool LSqlTableModel::execQuery(const QString &sql)
 {
   bool result = _query.exec(sql);
+#ifdef DEBUG_SQL
   qDebug() << "Execute query: " << sql;
   if (!result){
     qDebug() << "Error: " << _query.lastError().databaseText();
   }
+#endif
   return result;
 }
 

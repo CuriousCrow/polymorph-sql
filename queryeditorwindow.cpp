@@ -47,7 +47,15 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
     _resultModel->setQuery(query);
     ui->tabWidget->setCurrentWidget(ui->tabResult);
   }
-  ui->statusbar->showMessage(query.lastError().text());
+  if (query.lastError().isValid()){
+    ui->statusbar->showMessage(query.lastError().text());
+  }
+  else {
+    if (query.isSelect())
+      ui->statusbar->showMessage(QString::number(query.size()) + " rows selected");
+    else
+      ui->statusbar->showMessage(QString::number(query.numRowsAffected()) + " rows affected");
+  }
 }
 
 QString QueryEditorWindow::connectionName()

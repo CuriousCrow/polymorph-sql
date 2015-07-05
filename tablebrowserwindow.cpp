@@ -50,3 +50,11 @@ void TableBrowserWindow::on_aDeleteRow_triggered()
     return;
   _sourceModel->removeRow(index.row());
 }
+
+void TableBrowserWindow::on_aRefresh_triggered()
+{
+  //in case the table structure has changed
+  _sourceModel->setTable(_sourceModel->tableName());
+  //get actual table data
+  _sourceModel->select();
+}
