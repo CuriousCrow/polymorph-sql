@@ -2,6 +2,7 @@
 #define QSQLSYNTAXHIGHLIGHTER_H
 
 #include <QSyntaxHighlighter>
+#include <QRegExp>
 
 class QSqlSyntaxHighlighter : public QSyntaxHighlighter
 {

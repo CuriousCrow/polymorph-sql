@@ -1,5 +1,6 @@
 #include "qsqlsyntaxhighlighter.h"
 #include <QTextCharFormat>
+#include <QDebug>
 
 QSqlSyntaxHighlighter::QSqlSyntaxHighlighter(QObject *parent):
   QSyntaxHighlighter(parent)
@@ -23,15 +24,20 @@ QStringList QSqlSyntaxHighlighter::keyWords()
 void QSqlSyntaxHighlighter::highlightBlock(const QString &text)
 {
   QTextCharFormat format;
-  format.setFontWeight(QFont::Bold);
+  format.setFontWeight(QFont::Bold);   
+
+  QRegExp rx;
+  rx.setCaseSensitivity(Qt::CaseInsensitive);
 
   foreach (QString keyword, _sqlKeyWords){
-    int index = text.indexOf(keyword, 0, Qt::CaseInsensitive);
-    while (index >= 0){
-        int length = keyword.length();
+    rx.setPattern("(?:^|\\s)(" + keyword + ")(?:$|\\s)");
+
+    int index = rx.indexIn(text, 0);
+    while (index >= 0){      
+      int capNum = (rx.captureCount() == 0) ? 0 : 1;
         //применение формата на найденную подстроку
-        setFormat(index, length, format);
-        index = text.indexOf(keyword, index + length, Qt::CaseInsensitive);
+      setFormat(rx.pos(capNum), rx.cap(capNum).length(), format);
+      index = rx.indexIn(text, rx.pos(capNum) + rx.cap(capNum).length());
     }
   }
 }
