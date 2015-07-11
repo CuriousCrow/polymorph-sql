@@ -1,15 +1,17 @@
 #include "qsqlsyntaxhighlighter.h"
 #include <QTextCharFormat>
 #include <QDebug>
+#include "qknowledgebase.h"
+#include <QSqlTableModel>
 
 QSqlSyntaxHighlighter::QSqlSyntaxHighlighter(QObject *parent):
   QSyntaxHighlighter(parent)
 {
   //TODO: Keywords should be loaded depending on database type
-  _sqlKeyWords << "SELECT" << "FROM" << "WHERE" << "INSERT" << "INTO" << "ORDER"
-               << "BY" << "ASC" << "DESC" << "UPDATE" << "DELETE" << "CREATE"
-               << "OR" << "AND" << "DISTINCT" << "TABLE" << "VALUES";
-
+  QSqlTableModel* mKeywords = QKnowledgeBase::kb()->mKeywords;
+  for (int i=0; i<mKeywords->rowCount(); i++){
+    _sqlKeyWords << mKeywords->data(mKeywords->index(i, mKeywords->fieldIndex("NAME"))).toString().toUpper();
+  }
 }
 
 QSqlSyntaxHighlighter::~QSqlSyntaxHighlighter()

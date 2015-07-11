@@ -10,12 +10,13 @@
 #include "qdbdatabaseitem.h"
 #include "qdbtableitem.h"
 #include "qdbobjectitem.h"
+#include "qknowledgebase.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
-  ui->setupUi(this);
+  ui->setupUi(this);  
 
   qDebug() << QSqlDatabase::drivers();
   //Connection to properies DB
@@ -30,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     return;
   }
   qDebug() << "Success!";
+
+  QKnowledgeBase::kb(this);
 
   _structureModel = new QStructureItemModel(this, appDB);
   //Showing first column only

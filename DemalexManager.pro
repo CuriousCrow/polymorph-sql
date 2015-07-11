@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     qdbtriggeritem.cpp \
     qdbprocedureitem.cpp \
     qdbviewitem.cpp \
-    vieweditdialog.cpp
+    vieweditdialog.cpp \
+    qknowledgebase.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -55,7 +56,8 @@ HEADERS  += mainwindow.h \
     qdbtriggeritem.h \
     qdbprocedureitem.h \
     qdbviewitem.h \
-    vieweditdialog.h
+    vieweditdialog.h \
+    qknowledgebase.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
