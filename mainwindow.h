@@ -55,7 +55,7 @@ private:
   void addDatabase();
   QDBObjectItem* itemByIndex(QModelIndex index);
 protected:
-
+  //Dummy source change
 };
 
 #endif // MAINWINDOW_H
