@@ -34,7 +34,7 @@ QVariant QDBViewItem::colData(int column, int role)
   case Qt::EditRole:
     switch (column) {
     case 0:
-      return caption();
+      return fieldValue("caption");
     case 1:
       return queryText();
     default:
@@ -58,10 +58,10 @@ bool QDBViewItem::setData(int column, QVariant value, int role)
   if (role == Qt::EditRole){
     switch (column) {
     case 0:
-      setCaption(value.toString());
+      setFieldValue("caption", value);
       break;
     case 1:
-      setQueryText(value.toString());
+      setFieldValue("queryText", value);
       break;
     default:
       break;

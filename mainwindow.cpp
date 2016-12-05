@@ -106,6 +106,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       removeTabsByItemUrl(dbItem->objectUrl().url());
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
+    //Update combobox model in SQL editor
     _queryEditorWindow->refreshConnectionList();
     break;
   }
@@ -116,8 +117,8 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     QString itemUrl = tableItem->objectUrl().url();
     QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
     if (!tableWidget){
-      tableWidget = new TableBrowserWindow(this, tableItem), tableItem->caption();
-      ui->tabWidget->addTab(tableWidget, tableItem->caption());
+      tableWidget = new TableBrowserWindow(this, tableItem);
+      ui->tabWidget->addTab(tableWidget, tableItem->fieldValue("caption").toString());
     }
     ui->tabWidget->setCurrentWidget(tableWidget);
     break;

@@ -16,84 +16,38 @@
 QDBDatabaseItem::QDBDatabaseItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
 {
+  //1
+  registerField("id");
+  //2
+  registerField("hostName");
+  //3
+  registerField("userName");
+  //4
+  registerField("password");
+  //5
+  registerField("driverName");
+  //6
+  registerField("databaseName");
 }
 
 QDBDatabaseItem::~QDBDatabaseItem()
 {
 }
 
-QString QDBDatabaseItem::hostName() const
-{
-  return _hostName;
-}
-
-void QDBDatabaseItem::setHostName(const QString &hostName)
-{
-  _hostName = hostName;
-}
-QString QDBDatabaseItem::userName() const
-{
-  return _userName;
-}
-
-void QDBDatabaseItem::setUserName(const QString &userName)
-{
-  _userName = userName;
-}
-QString QDBDatabaseItem::password() const
-{
-  return _password;
-}
-
-void QDBDatabaseItem::setPassword(const QString &password)
-{
-  _password = password;
-}
-
 bool QDBDatabaseItem::createDbConnection()
 {
-  QSqlDatabase db = QSqlDatabase::addDatabase(_driverName, _connectionName);
-  db.setDatabaseName(_databaseName);
-  db.setUserName(_userName);
-  db.setPassword(_password);
+  QSqlDatabase db = QSqlDatabase::addDatabase(fieldValue("driverName").toString(), _connectionName);
+  db.setDatabaseName(fieldValue("databaseName").toString());
+  db.setUserName(fieldValue("userName").toString());
+  db.setPassword(fieldValue("password").toString());
 
   //Trying to connect
   if (!db.open()){
     QMessageBox::critical(0, "Error", db.lastError().text());
     return false;
   }
-  qDebug() << "DB" << caption() << "connected";
+  qDebug() << "DB" << fieldValue("caption").toString() << "connected";
   return true;
-}
-QString QDBDatabaseItem::driverName() const
-{
-  return _driverName;
-}
-
-void QDBDatabaseItem::setDriverName(const QString &driverName)
-{
-  _driverName = driverName;
-}
-
-qlonglong QDBDatabaseItem::getId() const
-{
-  return id;
-}
-
-void QDBDatabaseItem::setId(const qlonglong &value)
-{
-  id = value;
-}
-
-
-QString QDBDatabaseItem::databaseName() const
-{
-  return _databaseName;
-}
-
-void QDBDatabaseItem::setDatabaseName(const QString &databaseName)
-{
-  _databaseName = databaseName;
 }
 
 bool QDBDatabaseItem::loadChildren()
@@ -140,8 +94,8 @@ bool QDBDatabaseItem::loadChildren()
 QUrl QDBDatabaseItem::objectUrl()
 {
   QUrl url = QDBObjectItem::objectUrl();
-  url.setScheme(_driverName);
-  url.setHost(caption().replace(' ', '_'), QUrl::TolerantMode);
+  url.setScheme(fieldValue("driverName").toString());
+  url.setHost(fieldValue("caption").toString().replace(' ', '_'), QUrl::TolerantMode);
   return url;
 }
 
@@ -154,7 +108,7 @@ bool QDBDatabaseItem::insertMe()
     return false;
   }
   else {
-    id = sqlResult.lastInsertId().toLongLong();
+    setFieldValue("id", sqlResult.lastInsertId());
     return true;
   }
 }
@@ -174,39 +128,14 @@ bool QDBDatabaseItem::deleteMe()
   return !QSqlQueryHelper::execSql(fillSqlPattern(sql)).lastError().isValid();
 }
 
-
-int QDBDatabaseItem::colCount()
-{
-  return 6;
-}
-
 QVariant QDBDatabaseItem::colData(int column, int role)
 {
   switch (role) {
-  case Qt::DisplayRole:
-  case Qt::EditRole:
-    switch (column) {
-    case 0:
-      return caption();
-    case 1:
-      return hostName();
-    case 2:
-      return userName();
-    case 3:
-      return password();
-    case 4:
-      return databaseName();
-    case 5:
-      return driverName();
-    default:
-      return QVariant();
-    }
   case Qt::DecorationRole:
     if (column == 0)
-      return QIcon(":/icons/database.png");
-  default:
-    return QVariant();
+      return QIcon(":/icons/database.png");  
   }
+  return QDBObjectItem::colData(column, role);
 }
 
 int QDBDatabaseItem::type()
@@ -214,47 +143,22 @@ int QDBDatabaseItem::type()
   return Database;
 }
 
-
-bool QDBDatabaseItem::setData(int column, QVariant value, int role)
-{
-  if (role == Qt::EditRole){
-    switch (column) {
-    case 0:
-      setCaption(value.toString());
-      break;
-    case 1:
-      setHostName(value.toString());
-      break;
-    case 2:
-      setUserName(value.toString());
-      break;
-    case 3:
-      setPassword(value.toString());
-      break;
-    case 4:
-      setDatabaseName(value.toString());
-    case 5:
-      setDriverName(value.toString());
-    default:
-      break;
-    }
-  }
-  return true;
-}
-
 QString QDBDatabaseItem::fillSqlPattern(QString pattern)
 {
+  foreach(QDBObjectField field, fields) {
+    this->setProperty(qPrintable(field.name), field.value());
+  }
   return QSqlQueryHelper::fillSqlPattern(pattern, this);
 }
 
 void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
 {
   QString sql = "";
-  if (_driverName == "QIBASE"){
+  if (fieldValue("driverName").toString() == "QIBASE"){
     sql = "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations "
           "where rdb$relation_type=1";
   }
-  if (_driverName == "QSQLITE") {
+  if (fieldValue("driverName").toString() == "QSQLITE") {
     sql = "select trim(name) name, sql queryText from sqlite_master where type='view'";
   }
 
@@ -280,7 +184,7 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
 {
   QString sql;
 
-  if (_driverName == "QIBASE"){
+  if (fieldValue("driverName").toString() == "QIBASE"){
     sql = "select rdb$generator_id id, trim(rdb$generator_name) name from rdb$generators where rdb$system_flag = 0";
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
@@ -294,9 +198,9 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
 void QDBDatabaseItem::loadTriggerItems(QDBObjectItem *parentItem)
 {
   QString sql = "";
-  if (_driverName == "QIBASE")
+  if (fieldValue("driverName").toString() == "QIBASE")
     sql = "select trim(rdb$trigger_name) name from rdb$triggers where rdb$system_flag = 0";
-  else if (_driverName == "QSQLITE")
+  else if (fieldValue("driverName").toString() == "QSQLITE")
     sql = "select name name from sqlite_master where type = 'trigger'";
 
   if (!sql.isEmpty()){
@@ -313,7 +217,7 @@ void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
 {
   QString sql;
 
-  if (_driverName == "QIBASE"){
+  if (fieldValue("driverName").toString() == "QIBASE"){
     sql = "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
