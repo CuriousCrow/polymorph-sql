@@ -20,7 +20,7 @@ bool QDBTableItem::loadChildren()
 QUrl QDBTableItem::objectUrl()
 {
   QUrl url = QDBObjectItem::objectUrl();
-  url.setPath("/" + caption());
+  url.setPath("/" + fieldValue("caption").toString());
   return url;
 }
 
@@ -36,7 +36,7 @@ QVariant QDBTableItem::colData(int column, int role)
   case Qt::DisplayRole:
     switch (column) {
     case 0:
-      return caption();
+      return fieldValue("caption");
     default:
       return QVariant();
     }

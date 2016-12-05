@@ -58,8 +58,9 @@ QString QSqlQueryHelper::fillSqlPattern(QString pattern, QObject *object)
 }
 
 void QSqlQueryHelper::fillObjectFromRecord(QObject *object, QSqlRecord &rec)
-{
+{  
   for (int i=0; i<rec.count(); i++){
+
     object->setProperty(qPrintable(rec.fieldName(i)), rec.value(i));
   }
 }

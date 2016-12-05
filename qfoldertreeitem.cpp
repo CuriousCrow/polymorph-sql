@@ -19,7 +19,7 @@ QVariant QFolderTreeItem::colData(int column, int role)
 {
   switch (role) {
   case Qt::DisplayRole:
-    return QString("%1 (%2)").arg(caption(), QString::number(children().count()));
+    return QString("%1 (%2)").arg(fieldValue("caption").toString(), QString::number(children().count()));
   default:
     return QVariant();
   }
