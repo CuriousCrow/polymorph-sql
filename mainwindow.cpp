@@ -97,6 +97,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       if (!dbItem->createDbConnection())
         break;
       dbItem->loadChildren();
+      ui->tvDatabaseStructure->reset();
       ui->tvDatabaseStructure->expand(index);
     }
     //Database disconnection (clear all database items)

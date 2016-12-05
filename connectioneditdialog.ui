@@ -48,7 +48,7 @@
        </item>
        <item>
         <property name="text">
-         <string>QMYSUPERDB</string>
+         <string>QPSQL</string>
         </property>
        </item>
       </widget>

@@ -29,8 +29,8 @@ void ConnectionEditDialog::setModel(QStructureItemModel *model)
   _mapper->addMapping(ui->edtHostAddress, 1);
   _mapper->addMapping(ui->edtUserName, 2);
   _mapper->addMapping(ui->edtPassword, 3);
-  _mapper->addMapping(ui->edtDatabaseName, 4);
   _mapper->addMapping(ui->cmbDriverName, 5);
+  _mapper->addMapping(ui->edtDatabaseName, 4);
 }
 
 LDataWidgetMapper *ConnectionEditDialog::mapper()
