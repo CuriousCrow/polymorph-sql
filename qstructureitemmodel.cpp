@@ -45,9 +45,12 @@ bool QStructureItemModel::loadRegisteredDatabases()
   while (sqlResult.next()) {
     QSqlRecord rec = sqlResult.record();    
     QDBDatabaseItem* item = new QDBDatabaseItem("");
-    QSqlQueryHelper::fillObjectFromRecord(item, rec);
-    appendItem(item);    
+    for (int i=0; i<rec.count(); i++) {
+      item->setFieldValue(rec.fieldName(i), rec.value(i));
+    }
+    appendItem(item);
   }
+  return true;
 }
 
 void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)

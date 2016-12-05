@@ -26,11 +26,11 @@ void ConnectionEditDialog::setModel(QStructureItemModel *model)
   _mapper->setModel(_model);
   _mapper->setRootIndex(QModelIndex());
   _mapper->addMapping(ui->edtConnectionName, 0);
-  _mapper->addMapping(ui->edtHostAddress, 1);
-  _mapper->addMapping(ui->edtUserName, 2);
-  _mapper->addMapping(ui->edtPassword, 3);
-  _mapper->addMapping(ui->edtDatabaseName, 4);
+  _mapper->addMapping(ui->edtHostAddress, 2);
+  _mapper->addMapping(ui->edtUserName, 3);
+  _mapper->addMapping(ui->edtPassword, 4);
   _mapper->addMapping(ui->cmbDriverName, 5);
+  _mapper->addMapping(ui->edtDatabaseName, 6);
 }
 
 LDataWidgetMapper *ConnectionEditDialog::mapper()

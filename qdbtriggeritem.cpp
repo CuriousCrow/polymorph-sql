@@ -20,7 +20,7 @@ QVariant QDBTriggerItem::colData(int column, int role)
 {
   switch (role) {
   case Qt::DisplayRole:
-    return caption();
+    return fieldValue("caption");
   default:
     return QVariant();
   }

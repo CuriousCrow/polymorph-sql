@@ -7,7 +7,8 @@
 
 QDBObjectItem::QDBObjectItem(QString caption, QObject* parent): LAbstractTreeItem(caption, parent)
 {
-  _caption = caption;
+  registerField("caption");
+  setFieldValue("caption", caption);
 }
 
 QDBObjectItem::~QDBObjectItem()
@@ -21,15 +22,6 @@ QUrl QDBObjectItem::objectUrl()
   else
     return QUrl();
 }
-QString QDBObjectItem::caption() const
-{
-  return _caption;
-}
-
-void QDBObjectItem::setCaption(const QString &caption)
-{
-  _caption = caption;
-}
 
 QStringList QDBObjectItem::propertyList()
 {
@@ -38,6 +30,45 @@ QStringList QDBObjectItem::propertyList()
     resList << metaObject()->property(i).name();
   }
   return resList;
+}
+
+int QDBObjectItem::fieldIndex(QString fieldName)
+{
+  for(int i=0; i<fields.count(); i++){
+    if (fields.at(i).name == fieldName)
+      return i;
+  }
+  return -1;
+}
+
+QVariant QDBObjectItem::fieldValue(QString fieldName)
+{
+  int index = fieldIndex(fieldName);
+  if (index >= 0)
+    return fields[index].value();
+  return QVariant();
+}
+
+QVariant QDBObjectItem::fieldValue(int colNumber)
+{
+  if (colNumber >= fields.count())
+    return QVariant();
+  return fields.at(colNumber).value();
+}
+
+void QDBObjectItem::setFieldValue(QString fieldName, QVariant value)
+{
+  int index = fieldIndex(fieldName);
+  if (index < 0)
+    return;
+  fields[index].setValue(value);
+}
+
+void QDBObjectItem::setFieldValue(int colNumber, QVariant value)
+{
+  if (colNumber >= fields.count())
+    return;
+  fields[colNumber].setValue(value);
 }
 
 void QDBObjectItem::updateObjectName()
@@ -55,16 +86,28 @@ void QDBObjectItem::updateObjectName()
 
 bool QDBObjectItem::setData(int column, QVariant value, int role)
 {
+  if (column >= colCount())
+    return false;
+
   if (role == Qt::EditRole){
-    switch (column) {
-    case 0:
-      setCaption(value.toString());
-      break;
-    default:
-      break;
-    }
+    fields[column].setValue(value);
   }
   return true;
+}
+
+int QDBObjectItem::colCount()
+{
+  return fields.count();
+}
+
+QVariant QDBObjectItem::colData(int column, int role)
+{
+  if (column >= colCount())
+    return QVariant();
+  if ((role == Qt::DisplayRole) || (role == Qt::EditRole)){
+    return fieldValue(column);
+  }
+  return QVariant();
 }
 
 bool QDBObjectItem::insertMe(){
@@ -79,4 +122,41 @@ bool QDBObjectItem::updateMe()
 bool QDBObjectItem::deleteMe()
 {
   return true;
+}
+
+QDBObjectField::QDBObjectField(QString fieldName)
+{
+  name = fieldName;
+}
+
+void QDBObjectItem::registerField(QString fieldName)
+{
+  fields.append(QDBObjectField(fieldName));
+}
+
+QVariant QDBObjectField::value() const
+{
+    return _value;
+}
+
+void QDBObjectField::setValue(const QVariant &value)
+{
+  if (!_oldValue.isValid())
+    _oldValue = _value;
+  _value = value;
+}
+
+bool QDBObjectField::isModified()
+{
+  return _oldValue != _value;
+}
+
+void QDBObjectField::submit()
+{
+  _oldValue = _value;
+}
+
+void QDBObjectField::revert()
+{
+  _value = _oldValue;
 }

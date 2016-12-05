@@ -4,10 +4,26 @@
 #include "lstandardtreemodel.h"
 #include <QSqlDatabase>
 
+class QDBObjectField
+{
+public:
+  QDBObjectField(QString fieldName);
+  QString name;
+
+  QVariant value() const;
+  void setValue(const QVariant &value);
+
+  bool isModified();
+  void submit();
+  void revert();
+private:
+  QVariant _value;
+  QVariant _oldValue;
+};
+
 class QDBObjectItem : public LAbstractTreeItem
 {
   Q_OBJECT
-  Q_PROPERTY(QString caption READ caption WRITE setCaption)
 public:
   enum ItemType {
     Database,
@@ -32,15 +48,24 @@ public:
   virtual bool updateMe();
   virtual bool deleteMe();
 
-  QString caption() const;
-  void setCaption(const QString &caption);
+  void registerField(QString fieldName);
+  QVariant fieldValue(QString fieldName);
+  QVariant fieldValue(int colNumber);
+  void setFieldValue(QString fieldName, QVariant value);
+  void setFieldValue(int colNumber, QVariant value);
 
   QStringList propertyList();
 protected:
-  QString _connectionName;
-  QString _caption;
+  QString _connectionName;  
+  QList<QDBObjectField> fields;
+  int fieldIndex(QString fieldName);
 public slots:
   void updateObjectName();
+
+  // LAbstractTreeItem interface
+public:
+  virtual int colCount();
+  virtual QVariant colData(int column, int role);
 };
 
 #endif // QDBOBJECTITEM_H
