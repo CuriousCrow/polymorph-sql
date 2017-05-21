@@ -13,6 +13,7 @@ LTextCompleter::LTextCompleter(QObject *parent): QCompleter(parent)
 LTextCompleter::LTextCompleter(QAbstractItemModel *model, QObject *parent):
   QCompleter(model, parent)
 {
+  qDebug() << model->rowCount();
 }
 
 LTextCompleter::LTextCompleter(const QStringList &completions, QObject *parent):
@@ -24,11 +25,44 @@ LTextCompleter::~LTextCompleter()
 {
 }
 
+bool LTextCompleter::tryToComplete(QString prefix, bool replaceIfOneOption)
+{
+  QTextCursor cursor = textCursor();
+  cursor.movePosition(QTextCursor::StartOfWord);
+  cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+  if (prefix.length() >= _minCompletionPrefixLength){
+    setCompletionPrefix(prefix);
+    //Если есть только один вариант, то сразу его подставляем
+    if (replaceIfOneOption && completionCount() == 1) {
+        cursor.removeSelectedText();
+        QAbstractItemModel* popupModel = popup()->model();
+        cursor.insertText(popupModel->data(popupModel->index(0, completionColumn())).toString());
+        return true;
+    }
+    QRect rect = QRect(cursorRect().bottomLeft(), QSize(_popupWidth, 5));
+    complete(rect);
+    //Если вариантов несколько, выделяем первый
+    if (completionCount() > 0) {
+      QAbstractItemModel* popupModel = popup()->model();
+      popup()->setCurrentIndex(popupModel->index(0, completionColumn()));
+    }
+  }
+  return false;
+}
+
+QString LTextCompleter::getCompletionPrefix()
+{
+  QTextCursor cursor = textCursor();
+  cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
+  return cursor.selectedText();
+}
+
 bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
 {
   if ((e->type() == QEvent::KeyPress) && isMultilineEditor()){
     QKeyEvent *ke = static_cast<QKeyEvent *>(e);
-    switch (ke->key()) {
+    qDebug() << "Key pressed:" << ke->text();
+    switch (ke->key()) {      
     case Qt::Key_Return:
     case Qt::Key_Enter:
     case Qt::Key_Tab:
@@ -46,18 +80,20 @@ bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
       }
     case Qt::Key_Space:
       if (ke->modifiers().testFlag(Qt::ControlModifier)){
-        QTextCursor cursor = textCursor();
-        cursor.movePosition(QTextCursor::StartOfWord);
-        cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
-        if (cursor.selectedText().length() >= _minCompletionPrefixLength){
-          setCompletionPrefix(cursor.selectedText());
-          QRect rect = QRect(cursorRect().bottomLeft(), QSize(100, 5));
-          complete(rect);
-        }
+        tryToComplete(getCompletionPrefix(), true);
         return true;
       }
+      else {
+        popup()->hide();
+      }
     }
-  }
+    if (ke->text().isSimpleText() && !ke->text().isEmpty()) {
+      qDebug() << "Simple text:" << ke->text();
+      QString prefix = getCompletionPrefix().append(ke->text());
+      if (popup()->isVisible() && tryToComplete(prefix))
+        return true;
+    }
+  }  
   return QCompleter::eventFilter(o, e);
 }
 int LTextCompleter::minCompletionPrefixLength() const
@@ -100,3 +136,5 @@ void LTextCompleter::setTextCursor(QTextCursor cursor)
   else
     return ((QTextEdit*)widget())->setTextCursor(cursor);
 }
+
+

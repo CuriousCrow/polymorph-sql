@@ -21,10 +21,13 @@ public:
   void setMinCompletionPrefixLength(int minCompletionPrefixLength);
 private:
   int _minCompletionPrefixLength = 1;
+  int _popupWidth = 200;
   bool isMultilineEditor();
   QTextCursor textCursor();
   QRect cursorRect();
   void setTextCursor(QTextCursor cursor);
+  bool tryToComplete(QString prefix, bool replaceIfOneOption = false);
+  QString getCompletionPrefix();
 };
 
 #endif // QTEXTCOMPLETER_H
