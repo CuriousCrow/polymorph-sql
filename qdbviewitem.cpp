@@ -6,6 +6,7 @@
 QDBViewItem::QDBViewItem(QString caption, QObject *parent):
   QDBTableItem(caption, parent)
 {
+    _editable = false;
 }
 
 QDBViewItem::~QDBViewItem()
@@ -74,6 +75,6 @@ bool QDBViewItem::setData(int column, QVariant value, int role)
 bool QDBViewItem::deleteMe()
 {
   QString sql = "drop view #caption#";
-  QString preparedSql = QSqlQueryHelper::fillSqlPattern(sql, this);
+  QString preparedSql = fillSqlPattern(sql);
   return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }

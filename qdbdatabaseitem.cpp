@@ -12,6 +12,11 @@
 #include "qdbtriggeritem.h"
 #include "qdbprocedureitem.h"
 
+#define DRIVER_FIREBIRD "QIBASE"
+#define DRIVER_SQLITE "QSQLITE"
+#define DRIVER_POSTGRES "QPSQL"
+#define DRIVER_MYSQL "QMYSQL"
+
 
 QDBDatabaseItem::QDBDatabaseItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
@@ -36,7 +41,7 @@ QDBDatabaseItem::~QDBDatabaseItem()
 
 bool QDBDatabaseItem::createDbConnection()
 {
-  QSqlDatabase db = QSqlDatabase::addDatabase(fieldValue("driverName").toString(), _connectionName);
+  QSqlDatabase db = QSqlDatabase::addDatabase(driver(), _connectionName);
   db.setDatabaseName(fieldValue("databaseName").toString());
   db.setUserName(fieldValue("userName").toString());
   db.setPassword(fieldValue("password").toString());
@@ -94,7 +99,7 @@ bool QDBDatabaseItem::loadChildren()
 QUrl QDBDatabaseItem::objectUrl()
 {
   QUrl url = QDBObjectItem::objectUrl();
-  url.setScheme(fieldValue("driverName").toString());
+  url.setScheme(driver());
   url.setHost(fieldValue("caption").toString().replace(' ', '_'), QUrl::TolerantMode);
   return url;
 }
@@ -143,24 +148,17 @@ int QDBDatabaseItem::type()
   return Database;
 }
 
-QString QDBDatabaseItem::fillSqlPattern(QString pattern)
-{
-  foreach(QDBObjectField field, fields) {
-    this->setProperty(qPrintable(field.name), field.value());
-  }
-  return QSqlQueryHelper::fillSqlPattern(pattern, this);
-}
+//QString QDBDatabaseItem::fillSqlPattern(QString pattern)
+//{
+//  foreach(QDBObjectField field, fields) {
+//    this->setProperty(qPrintable(field.name), field.value());
+//  }
+//  return QSqlQueryHelper::fillSqlPattern(pattern, this);
+//}
 
 void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
 {
-  QString sql = "";
-  if (fieldValue("driverName").toString() == "QIBASE"){
-    sql = "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations "
-          "where rdb$relation_type=1";
-  }
-  if (fieldValue("driverName").toString() == "QSQLITE") {
-    sql = "select trim(name) name, sql queryText from sqlite_master where type='view'";
-  }
+  QString sql = getViewListSql();
 
   if (sql.isEmpty()){
     QStringList viewNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
@@ -184,8 +182,8 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
 {
   QString sql;
 
-  if (fieldValue("driverName").toString() == "QIBASE"){
-    sql = "select rdb$generator_id id, trim(rdb$generator_name) name from rdb$generators where rdb$system_flag = 0";
+  if (isDriver(DRIVER_FIREBIRD)){
+    sql = getSequenceListSql();
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
       QDBSequenceItem* sequenceItem
@@ -193,16 +191,20 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
       sequenceItem->updateObjectName();
     }
   }
+  else if (isDriver(DRIVER_POSTGRES)) {
+    sql = "SELECT c.relname \"name\" FROM pg_class c WHERE c.relkind = 'S'";
+    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    while (resultSet.next()) {
+      QDBSequenceItem* sequenceItem
+        = new QDBSequenceItem(resultSet.value("name").toString(), parentItem);
+      sequenceItem->updateObjectName();
+    }
+  }
 }
 
 void QDBDatabaseItem::loadTriggerItems(QDBObjectItem *parentItem)
 {
-  QString sql = "";
-  if (fieldValue("driverName").toString() == "QIBASE")
-    sql = "select trim(rdb$trigger_name) name from rdb$triggers where rdb$system_flag = 0";
-  else if (fieldValue("driverName").toString() == "QSQLITE")
-    sql = "select name name from sqlite_master where type = 'trigger'";
-
+  QString sql = getTriggerListSql();
   if (!sql.isEmpty()){
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
@@ -215,15 +217,65 @@ void QDBDatabaseItem::loadTriggerItems(QDBObjectItem *parentItem)
 
 void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
 {
-  QString sql;
+  QString sql = getProcedureListSql();
+  if (sql.isEmpty())
+    return;
 
-  if (fieldValue("driverName").toString() == "QIBASE"){
-    sql = "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
-    while (resultSet.next()){
+  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+  while (resultSet.next()){
       QDBProcedureItem* sequenceItem
           = new QDBProcedureItem(resultSet.value("name").toString(), parentItem);
       sequenceItem->updateObjectName();
     }
+
+}
+
+QString QDBDatabaseItem::getViewListSql()
+{
+  QString sql;
+  if (isDriver(DRIVER_SQLITE)) {
+    sql = "select trim(name) name, sql queryText from sqlite_master where type='view'";
   }
+  else if (isDriver(DRIVER_POSTGRES)) {
+    sql = "select table_name \"name\" from INFORMATION_SCHEMA.views where table_schema = 'public'";
+  }
+  else if (isDriver(DRIVER_MYSQL)) {
+    sql = "select table_name \"name\" from INFORMATION_SCHEMA.views";
+  }
+  return sql;
+}
+
+QString QDBDatabaseItem::getSequenceListSql()
+{
+
+}
+
+QString QDBDatabaseItem::getTriggerListSql()
+{
+  QString sql = "";
+  if (isDriver(DRIVER_FIREBIRD))
+    sql = "select trim(rdb$trigger_name) name from rdb$triggers where rdb$system_flag = 0";
+  else if (isDriver(DRIVER_SQLITE))
+    sql = "select name name from sqlite_master where type = 'trigger'";
+  else if (isDriver(DRIVER_POSTGRES))
+    sql = "SELECT trigger_name \"name\" FROM information_schema.triggers";
+  return sql;
+}
+
+QString QDBDatabaseItem::getProcedureListSql()
+{
+  QString sql;
+  if (isDriver(DRIVER_FIREBIRD))
+    sql = sql = "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
+  return sql;
+}
+
+QString QDBDatabaseItem::driver()
+{
+  return fieldValue("driverName").toString();
+}
+
+bool QDBDatabaseItem::isDriver(QString name)
+{
+  return driver() == name;
 }

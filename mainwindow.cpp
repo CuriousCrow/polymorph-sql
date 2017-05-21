@@ -42,9 +42,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tvDatabaseStructure->hideColumn(i);
   }
 
-  _structureContextMenu = new QMenu(ui->tvDatabaseStructure);
-  _structureContextMenu->addAction("Edit object", this, SLOT(showEditorForCurrentItem()));
-  _structureContextMenu->addAction("Drop object", this, SLOT(dropCurrentDatabaseObject()));
+  _itemContextMenu = new QMenu(ui->tvDatabaseStructure);
+  connect(_itemContextMenu, SIGNAL(aboutToShow()),
+          this, SLOT(updateStructureContextMenu()));
+  _editAction = _itemContextMenu->addAction("Edit object", this, SLOT(showEditorForCurrentItem()));
+  _dropAction = _itemContextMenu->addAction("Drop object", this, SLOT(dropCurrentDatabaseObject()));
+
+  _folderContextMenu = new QMenu(ui->tvDatabaseStructure);
+  _folderContextMenu->addAction("Create object", this, SLOT(showCreateItemEditor()));
+
 
   //Создаем окно редактирования соединений с БД
   _connectionEditDialog = new ConnectionEditDialog(this);
@@ -53,6 +59,12 @@ MainWindow::MainWindow(QWidget *parent) :
   //View editor window
   _viewEditorWindow = new ViewEditDialog(this);
   _viewEditorWindow->setModel(_structureModel);
+
+  //Table item editor
+  _tableEditForm = new TableEditForm(this);
+  _tableEditForm->setModal(true);
+  connect(_tableEditForm, SIGNAL(accepted()),
+          this, SLOT(saveTableChanges()));
 
   //Создаем вкладку с редактором SQL-запросов
   _queryEditorWindow = new QueryEditorWindow(this);
@@ -121,6 +133,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       ui->tabWidget->addTab(tableWidget, tableItem->fieldValue("caption").toString());
     }
     ui->tabWidget->setCurrentWidget(tableWidget);
+    QSqlQueryHelper::tableRowInfo(tableItem->fieldValue("caption").toString(), tableItem->connectionName());
     break;
   }
 }
@@ -164,8 +177,18 @@ void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
 {
   //Show context menu by right mouse click
   if (QApplication::mouseButtons().testFlag(Qt::RightButton)){
-    if (itemByIndex(index)->type() == QDBObjectItem::View){
-      _structureContextMenu->popup(QCursor::pos());
+    switch (itemByIndex(index)->type()) {
+    case QDBObjectItem::View:
+    case QDBObjectItem::Trigger:
+    case QDBObjectItem::Table:
+      _itemContextMenu->popup(QCursor::pos());
+      break;
+    case QDBObjectItem::Folder:
+      _folderContextMenu->popup(QCursor::pos());
+      break;
+    default:
+      _itemContextMenu->popup(QCursor::pos());
+      break;
     }
   }
 }
@@ -173,9 +196,19 @@ void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
 void MainWindow::showEditorForCurrentItem()
 {
   //Show view editor window
-  if (itemByIndex(ui->tvDatabaseStructure->currentIndex())->type() == QDBObjectItem::View){
+  QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  switch (currentItem->type()) {
+  case QDBObjectItem::View:
     _viewEditorWindow->onModelIndexChanged(ui->tvDatabaseStructure->currentIndex());
     _viewEditorWindow->show();
+    break;
+  case QDBObjectItem::Table:
+    _tableEditForm->setObjItem(currentItem);
+    _tableEditForm->objectToForm();
+    _tableEditForm->show();
+    break;
+  default:
+    QMessageBox::warning(this, "Warning", "Edit form isn't supported yet");
   }
   //TODO: Implementation for other DB objects
 }
@@ -184,13 +217,35 @@ void MainWindow::dropCurrentDatabaseObject()
 {
   //Drop database object
   QDBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  if (itemToRemove->type() == QDBObjectItem::View){
-    removeTabsByItemUrl(itemToRemove->objectUrl().url());
-    if (itemToRemove->deleteMe())
-      _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
-                            ui->tvDatabaseStructure->currentIndex().parent());
+  switch (itemToRemove->type()) {
+  case QDBObjectItem::View:
+  case QDBObjectItem::Table:
+  case QDBObjectItem::Trigger:
+      removeTabsByItemUrl(itemToRemove->objectUrl().url());
+      if (itemToRemove->deleteMe())
+        _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
+                              ui->tvDatabaseStructure->currentIndex().parent());
+      break;
+  default:
+      break;
   }
   //TODO: Implementation for other DB objects
+}
+
+void MainWindow::updateStructureContextMenu()
+{
+    QDBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    _editAction->setText(item->isEditable() ? tr("Edit object") : tr("View object"));
+}
+
+void MainWindow::showCreateItemEditor()
+{
+  qDebug() << "Create window";
+}
+
+void MainWindow::saveTableChanges()
+{
+  ((AbstractDatabaseEditForm*)sender())->objItem()->updateMe();
 }
 
 QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)

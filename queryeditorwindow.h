@@ -7,6 +7,8 @@
 #include "qsqlsyntaxhighlighter.h"
 #include "ltextcompleter.h"
 #include "qactiveconnectionmodel.h"
+#include "ldbobjectmodel.h"
+#include "utils/qsimpletooltip.h"
 
 namespace Ui {
 class QueryEditorWindow;
@@ -29,11 +31,19 @@ private slots:
 
   void on_aRollback_triggered();
 
+  void on_cmbDatabase_activated(const QString &arg1);
+
+  void onHelpKey();
+  void on_aExecScript_triggered();
+
 private:
   Ui::QueryEditorWindow *ui;
   QStructureItemModel* _model;
   QActiveConnectionModel* _activeConnectionModel;
   QSqlQueryModel* _resultModel;
+  LDBObjectModel* _compModel;
+  QSqlSyntaxHighlighter* _highlighter;
+  QSimpleTooltip* _helpTooltip;
   QString connectionName();
 };
 

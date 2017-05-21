@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
+#include "lsqltablemodel.h"
 
 
 class QKnowledgeBase : public QObject
@@ -14,7 +15,7 @@ public:
   ~QKnowledgeBase();
 
   static QKnowledgeBase* kb(QObject* parent = 0);
-  QSqlTableModel* mKeywords;
+  LSqlTableModel* mKeywords;
 private:
   static QKnowledgeBase* _kb;
 signals:

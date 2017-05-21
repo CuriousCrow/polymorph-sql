@@ -19,6 +19,12 @@ public:
 public:
   virtual int colCount();
   virtual QVariant colData(int column, int role);
+
+  // QDBObjectItem interface
+public:
+  virtual bool deleteMe();
+  virtual bool insertMe();
+  virtual bool updateMe();
 };
 
 #endif // QDBTABLEITEM_H

@@ -12,14 +12,20 @@ public:
   ~QDBDatabaseItem();
 
   bool createDbConnection();
-
 protected:
-  QString fillSqlPattern(QString pattern);
-  void loadViewItems(QDBObjectItem* parentItem);
-  void loadSequenceItems(QDBObjectItem* parentItem);
-  void loadTriggerItems(QDBObjectItem* parentItem);
-  void loadProcedureItems(QDBObjectItem* parentItem);
+//  QString fillSqlPattern(QString pattern);
+  virtual void loadViewItems(QDBObjectItem* parentItem);
+  virtual void loadSequenceItems(QDBObjectItem* parentItem);
+  virtual void loadTriggerItems(QDBObjectItem* parentItem);
+  virtual void loadProcedureItems(QDBObjectItem* parentItem);
+  
+  virtual QString getViewListSql();
+  virtual QString getSequenceListSql();
+  virtual QString getTriggerListSql();
+  virtual QString getProcedureListSql();
 
+  QString driver();
+  bool isDriver(QString name);
   // QDBObjectItem interface
 public:
   virtual bool loadChildren();

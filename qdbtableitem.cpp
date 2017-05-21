@@ -1,6 +1,7 @@
 #include "qdbtableitem.h"
 #include <QUrl>
 #include <QIcon>
+#include "qsqlqueryhelper.h"
 
 QDBTableItem::QDBTableItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
@@ -44,6 +45,28 @@ QVariant QDBTableItem::colData(int column, int role)
     return QIcon(":/icons/table.png");
   default:
     return QVariant();
+  }
+}
+
+bool QDBTableItem::deleteMe()
+{
+  QString sql = "drop table #caption#";
+  QString preparedSql = fillSqlPattern(sql);
+  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+}
+
+bool QDBTableItem::insertMe()
+{
+  return false;
+}
+
+bool QDBTableItem::updateMe()
+{
+  QDBObjectField captionField = fields.at(fieldIndex("caption"));
+  if (captionField.isModified()) {
+    QString sql = "alter table #caption.old# rename to #caption.new#";
+    QString preparedSql = fillPatternWithFields(sql);
+    return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
   }
 }
 

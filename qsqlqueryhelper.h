@@ -16,6 +16,7 @@ public:
   QSqlQueryHelper();
   ~QSqlQueryHelper();
   static QSqlQuery execSql(QString sql, QString connectionName = QSqlDatabase::defaultConnection);
+  static QSqlRecord tableRowInfo(QString table, QString connectionName);
   static QStringList propertyList(const QMetaObject *metaObj);
   static QString fillSqlPattern(QString pattern, QObject* object);
   static void fillObjectFromRecord(QObject* object, QSqlRecord& rec);

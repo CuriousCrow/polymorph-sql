@@ -18,6 +18,12 @@ public:
 public:
   virtual bool loadChildren();
   virtual int type();
+  
+  // QDBObjectItem interface
+public:
+  virtual bool insertMe();
+  virtual bool updateMe();
+  virtual bool deleteMe();
 };
 
 #endif // QDBTRIGGERITEM_H

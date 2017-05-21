@@ -4,6 +4,11 @@
 #include <QDebug>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QStandardItemModel>
+#include <QStandardItem>
+#include "lqueryeditor.h"
+#include "core/maphelplookupprovider.h"
+#include "core/sqlhelplookupprovider.h"
 
 QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -18,14 +23,29 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   ui->cmbDatabase->setModel(_activeConnectionModel);
   ui->cmbDatabase->setModelColumn(0);
 
-  QSqlSyntaxHighlighter* highlighter = new QSqlSyntaxHighlighter(this);
-  highlighter->setDocument(ui->teQueryEditor->document());
+  _highlighter = new QSqlSyntaxHighlighter(this);
+  _highlighter->setDocument(ui->teQueryEditor->document());
 
   //Simple keywords autocompleter
   //TODO: Dynamic autocomplete depending on syntax and database objects
-  LTextCompleter* completer = new LTextCompleter(highlighter->keyWords(), this);
+  _compModel = new LDBObjectModel(this);
+  LTextCompleter* completer = new LTextCompleter(_compModel, this);
   completer->setCaseSensitivity(Qt::CaseInsensitive);
   completer->setWidget(ui->teQueryEditor);
+
+//  MapHelpLookupProvider* helpProvider = new MapHelpLookupProvider(this);
+//  helpProvider->addItem("SELECT", "<b>SELECT</b> is the most common keyword");
+//  helpProvider->addItem("FROM", "FROM - is keyword used with SELECT clause");
+
+  _helpTooltip = new QSimpleTooltip(this);
+  _helpTooltip->setWidget(ui->teQueryEditor);
+  _helpTooltip->setLookupProvider(new SqlHelpLookupProvider(this));
+
+  LKeySequenceInterceptor* keyInterceptor = new LKeySequenceInterceptor(this);
+  keyInterceptor->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_Q));
+  keyInterceptor->applyToWidget(ui->teQueryEditor);
+  connect(keyInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
+          this, SLOT(onHelpKey()));
 }
 
 QueryEditorWindow::~QueryEditorWindow()
@@ -81,4 +101,34 @@ void QueryEditorWindow::on_aRollback_triggered()
 void QueryEditorWindow::refreshConnectionList()
 {
   _activeConnectionModel->invalidate();
+}
+void QueryEditorWindow::on_cmbDatabase_activated(const QString &arg1)
+{
+    _compModel->reload(_highlighter->keyWords(), connectionName());
+}
+
+void QueryEditorWindow::onHelpKey()
+{
+    qDebug() << "Help key!";
+    _helpTooltip->popup(ui->teQueryEditor->currentWord(),
+                        ui->teQueryEditor->cursorGlobalPos());
+}
+
+void QueryEditorWindow::on_aExecScript_triggered()
+{
+  int success = 0;
+  int failed = 0;
+  QStringList queries = ui->teQueryEditor->toPlainText().split(";");
+  foreach(QString sql, queries) {
+    QSqlQuery query =
+        QSqlDatabase::database(connectionName()).exec(sql.trimmed());
+    if (!query.lastError().isValid()){
+      success++;
+    }
+    if (query.lastError().isValid()){
+      failed++;
+      qDebug() << "Error:" << query.lastError().text();
+    }
+  }
+  ui->statusbar->showMessage("Succcess: " + QString::number(success) + ", Failed: " + QString::number(failed));
 }

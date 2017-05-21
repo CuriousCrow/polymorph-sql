@@ -16,10 +16,8 @@ public:
   void appendItem(QDBObjectItem* item, QModelIndex parent);
 
   bool deleteChildren(QModelIndex parent);
-
 signals:
   void itemAboutToBeRemoved(QString itemUrl);
-
 private:
   QSqlDatabase _db;
   bool loadRegisteredDatabases();

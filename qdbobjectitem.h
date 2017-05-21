@@ -13,6 +13,8 @@ public:
   QVariant value() const;
   void setValue(const QVariant &value);
 
+  QVariant oldValue() const;
+
   bool isModified();
   void submit();
   void revert();
@@ -32,7 +34,8 @@ public:
     Sequence,
     Trigger,
     Procedure,
-    Folder
+    Folder,
+    Field
   };
 
   QDBObjectItem(QString caption, QObject* parent = 0);
@@ -48,6 +51,8 @@ public:
   virtual bool updateMe();
   virtual bool deleteMe();
 
+  bool isEditable();
+
   void registerField(QString fieldName);
   QVariant fieldValue(QString fieldName);
   QVariant fieldValue(int colNumber);
@@ -56,9 +61,13 @@ public:
 
   QStringList propertyList();
 protected:
-  QString _connectionName;  
+  QString _connectionName;
+  bool _editable = true;
   QList<QDBObjectField> fields;
   int fieldIndex(QString fieldName);
+  QString fillSqlPattern(QString pattern);
+  QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap);
+  QString fillPatternWithFields(QString pattern);
 public slots:
   void updateObjectName();
 

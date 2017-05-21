@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include <QMetaProperty>
+#include "qsqlqueryhelper.h"
 
 
 QDBObjectItem::QDBObjectItem(QString caption, QObject* parent): LAbstractTreeItem(caption, parent)
@@ -39,6 +40,34 @@ int QDBObjectItem::fieldIndex(QString fieldName)
       return i;
   }
   return -1;
+}
+
+QString QDBObjectItem::fillSqlPattern(QString pattern)
+{
+  foreach(QDBObjectField field, fields) {
+    this->setProperty(qPrintable(field.name), field.value());
+  }
+  return QSqlQueryHelper::fillSqlPattern(pattern, this);
+}
+
+QString QDBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> valueMap)
+{
+  QString result = pattern;
+  foreach(QString key, valueMap.keys()) {
+    result = result.replace("#" + key + "#", valueMap.value(key));
+  }
+  return result;
+}
+
+QString QDBObjectItem::fillPatternWithFields(QString pattern)
+{
+  QString result = pattern;
+  foreach(QDBObjectField field, fields) {
+    result = result.replace("#" + field.name + ".new#", field.value().toString());
+    result = result.replace("#" + field.name + ".old#", field.oldValue().toString());
+    result = result.replace("#" + field.name + "#", field.value().toString());
+  }
+  return result;
 }
 
 QVariant QDBObjectItem::fieldValue(QString fieldName)
@@ -120,8 +149,13 @@ bool QDBObjectItem::updateMe()
 }
 
 bool QDBObjectItem::deleteMe()
+{    
+    return true;
+}
+
+bool QDBObjectItem::isEditable()
 {
-  return true;
+    return _editable;
 }
 
 QDBObjectField::QDBObjectField(QString fieldName)
@@ -144,6 +178,11 @@ void QDBObjectField::setValue(const QVariant &value)
   if (!_oldValue.isValid())
     _oldValue = _value;
   _value = value;
+}
+
+QVariant QDBObjectField::oldValue() const
+{
+  return _oldValue;
 }
 
 bool QDBObjectField::isModified()

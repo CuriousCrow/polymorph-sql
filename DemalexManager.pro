@@ -34,7 +34,19 @@ SOURCES += main.cpp\
     qdbprocedureitem.cpp \
     qdbviewitem.cpp \
     vieweditdialog.cpp \
-    qknowledgebase.cpp
+    qknowledgebase.cpp \
+    qdbfirebirditem.cpp \
+    ldbobjectmodel.cpp \
+    lqueryeditor.cpp \
+    core/maphelplookupprovider.cpp \
+    utils/qsimpletooltip.cpp \
+    core/sqlhelplookupprovider.cpp \
+    forms/abstractdatabaseitemform.cpp \
+    forms/tableeditform.cpp \
+    tablerowmodel.cpp \
+    models/simplecachedtablemodel.cpp \
+    models/comboboxitemdelegate.cpp \
+    models/lcachedtablemodel.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -57,13 +69,26 @@ HEADERS  += mainwindow.h \
     qdbprocedureitem.h \
     qdbviewitem.h \
     vieweditdialog.h \
-    qknowledgebase.h
+    qknowledgebase.h \
+    qdbfirebirditem.h \
+    ldbobjectmodel.h \
+    lqueryeditor.h \
+    core/maphelplookupprovider.h \
+    utils/qsimpletooltip.h \
+    core/sqlhelplookupprovider.h \
+    forms/abstractdatabaseitemform.h \
+    forms/tableeditform.h \
+    tablerowmodel.h \
+    models/simplecachedtablemodel.h \
+    models/comboboxitemdelegate.h \
+    models/lcachedtablemodel.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
     tablebrowserwindow.ui \
     queryeditorwindow.ui \
-    vieweditdialog.ui
+    vieweditdialog.ui \
+    forms/tableeditform.ui
 
 RESOURCES += \
     icons.qrc

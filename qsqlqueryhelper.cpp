@@ -28,6 +28,14 @@ QSqlQuery QSqlQueryHelper::execSql(QString sql, QString connectionName)
   return sqlResult;
 }
 
+QSqlRecord QSqlQueryHelper::tableRowInfo(QString table, QString connectionName)
+{
+  QSqlRecord rec = QSqlDatabase::database(connectionName).record(table);
+  qDebug() << "Table info:" << rec;
+  return rec;
+}
+
+
 QStringList QSqlQueryHelper::propertyList(const QMetaObject *metaObj)
 {
   QStringList resList = QStringList();

@@ -3,12 +3,13 @@
 #include <QDebug>
 #include "qknowledgebase.h"
 #include <QSqlTableModel>
+#include "lsqltablemodel.h"
 
 QSqlSyntaxHighlighter::QSqlSyntaxHighlighter(QObject *parent):
   QSyntaxHighlighter(parent)
 {
   //TODO: Keywords should be loaded depending on database type
-  QSqlTableModel* mKeywords = QKnowledgeBase::kb()->mKeywords;
+  LSqlTableModel* mKeywords = QKnowledgeBase::kb()->mKeywords;
   for (int i=0; i<mKeywords->rowCount(); i++){
     _sqlKeyWords << mKeywords->data(mKeywords->index(i, mKeywords->fieldIndex("NAME"))).toString().toUpper();
   }

@@ -11,6 +11,7 @@
 #include "qstructureitemmodel.h"
 #include "queryeditorwindow.h"
 #include "vieweditdialog.h"
+#include "forms/tableeditform.h"
 
 namespace Ui {
 class MainWindow;
@@ -44,6 +45,12 @@ private slots:
   void showEditorForCurrentItem();
 
   void dropCurrentDatabaseObject();
+
+  void updateStructureContextMenu();
+
+  void showCreateItemEditor();
+
+  void saveTableChanges();
 private:
   Ui::MainWindow *ui;
   QSqlDatabase appDB;
@@ -51,7 +58,11 @@ private:
   ConnectionEditDialog* _connectionEditDialog;
   QueryEditorWindow* _queryEditorWindow;
   ViewEditDialog* _viewEditorWindow;
-  QMenu* _structureContextMenu;
+  TableEditForm* _tableEditForm;
+  QMenu* _itemContextMenu;
+  QMenu* _folderContextMenu;
+  QAction* _editAction;
+  QAction* _dropAction;
   void addDatabase();
   QDBObjectItem* itemByIndex(QModelIndex index);
 protected:

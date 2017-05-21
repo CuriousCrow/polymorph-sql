@@ -14,7 +14,7 @@ QKnowledgeBase *QKnowledgeBase::kb(QObject *parent)
 QKnowledgeBase::QKnowledgeBase(QObject *parent) : QObject(parent)
 {
   qDebug() << "Knowledge base created";
-  mKeywords = new QSqlTableModel(this);
+  mKeywords = new LSqlTableModel(this);
   mKeywords->setTable("t_keywords");
   mKeywords->select();
   qDebug() << mKeywords->rowCount() << "keywords loaded";
