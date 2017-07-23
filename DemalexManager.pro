@@ -46,7 +46,12 @@ SOURCES += main.cpp\
     tablerowmodel.cpp \
     models/simplecachedtablemodel.cpp \
     models/comboboxitemdelegate.cpp \
-    models/lcachedtablemodel.cpp
+    models/lcachedtablemodel.cpp \
+    core/appsettings.cpp \
+    qdbsqliteitem.cpp \
+    qdbsqlitetableitem.cpp \
+    models/sqlcolumnmodel.cpp \
+    comboboxhashdelegate.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -81,7 +86,12 @@ HEADERS  += mainwindow.h \
     tablerowmodel.h \
     models/simplecachedtablemodel.h \
     models/comboboxitemdelegate.h \
-    models/lcachedtablemodel.h
+    models/lcachedtablemodel.h \
+    core/appsettings.h \
+    qdbsqliteitem.h \
+    qdbsqlitetableitem.h \
+    models/sqlcolumnmodel.h \
+    comboboxhashdelegate.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

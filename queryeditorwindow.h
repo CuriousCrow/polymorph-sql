@@ -24,6 +24,7 @@ public:
 
   void setStructureModel(QStructureItemModel* model);
   void refreshConnectionList();
+  void refreshCompleterData();
 private slots:
   void on_aExecuteQuery_triggered();
 

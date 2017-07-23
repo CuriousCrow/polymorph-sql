@@ -5,9 +5,13 @@
 
 class QFolderTreeItem : public QDBObjectItem
 {
+  Q_OBJECT
 public:
   QFolderTreeItem(QString caption, QObject* parent = 0);
   ~QFolderTreeItem();
+
+  QDBObjectItem::ItemType childrenType() const;
+  void setChildrenType(QDBObjectItem::ItemType childrenType);
 
   // LAbstractTreeItem interface
 public:
@@ -18,6 +22,9 @@ public:
 public:
   virtual bool loadChildren();
   virtual int type();
+
+private:
+  QDBObjectItem::ItemType _childrenType = UnknownType;
 };
 
 #endif // QFOLDERTREEITEM_H

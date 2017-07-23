@@ -3,6 +3,7 @@
 
 #include "lstandardtreemodel.h"
 #include "qdbobjectitem.h"
+#include "qdbdatabaseitem.h"
 #include <QSqlDatabase>
 
 class QStructureItemModel : public LStandardTreeModel
@@ -21,6 +22,8 @@ signals:
 private:
   QSqlDatabase _db;
   bool loadRegisteredDatabases();
+  //Fabric method
+  QDBDatabaseItem* dbItemByDriver(QString driverName);
 private slots:
   void onAboutToBeRemoved(const QModelIndex & parent, int first, int last);
 

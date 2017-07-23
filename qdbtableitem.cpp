@@ -2,14 +2,82 @@
 #include <QUrl>
 #include <QIcon>
 #include "qsqlqueryhelper.h"
+#include <QSqlField>
+#include <QSqlRecord>
+
+#define NEW_COLUMN_NAME "NewColumn"
 
 QDBTableItem::QDBTableItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
 {  
+    _columnsModel = new SqliteTableColumnsModel();
 }
 
 QDBTableItem::~QDBTableItem()
 {
+    delete _columnsModel;
+}
+
+void QDBTableItem::reloadColumnsModel()
+{
+    _columnsModel->clear();
+    QSqlRecord sqlColumns = QSqlQueryHelper::tableRowInfo(
+                this->fieldValue("caption").toString(),
+                connectionName());
+    for (int i=0; i<sqlColumns.count(); i++) {
+        QSqlField field = sqlColumns.field(i);
+        ColumnType colType = NoType;
+        switch (field.type()) {
+        case QVariant::String:
+            colType = ColumnType::Varchar;
+            break;
+        case QVariant::Int:
+            colType = ColumnType::Integer;
+            break;
+        case QVariant::Double:
+            colType = ColumnType::Numeric;
+            break;
+        default:
+            break;
+        }
+        SqlColumn col(field.name(), colType);
+        col.setDefaultValue(field.defaultValue());
+        col.setIsPrimary(field.isAutoValue());
+        col.setLength(field.length());
+        col.setPrecision(field.precision());
+        col.setNotNull(field.requiredStatus());
+        col.setAutoIncrement(field.isAutoValue());
+        _columnsModel->addSqlColumn(col, true);
+    }\
+}
+
+QAbstractTableModel *QDBTableItem::columnsModel()
+{
+  return _columnsModel;
+}
+
+void QDBTableItem::addDefaultColumn()
+{  
+  int newColNumber = 1;
+  forever {
+    if (_columnsModel->rowByName(NEW_COLUMN_NAME + QString::number(newColNumber)) < 0)
+      break;
+    newColNumber++;
+  }
+  _columnsModel->addSqlColumn(SqlColumn(NEW_COLUMN_NAME + QString::number(newColNumber), ColumnType::Varchar));
+}
+
+QHash<int, QString> QDBTableItem::getColumnTypesHash()
+{
+  QHash<int, QString> resHash;
+  int val = 1;
+  while (val <= ColumnType::Blob) {
+    if (_columnsModel->supportedColumnTypes().testFlag((ColumnType)val)) {
+      resHash.insert(val, _columnsModel->columnTypeCaption((ColumnType)val));
+    }
+    val *= 2;
+  }
+  return resHash;
 }
 
 bool QDBTableItem::loadChildren()
@@ -62,11 +130,21 @@ bool QDBTableItem::insertMe()
 
 bool QDBTableItem::updateMe()
 {
-  QDBObjectField captionField = fields.at(fieldIndex("caption"));
-  if (captionField.isModified()) {
-    QString sql = "alter table #caption.old# rename to #caption.new#";
-    QString preparedSql = fillPatternWithFields(sql);
-    return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  SqlColumnModel::EditType editType = _columnsModel->editType();
+  if (editType == SqlColumnModel::DropTable) {
+    return deleteMe();
+  }
+  else if (editType == SqlColumnModel::CreateTable) {
+    return insertMe();
+  } 
+  else {
+    if (editType == SqlColumnModel::NoChanges && !isModified()) {
+      qDebug() << "No changes";
+      return true;
+    }
+//    qDebug() << "Table" << fieldValue("caption").toString() << "modified";
+//    qDebug() << _columnsModel->columnChanges();
+    return false;
   }
 }
 

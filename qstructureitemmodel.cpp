@@ -1,7 +1,8 @@
 #include "qstructureitemmodel.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "qdbdatabaseitem.h"
+#include "qdbfirebirditem.h"
+#include "qdbsqliteitem.h"
 #include <QDebug>
 #include <QUrl>
 #include "qsqlqueryhelper.h"
@@ -21,8 +22,8 @@ QStructureItemModel::~QStructureItemModel()
 
 void QStructureItemModel::appendItem(QDBObjectItem *item, QDBObjectItem *parent)
 {
-  item->updateObjectName();
   addItem(item, parent);
+  item->updateObjectName();
 }
 
 void QStructureItemModel::appendItem(QDBObjectItem *item, QModelIndex parent)
@@ -40,17 +41,33 @@ bool QStructureItemModel::loadRegisteredDatabases()
 {
   QString sql = "select id id, name caption, driver driverName, local_path databaseName, "
                 "host_address hostName, username userName, password password from t_database";
-  QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);
-
+  QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);  
   while (sqlResult.next()) {
-    QSqlRecord rec = sqlResult.record();    
-    QDBDatabaseItem* item = new QDBDatabaseItem("");
+    QSqlRecord rec = sqlResult.record();
+    QString driverName = rec.value("driverName").toString();
+    QDBDatabaseItem* item = dbItemByDriver(driverName);
     for (int i=0; i<rec.count(); i++) {
       item->setFieldValue(rec.fieldName(i), rec.value(i));
     }
     appendItem(item);
   }
   return true;
+}
+
+QDBDatabaseItem *QStructureItemModel::dbItemByDriver(QString driverName)
+{
+    QDBDatabaseItem* item;
+    if (driverName == DRIVER_FIREBIRD) {
+        item = new QDBFirebirdItem("");
+    }
+    else if (driverName == DRIVER_SQLITE) {
+        item = new QDBSqliteItem("");
+    }
+
+    else {
+        item = new QDBDatabaseItem("");
+    }
+    return item;
 }
 
 void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)

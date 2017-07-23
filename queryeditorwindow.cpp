@@ -102,9 +102,14 @@ void QueryEditorWindow::refreshConnectionList()
 {
   _activeConnectionModel->invalidate();
 }
-void QueryEditorWindow::on_cmbDatabase_activated(const QString &arg1)
+
+void QueryEditorWindow::refreshCompleterData()
 {
     _compModel->reload(_highlighter->keyWords(), connectionName());
+}
+void QueryEditorWindow::on_cmbDatabase_activated(const QString &arg1)
+{
+    refreshCompleterData();
 }
 
 void QueryEditorWindow::onHelpKey()

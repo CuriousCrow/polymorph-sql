@@ -28,6 +28,7 @@ class QDBObjectItem : public LAbstractTreeItem
   Q_OBJECT
 public:
   enum ItemType {
+    UnknownType,
     Database,
     Table,
     View,
@@ -52,6 +53,8 @@ public:
   virtual bool deleteMe();
 
   bool isEditable();
+  virtual bool isModified();
+  virtual bool submit();
 
   void registerField(QString fieldName);
   QVariant fieldValue(QString fieldName);
@@ -65,6 +68,7 @@ protected:
   bool _editable = true;
   QList<QDBObjectField> fields;
   int fieldIndex(QString fieldName);
+  QDBObjectField field(QString fieldName);
   QString fillSqlPattern(QString pattern);
   QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap);
   QString fillPatternWithFields(QString pattern);

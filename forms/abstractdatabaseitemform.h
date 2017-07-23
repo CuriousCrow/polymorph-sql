@@ -6,16 +6,28 @@
 
 class AbstractDatabaseEditForm : public QDialog
 {
+  Q_OBJECT
 public:
-    AbstractDatabaseEditForm(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
+  enum UserAction {
+    Create,
+    Edit,
+    Drop
+  };
 
-    QDBObjectItem *objItem() const;
-    void setObjItem(QDBObjectItem *objItem);
+  AbstractDatabaseEditForm(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
 
-    virtual void objectToForm() = 0;
-    virtual void formToObject() = 0;
+  UserAction userAction() const;
+  void setUserAction(const UserAction &userAction);
+
+  QDBObjectItem *objItem() const;
+  void setObjItem(QDBObjectItem *objItem);
+
+  virtual void objectToForm() = 0;
+  virtual void formToObject() = 0;
 protected:
-    QDBObjectItem* _objItem;
+  QDBObjectItem* _objItem;
+private:
+  UserAction _userAction;
 };
 
 

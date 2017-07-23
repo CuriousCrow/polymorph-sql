@@ -10,7 +10,10 @@
 #include "qdbdatabaseitem.h"
 #include "qdbtableitem.h"
 #include "qdbobjectitem.h"
+#include "qfoldertreeitem.h"
+#include "qdbsqlitetableitem.h"
 #include "qknowledgebase.h"
+#include "core/appsettings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -21,7 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
   qDebug() << QSqlDatabase::drivers();
   //Connection to properies DB
   appDB = QSqlDatabase::addDatabase("QSQLITE");
-  appDB.setDatabaseName("properties.sqlite");
+  QString dbPath = AppSettings::strVal("database", "properties.sqlite");
+  qDebug() << "dbPath:" << dbPath;
+  appDB.setDatabaseName(dbPath);
 
   qDebug() << appDB.driver()->hasFeature(QSqlDriver::LastInsertId);
 
@@ -203,6 +208,7 @@ void MainWindow::showEditorForCurrentItem()
     _viewEditorWindow->show();
     break;
   case QDBObjectItem::Table:
+    _tableEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
     _tableEditForm->setObjItem(currentItem);
     _tableEditForm->objectToForm();
     _tableEditForm->show();
@@ -241,11 +247,45 @@ void MainWindow::updateStructureContextMenu()
 void MainWindow::showCreateItemEditor()
 {
   qDebug() << "Create window";
+  QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  QFolderTreeItem* folderItem = qobject_cast<QFolderTreeItem*>(currentItem);
+  if (!folderItem) {
+    qWarning() << "Create item action: Not folder item";
+    return;
+  }
+  QDBTableItem* newTableItem;
+  switch (folderItem->childrenType()) {
+  case QDBObjectItem::Table:
+    //Здесь не должно быть СУБД зависимого кода (необходимо перенести фабричный метод в QDBDatabaseItem)
+     newTableItem = new QDBSqliteTableItem("NewTable");
+    _tableEditForm->setObjItem(newTableItem);
+    _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
+    _tableEditForm->objectToForm();
+    _tableEditForm->show();
+    break;
+  default:
+    break;
+  }
 }
 
 void MainWindow::saveTableChanges()
 {
-  ((AbstractDatabaseEditForm*)sender())->objItem()->updateMe();
+  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
+  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
+  if (action == AbstractDatabaseEditForm::Drop) {
+    editForm->objItem()->deleteMe();
+    _queryEditorWindow->refreshCompleterData();
+  }
+  else if (action == AbstractDatabaseEditForm::Create) {    
+    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    _structureModel->appendItem(editForm->objItem(), currentItem);
+    editForm->objItem()->insertMe();
+    _queryEditorWindow->refreshCompleterData();
+  }
+  else {
+    editForm->objItem()->updateMe();
+    _queryEditorWindow->refreshCompleterData();
+  }
 }
 
 QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)

@@ -34,3 +34,13 @@ int QFolderTreeItem::type()
 {
   return Folder;
 }
+
+QDBObjectItem::ItemType QFolderTreeItem::childrenType() const
+{
+  return _childrenType;
+}
+
+void QFolderTreeItem::setChildrenType(QDBObjectItem::ItemType childrenType)
+{
+  _childrenType = childrenType;
+}

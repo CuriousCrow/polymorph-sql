@@ -15,3 +15,13 @@ void AbstractDatabaseEditForm::setObjItem(QDBObjectItem *objItem)
 {
     _objItem = objItem;
 }
+
+AbstractDatabaseEditForm::UserAction AbstractDatabaseEditForm::userAction() const
+{
+  return _userAction;
+}
+
+void AbstractDatabaseEditForm::setUserAction(const UserAction &userAction)
+{
+  _userAction = userAction;
+}

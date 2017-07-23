@@ -42,6 +42,11 @@ int QDBObjectItem::fieldIndex(QString fieldName)
   return -1;
 }
 
+QDBObjectField QDBObjectItem::field(QString fieldName)
+{
+  return fields.at(fieldIndex(fieldName));
+}
+
 QString QDBObjectItem::fillSqlPattern(QString pattern)
 {
   foreach(QDBObjectField field, fields) {
@@ -155,7 +160,24 @@ bool QDBObjectItem::deleteMe()
 
 bool QDBObjectItem::isEditable()
 {
-    return _editable;
+  return _editable;
+}
+
+bool QDBObjectItem::isModified()
+{
+  foreach (QDBObjectField field, fields) {
+    if (field.isModified())
+      return true;
+  }
+  return false;
+}
+
+bool QDBObjectItem::submit()
+{
+  for(int i=0; i<fields.count(); i++) {
+    fields[i].submit();
+  }
+  return true;
 }
 
 QDBObjectField::QDBObjectField(QString fieldName)

@@ -12,11 +12,6 @@
 #include "qdbtriggeritem.h"
 #include "qdbprocedureitem.h"
 
-#define DRIVER_FIREBIRD "QIBASE"
-#define DRIVER_SQLITE "QSQLITE"
-#define DRIVER_POSTGRES "QPSQL"
-#define DRIVER_MYSQL "QMYSQL"
-
 
 QDBDatabaseItem::QDBDatabaseItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
