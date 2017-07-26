@@ -3,6 +3,11 @@
 
 #include "qdbobjectitem.h"
 #include "qsqlqueryhelper.h"
+#include "qdbtableitem.h"
+#include "qdbprocedureitem.h"
+#include "qdbsequenceitem.h"
+#include "qdbtriggeritem.h"
+#include "qdbviewitem.h"
 
 #define DRIVER_FIREBIRD "QIBASE"
 #define DRIVER_SQLITE "QSQLITE"
@@ -17,8 +22,12 @@ public:
   ~QDBDatabaseItem();
 
   bool createDbConnection();
+  virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = 0);
+  virtual QDBViewItem* createNewViewItem(QString caption, QObject* parent = 0);
+  virtual QDBProcedureItem* createNewProcedureItem(QString caption, QObject* parent = 0);
+  virtual QDBSequenceItem* createNewSequenceItem(QString caption, QObject* parent = 0);
+  virtual QDBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = 0);\
 protected:
-//  QString fillSqlPattern(QString pattern);
   virtual void loadViewItems(QDBObjectItem* parentItem);
   virtual void loadSequenceItems(QDBObjectItem* parentItem);
   virtual void loadTriggerItems(QDBObjectItem* parentItem);

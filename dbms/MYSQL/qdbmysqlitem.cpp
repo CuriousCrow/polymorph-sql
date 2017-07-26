@@ -12,6 +12,11 @@ QDBMysqlItem::~QDBMysqlItem()
 {
 }
 
+QDBTableItem *QDBMysqlItem::createNewTableItem(QString caption, QObject *parent)
+{
+  return new QDBMysqlTableItem(caption, parent);
+}
+
 bool QDBMysqlItem::loadChildren()
 {
   if (!children().isEmpty())
@@ -40,15 +45,30 @@ bool QDBMysqlItem::loadChildren()
     tableItem->updateObjectName();
   }
 
-//  //Creating sequence items
-//  QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Generators"), this);
-//  sequenceFolderItem->setChildrenType(Sequence);
-//  loadSequenceItems(sequenceFolderItem);
-
 //  //Creating trigger items
 //  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this);
 //  triggerFolderItem->setChildrenType(Trigger);
 //  loadTriggerItems(triggerFolderItem);
 
   return true;
+}
+
+QString QDBMysqlItem::getViewListSql()
+{
+  return "select table_name \"name\" from INFORMATION_SCHEMA.views";
+}
+
+QString QDBMysqlItem::getSequenceListSql()
+{
+  return "";
+}
+
+QString QDBMysqlItem::getTriggerListSql()
+{
+  return "";
+}
+
+QString QDBMysqlItem::getProcedureListSql()
+{
+  return "";
 }

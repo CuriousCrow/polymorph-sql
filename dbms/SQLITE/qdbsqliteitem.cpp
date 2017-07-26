@@ -50,3 +50,28 @@ bool QDBSqliteItem::loadChildren()
 
   return true;
 }
+
+QDBTableItem *QDBSqliteItem::createNewTableItem(QString caption, QObject *parent)
+{
+  return new QDBSqliteTableItem(caption, parent);
+}
+
+QString QDBSqliteItem::getViewListSql()
+{
+  return "select trim(name) name, sql queryText from sqlite_master where type='view'";
+}
+
+QString QDBSqliteItem::getSequenceListSql()
+{
+  return "";
+}
+
+QString QDBSqliteItem::getTriggerListSql()
+{
+  return "select name name from sqlite_master where type = 'trigger'";
+}
+
+QString QDBSqliteItem::getProcedureListSql()
+{
+  return "";
+}

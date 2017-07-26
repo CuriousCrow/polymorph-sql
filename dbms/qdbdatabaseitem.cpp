@@ -144,14 +144,6 @@ int QDBDatabaseItem::type()
   return Database;
 }
 
-//QString QDBDatabaseItem::fillSqlPattern(QString pattern)
-//{
-//  foreach(QDBObjectField field, fields) {
-//    this->setProperty(qPrintable(field.name), field.value());
-//  }
-//  return QSqlQueryHelper::fillSqlPattern(pattern, this);
-//}
-
 void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
 {
   QString sql = getViewListSql();
@@ -226,44 +218,49 @@ void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
 
 }
 
+QDBTableItem *QDBDatabaseItem::createNewTableItem(QString caption, QObject* parent)
+{
+  return new QDBTableItem(caption, parent);
+}
+
+QDBViewItem *QDBDatabaseItem::createNewViewItem(QString caption, QObject* parent)
+{
+  return new QDBViewItem(caption, parent);
+}
+
+QDBProcedureItem *QDBDatabaseItem::createNewProcedureItem(QString caption, QObject* parent)
+{
+  return new QDBProcedureItem(caption, parent);
+}
+
+QDBSequenceItem *QDBDatabaseItem::createNewSequenceItem(QString caption, QObject* parent)
+{
+  return new QDBSequenceItem(caption, parent);
+}
+
+QDBTriggerItem *QDBDatabaseItem::createNewTriggerItem(QString caption, QObject* parent)
+{
+  return new QDBTriggerItem(caption, parent);
+}
+
 QString QDBDatabaseItem::getViewListSql()
 {
-  QString sql;
-  if (isDriver(DRIVER_SQLITE)) {
-    sql = "select trim(name) name, sql queryText from sqlite_master where type='view'";
-  }
-  else if (isDriver(DRIVER_POSTGRES)) {
-    sql = "select table_name \"name\" from INFORMATION_SCHEMA.views where table_schema = 'public'";
-  }
-  else if (isDriver(DRIVER_MYSQL)) {
-    sql = "select table_name \"name\" from INFORMATION_SCHEMA.views";
-  }
-  return sql;
+  return "";
 }
 
 QString QDBDatabaseItem::getSequenceListSql()
 {
-
+  return "";
 }
 
 QString QDBDatabaseItem::getTriggerListSql()
 {
-  QString sql = "";
-  if (isDriver(DRIVER_FIREBIRD))
-    sql = "select trim(rdb$trigger_name) name from rdb$triggers where rdb$system_flag = 0";
-  else if (isDriver(DRIVER_SQLITE))
-    sql = "select name name from sqlite_master where type = 'trigger'";
-  else if (isDriver(DRIVER_POSTGRES))
-    sql = "SELECT trigger_name \"name\" FROM information_schema.triggers";
-  return sql;
+  return "";
 }
 
 QString QDBDatabaseItem::getProcedureListSql()
 {
-  QString sql;
-  if (isDriver(DRIVER_FIREBIRD))
-    sql = sql = "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
-  return sql;
+  return "";
 }
 
 QString QDBDatabaseItem::driver()

@@ -10,9 +10,17 @@ public:
   QDBMysqlItem(QString caption, QObject* parent = 0);
   ~QDBMysqlItem();
 
+  virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = 0);
   // QDBObjectItem interface
 public:
   virtual bool loadChildren();
+
+  // QDBDatabaseItem interface
+protected:
+  virtual QString getViewListSql();
+  virtual QString getSequenceListSql();
+  virtual QString getTriggerListSql();
+  virtual QString getProcedureListSql();
 };
 
 #endif // QDBMYSQLITEM_H

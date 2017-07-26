@@ -11,6 +11,13 @@ public:
 
 public:
     virtual bool loadChildren();
+    virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = 0);
+    // QDBDatabaseItem interface
+protected:
+    virtual QString getViewListSql();
+    virtual QString getSequenceListSql();
+    virtual QString getTriggerListSql();
+    virtual QString getProcedureListSql();
 };
 
 #endif // QDBSQLITEITEM_H
