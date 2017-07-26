@@ -42,6 +42,11 @@ int QDBObjectItem::fieldIndex(QString fieldName)
   return -1;
 }
 
+QString QDBObjectItem::databaseName()
+{
+  return QSqlQueryHelper::databaseName(connectionName());
+}
+
 QDBObjectField QDBObjectItem::field(QString fieldName)
 {
   return fields.at(fieldIndex(fieldName));
@@ -72,6 +77,7 @@ QString QDBObjectItem::fillPatternWithFields(QString pattern)
     result = result.replace("#" + field.name + ".old#", field.oldValue().toString());
     result = result.replace("#" + field.name + "#", field.value().toString());
   }
+  result = result.replace("#databaseName#", databaseName());
   return result;
 }
 

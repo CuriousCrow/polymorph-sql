@@ -78,3 +78,8 @@ bool QDBViewItem::deleteMe()
   QString preparedSql = fillSqlPattern(sql);
   return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }
+
+void QDBViewItem::reloadColumnsModel()
+{
+  //
+}

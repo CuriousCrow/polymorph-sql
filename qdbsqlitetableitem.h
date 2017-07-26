@@ -7,6 +7,7 @@ class QDBSqliteTableItem : public QDBTableItem
 {
 public:
     QDBSqliteTableItem(QString caption, QObject* parent = 0);
+    virtual void reloadColumnsModel();
     // QDBObjectItem interface
 public:
     virtual bool insertMe();

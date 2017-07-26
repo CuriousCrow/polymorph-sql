@@ -438,3 +438,42 @@ QDebug operator<<(QDebug dbg, const SqlColumn &column)
                             << ", defaultValue: " << column.defaultValue() << ", autoIncrement: " << column.autoIncrement() + "}";
     return dbg;
 }
+
+MysqlTableColumnModel::MysqlTableColumnModel(QObject *parent) : SqlColumnModel(parent)
+{
+}
+
+ColumnTypes MysqlTableColumnModel::supportedColumnTypes()
+{
+  return BigInt | Integer | SmallInt | Varchar | Numeric | Char | Date |
+      Time | Timestamp | Blob;
+}
+
+QString MysqlTableColumnModel::columnTypeCaption(const ColumnType type) const
+{
+  switch (type) {
+  case BigInt:
+    return "BIGINT";
+  case Integer:
+    return "INTEGER";
+  case SmallInt:
+    return "SMALLINT";
+  case Varchar:
+    return "VARCHAR";
+  case Numeric:
+    return "NUMERIC";
+  case Char:
+    return "CHAR";
+  case Date:
+    return "DATE";
+  case Time:
+    return "TIME";
+  case Timestamp:
+    return "TIMESTAMP";
+  case Blob:
+    return "BLOB";
+  default:
+    //Другие типы не поддерживаются
+    Q_ASSERT(false);
+  }
+}

@@ -26,6 +26,10 @@ public:
 public:
   virtual int type();
   virtual bool deleteMe();
+
+  // QDBTableItem interface
+public:
+  virtual void reloadColumnsModel();
 };
 
 #endif // QDBVIEWITEM_H

@@ -3,6 +3,7 @@
 #include <QSqlRecord>
 #include "qdbfirebirditem.h"
 #include "qdbsqliteitem.h"
+#include "qdbmysqlitem.h"
 #include <QDebug>
 #include <QUrl>
 #include "qsqlqueryhelper.h"
@@ -56,18 +57,20 @@ bool QStructureItemModel::loadRegisteredDatabases()
 
 QDBDatabaseItem *QStructureItemModel::dbItemByDriver(QString driverName)
 {
-    QDBDatabaseItem* item;
-    if (driverName == DRIVER_FIREBIRD) {
-        item = new QDBFirebirdItem("");
-    }
-    else if (driverName == DRIVER_SQLITE) {
-        item = new QDBSqliteItem("");
-    }
-
-    else {
-        item = new QDBDatabaseItem("");
-    }
-    return item;
+  QDBDatabaseItem* item;
+  if (driverName == DRIVER_FIREBIRD) {
+    item = new QDBFirebirdItem("");
+  }
+  else if (driverName == DRIVER_SQLITE) {
+    item = new QDBSqliteItem("");
+  }
+  else if (driverName == DRIVER_MYSQL) {
+    item = new QDBMysqlItem("");
+  }
+  else {
+    item = new QDBDatabaseItem("");
+  }
+  return item;
 }
 
 void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)

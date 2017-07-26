@@ -11,7 +11,7 @@ class QDBTableItem : public QDBObjectItem
 public:
   QDBTableItem(QString caption, QObject* parent = 0);
   ~QDBTableItem();
-  void reloadColumnsModel();
+  virtual void reloadColumnsModel();
   QAbstractTableModel* columnsModel();
   void addDefaultColumn();
   QHash<int, QString> getColumnTypesHash();

@@ -2,9 +2,45 @@
 #include <QStringList>
 #include "qsqlqueryhelper.h"
 #include <QDebug>
+#include <QSqlRecord>
+#include <QSqlField>
 
 QDBSqliteTableItem::QDBSqliteTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
 {
+  _columnsModel = new SqliteTableColumnsModel();
+}
+
+void QDBSqliteTableItem::reloadColumnsModel()
+{
+  _columnsModel->clear();
+  QSqlRecord sqlColumns = QSqlQueryHelper::tableRowInfo(
+              this->fieldValue("caption").toString(),
+              connectionName());
+  for (int i=0; i<sqlColumns.count(); i++) {
+      QSqlField field = sqlColumns.field(i);
+      ColumnType colType = NoType;
+      switch (field.type()) {
+      case QVariant::String:
+          colType = ColumnType::Varchar;
+          break;
+      case QVariant::Int:
+          colType = ColumnType::Integer;
+          break;
+      case QVariant::Double:
+          colType = ColumnType::Numeric;
+          break;
+      default:
+          break;
+      }
+      SqlColumn col(field.name(), colType);
+      col.setDefaultValue(field.defaultValue());
+      col.setIsPrimary(field.isAutoValue());
+      col.setLength(field.length());
+      col.setPrecision(field.precision());
+      col.setNotNull(field.requiredStatus());
+      col.setAutoIncrement(field.isAutoValue());
+      _columnsModel->addSqlColumn(col, true);
+  }
 }
 
 bool QDBSqliteTableItem::insertMe()

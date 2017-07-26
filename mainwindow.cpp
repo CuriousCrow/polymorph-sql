@@ -12,6 +12,7 @@
 #include "qdbobjectitem.h"
 #include "qfoldertreeitem.h"
 #include "qdbsqlitetableitem.h"
+#include "qdbmysqltableitem.h"
 #include "qknowledgebase.h"
 #include "core/appsettings.h"
 
@@ -249,20 +250,32 @@ void MainWindow::showCreateItemEditor()
   qDebug() << "Create window";
   QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   QFolderTreeItem* folderItem = qobject_cast<QFolderTreeItem*>(currentItem);
+  QDBDatabaseItem* databaseItem = qobject_cast<QDBDatabaseItem*>(folderItem->parent());
   if (!folderItem) {
     qWarning() << "Create item action: Not folder item";
     return;
   }
   QDBTableItem* newTableItem;
   switch (folderItem->childrenType()) {
-  case QDBObjectItem::Table:
+  case QDBObjectItem::Table: {
     //Здесь не должно быть СУБД зависимого кода (необходимо перенести фабричный метод в QDBDatabaseItem)
-     newTableItem = new QDBSqliteTableItem("NewTable");
+    qDebug() << "Folder item connection:" << databaseItem->connectionName();
+    QString driverName = QSqlQueryHelper::driverName(databaseItem->connectionName());
+    if (driverName.compare("QSQLITE") == 0) {
+      newTableItem = new QDBSqliteTableItem("QDBSqliteTableItem");
+    }
+    else if (driverName.compare("QMYSQL") == 0) {
+      newTableItem = new QDBMysqlTableItem("QDBMysqlTableItem");
+    }
+    else {
+      newTableItem = new QDBTableItem("QDBTableItem");
+    }
     _tableEditForm->setObjItem(newTableItem);
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _tableEditForm->objectToForm();
     _tableEditForm->show();
     break;
+  }
   default:
     break;
   }

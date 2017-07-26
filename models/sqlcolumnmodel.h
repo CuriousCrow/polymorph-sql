@@ -132,4 +132,14 @@ public:
   virtual QString columnTypeCaption(const ColumnType type) const;
 };
 
+class MysqlTableColumnModel : public SqlColumnModel
+{
+  Q_OBJECT
+public:
+  MysqlTableColumnModel(QObject* parent = 0);
+public:
+  virtual ColumnTypes supportedColumnTypes();
+  virtual QString columnTypeCaption(const ColumnType type) const;
+};
+
 #endif // SQLCOLUMNMODEL_H

@@ -51,7 +51,9 @@ SOURCES += main.cpp\
     qdbsqliteitem.cpp \
     qdbsqlitetableitem.cpp \
     models/sqlcolumnmodel.cpp \
-    comboboxhashdelegate.cpp
+    comboboxhashdelegate.cpp \
+    qdbmysqltableitem.cpp \
+    qdbmysqlitem.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -91,7 +93,9 @@ HEADERS  += mainwindow.h \
     qdbsqliteitem.h \
     qdbsqlitetableitem.h \
     models/sqlcolumnmodel.h \
-    comboboxhashdelegate.h
+    comboboxhashdelegate.h \
+    qdbmysqltableitem.h \
+    qdbmysqlitem.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

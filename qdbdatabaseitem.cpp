@@ -56,24 +56,25 @@ bool QDBDatabaseItem::loadChildren()
     return false;
 
   //Creating table items
-  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this);
-  QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
-  foreach (QString name, tableNames){
-    QDBTableItem* tableItem = new QDBTableItem(name, tableFolderItem);
-    tableItem->updateObjectName();
-  }
+//  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this);
+//  QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
+//  foreach (QString name, tableNames){
+//    QDBTableItem* tableItem = new QDBTableItem(name, tableFolderItem);
+//    tableItem->updateObjectName();
+//  }
+
 
   //Creating views items
   QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
   loadViewItems(viewFolderItem);
 
-  //Creating system table items
-  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
-  QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
-  foreach (QString name, sysTableNames){
-    QDBTableItem* tableItem = new QDBTableItem(name, systemFolderItem);
-    tableItem->updateObjectName();
-  }
+//  //Creating system table items
+//  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
+//  QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
+//  foreach (QString name, sysTableNames){
+//    QDBTableItem* tableItem = new QDBTableItem(name, systemFolderItem);
+//    tableItem->updateObjectName();
+//  }
 
   //Creating sequence items
   QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Sequences"), this);

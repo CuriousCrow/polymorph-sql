@@ -28,6 +28,20 @@ QSqlQuery QSqlQueryHelper::execSql(QString sql, QString connectionName)
   return sqlResult;
 }
 
+QString QSqlQueryHelper::databaseName(QString connection)
+{
+  QSqlDatabase dbCon = QSqlDatabase::database(connection, false);
+  Q_ASSERT(dbCon.isValid());
+  return dbCon.databaseName();
+}
+
+QString QSqlQueryHelper::driverName(QString connection)
+{
+  QSqlDatabase dbCon = QSqlDatabase::database(connection, false);
+  Q_ASSERT(dbCon.isValid());
+  return dbCon.driverName();
+}
+
 QSqlRecord QSqlQueryHelper::tableRowInfo(QString table, QString connectionName)
 {
   QSqlRecord rec = QSqlDatabase::database(connectionName).record(table);

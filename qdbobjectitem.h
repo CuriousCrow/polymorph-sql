@@ -68,6 +68,7 @@ protected:
   bool _editable = true;
   QList<QDBObjectField> fields;
   int fieldIndex(QString fieldName);
+  QString databaseName();
   QDBObjectField field(QString fieldName);
   QString fillSqlPattern(QString pattern);
   QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap);
