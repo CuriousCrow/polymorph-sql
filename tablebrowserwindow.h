@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QSortFilterProxyModel>
-#include "qdbtableitem.h"
+#include "dbms/qdbtableitem.h"
 
 namespace Ui {
 class TableBrowserWindow;

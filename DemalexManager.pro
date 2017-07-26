@@ -18,24 +18,24 @@ SOURCES += main.cpp\
     tablebrowserwindow.cpp \
     lsqltablemodel.cpp \
     qstructureitemmodel.cpp \
-    qdbobjectitem.cpp \
-    qdbdatabaseitem.cpp \
-    qdbtableitem.cpp \
+    dbms/qdbobjectitem.cpp \
+    dbms/qdbdatabaseitem.cpp \
+    dbms/qdbtableitem.cpp \
+    dbms/qdbsequenceitem.cpp \
+    dbms/qdbtriggeritem.cpp \
+    dbms/qdbprocedureitem.cpp \
+    dbms/qdbviewitem.cpp \
+    dbms/qfoldertreeitem.cpp \
     queryeditorwindow.cpp \
     lstandardtreemodel.cpp \
-    qfoldertreeitem.cpp \
     ldatawidgetmapper.cpp \
     qsqlqueryhelper.cpp \
     qsqlsyntaxhighlighter.cpp \
     qactiveconnectionmodel.cpp \
     ltextcompleter.cpp \
-    qdbsequenceitem.cpp \
-    qdbtriggeritem.cpp \
-    qdbprocedureitem.cpp \
-    qdbviewitem.cpp \
     vieweditdialog.cpp \
     qknowledgebase.cpp \
-    qdbfirebirditem.cpp \
+    dbms/FIREBIRD/qdbfirebirditem.cpp \
     ldbobjectmodel.cpp \
     lqueryeditor.cpp \
     core/maphelplookupprovider.cpp \
@@ -48,36 +48,36 @@ SOURCES += main.cpp\
     models/comboboxitemdelegate.cpp \
     models/lcachedtablemodel.cpp \
     core/appsettings.cpp \
-    qdbsqliteitem.cpp \
-    qdbsqlitetableitem.cpp \
+    dbms\SQLITE\qdbsqliteitem.cpp \
+    dbms\SQLITE\qdbsqlitetableitem.cpp \
     models/sqlcolumnmodel.cpp \
     comboboxhashdelegate.cpp \
-    qdbmysqltableitem.cpp \
-    qdbmysqlitem.cpp
+    dbms\MYSQL\qdbmysqltableitem.cpp \
+    dbms\MYSQL\qdbmysqlitem.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
     tablebrowserwindow.h \
     lsqltablemodel.h \
     qstructureitemmodel.h \
-    qdbobjectitem.h \
-    qdbdatabaseitem.h \
-    qdbtableitem.h \
+    dbms/qdbobjectitem.h \
+    dbms/qdbdatabaseitem.h \
+    dbms/qdbtableitem.h \
+    dbms/qdbsequenceitem.h \
+    dbms/qdbtriggeritem.h \
+    dbms/qdbprocedureitem.h \
+    dbms/qdbviewitem.h \
+    dbms/qfoldertreeitem.h \
     queryeditorwindow.h \
     lstandardtreemodel.h \
-    qfoldertreeitem.h \
     ldatawidgetmapper.h \
     qsqlqueryhelper.h \
     qsqlsyntaxhighlighter.h \
     qactiveconnectionmodel.h \
     ltextcompleter.h \
-    qdbsequenceitem.h \
-    qdbtriggeritem.h \
-    qdbprocedureitem.h \
-    qdbviewitem.h \
     vieweditdialog.h \
     qknowledgebase.h \
-    qdbfirebirditem.h \
+    dbms/FIREBIRD/qdbfirebirditem.h \
     ldbobjectmodel.h \
     lqueryeditor.h \
     core/maphelplookupprovider.h \
@@ -90,12 +90,12 @@ HEADERS  += mainwindow.h \
     models/comboboxitemdelegate.h \
     models/lcachedtablemodel.h \
     core/appsettings.h \
-    qdbsqliteitem.h \
-    qdbsqlitetableitem.h \
+    dbms\SQLITE\qdbsqliteitem.h \
+    dbms\SQLITE\qdbsqlitetableitem.h \
     models/sqlcolumnmodel.h \
     comboboxhashdelegate.h \
-    qdbmysqltableitem.h \
-    qdbmysqlitem.h
+    dbms\MYSQL\qdbmysqltableitem.h \
+    dbms\MYSQL\qdbmysqlitem.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

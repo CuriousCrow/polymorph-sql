@@ -4,7 +4,7 @@
 #include <QDialog>
 #include "abstractdatabaseitemform.h"
 #include "../tablerowmodel.h"
-#include "qdbtableitem.h"
+#include "../dbms/qdbtableitem.h"
 #include "comboboxhashdelegate.h"
 
 namespace Ui {

@@ -1,7 +1,7 @@
 #ifndef QDBMYSQLITEM_H
 #define QDBMYSQLITEM_H
 
-#include "qdbdatabaseitem.h"
+#include "../qdbdatabaseitem.h"
 
 class QDBMysqlItem : public QDBDatabaseItem
 {

@@ -7,12 +7,12 @@
 #include <QMessageBox>
 #include <QUrl>
 #include "tablebrowserwindow.h"
-#include "qdbdatabaseitem.h"
-#include "qdbtableitem.h"
-#include "qdbobjectitem.h"
-#include "qfoldertreeitem.h"
-#include "qdbsqlitetableitem.h"
-#include "qdbmysqltableitem.h"
+#include "dbms/qdbdatabaseitem.h"
+#include "dbms/qdbtableitem.h"
+#include "dbms/qdbobjectitem.h"
+#include "dbms/qfoldertreeitem.h"
+#include "dbms/SQLITE/qdbsqlitetableitem.h"
+#include "dbms/MYSQL/qdbmysqltableitem.h"
 #include "qknowledgebase.h"
 #include "core/appsettings.h"
 

@@ -2,7 +2,7 @@
 #define ABSTRACTDATABASEITEMFORM_H
 
 #include <QDialog>
-#include "qdbobjectitem.h"
+#include "dbms/qdbobjectitem.h"
 
 class AbstractDatabaseEditForm : public QDialog
 {

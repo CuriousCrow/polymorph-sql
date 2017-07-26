@@ -51,6 +51,11 @@ bool QDBMysqlTableItem::updateMe()
       QSqlQueryHelper::execSql(preparedSql, connectionName());
     }
   }
+  if (isModified() && field("caption").isModified()) {
+    QString sql = "alter table #caption.old# rename to #caption.new#";
+    QString preparedSql = fillPatternWithFields(sql);
+    QSqlQueryHelper::execSql(preparedSql, connectionName());
+  }
   submit();
 
   return true;

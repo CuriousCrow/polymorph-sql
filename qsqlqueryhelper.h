@@ -1,7 +1,6 @@
 #ifndef QSQLQUERYHELPER_H
 #define QSQLQUERYHELPER_H
 
-#include "qdbobjectitem.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
 

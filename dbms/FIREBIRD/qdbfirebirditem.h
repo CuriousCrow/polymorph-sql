@@ -2,7 +2,7 @@
 #define QDBFIREBIRDITEM_H
 
 #include <QObject>
-#include "qdbdatabaseitem.h"
+#include "../qdbdatabaseitem.h"
 
 class QDBFirebirdItem : public QDBDatabaseItem
 {

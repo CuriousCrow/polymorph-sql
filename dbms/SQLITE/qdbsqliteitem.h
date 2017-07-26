@@ -1,7 +1,7 @@
 #ifndef QDBSQLITEITEM_H
 #define QDBSQLITEITEM_H
 
-#include "qdbdatabaseitem.h"
+#include "../qdbdatabaseitem.h"
 
 class QDBSqliteItem : public QDBDatabaseItem
 {

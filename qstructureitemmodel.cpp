@@ -1,9 +1,9 @@
 #include "qstructureitemmodel.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "qdbfirebirditem.h"
-#include "qdbsqliteitem.h"
-#include "qdbmysqlitem.h"
+#include "dbms/FIREBIRD/qdbfirebirditem.h"
+#include "dbms/SQLITE/qdbsqliteitem.h"
+#include "dbms/MYSQL/qdbmysqlitem.h"
 #include <QDebug>
 #include <QUrl>
 #include "qsqlqueryhelper.h"
