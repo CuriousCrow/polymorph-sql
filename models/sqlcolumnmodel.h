@@ -2,6 +2,7 @@
 #define SQLCOLUMNMODEL_H
 
 #include <QAbstractTableModel>
+#include <QColor>
 
 #define COL_IDX_TYPE 2
 
@@ -53,6 +54,8 @@ public:
 
   bool autoIncrement() const;
   void setAutoIncrement(bool autoIncrement);
+
+  QVariant valueByIndex(int idx);
 
   bool operator ==(const SqlColumn &other);
 
@@ -120,6 +123,8 @@ private:
   QList<qlonglong> _idxList;
   QHash<qlonglong, SqlColumn> _dataHash;
   QHash<qlonglong, SqlColumn> _changes;
+  QColor _modifiedColor = Qt::green;
+  QColor _errorColor = Qt::red;
 };
 
 class SqliteTableColumnsModel : public SqlColumnModel
@@ -137,6 +142,16 @@ class MysqlTableColumnModel : public SqlColumnModel
   Q_OBJECT
 public:
   MysqlTableColumnModel(QObject* parent = 0);
+public:
+  virtual ColumnTypes supportedColumnTypes();
+  virtual QString columnTypeCaption(const ColumnType type) const;
+};
+
+class PostgresTableColumnModel : public SqlColumnModel
+{
+  Q_OBJECT
+public:
+  PostgresTableColumnModel(QObject* parent = 0);
 public:
   virtual ColumnTypes supportedColumnTypes();
   virtual QString columnTypeCaption(const ColumnType type) const;

@@ -134,32 +134,32 @@ QVariant SqlColumnModel::data(const QModelIndex &index, int role) const
 {
   if (!index.isValid())
     return QVariant();
+  bool modified = false;
   SqlColumn col;
-  if (_changes.contains(_idxList.at(index.row())))
+  if (_changes.contains(_idxList.at(index.row()))) {
     col =_changes.value(_idxList.at(index.row()));
+    SqlColumn oldCol = _dataHash.value(_idxList.at(index.row()));
+    if (oldCol.type() == ColumnType::NoType) {
+      modified = true;
+    }
+    else {
+      if (oldCol.valueByIndex(index.column()) != col.valueByIndex(index.column()))
+        modified = true;
+    }
+  }
   else
     col = _dataHash.value(_idxList.at(index.row()));
   if (role == Qt::DisplayRole || role == Qt::EditRole) {
-    switch (index.column()) {
-    case 0:
-      return col.isPrimary();
-    case 1:
-      return col.name();
-    case 2:
-      return columnTypeCaption(col.type());
-    case 3:
-      return col.length();
-    case 4:
-      return col.precision();
-    case 5:
-      return col.notNull();
-    case 6:
-      return col.defaultValue();
-    case 7:
-      return col.autoIncrement();
-    default:
-      return QVariant();
+    QVariant resVal = col.valueByIndex(index.column());
+    if (index.column() == 2)
+      resVal = columnTypeCaption((ColumnType)resVal.toInt());
+    return resVal;
+  }
+  else if (role == Qt::BackgroundColorRole) {
+    if (modified) {
+      return _modifiedColor;
     }
+    return QVariant();
   }
   return QVariant();
 }
@@ -396,6 +396,30 @@ void SqlColumn::setAutoIncrement(bool autoIncrement)
   _autoIncrement = autoIncrement;
 }
 
+QVariant SqlColumn::valueByIndex(int idx)
+{
+  switch (idx) {
+  case 0:
+    return this->isPrimary();
+  case 1:
+    return this->name();
+  case 2:
+    return this->type();
+  case 3:
+    return this->length();
+  case 4:
+    return this->precision();
+  case 5:
+    return this->notNull();
+  case 6:
+    return this->defaultValue();
+  case 7:
+    return this->autoIncrement();
+  default:
+    return QVariant();
+  }
+}
+
 bool SqlColumn::operator ==(const SqlColumn &other)
 {
     return (this->name() == other.name()) && (this->type() == other.type())
@@ -472,6 +496,47 @@ QString MysqlTableColumnModel::columnTypeCaption(const ColumnType type) const
     return "TIMESTAMP";
   case Blob:
     return "BLOB";
+  default:
+    //Другие типы не поддерживаются
+    Q_ASSERT(false);
+  }
+}
+
+PostgresTableColumnModel::PostgresTableColumnModel(QObject *parent) : SqlColumnModel(parent)
+{
+}
+
+ColumnTypes PostgresTableColumnModel::supportedColumnTypes()
+{
+  return BigInt | Integer | SmallInt | Varchar | Numeric | Char | Date |
+      Time | Timestamp | Blob | Boolean;
+}
+
+QString PostgresTableColumnModel::columnTypeCaption(const ColumnType type) const
+{
+  switch (type) {
+  case BigInt:
+    return "BIGINT";
+  case Integer:
+    return "INTEGER";
+  case SmallInt:
+    return "SMALLINT";
+  case Varchar:
+    return "VARCHAR";
+  case Numeric:
+    return "NUMERIC";
+  case Char:
+    return "CHAR";
+  case Date:
+    return "DATE";
+  case Time:
+    return "TIME";
+  case Timestamp:
+    return "TIMESTAMP";
+  case Blob:
+    return "BLOB";
+  case Boolean:
+    return "BOOLEAN";
   default:
     //Другие типы не поддерживаются
     Q_ASSERT(false);

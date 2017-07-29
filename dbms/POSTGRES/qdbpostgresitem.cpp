@@ -1,4 +1,5 @@
 #include "qdbpostgresitem.h"
+#include "qdbpostgrestableitem.h"
 
 
 QDBPostgresItem::QDBPostgresItem(QString caption, QObject *parent) : QDBDatabaseItem(caption, parent)
@@ -28,4 +29,9 @@ QString QDBPostgresItem::getTriggerListSql()
 QString QDBPostgresItem::getProcedureListSql()
 {
   return "";
+}
+
+QDBTableItem *QDBPostgresItem::createNewTableItem(QString caption, QObject *parent)
+{
+  return new QDBPostgresTableItem(caption, parent);
 }

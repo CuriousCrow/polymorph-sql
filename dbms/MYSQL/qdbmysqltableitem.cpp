@@ -118,7 +118,8 @@ ColumnType QDBMysqlTableItem::colTypeFromString(QString strType)
   else if (strType.compare("smallint", Qt::CaseInsensitive) == 0) {
     return ColumnType::SmallInt;
   }
-  else if (strType.compare("numeric", Qt::CaseInsensitive) == 0) {
+  else if (strType.compare("numeric", Qt::CaseInsensitive) == 0
+           || strType.compare("decimal", Qt::CaseInsensitive) == 0) {
     return ColumnType::Numeric;
   }
   else if (strType.compare("char", Qt::CaseInsensitive) == 0) {

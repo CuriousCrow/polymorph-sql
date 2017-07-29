@@ -4,6 +4,7 @@
 #include "dbms/FIREBIRD/qdbfirebirditem.h"
 #include "dbms/SQLITE/qdbsqliteitem.h"
 #include "dbms/MYSQL/qdbmysqlitem.h"
+#include "dbms/POSTGRES/qdbpostgresitem.h"
 #include <QDebug>
 #include <QUrl>
 #include "qsqlqueryhelper.h"
@@ -66,6 +67,9 @@ QDBDatabaseItem *QStructureItemModel::dbItemByDriver(QString driverName)
   }
   else if (driverName == DRIVER_MYSQL) {
     item = new QDBMysqlItem("");
+  }
+  else if (driverName == DRIVER_POSTGRES) {
+    item = new QDBPostgresItem("");
   }
   else {
     item = new QDBDatabaseItem("");

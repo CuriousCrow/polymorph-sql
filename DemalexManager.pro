@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     comboboxhashdelegate.cpp \
     dbms\MYSQL\qdbmysqltableitem.cpp \
     dbms\MYSQL\qdbmysqlitem.cpp \
-    dbms/POSTGRES/qdbpostgresitem.cpp
+    dbms/POSTGRES/qdbpostgresitem.cpp \
+    dbms/POSTGRES/qdbpostgrestableitem.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -97,7 +98,8 @@ HEADERS  += mainwindow.h \
     comboboxhashdelegate.h \
     dbms\MYSQL\qdbmysqltableitem.h \
     dbms\MYSQL\qdbmysqlitem.h \
-    dbms/POSTGRES/qdbpostgresitem.h
+    dbms/POSTGRES/qdbpostgresitem.h \
+    dbms/POSTGRES/qdbpostgrestableitem.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

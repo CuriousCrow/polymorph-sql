@@ -27,7 +27,7 @@ bool QDBMysqlItem::loadChildren()
   tableFolderItem->setChildrenType(Table);
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
-    QDBTableItem* tableItem = new QDBMysqlTableItem(name, tableFolderItem);
+    QDBTableItem* tableItem = createNewTableItem(name, tableFolderItem);
     tableItem->updateObjectName();
   }
 
