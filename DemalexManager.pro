@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     dbms\MYSQL\qdbmysqltableitem.cpp \
     dbms\MYSQL\qdbmysqlitem.cpp \
     dbms/POSTGRES/qdbpostgresitem.cpp \
-    dbms/POSTGRES/qdbpostgrestableitem.cpp
+    dbms/POSTGRES/qdbpostgrestableitem.cpp \
+    dbms/FIREBIRD/qdbfirebirdtableitem.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
@@ -99,7 +100,8 @@ HEADERS  += mainwindow.h \
     dbms\MYSQL\qdbmysqltableitem.h \
     dbms\MYSQL\qdbmysqlitem.h \
     dbms/POSTGRES/qdbpostgresitem.h \
-    dbms/POSTGRES/qdbpostgrestableitem.h
+    dbms/POSTGRES/qdbpostgrestableitem.h \
+    dbms/FIREBIRD/qdbfirebirdtableitem.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

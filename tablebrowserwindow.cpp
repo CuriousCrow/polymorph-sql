@@ -12,8 +12,7 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, QDBTableItem* tableItem)
   setObjectName(url.url());
   _connectionName = url.host();
   _tableName = tableItem->fieldValue("caption").toString();
-  _sourceModel = new QSqlTableModel(this, QSqlDatabase::database(_connectionName));
-  _sourceModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+  _sourceModel = new LSqlTableModel(this, QSqlDatabase::database(_connectionName));
   _sourceModel->setTable(_tableName);
   _sourceModel->select();
   _proxyModel = new QSortFilterProxyModel(this);

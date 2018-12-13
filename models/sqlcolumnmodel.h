@@ -157,4 +157,14 @@ public:
   virtual QString columnTypeCaption(const ColumnType type) const;
 };
 
+class FirebirdTableColumnModel : public SqlColumnModel
+{
+  Q_OBJECT
+public:
+  FirebirdTableColumnModel(QObject* parent = 0);
+public:
+  virtual ColumnTypes supportedColumnTypes();
+  virtual QString columnTypeCaption(const ColumnType type) const;
+};
+
 #endif // SQLCOLUMNMODEL_H

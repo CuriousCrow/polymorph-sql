@@ -27,8 +27,9 @@ LSqlTableModel::LSqlTableModel(QObject *parent, QSqlDatabase db) :
 bool LSqlTableModel::setTable(QString tableName)
 {
   _tableName = tableName;
-  _patternRec = _db.record(_tableName);
-  _primaryIndex = _db.primaryIndex(_tableName);
+  QString preparedName = _db.driver()->escapeIdentifier(_tableName, QSqlDriver::TableName);
+  _patternRec = _db.record(preparedName);
+  _primaryIndex = _db.primaryIndex(preparedName);
   return true;
 }
 
@@ -46,7 +47,7 @@ void LSqlTableModel::setSort(QString colName, Qt::SortOrder sortOrder)
 
 QString LSqlTableModel::tableName()
 {
-  return _tableName;
+  return _db.driver()->escapeIdentifier(_tableName, QSqlDriver::TableName);
 }
 
 void LSqlTableModel::setHeaders(QStringList strList)
@@ -492,9 +493,9 @@ bool LSqlTableModel::updateRowInTable(const QSqlRecord &values)
     QSqlRecord rec(values);    
     QSqlRecord whereValues = primaryValues(values);
 
-    QString stmt = _db.driver()->sqlStatement(QSqlDriver::UpdateStatement, _tableName,
+    QString stmt = _db.driver()->sqlStatement(QSqlDriver::UpdateStatement, tableName(),
                                                      rec, false);
-    QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, _tableName,
+    QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
                                                        whereValues, false);
     QString sql = Sql::concat(stmt, where);
     return execQuery(sql);
@@ -502,7 +503,7 @@ bool LSqlTableModel::updateRowInTable(const QSqlRecord &values)
 
 bool LSqlTableModel::insertRowInTable(const QSqlRecord &values)
 {
-  QString stmt = _db.driver()->sqlStatement(QSqlDriver::InsertStatement, _tableName,
+  QString stmt = _db.driver()->sqlStatement(QSqlDriver::InsertStatement, tableName(),
                                                    values, false);
   if (returningInsertMode())
     stmt.append(Sql::sp() + "RETURNING ID");
@@ -512,9 +513,9 @@ bool LSqlTableModel::insertRowInTable(const QSqlRecord &values)
 bool LSqlTableModel::deleteRowInTable(const QSqlRecord &values)
 {
   QSqlRecord rec(values);
-  QString stmt = _db.driver()->sqlStatement(QSqlDriver::DeleteStatement, _tableName,
+  QString stmt = _db.driver()->sqlStatement(QSqlDriver::DeleteStatement, tableName(),
                                             rec, false);
-  QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, _tableName,
+  QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
                                                      values, false);
   QString sql = Sql::concat(stmt, where);
   return execQuery(sql);
@@ -555,7 +556,7 @@ int LSqlTableModel::primaryKeyCount()
 
 QString LSqlTableModel::selectAllSql()
 {
-  QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, _tableName,
+  QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
                                                    _patternRec, false);
   QString where = _sqlFilter.isEmpty() ? "" : " where " + _sqlFilter;
   return Sql::concat(Sql::concat(stmt, where), _orderByClause);

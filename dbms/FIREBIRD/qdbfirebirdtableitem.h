@@ -1,14 +1,14 @@
-#ifndef QDBPOSTGRESTABLEITEM_H
-#define QDBPOSTGRESTABLEITEM_H
+#ifndef QDBFIREBIRDTABLEITEM_H
+#define QDBFIREBIRDTABLEITEM_H
 
-#include "../qdbtableitem.h"
+#include "../qdbtableitem.h"  
 
-class QDBPostgresTableItem : public QDBTableItem
+class QDBFirebirdTableItem : public QDBTableItem
 {
   Q_OBJECT
 public:
-  QDBPostgresTableItem(QString caption, QObject* parent = 0);
-  ~QDBPostgresTableItem();
+  QDBFirebirdTableItem(QString caption, QObject* parent = 0);
+  ~QDBFirebirdTableItem();
   // QDBObjectItem interface
 public:
   virtual bool insertMe();
@@ -16,12 +16,10 @@ public:
   // QDBTableItem interface
 public:
   virtual void reloadColumnsModel();
-protected:
-  QString caption();
 private:
   QString createTableQuery(QString table);
   ColumnType colTypeFromString(QString strType);
   QString columnDef(const SqlColumn &col);
 };
 
-#endif // QDBPOSTGRESTABLEITEM_H
+#endif // QDBFIREBIRDTABLEITEM_H

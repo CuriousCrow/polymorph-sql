@@ -88,8 +88,8 @@ QVariant QDBTableItem::colData(int column, int role)
 
 bool QDBTableItem::deleteMe()
 {
-  QString sql = "drop table #caption#";
-  QString preparedSql = fillSqlPattern(sql);
+  QString sql = "drop table \"%1\"";
+  QString preparedSql = sql.arg(fieldValue("caption").toString());
   return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }
 

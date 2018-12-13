@@ -15,7 +15,7 @@ QDBPostgresTableItem::~QDBPostgresTableItem()
 
 bool QDBPostgresTableItem::insertMe()
 {
-  QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName());
+  QSqlQueryHelper::execSql(createTableQuery(caption()), connectionName());
   return submit();
 }
 
@@ -45,6 +45,11 @@ void QDBPostgresTableItem::reloadColumnsModel()
     col.setNotNull(query.value("is_nullable").toString() == "YES");
     _columnsModel->addSqlColumn(col, true);
   }
+}
+
+QString QDBPostgresTableItem::caption()
+{
+  return "\"" + fieldValue("caption").toString() + "\"";
 }
 
 QString QDBPostgresTableItem::createTableQuery(QString table)

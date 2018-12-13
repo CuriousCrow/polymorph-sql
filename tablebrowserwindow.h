@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
+#include "lsqltablemodel.h"
 #include <QSortFilterProxyModel>
 #include "dbms/qdbtableitem.h"
 
@@ -34,7 +35,7 @@ private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;
   QString _connectionName;
-  QSqlTableModel* _sourceModel;
+  LSqlTableModel* _sourceModel;
   QSortFilterProxyModel* _proxyModel;
 };
 

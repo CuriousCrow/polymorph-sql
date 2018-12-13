@@ -16,6 +16,10 @@ protected:
   virtual QString getSequenceListSql();
   virtual QString getTriggerListSql();
   virtual QString getProcedureListSql();
+
+  // QDBDatabaseItem interface
+public:
+  virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent);
 };
 
 #endif // QDBFIREBIRDITEM_H

@@ -1,4 +1,5 @@
 #include "qdbfirebirditem.h"
+#include "qdbfirebirdtableitem.h"
 
 #define SQL_VIEWS "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations where rdb$relation_type=1"
 
@@ -26,4 +27,9 @@ QString QDBFirebirdItem::getTriggerListSql()
 QString QDBFirebirdItem::getProcedureListSql()
 {
   return "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
+}
+
+QDBTableItem *QDBFirebirdItem::createNewTableItem(QString caption, QObject *parent)
+{
+  return new QDBFirebirdTableItem(caption, parent);
 }
