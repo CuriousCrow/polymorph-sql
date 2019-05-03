@@ -80,7 +80,7 @@ class LSqlTableModel : public QAbstractTableModel
 {
   Q_OBJECT
 public:
-  explicit LSqlTableModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
+  explicit LSqlTableModel(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
 
   bool setTable(QString tableName);
   QString tableName();
@@ -180,7 +180,7 @@ public:
   LSqlTableModel* lookupModel;
   QString lookupField;
   QString keyField;
-  QVariant date(int key);
+  QVariant date(qlonglong key);
 };
 
 #endif // LSQLTABLEMODEL_H

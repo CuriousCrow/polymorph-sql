@@ -158,6 +158,7 @@ bool LSqlTableModel::submitAll()
 */
 int LSqlTableModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
   return _recMap.count();
 }
 
@@ -239,12 +240,7 @@ bool LSqlTableModel::setData(int row, QString columnName, QVariant value, int ro
 Qt::ItemFlags LSqlTableModel::flags(const QModelIndex &index) const
 {
   if (!index.isValid())
-    return 0;
-  //Editing primary key values is forbidden
-  if (_primaryIndex.indexOf(_patternRec.fieldName(index.column())) >= 0 ||
-      _patternRec.count() <= index.column()){
-    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-  }
+    return Qt::NoItemFlags;
   return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
@@ -358,7 +354,7 @@ int LSqlTableModel::rowByValue(QString field, QVariant value)
 
 QSqlRecord* LSqlTableModel::recordById(qlonglong id)
 {  
-  return _recMap.contains(id) ? &_recMap[id] : 0;
+  return _recMap.contains(id) ? &_recMap[id] : nullptr;
 }
 
 /*!
@@ -625,10 +621,10 @@ LSqlRecord::LSqlRecord(const QSqlRecord &rec): QSqlRecord(rec)
   _cacheAction = LSqlRecord::None;
 }
 
-QVariant LLookupField::date(int key)
+QVariant LLookupField::date(qlonglong key)
 {
   QSqlRecord* rec = lookupModel->recordById(key);
-  if (rec == 0){
+  if (rec == nullptr){
     return QVariant();
   }
   else {
