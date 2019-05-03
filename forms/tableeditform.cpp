@@ -46,14 +46,14 @@ void TableEditForm::on_pushButton_2_clicked()
 
 void TableEditForm::on_btnAdd_clicked()
 {
-  ((QDBTableItem*)_objItem)->addDefaultColumn();
+  qobject_cast<QDBTableItem*>(_objItem)->addDefaultColumn();
 }
 
 void TableEditForm::on_btnDelete_clicked()
 {
   int selectedRow = ui->tableView->currentIndex().row();
   if (selectedRow >= 0) {
-    ((QDBTableItem*)_objItem)->columnsModel()->removeRow(selectedRow);
+    qobject_cast<QDBTableItem*>(_objItem)->columnsModel()->removeRow(selectedRow);
   }
   else {
     QMessageBox::warning(this, trUtf8("Warning"), "Please, select the column you want to drop");

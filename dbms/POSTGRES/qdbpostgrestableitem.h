@@ -7,7 +7,7 @@ class QDBPostgresTableItem : public QDBTableItem
 {
   Q_OBJECT
 public:
-  QDBPostgresTableItem(QString caption, QObject* parent = 0);
+  QDBPostgresTableItem(QString caption, QObject* parent = nullptr);
   ~QDBPostgresTableItem();
   // QDBObjectItem interface
 public:

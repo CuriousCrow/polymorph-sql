@@ -9,7 +9,7 @@ class QDBTableItem : public QDBObjectItem
 {
     Q_OBJECT
 public:
-  QDBTableItem(QString caption, QObject* parent = 0);
+  QDBTableItem(QString caption, QObject* parent = nullptr);
   ~QDBTableItem();
   virtual void reloadColumnsModel();
   QAbstractTableModel* columnsModel();

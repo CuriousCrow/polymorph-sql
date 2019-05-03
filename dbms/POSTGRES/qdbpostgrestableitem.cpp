@@ -111,6 +111,7 @@ ColumnType QDBPostgresTableItem::colTypeFromString(QString strType)
   else {
     Q_ASSERT_X(false, "colTypeFromString", "Unknown data type");
   }
+  return ColumnType::NoType;
 }
 
 QString QDBPostgresTableItem::columnDef(const SqlColumn &col)

@@ -138,6 +138,7 @@ ColumnType QDBMysqlTableItem::colTypeFromString(QString strType)
     return ColumnType::Blob;
   }
   Q_ASSERT_X(false, "colTypeFromString", "Unsupported field type");
+  return ColumnType::NoType;
 }
 
 QString QDBMysqlTableItem::columnDef(const SqlColumn &col)

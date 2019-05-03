@@ -39,7 +39,7 @@ public:
     Field
   };
 
-  QDBObjectItem(QString caption, QObject* parent = 0);
+  QDBObjectItem(QString caption, QObject* parent = nullptr);
   ~QDBObjectItem();
   QString connectionName(){ return _connectionName; }
 

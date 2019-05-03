@@ -8,7 +8,7 @@ class MapHelpLookupProvider : public QObject, public HelpLookupProvider
 {
     Q_OBJECT
 public:
-    MapHelpLookupProvider(QObject* parent = 0);
+    MapHelpLookupProvider(QObject* parent = nullptr);
     virtual QString lookup(QString keyword);
     void addItem(QString keyword, QString text);
 private:

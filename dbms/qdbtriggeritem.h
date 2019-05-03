@@ -6,7 +6,7 @@
 class QDBTriggerItem : public QDBObjectItem
 {
 public:
-  QDBTriggerItem(QString caption, QObject* parent = 0);
+  QDBTriggerItem(QString caption, QObject* parent = nullptr);
   ~QDBTriggerItem();
 
   // LAbstractTreeItem interface

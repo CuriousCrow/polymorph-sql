@@ -8,7 +8,7 @@ class QDBViewItem : public QDBTableItem
   Q_OBJECT
   Q_PROPERTY(QString queryText READ queryText WRITE setQueryText)
 public:
-  QDBViewItem(QString caption, QObject* parent = 0);
+  QDBViewItem(QString caption, QObject* parent = nullptr);
   ~QDBViewItem();
 
   QString queryText() const;

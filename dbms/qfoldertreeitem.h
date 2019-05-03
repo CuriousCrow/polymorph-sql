@@ -7,7 +7,7 @@ class QFolderTreeItem : public QDBObjectItem
 {
   Q_OBJECT
 public:
-  QFolderTreeItem(QString caption, QObject* parent = 0);
+  QFolderTreeItem(QString caption, QObject* parent = nullptr);
   ~QFolderTreeItem();
 
   QDBObjectItem::ItemType childrenType() const;

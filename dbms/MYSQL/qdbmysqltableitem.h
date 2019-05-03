@@ -7,7 +7,7 @@ class QDBMysqlTableItem : public QDBTableItem
 {
   Q_OBJECT
 public:
-  QDBMysqlTableItem(QString caption, QObject* parent = 0);
+  QDBMysqlTableItem(QString caption, QObject* parent = nullptr);
   ~QDBMysqlTableItem();
 
   // QDBObjectItem interface

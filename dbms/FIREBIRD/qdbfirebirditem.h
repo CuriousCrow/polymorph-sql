@@ -8,7 +8,7 @@ class QDBFirebirdItem : public QDBDatabaseItem
 {
   Q_OBJECT
 public:
-  QDBFirebirdItem(QString caption, QObject* parent = 0);
+  QDBFirebirdItem(QString caption, QObject* parent = nullptr);
 
   // QDBDatabaseItem interface
 protected:

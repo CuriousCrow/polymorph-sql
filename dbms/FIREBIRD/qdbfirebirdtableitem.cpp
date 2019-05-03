@@ -99,4 +99,5 @@ ColumnType QDBFirebirdTableItem::colTypeFromString(QString strType)
   else {
     Q_ASSERT_X(false, "colTypeFromString", "Unknown data type");
   }
+  return ColumnType::NoType;
 }

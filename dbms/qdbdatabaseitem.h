@@ -18,15 +18,15 @@ class QDBDatabaseItem : public QDBObjectItem
 {
   Q_OBJECT
 public:
-  QDBDatabaseItem(QString caption, QObject* parent = 0);
+  QDBDatabaseItem(QString caption, QObject* parent = nullptr);
   ~QDBDatabaseItem();
 
   bool createDbConnection();
-  virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = 0);
-  virtual QDBViewItem* createNewViewItem(QString caption, QObject* parent = 0);
-  virtual QDBProcedureItem* createNewProcedureItem(QString caption, QObject* parent = 0);
-  virtual QDBSequenceItem* createNewSequenceItem(QString caption, QObject* parent = 0);
-  virtual QDBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = 0);\
+  virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
+  virtual QDBViewItem* createNewViewItem(QString caption, QObject* parent = nullptr);
+  virtual QDBProcedureItem* createNewProcedureItem(QString caption, QObject* parent = nullptr);
+  virtual QDBSequenceItem* createNewSequenceItem(QString caption, QObject* parent = nullptr);
+  virtual QDBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = nullptr);\
 protected:
   virtual void loadViewItems(QDBObjectItem* parentItem);
   virtual void loadSequenceItems(QDBObjectItem* parentItem);
