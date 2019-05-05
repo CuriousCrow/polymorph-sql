@@ -131,7 +131,7 @@ class SqliteTableColumnsModel : public SqlColumnModel
 {
   Q_OBJECT
 public:
-  SqliteTableColumnsModel(QObject* parent = 0);
+  SqliteTableColumnsModel(QObject* parent = nullptr);
 public:
   virtual ColumnTypes supportedColumnTypes();
   virtual QString columnTypeCaption(const ColumnType type) const;
@@ -141,7 +141,7 @@ class MysqlTableColumnModel : public SqlColumnModel
 {
   Q_OBJECT
 public:
-  MysqlTableColumnModel(QObject* parent = 0);
+  MysqlTableColumnModel(QObject* parent = nullptr);
 public:
   virtual ColumnTypes supportedColumnTypes();
   virtual QString columnTypeCaption(const ColumnType type) const;
@@ -151,7 +151,7 @@ class PostgresTableColumnModel : public SqlColumnModel
 {
   Q_OBJECT
 public:
-  PostgresTableColumnModel(QObject* parent = 0);
+  PostgresTableColumnModel(QObject* parent = nullptr);
 public:
   virtual ColumnTypes supportedColumnTypes();
   virtual QString columnTypeCaption(const ColumnType type) const;
@@ -161,7 +161,7 @@ class FirebirdTableColumnModel : public SqlColumnModel
 {
   Q_OBJECT
 public:
-  FirebirdTableColumnModel(QObject* parent = 0);
+  FirebirdTableColumnModel(QObject* parent = nullptr);
 public:
   virtual ColumnTypes supportedColumnTypes();
   virtual QString columnTypeCaption(const ColumnType type) const;

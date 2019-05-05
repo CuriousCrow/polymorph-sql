@@ -2,6 +2,7 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include "qsqlqueryhelper.h"
+#include "../../models/sqlcolumnmodel.h"
 
 QDBPostgresTableItem::QDBPostgresTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
 {
@@ -21,7 +22,58 @@ bool QDBPostgresTableItem::insertMe()
 
 bool QDBPostgresTableItem::updateMe()
 {
-  return false;
+  qDebug() << "QDBPostgreqlTableItem::updateMe()";
+  if (QDBTableItem::updateMe())
+    return true;
+
+  QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
+  qDebug() << "Changes size:" << changes.count();
+  foreach (SqlColumn fromCol, changes.keys()) {
+    SqlColumn toCol = changes[fromCol];
+//    qDebug() << "Changes:" << fromCol << toCol;
+    if (fromCol.type() == ColumnType::NoType) {
+      //Добавление колонки
+      qDebug() << "Add col:" << toCol;
+      QString sql = "ALTER TABLE #caption.new# ADD COLUMN %1";
+      QString colDef = columnDef(toCol);
+      QString preparedSql = fillPatternWithFields(sql).arg(colDef);
+      QSqlQueryHelper::execSql(preparedSql, connectionName());
+    }
+    else if (toCol.type() == ColumnType::NoType) {
+      //Удаление колонки
+      qDebug() << "Drop col:" << fromCol;
+      QString sql = "ALTER TABLE #caption.old# DROP COLUMN %1";
+      QString preparedSql = fillPatternWithFields(sql).arg(fromCol.name());
+      QSqlQueryHelper::execSql(preparedSql, connectionName());
+    }
+    else {
+      //Изменения колонки
+      qDebug() << "Col modify:" << fromCol << "to" << toCol;
+      QStringList difs;
+      QString pattern;
+      if (fromCol.type() != toCol.type() || fromCol.length() != toCol.length()) {
+        pattern = "ALTER COLUMN %1 TYPE %2";
+        difs.append(pattern.arg(toCol.name()).arg(typeDef(toCol)));
+      }
+      if (fromCol.defaultValue() != toCol.defaultValue()) {
+        if (toCol.defaultValue().toString().isEmpty())
+          pattern = "ALTER COLUMN %1 DROP DEFAULT %2";
+        else {
+          pattern = "ALTER COLUMN %1 SET DEFAULT %2";
+        }
+        difs.append(pattern.arg(toCol.name()).arg(toCol.defaultValue().toString()));
+      }
+      if (fromCol.notNull() != toCol.notNull()) {
+        pattern = "ALTER COLUMN %1 ";
+        pattern.append(toCol.notNull() ? "SET NOT NULL" : "DROP NOT NULL");
+        difs.append(pattern.arg(toCol.name()));
+      }
+      QString sql = "ALTER TABLE #caption.old# " + difs.join(",\n");
+      QString preparedSql = fillPatternWithFields(sql);
+      QSqlQueryHelper::execSql(preparedSql, connectionName());
+    }
+  }
+  return true;
 }
 
 void QDBPostgresTableItem::reloadColumnsModel()
@@ -114,6 +166,7 @@ ColumnType QDBPostgresTableItem::colTypeFromString(QString strType)
   return ColumnType::NoType;
 }
 
+
 QString QDBPostgresTableItem::columnDef(const SqlColumn &col)
 {
   QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
@@ -124,4 +177,47 @@ QString QDBPostgresTableItem::columnDef(const SqlColumn &col)
   if (!col.defaultValue().isNull())
     colDef = colDef.append(" DEFAULT ").append(col.defaultValue().toString());
   return colDef;
+}
+
+QString QDBPostgresTableItem::typeDef(const SqlColumn &col)
+{
+  switch (col.type()) {
+  case ColumnType::BigInt:
+    return "bigint";
+  case ColumnType::Integer:
+    return "integer";
+  case ColumnType::SmallInt:
+    return "smallint";
+  case ColumnType::Varchar:
+    return QString("varchar(%1)").arg(col.length());
+  case ColumnType::Boolean:
+    return "boolean";
+  case ColumnType::Date:
+    return "date";
+  case ColumnType::Time:
+    return "time";
+  default:
+    return "";
+  }
+}
+
+QString QDBPostgresTableItem::defaultDef(const SqlColumn &col)
+{
+  if (col.defaultValue().isNull())
+    return "";
+
+  switch (col.type()) {
+  case ColumnType::BigInt:
+  case ColumnType::Integer:
+  case ColumnType::SmallInt:
+    return col.defaultValue().toString();
+  case ColumnType::Varchar:
+    return "'" + col.defaultValue().toString() + "'";
+  case ColumnType::Date:
+    return "'" + col.defaultValue().toString() + "'";
+  case ColumnType::Time:
+    return "'" + col.defaultValue().toString() + "'";
+  default:
+    return "";
+  }
 }

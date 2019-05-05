@@ -53,7 +53,7 @@ QHash<SqlColumn, SqlColumn> SqlColumnModel::columnChanges()
           }
           //New column
           else {
-              result.insert(SqlColumn("", ColumnType::NoType), _changes.value(colId));
+              result.insert(SqlColumn("Empty_" + QString::number(colId), ColumnType::NoType), _changes.value(colId));
           }
       }
       //Removed column
@@ -122,11 +122,13 @@ void SqlColumnModel::clear()
 
 int SqlColumnModel::rowCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
   return _idxList.count();
 }
 
 int SqlColumnModel::columnCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
   return 8;
 }
 
@@ -243,6 +245,7 @@ QVariant SqlColumnModel::headerData(int section, Qt::Orientation orientation, in
 
 bool SqlColumnModel::insertRows(int row, int count, const QModelIndex &parent)
 {
+  Q_UNUSED(parent)
   if (row < 0 || row > rowCount() || count != 1)
     return false;
 
@@ -258,6 +261,7 @@ bool SqlColumnModel::insertRows(int row, int count, const QModelIndex &parent)
 
 bool SqlColumnModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+  Q_UNUSED(parent)
   if (row < 0 || row >= rowCount() || count != 1)
     return false;
 
@@ -453,6 +457,7 @@ QString SqliteTableColumnsModel::columnTypeCaption(const ColumnType type) const
     //Другие типы не поддерживаются
     Q_ASSERT(false);
   }
+  return "";
 }
 
 QDebug operator<<(QDebug dbg, const SqlColumn &column)
@@ -500,6 +505,7 @@ QString MysqlTableColumnModel::columnTypeCaption(const ColumnType type) const
     //Другие типы не поддерживаются
     Q_ASSERT(false);
   }
+  return "";
 }
 
 PostgresTableColumnModel::PostgresTableColumnModel(QObject *parent) : SqlColumnModel(parent)
@@ -541,6 +547,7 @@ QString PostgresTableColumnModel::columnTypeCaption(const ColumnType type) const
     //Другие типы не поддерживаются
     Q_ASSERT(false);
   }
+  return "";
 }
 
 FirebirdTableColumnModel::FirebirdTableColumnModel(QObject *parent) : SqlColumnModel(parent)
@@ -580,4 +587,5 @@ QString FirebirdTableColumnModel::columnTypeCaption(const ColumnType type) const
     //Другие типы не поддерживаются
     Q_ASSERT(false);
   }
+  return "";
 }

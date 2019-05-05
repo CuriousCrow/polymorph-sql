@@ -2,6 +2,7 @@
 #define QDBPOSTGRESTABLEITEM_H
 
 #include "../qdbtableitem.h"
+#include <QSqlField>
 
 class QDBPostgresTableItem : public QDBTableItem
 {
@@ -22,6 +23,8 @@ private:
   QString createTableQuery(QString table);
   ColumnType colTypeFromString(QString strType);
   QString columnDef(const SqlColumn &col);
+  QString typeDef(const SqlColumn &col);
+  QString defaultDef(const SqlColumn &col);
 };
 
 #endif // QDBPOSTGRESTABLEITEM_H

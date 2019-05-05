@@ -92,11 +92,11 @@ QModelIndex LStandardTreeModel::index(int row, int column, const QModelIndex &pa
   LAbstractTreeItem* childItem;
 
   if (!parent.isValid()){
-    childItem = (LAbstractTreeItem*)children().at(row);
+    childItem = qobject_cast<LAbstractTreeItem*>(children().at(row));
   }
   else {
     LAbstractTreeItem* parentItem = itemByIndex(parent);
-    childItem = (LAbstractTreeItem*)parentItem->children().at(row);
+    childItem = qobject_cast<LAbstractTreeItem*>(parentItem->children().at(row));
   }
   if (childItem){
     return createIndex(row, column, childItem);
@@ -110,7 +110,7 @@ QModelIndex LStandardTreeModel::parent(const QModelIndex &child) const
 {
   LAbstractTreeItem* childItem = itemByIndex(child);
   if (childItem->parent()->inherits("LAbstractTreeItem")){
-    LAbstractTreeItem* parentItem = (LAbstractTreeItem*)childItem->parent();
+    LAbstractTreeItem* parentItem = qobject_cast<LAbstractTreeItem*>(childItem->parent());
     QObject* grandParent = parentItem->parent();
     return createIndex(grandParent->children().indexOf(parentItem), 0, parentItem);
   }
@@ -133,17 +133,17 @@ int LStandardTreeModel::rowCount(const QModelIndex &parent) const
 
 int LStandardTreeModel::columnCount(const QModelIndex &parent) const
 {
-  LAbstractTreeItem* firstChildItem = 0;
+  LAbstractTreeItem* firstChildItem = nullptr;
   if (parent.isValid()){
     LAbstractTreeItem* parentItem = itemByIndex(parent);
     if (parentItem->children().isEmpty())
       return 1;
-    firstChildItem = (LAbstractTreeItem*)parentItem->children().at(0);
+    firstChildItem = qobject_cast<LAbstractTreeItem*>(parentItem->children().at(0));
   }
   else {
     if (children().isEmpty())
       return 1;
-    firstChildItem = (LAbstractTreeItem*)children().at(0);
+    firstChildItem = qobject_cast<LAbstractTreeItem*>(children().at(0));
   }
   return firstChildItem->colCount();
 }
@@ -170,19 +170,22 @@ bool LStandardTreeModel::setData(const QModelIndex &index, const QVariant &value
 
 Qt::ItemFlags LStandardTreeModel::flags(const QModelIndex &index) const
 {
+  Q_UNUSED(index)
   return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
 
 bool LStandardTreeModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+  if (row < 0 || count <= 0)
+    return false;
   //TODO: Here should be existance check of some sort
-  QObject* parentObj = parent.isValid() ? itemByIndex(parent) : (QObject*)this;
+  QObject* parentObj = parent.isValid() ? itemByIndex(parent) : qobject_cast<QObject*>(this);
 
-  beginRemoveRows(parent, row, row + count);
+  beginRemoveRows(parent, row, row + count - 1);
   for (int i=0; i<count; i++){
     QObject* childItem = parentObj->children().at(row);
-    childItem->setParent(0);
+    childItem->setParent(nullptr);
     delete childItem;
   }
   endRemoveRows();

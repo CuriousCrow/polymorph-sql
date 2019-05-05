@@ -10,10 +10,10 @@ class QStructureItemModel : public LStandardTreeModel
 {
   Q_OBJECT
 public:
-  explicit QStructureItemModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
+  explicit QStructureItemModel(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
   ~QStructureItemModel();
 
-  void appendItem(QDBObjectItem* item, QDBObjectItem* parent = 0);
+  void appendItem(QDBObjectItem* item, QDBObjectItem* parent = nullptr);
   void appendItem(QDBObjectItem* item, QModelIndex parent);
 
   bool deleteChildren(QModelIndex parent);
