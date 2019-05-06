@@ -65,10 +65,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="aExecuteQuery"/>
    <addaction name="separator"/>
    <addaction name="aCommit"/>
    <addaction name="aRollback"/>
+   <addaction name="aExecuteQuery"/>
    <addaction name="aExecScript"/>
   </widget>
   <action name="aCommit">
@@ -101,15 +101,25 @@
      <normaloff>:/icons/run.png</normaloff>:/icons/run.png</iconset>
    </property>
    <property name="text">
-    <string>Execute SQL</string>
+    <string>Execute query</string>
    </property>
    <property name="toolTip">
-    <string>Execute SQL</string>
+    <string>Execute query</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
   <action name="aExecScript">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/run_script.png</normaloff>:/icons/run_script.png</iconset>
+   </property>
    <property name="text">
-    <string>Script</string>
+    <string>Run SQL script</string>
+   </property>
+   <property name="toolTip">
+    <string>Run SQL script</string>
    </property>
   </action>
  </widget>

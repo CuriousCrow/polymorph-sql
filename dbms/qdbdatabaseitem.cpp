@@ -43,7 +43,7 @@ bool QDBDatabaseItem::createDbConnection()
 
   //Trying to connect
   if (!db.open()){
-    QMessageBox::critical(0, "Error", db.lastError().text());
+    QMessageBox::critical(nullptr, "Error", db.lastError().text());
     return false;
   }
   qDebug() << "DB" << fieldValue("caption").toString() << "connected";

@@ -96,6 +96,29 @@ QVariant QDBObjectItem::fieldValue(int colNumber)
   return fields.at(colNumber).value();
 }
 
+QVariant QDBObjectItem::fieldOldValue(QString fieldName)
+{
+  int index = fieldIndex(fieldName);
+  if (index >= 0)
+    return fields[index].oldValue();
+  return QVariant();
+}
+
+QVariant QDBObjectItem::fieldOldValue(int colIdx)
+{
+  if (colIdx >= fields.count())
+    return QVariant();
+  return fields.at(colIdx).oldValue();
+}
+
+bool QDBObjectItem::fieldModified(QString fieldName)
+{
+  int index = fieldIndex(fieldName);
+  if (index >= 0)
+    return fields[index].isModified();
+  return true;
+}
+
 void QDBObjectItem::setFieldValue(QString fieldName, QVariant value)
 {
   int index = fieldIndex(fieldName);
@@ -120,7 +143,7 @@ void QDBObjectItem::updateObjectName()
 //  qDebug() << this << "new object name:" << newObjectName;
   setObjectName(newObjectName);
   for (int i=0; i<children().count(); i++){
-    ((QDBObjectItem*)children().at(i))->updateObjectName();
+    qobject_cast<QDBObjectItem*>(children().at(i))->updateObjectName();
   }
 }
 
@@ -161,7 +184,7 @@ bool QDBObjectItem::updateMe()
 
 bool QDBObjectItem::deleteMe()
 {    
-    return true;
+  return true;
 }
 
 bool QDBObjectItem::isEditable()

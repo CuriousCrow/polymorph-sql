@@ -23,6 +23,16 @@ bool QDBPostgresTableItem::insertMe()
 bool QDBPostgresTableItem::updateMe()
 {
   qDebug() << "QDBPostgreqlTableItem::updateMe()";
+
+  //Переименование таблицы
+  //TODO: Сделать отдельный виртуальный метод renameMe для всех объектов
+  if (fieldModified("caption")) {
+    qDebug() << "Rename table";
+    QString sql = "ALTER TABLE \"#caption.old#\" RENAME TO \"#caption.new#\"";
+    QString preparedSql = fillPatternWithFields(sql);
+    QSqlQueryHelper::execSql(preparedSql, connectionName());
+  }
+
   if (QDBTableItem::updateMe())
     return true;
 
@@ -34,7 +44,7 @@ bool QDBPostgresTableItem::updateMe()
     if (fromCol.type() == ColumnType::NoType) {
       //Добавление колонки
       qDebug() << "Add col:" << toCol;
-      QString sql = "ALTER TABLE #caption.new# ADD COLUMN %1";
+      QString sql = "ALTER TABLE \"#caption.new#\" ADD COLUMN %1";
       QString colDef = columnDef(toCol);
       QString preparedSql = fillPatternWithFields(sql).arg(colDef);
       QSqlQueryHelper::execSql(preparedSql, connectionName());
@@ -42,7 +52,7 @@ bool QDBPostgresTableItem::updateMe()
     else if (toCol.type() == ColumnType::NoType) {
       //Удаление колонки
       qDebug() << "Drop col:" << fromCol;
-      QString sql = "ALTER TABLE #caption.old# DROP COLUMN %1";
+      QString sql = "ALTER TABLE \"#caption.new#\" DROP COLUMN %1";
       QString preparedSql = fillPatternWithFields(sql).arg(fromCol.name());
       QSqlQueryHelper::execSql(preparedSql, connectionName());
     }
@@ -68,12 +78,16 @@ bool QDBPostgresTableItem::updateMe()
         pattern.append(toCol.notNull() ? "SET NOT NULL" : "DROP NOT NULL");
         difs.append(pattern.arg(toCol.name()));
       }
-      QString sql = "ALTER TABLE #caption.old# " + difs.join(",\n");
+      if (fromCol.name() != toCol.name()) {
+        pattern = "RENAME COLUMN \"%1\" TO \"%2\"";
+        difs.append(pattern.arg(fromCol.name()).arg(toCol.name()));
+      }
+      QString sql = "ALTER TABLE \"#caption.new#\" " + difs.join(",\n");
       QString preparedSql = fillPatternWithFields(sql);
       QSqlQueryHelper::execSql(preparedSql, connectionName());
     }
   }
-  return true;
+  return submit();
 }
 
 void QDBPostgresTableItem::reloadColumnsModel()

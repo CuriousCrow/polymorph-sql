@@ -59,6 +59,9 @@ public:
   void registerField(QString fieldName);
   QVariant fieldValue(QString fieldName);
   QVariant fieldValue(int colNumber);
+  QVariant fieldOldValue(QString fieldName);
+  QVariant fieldOldValue(int colIdx);
+  bool fieldModified(QString fieldName);
   void setFieldValue(QString fieldName, QVariant value);
   void setFieldValue(int colNumber, QVariant value);
 

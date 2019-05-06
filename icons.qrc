@@ -17,5 +17,6 @@
         <file>icons/rollback.png</file>
         <file>icons/run.png</file>
         <file>icons/refresh.png</file>
+        <file>icons/run_script.png</file>
     </qresource>
 </RCC>
