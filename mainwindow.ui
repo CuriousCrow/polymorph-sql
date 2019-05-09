@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Demalex SQL manager</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/icons/cc_64.png</normaloff>:/icons/cc_64.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>

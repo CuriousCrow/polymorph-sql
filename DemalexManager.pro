@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = DemalexManager
 TEMPLATE = app
 
+RC_ICONS = icons/cc_16.ico
 
 SOURCES += main.cpp\
         mainwindow.cpp \
