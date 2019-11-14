@@ -11,9 +11,9 @@
 class LTextCompleter : public QCompleter
 {
 public:
-  LTextCompleter(QObject *parent = 0);
-  LTextCompleter(QAbstractItemModel *model, QObject *parent = 0);
-  LTextCompleter(const QStringList& completions, QObject *parent = 0);
+  LTextCompleter(QObject *parent = nullptr);
+  LTextCompleter(QAbstractItemModel *model, QObject *parent = nullptr);
+  LTextCompleter(const QStringList& completions, QObject *parent = nullptr);
   ~LTextCompleter();
   virtual bool eventFilter(QObject *o, QEvent *e);
 

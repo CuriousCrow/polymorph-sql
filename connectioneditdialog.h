@@ -14,7 +14,7 @@ class ConnectionEditDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit ConnectionEditDialog(QWidget *parent = 0);
+  explicit ConnectionEditDialog(QWidget *parent = nullptr);
   ~ConnectionEditDialog();
   void setModel(QStructureItemModel* model);
   LDataWidgetMapper *mapper();

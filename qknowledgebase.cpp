@@ -1,7 +1,7 @@
 #include "qknowledgebase.h"
 #include <QDebug>
 
-QKnowledgeBase* QKnowledgeBase::_kb = 0;
+QKnowledgeBase* QKnowledgeBase::_kb = nullptr;
 
 QKnowledgeBase *QKnowledgeBase::kb(QObject *parent)
 {

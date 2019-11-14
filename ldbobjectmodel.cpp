@@ -65,11 +65,15 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
 
 int LDBObjectModel::rowCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
+
   return _dataList.count();
 }
 
 int LDBObjectModel::columnCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
+
   return 2;
 }
 

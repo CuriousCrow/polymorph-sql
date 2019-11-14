@@ -78,6 +78,8 @@ bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
         }
         return true;
       }
+      //TODO: Code should be checked
+      return false;
     case Qt::Key_Space:
       if (ke->modifiers().testFlag(Qt::ControlModifier)){
         tryToComplete(getCompletionPrefix(), true);

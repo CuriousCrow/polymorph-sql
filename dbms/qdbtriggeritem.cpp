@@ -19,6 +19,8 @@ int QDBTriggerItem::colCount()
 
 QVariant QDBTriggerItem::colData(int column, int role)
 {
+  Q_UNUSED(column)
+
   switch (role) {
   case Qt::DisplayRole:
     return fieldValue("caption");

@@ -17,11 +17,13 @@ void TableRowModel::setTableItem(QDBObjectItem *item)
 
 int TableRowModel::rowCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
   return _infoRec.count();
 }
 
 int TableRowModel::columnCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
   return 5;
 }
 
@@ -51,6 +53,9 @@ QVariant TableRowModel::data(const QModelIndex &index, int role) const
 
 bool TableRowModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+  Q_UNUSED(index)
+  Q_UNUSED(value)
+  Q_UNUSED(role)
   return true;
 }
 

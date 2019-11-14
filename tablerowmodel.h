@@ -10,7 +10,7 @@ class QDBFieldItem : public QDBObjectItem
 {
   Q_OBJECT
 public:
-  QDBFieldItem(QString caption, QObject* parent = 0);
+  QDBFieldItem(QString caption, QObject* parent = nullptr);
 };
 
 class TableRowModel : public QAbstractTableModel

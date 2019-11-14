@@ -56,6 +56,8 @@ void QSimpleTooltip::paintEvent(QPaintEvent *event)
 
 bool QSimpleTooltip::eventFilter(QObject *watched, QEvent *event)
 {
+  Q_UNUSED(watched)
+  Q_UNUSED(event)
 //    qDebug() << "event" << event->type();
     return false;
 }

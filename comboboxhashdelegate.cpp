@@ -23,6 +23,8 @@ void ComboboxHashDelegate::clear()
 
 QWidget *ComboboxHashDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+  Q_UNUSED(option)
+  Q_UNUSED(index)
   qDebug() << "create delegate editor";
   QComboBox* combobox = new QComboBox(parent);
   foreach (int key, _itemsHash.keys()) {
@@ -45,5 +47,6 @@ void ComboboxHashDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
 
 void ComboboxHashDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+  Q_UNUSED(index)
   editor->setGeometry(option.rect);
 }

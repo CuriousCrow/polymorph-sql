@@ -36,8 +36,10 @@ void LKeySequenceInterceptor::applyToWidget(QWidget *widget)
 
 bool LKeySequenceInterceptor::eventFilter(QObject *watched, QEvent *event)
 {
+    Q_UNUSED(watched)
+
     if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = (QKeyEvent*)event;
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         int key = keyEvent->key();
         if (_keySequence.matches(QKeySequence(keyEvent->modifiers(), key))) {
             emit keySequencePressed(_keySequence);

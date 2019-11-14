@@ -7,7 +7,7 @@ class LDataWidgetMapper : public QDataWidgetMapper
 {
   Q_OBJECT
 public:
-  explicit LDataWidgetMapper(QObject *parent = 0);
+  explicit LDataWidgetMapper(QObject *parent = nullptr);
   ~LDataWidgetMapper();
 public slots:
   void updateReadOnlyWidgets(int row);

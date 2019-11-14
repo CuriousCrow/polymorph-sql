@@ -15,7 +15,7 @@ class ViewEditDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit ViewEditDialog(QWidget *parent = 0);
+  explicit ViewEditDialog(QWidget *parent = nullptr);
   ~ViewEditDialog();
 
   void setModel(QAbstractItemModel* model);

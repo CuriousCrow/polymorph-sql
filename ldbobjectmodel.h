@@ -16,7 +16,7 @@ class LDBObjectModel : public QAbstractTableModel
 {
   Q_OBJECT
 public:
-  LDBObjectModel(QObject* parent = 0);
+  LDBObjectModel(QObject* parent = nullptr);
   void reload(QStringList keywords, QString connName);
 private:
   QList<DbObj> _dataList;

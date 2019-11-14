@@ -109,6 +109,7 @@ void QueryEditorWindow::refreshCompleterData()
 }
 void QueryEditorWindow::on_cmbDatabase_activated(const QString &arg1)
 {
+    Q_UNUSED(arg1)
     refreshCompleterData();
 }
 

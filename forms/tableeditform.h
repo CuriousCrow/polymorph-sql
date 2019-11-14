@@ -16,7 +16,7 @@ class TableEditForm : public AbstractDatabaseEditForm
     Q_OBJECT
 
 public:
-    explicit TableEditForm(QWidget *parent = 0);
+    explicit TableEditForm(QWidget *parent = nullptr);
     ~TableEditForm();
 
 private:

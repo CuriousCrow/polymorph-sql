@@ -17,6 +17,8 @@ int QFolderTreeItem::colCount()
 
 QVariant QFolderTreeItem::colData(int column, int role)
 {
+  Q_UNUSED(column)
+
   switch (role) {
   case Qt::DisplayRole:
     return QString("%1 (%2)").arg(fieldValue("caption").toString(), QString::number(children().count()));
@@ -27,7 +29,7 @@ QVariant QFolderTreeItem::colData(int column, int role)
 
 bool QFolderTreeItem::loadChildren()
 {
-  true;
+  return true;
 }
 
 int QFolderTreeItem::type()

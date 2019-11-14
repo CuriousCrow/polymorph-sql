@@ -19,7 +19,7 @@ class QueryEditorWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  explicit QueryEditorWindow(QWidget *parent = 0);
+  explicit QueryEditorWindow(QWidget *parent = nullptr);
   ~QueryEditorWindow();
 
   void setStructureModel(QStructureItemModel* model);

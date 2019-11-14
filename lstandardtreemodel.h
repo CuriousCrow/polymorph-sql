@@ -8,7 +8,7 @@ class LAbstractTreeItem : public QObject
 {
   Q_OBJECT
 public:
-  explicit LAbstractTreeItem(QString name = "", QObject *parent = 0);
+  explicit LAbstractTreeItem(QString name = "", QObject *parent = nullptr);
   ~LAbstractTreeItem();
 
   bool hasChildren();
@@ -23,7 +23,7 @@ class LStandardTreeModel : public QAbstractItemModel
 {
   Q_OBJECT
 public:
-  explicit LStandardTreeModel(QObject *parent = 0);
+  explicit LStandardTreeModel(QObject *parent = nullptr);
   ~LStandardTreeModel();
 
   void addItem(LAbstractTreeItem* item, LAbstractTreeItem* parent = 0);

@@ -2,7 +2,7 @@
 #include <QApplication>
 #include <QDebug>
 
-QSettings* AppSettings::_settings = 0;
+QSettings* AppSettings::_settings = nullptr;
 
 QVariant AppSettings::val(QString name, QVariant defValue)
 {

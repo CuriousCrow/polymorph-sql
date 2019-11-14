@@ -22,7 +22,7 @@ private:
     QTimer* _showTimer;
     int _margin = 5;
     int _secDuration = 0;
-    HelpLookupProvider* _lookupProvider = 0;
+    HelpLookupProvider* _lookupProvider = nullptr;
     // QWidget interface
 protected:
     virtual void paintEvent(QPaintEvent *event);

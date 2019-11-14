@@ -8,16 +8,20 @@ SimpleCachedTableModel::SimpleCachedTableModel(CacheRowObject sampleRow, QObject
 
 void SimpleCachedTableModel::addRow(CacheRowObject *rowObj)
 {
-
+  Q_UNUSED(rowObj)
 }
 
 int SimpleCachedTableModel::rowCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
+
   return _rows.count();
 }
 
 int SimpleCachedTableModel::columnCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
+
   return _sampleRowObj.count();
 }
 
@@ -45,6 +49,8 @@ bool SimpleCachedTableModel::setData(const QModelIndex &index, const QVariant &v
 
 QVariant SimpleCachedTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+  Q_UNUSED(role)
+
   if (orientation == Qt::Horizontal) {
     return _sampleRowObj.field(section)->name();
   }
@@ -53,12 +59,15 @@ QVariant SimpleCachedTableModel::headerData(int section, Qt::Orientation orienta
 
 Qt::ItemFlags SimpleCachedTableModel::flags(const QModelIndex &index) const
 {
+  Q_UNUSED(index)
+
   return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
 bool SimpleCachedTableModel::submit()
 {
 //
+  return false;
 }
 
 void SimpleCachedTableModel::revert()
@@ -145,7 +154,7 @@ void CacheRowObject::registerField(CacheField *field)
 
 int CacheRowObject::fieldIdxByName(QString field)
 {
-  for(int idx; idx < _fields.count(); idx++) {
+  for(int idx = 0; idx < _fields.count(); idx++) {
     if (_fields.at(idx)->name() == field)
       return idx;
   }

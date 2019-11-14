@@ -11,10 +11,10 @@ class QKnowledgeBase : public QObject
 {
   Q_OBJECT
 public:
-  explicit QKnowledgeBase(QObject *parent = 0);
+  explicit QKnowledgeBase(QObject *parent = nullptr);
   ~QKnowledgeBase();
 
-  static QKnowledgeBase* kb(QObject* parent = 0);
+  static QKnowledgeBase* kb(QObject* parent = nullptr);
   LSqlTableModel* mKeywords;
 private:
   static QKnowledgeBase* _kb;

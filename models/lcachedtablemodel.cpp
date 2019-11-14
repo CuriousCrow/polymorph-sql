@@ -47,11 +47,13 @@ QString LCachedTableModel::fieldByIndex(int col) const
 
 int LCachedTableModel::rowCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
     return _idList.count();
 }
 
 int LCachedTableModel::columnCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
     return _fieldNames.count();
 }
 
@@ -101,6 +103,7 @@ QVariant LCachedTableModel::headerData(int section, Qt::Orientation orientation,
 
 Qt::ItemFlags LCachedTableModel::flags(const QModelIndex &index) const
 {
+  Q_UNUSED(index)
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
@@ -128,6 +131,7 @@ bool LCachedTableModel::submitAll()
         _rows.insert(id, _changes.value(id));
         _changes.remove(id);
     }
+    return true;
 }
 
 bool LCachedTableModel::insertRows(int row, int count, const QModelIndex &parent)
@@ -147,6 +151,9 @@ bool LCachedTableModel::insertRows(int row, int count, const QModelIndex &parent
 
 bool LCachedTableModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+  Q_UNUSED(count)
+  Q_UNUSED(parent)
+
     QString idxField = _fieldNames.at(_idColIdx);
     QVariant id = _idList.at(row);
     LVariantRec rec;
@@ -155,6 +162,7 @@ bool LCachedTableModel::removeRows(int row, int count, const QModelIndex &parent
     _changes.insert(id, rec);
     _idList.removeAt(row);
     endRemoveRows();
+    return true;
 }
 
 LVariantRec::LVariantRec()
