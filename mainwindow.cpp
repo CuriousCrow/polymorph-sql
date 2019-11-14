@@ -224,9 +224,11 @@ void MainWindow::dropCurrentDatabaseObject()
   case QDBObjectItem::Table:
   case QDBObjectItem::Trigger:
       removeTabsByItemUrl(itemToRemove->objectUrl().url());
-      if (itemToRemove->deleteMe())
+      if (itemToRemove->deleteMe()) {
         _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                               ui->tvDatabaseStructure->currentIndex().parent());
+        refreshQueryEditorAssistance();
+      }
       break;
   default:
       break;
