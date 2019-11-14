@@ -42,7 +42,7 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
           "WHERE ROUTINE_TYPE='PROCEDURE' ";
   }
   else if (db.driverName() == "QIBASE") {
-    sql = "select rdb$relation_name, 'table' from rdb$relations where rdb$relation_type=0 and (rdb$system_flag is null or rdb$system_flag = 0) "
+    sql = "select trim(rdb$relation_name), 'table' from rdb$relations where rdb$relation_type=0 and (rdb$system_flag is null or rdb$system_flag = 0) "
           "union all "
           "select trim(rdb$relation_name) name, 'view' from rdb$relations where rdb$relation_type=1 "
           "union all "
