@@ -167,6 +167,7 @@ int LSqlTableModel::rowCount(const QModelIndex &parent) const
 */
 int LSqlTableModel::columnCount(const QModelIndex &parent) const
 {
+  Q_UNUSED(parent)
   return _patternRec.count() + _lookupFields.count();
 }
 
@@ -186,7 +187,7 @@ QVariant LSqlTableModel::data(const QModelIndex &index, int role) const
       if (index.column() >= rec.count()){
         LLookupField lookupField = _lookupFields.at(index.column() - rec.count());
         qlonglong key = rec.value(lookupField.keyField).toLongLong();
-        return lookupField.date(key);
+        return lookupField.data(key);
       }
       else {
         return rec.value(index.column());
@@ -212,19 +213,29 @@ QVariant LSqlTableModel::data(int row, QString columnName, int role)
     unless they are already marked with cache action \c LSqlRecord::Insert.
 */
 bool LSqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{  
+{
   //TODO: isNull(index) condition should be checked
-  if (role == Qt::EditRole &&
-      ((isNull(index) && !value.isNull()) || data(index) != value)){
+  if (role == Qt::EditRole) {
     LSqlRecord &rec = _recMap[_recIndex.at(index.row())];
-    emit beforeUpdate(rec);
-    rec.setValue(index.column(), value);
-    setCacheAction(rec, LSqlRecord::Update);
-    qDebug() << "Record" << index.row() << "updated:"
-             << data(index) << "->" << value;
-    emit dataChanged(index, index);
+
+    qDebug() << "Input value:" << value;
+    QVariant oldVal = rec.value(index.column());
+    QVariant::Type fieldType = _patternRec.field(index.column()).type();
+    QVariant newVal = sqlValue(value.toString(), fieldType);
+    if (oldVal != newVal){
+      qDebug() << "Record" << index.row() << "updated:"
+               << oldVal << "->" << newVal;
+      if (newVal.isNull())
+        rec.setNull(index.column());
+      else
+        rec.setValue(index.column(), newVal);
+      setCacheAction(rec, LSqlRecord::Update);
+      emit dataChanged(index, index);
+      return true;
+
+    }
   }
-  return true;
+  return false;
 }
 
 bool LSqlTableModel::setData(int row, QString columnName, QVariant value, int role)
@@ -464,6 +475,22 @@ bool LSqlTableModel::isNull(const QModelIndex &index)
   return field.isNull();
 }
 
+QVariant LSqlTableModel::sqlValue(QString strVal, QVariant::Type type)
+{
+  QVariant varVal(type);
+
+  if (strVal.isEmpty()) {
+    if (type == QVariant::String)
+      return "";
+    else
+      return varVal;
+  }
+  else {
+    varVal.setValue(strVal);
+    return varVal;
+  }
+}
+
 bool LSqlTableModel::selectRowInTable(QSqlRecord &values)
 {
   QSqlRecord whereValues = primaryValues(values);
@@ -621,7 +648,7 @@ LSqlRecord::LSqlRecord(const QSqlRecord &rec): QSqlRecord(rec)
   _cacheAction = LSqlRecord::None;
 }
 
-QVariant LLookupField::date(qlonglong key)
+QVariant LLookupField::data(qlonglong key)
 {
   QSqlRecord* rec = lookupModel->recordById(key);
   if (rec == nullptr){
