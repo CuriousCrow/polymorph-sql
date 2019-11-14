@@ -71,9 +71,25 @@
      <x>0</x>
      <y>0</y>
      <width>608</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
+   <widget class="QMenu" name="mnuConnections">
+    <property name="title">
+     <string>Connections</string>
+    </property>
+    <addaction name="aAddDatabase"/>
+    <addaction name="aRemoveDatabase"/>
+    <addaction name="aEditDatabase"/>
+   </widget>
+   <widget class="QMenu" name="mnuQuery">
+    <property name="title">
+     <string>Query</string>
+    </property>
+    <addaction name="aOpenSqlEditor"/>
+   </widget>
+   <addaction name="mnuConnections"/>
+   <addaction name="mnuQuery"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -121,6 +137,11 @@
    </property>
    <property name="toolTip">
     <string>Edit connection preperties</string>
+   </property>
+  </action>
+  <action name="aOpenSqlEditor">
+   <property name="text">
+    <string>New query editor</string>
    </property>
   </action>
  </widget>

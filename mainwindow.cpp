@@ -72,11 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(_tableEditForm, SIGNAL(accepted()),
           this, SLOT(saveTableChanges()));
 
-  //Создаем вкладку с редактором SQL-запросов
-  _queryEditorWindow = new QueryEditorWindow(this);
-  _queryEditorWindow->setStructureModel(_structureModel);
-  ui->tabWidget->addTab(_queryEditorWindow, "Sql editor");
-
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(removeTabByIndex(int)));
@@ -109,7 +104,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
   QDBObjectItem* objectItem = itemByIndex(index);
   switch (objectItem->type()) {
   case QDBObjectItem::Database: {
-    QDBDatabaseItem* dbItem = (QDBDatabaseItem*)objectItem;
+    QDBDatabaseItem* dbItem = qobject_cast<QDBDatabaseItem*>(objectItem);
     //Database connection (loading database items)
     if (dbItem->children().isEmpty()){
       if (!dbItem->createDbConnection())
@@ -124,14 +119,14 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       removeTabsByItemUrl(dbItem->objectUrl().url());
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
-    //Update combobox model in SQL editor
-    _queryEditorWindow->refreshConnectionList();
+    refreshConnectionList();
+
     break;
   }
   case QDBObjectItem::Table:
   case QDBObjectItem::View:
     //Создаем вкладку с таблицей
-    QDBTableItem* tableItem = (QDBTableItem*)objectItem;
+    QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(objectItem);
     QString itemUrl = tableItem->objectUrl().url();
     QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
     if (!tableWidget){
@@ -276,21 +271,47 @@ void MainWindow::saveTableChanges()
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Drop) {
     editForm->objItem()->deleteMe();
-    _queryEditorWindow->refreshCompleterData();
+    refreshQueryEditorAssistance();
   }
   else if (action == AbstractDatabaseEditForm::Create) {    
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     _structureModel->appendItem(editForm->objItem(), currentItem);
     editForm->objItem()->insertMe();
-    _queryEditorWindow->refreshCompleterData();
+    refreshQueryEditorAssistance();
   }
   else {
     editForm->objItem()->updateMe();
-    _queryEditorWindow->refreshCompleterData();
+    refreshQueryEditorAssistance();
   }
 }
 
 QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)
 {
   return qobject_cast<QDBObjectItem*>(_structureModel->itemByIndex(index));
+}
+
+void MainWindow::refreshConnectionList()
+{
+  for(int idx=0; idx<ui->tabWidget->count(); idx++) {
+    QueryEditorWindow* editor = qobject_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
+    if (editor)
+      editor->refreshConnectionList();
+  }
+}
+
+void MainWindow::refreshQueryEditorAssistance()
+{
+  for(int idx=0; idx<ui->tabWidget->count(); idx++) {
+    QueryEditorWindow* editor = qobject_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
+    if (editor)
+      editor->refreshCompleterData();
+  }
+}
+
+void MainWindow::on_aOpenSqlEditor_triggered()
+{
+  //Создаем вкладку с редактором SQL-запросов
+  QueryEditorWindow* newQueryEditor = new QueryEditorWindow(this);
+  newQueryEditor->setStructureModel(_structureModel);
+  ui->tabWidget->addTab(newQueryEditor, "Query editor");
 }

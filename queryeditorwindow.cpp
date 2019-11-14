@@ -50,6 +50,7 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
 
 QueryEditorWindow::~QueryEditorWindow()
 {
+  qDebug() << "Query editor destructor";
   delete ui;
 }
 
@@ -84,7 +85,7 @@ QString QueryEditorWindow::connectionName()
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
   QDBObjectItem* databaseItem =
-      (QDBObjectItem*)_model->itemByIndex(sourceIndex);
+      qobject_cast<QDBObjectItem*>(_model->itemByIndex(sourceIndex));
   return (databaseItem) ? databaseItem->connectionName() : "";
 }
 
@@ -100,6 +101,7 @@ void QueryEditorWindow::on_aRollback_triggered()
 
 void QueryEditorWindow::refreshConnectionList()
 {
+  qDebug() << "Refilter connection list";
   _activeConnectionModel->invalidate();
 }
 
@@ -107,6 +109,7 @@ void QueryEditorWindow::refreshCompleterData()
 {
     _compModel->reload(_highlighter->keyWords(), connectionName());
 }
+
 void QueryEditorWindow::on_cmbDatabase_activated(const QString &arg1)
 {
     Q_UNUSED(arg1)

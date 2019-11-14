@@ -51,12 +51,13 @@ private slots:
   void showCreateItemEditor();
 
   void saveTableChanges();
+  void on_aOpenSqlEditor_triggered();
+
 private:
   Ui::MainWindow *ui;
   QSqlDatabase appDB;
   QStructureItemModel* _structureModel;
   ConnectionEditDialog* _connectionEditDialog;
-  QueryEditorWindow* _queryEditorWindow;
   ViewEditDialog* _viewEditorWindow;
   TableEditForm* _tableEditForm;
   QMenu* _itemContextMenu;
@@ -67,6 +68,11 @@ private:
   QDBObjectItem* itemByIndex(QModelIndex index);
 protected:
   //Dummy source change
+
+  //Update connection comboboxes
+  void refreshConnectionList();
+  //Update object list for completer
+  void refreshQueryEditorAssistance();
 };
 
 #endif // MAINWINDOW_H
