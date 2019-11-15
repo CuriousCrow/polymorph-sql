@@ -9,7 +9,8 @@
 struct DbObj {
   QString name;
   QString type;
-  DbObj(QString name, QString type);
+  DbObj(QString name = "", QString type = "");
+  bool isValid(){ return !type.isEmpty(); }
 };
 
 class LDBObjectModel : public QAbstractTableModel
@@ -18,6 +19,7 @@ class LDBObjectModel : public QAbstractTableModel
 public:
   LDBObjectModel(QObject* parent = nullptr);
   void reload(QStringList keywords, QString connName);
+  DbObj findByName(QString objName);
 private:
   QList<DbObj> _dataList;
 public:

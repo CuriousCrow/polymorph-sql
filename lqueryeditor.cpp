@@ -1,5 +1,7 @@
 #include "lqueryeditor.h"
 #include <QKeyEvent>
+#include <QMouseEvent>
+#include <QDebug>
 
 
 LQueryEditor::LQueryEditor(QWidget *parent) : QPlainTextEdit(parent)
@@ -16,7 +18,15 @@ QString LQueryEditor::currentWord()
 
 QPoint LQueryEditor::cursorGlobalPos()
 {
-    return this->mapToGlobal(this->cursorRect().bottomRight());
+  return this->mapToGlobal(this->cursorRect().bottomRight());
+}
+
+void LQueryEditor::mousePressEvent(QMouseEvent *event)
+{
+  QPlainTextEdit::mousePressEvent(event);
+
+  if (event->button() == Qt::LeftButton)
+    emit wordClicked(currentWord(), event->modifiers());
 }
 
 LKeySequenceInterceptor::LKeySequenceInterceptor(QObject *parent) : QObject(parent)
@@ -46,4 +56,18 @@ bool LKeySequenceInterceptor::eventFilter(QObject *watched, QEvent *event)
         }
     }
     return false;
+}
+
+LMousePressedInterceptor::LMousePressedInterceptor(QObject *parent) : QObject(parent)
+{
+}
+
+bool LMousePressedInterceptor::eventFilter(QObject *watched, QEvent *event)
+{
+   Q_UNUSED(watched)
+  qDebug() << "Event filter:" << event;
+  if (event->type() == QEvent::MouseButtonPress) {
+    qDebug() << "Mouse press event" << static_cast<QMouseEvent*>(event);
+  }
+  return false;
 }

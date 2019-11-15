@@ -12,12 +12,14 @@
 #include "queryeditorwindow.h"
 #include "vieweditdialog.h"
 #include "forms/tableeditform.h"
+#include "dbms/qdbtableitem.h"
+#include "core/localeventnotifier.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public NotifiableWindow
 {
   Q_OBJECT
 
@@ -66,6 +68,7 @@ private:
   QAction* _dropAction;
   void addDatabase();
   QDBObjectItem* itemByIndex(QModelIndex index);
+  QDBObjectItem* itemByName(QString name);
 protected:
   //Dummy source change
 
@@ -73,6 +76,13 @@ protected:
   void refreshConnectionList();
   //Update object list for completer
   void refreshQueryEditorAssistance();
+
+  void showItemInfoWidget(QDBObjectItem* dbItem);
+  void openTableEditor(QDBTableItem* tableItem);
+
+  // NotifiableWindow interface
+protected:
+  void localEvent(LocalEvent *event);
 };
 
 #endif // MAINWINDOW_H

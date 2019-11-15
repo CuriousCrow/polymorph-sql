@@ -63,6 +63,15 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
   emit endResetModel();
 }
 
+DbObj LDBObjectModel::findByName(QString objName)
+{
+  foreach(DbObj obj, _dataList) {
+    if (obj.name == objName)
+      return obj;
+  }
+  return DbObj();
+}
+
 int LDBObjectModel::rowCount(const QModelIndex &parent) const
 {
   Q_UNUSED(parent)

@@ -9,6 +9,7 @@
 #include "lqueryeditor.h"
 #include "core/maphelplookupprovider.h"
 #include "core/sqlhelplookupprovider.h"
+#include "core/localeventnotifier.h"
 
 QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -46,6 +47,15 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   keyInterceptor->applyToWidget(ui->teQueryEditor);
   connect(keyInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
           this, SLOT(onHelpKey()));
+
+  LKeySequenceInterceptor* keyInterceptor2 = new LKeySequenceInterceptor(this);
+  keyInterceptor2->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_T));
+  keyInterceptor2->applyToWidget(ui->teQueryEditor);
+  connect(keyInterceptor2, SIGNAL(keySequencePressed(QKeySequence)),
+          this, SLOT(onShowTableUnderCursor()));
+
+  connect(ui->teQueryEditor, SIGNAL(wordClicked(QString, Qt::KeyboardModifiers)),
+          this, SLOT(onFindObject(QString, Qt::KeyboardModifiers)));
 }
 
 QueryEditorWindow::~QueryEditorWindow()
@@ -81,12 +91,21 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
 
 QString QueryEditorWindow::connectionName()
 {
+  QDBObjectItem* databaseItem = dbObject();
+  return (databaseItem) ? databaseItem->connectionName() : "";
+}
+
+QString QueryEditorWindow::dbUrl()
+{
+  return dbObject()->objectUrl().toString();
+}
+
+QDBObjectItem *QueryEditorWindow::dbObject()
+{
   QModelIndex proxyIndex = _activeConnectionModel->index(ui->cmbDatabase->currentIndex(), 0);
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
-  QDBObjectItem* databaseItem =
-      qobject_cast<QDBObjectItem*>(_model->itemByIndex(sourceIndex));
-  return (databaseItem) ? databaseItem->connectionName() : "";
+  return qobject_cast<QDBObjectItem*>(_model->itemByIndex(sourceIndex));
 }
 
 void QueryEditorWindow::on_aCommit_triggered()
@@ -118,7 +137,6 @@ void QueryEditorWindow::on_cmbDatabase_activated(const QString &arg1)
 
 void QueryEditorWindow::onHelpKey()
 {
-    qDebug() << "Help key!";
     _helpTooltip->popup(ui->teQueryEditor->currentWord(),
                         ui->teQueryEditor->cursorGlobalPos());
 }
@@ -140,4 +158,15 @@ void QueryEditorWindow::on_aExecScript_triggered()
     }
   }
   ui->statusbar->showMessage("Succcess: " + QString::number(success) + ", Failed: " + QString::number(failed));
+}
+
+void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifiers)
+{
+  if (!modifiers.testFlag(Qt::ControlModifier))
+    return;
+  DbObj dbObj = _compModel->findByName(word);
+  //If current word is a table/view name then open table browser
+  if (dbObj.isValid() && (dbObj.type == "table" || dbObj.type == "view")) {
+    LocalEventNotifier::postLocalEvent(ShowObjectEvent, dbUrl() + "/" + dbObj.name);
+  }
 }

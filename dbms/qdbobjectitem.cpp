@@ -19,7 +19,7 @@ QDBObjectItem::~QDBObjectItem()
 QUrl QDBObjectItem::objectUrl()
 {
   if (parent() && parent()->inherits("LAbstractTreeItem"))
-    return ((QDBObjectItem*)parent())->objectUrl();
+    return (qobject_cast<QDBObjectItem*>(parent()))->objectUrl();
   else
     return QUrl();
 }

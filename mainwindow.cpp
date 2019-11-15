@@ -8,7 +8,6 @@
 #include <QUrl>
 #include "tablebrowserwindow.h"
 #include "dbms/qdbdatabaseitem.h"
-#include "dbms/qdbtableitem.h"
 #include "dbms/qdbobjectitem.h"
 #include "dbms/qfoldertreeitem.h"
 //#include "dbms/SQLITE/qdbsqlitetableitem.h"
@@ -17,7 +16,7 @@
 #include "core/appsettings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-  QMainWindow(parent),
+  NotifiableWindow(parent),
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);  
@@ -125,16 +124,9 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
   }
   case QDBObjectItem::Table:
   case QDBObjectItem::View:
-    //Создаем вкладку с таблицей
+    //Show or add table editor
     QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(objectItem);
-    QString itemUrl = tableItem->objectUrl().url();
-    QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
-    if (!tableWidget){
-      tableWidget = new TableBrowserWindow(this, tableItem);
-      ui->tabWidget->addTab(tableWidget, tableItem->fieldValue("caption").toString());
-    }
-    ui->tabWidget->setCurrentWidget(tableWidget);
-    QSqlQueryHelper::tableRowInfo(tableItem->fieldValue("caption").toString(), tableItem->connectionName());
+    openTableEditor(tableItem);
     break;
   }
 }
@@ -292,6 +284,11 @@ QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)
   return qobject_cast<QDBObjectItem*>(_structureModel->itemByIndex(index));
 }
 
+QDBObjectItem *MainWindow::itemByName(QString name)
+{
+  return qobject_cast<QDBObjectItem*>(_structureModel->itemByName(name));
+}
+
 void MainWindow::refreshConnectionList()
 {
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
@@ -307,6 +304,40 @@ void MainWindow::refreshQueryEditorAssistance()
     QueryEditorWindow* editor = qobject_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)
       editor->refreshCompleterData();
+  }
+}
+
+void MainWindow::showItemInfoWidget(QDBObjectItem *dbItem)
+{
+  switch (dbItem->type()) {
+  case QDBObjectItem::Table:
+  case QDBObjectItem::View:
+    //Show or add table editor
+    QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(dbItem);
+    openTableEditor(tableItem);
+    break;
+  }
+}
+
+void MainWindow::openTableEditor(QDBTableItem *tableItem)
+{
+  QString itemUrl = tableItem->objectUrl().url();
+  QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
+  if (!tableWidget){
+    tableWidget = new TableBrowserWindow(this, tableItem);
+    ui->tabWidget->addTab(tableWidget, tableItem->fieldValue("caption").toString());
+  }
+  ui->tabWidget->setCurrentWidget(tableWidget);
+  //  QSqlQueryHelper::tableRowInfo(tableItem->fieldValue("caption").toString(), tableItem->connectionName());
+}
+
+void MainWindow::localEvent(LocalEvent *event)
+{
+  qDebug() << "Local event received from" << event->url();
+  if (event->type() == ShowObjectEvent) {
+    QDBObjectItem* item = itemByName(event->url());
+    if (item)
+      showItemInfoWidget(item);
   }
 }
 

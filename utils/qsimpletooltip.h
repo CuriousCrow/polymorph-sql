@@ -8,6 +8,7 @@
 class HelpLookupProvider
 {
 public:
+    virtual ~HelpLookupProvider();
     virtual QString lookup(QString keyword) = 0;
 };
 

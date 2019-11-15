@@ -74,6 +74,11 @@ LAbstractTreeItem *LStandardTreeModel::itemByIndex(QModelIndex index) const
   return static_cast<LAbstractTreeItem*>(index.internalPointer());
 }
 
+LAbstractTreeItem *LStandardTreeModel::itemByName(QString name) const
+{
+  return findChild<LAbstractTreeItem*>(name);
+}
+
 QModelIndex LStandardTreeModel::indexByItem(LAbstractTreeItem *item)
 {
   if (!item || !findChild<LAbstractTreeItem*>(item->objectName()))

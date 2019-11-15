@@ -331,7 +331,7 @@ bool LSqlTableModel::removeRows(int row, int count, const QModelIndex &parent)
   //No need to delete record in DB if it isn't there yet
   if (_recMap.value(_recIndex[row]).cacheAction() != LSqlRecord::Insert){
     QSqlRecord delRec(_primaryIndex);
-    delRec.setValue("ID", (qlonglong)_recIndex.at(row));
+    delRec.setValue("ID", static_cast<qlonglong>(_recIndex.at(row)));
 
     if (!deleteRowInTable(delRec))
       return false;

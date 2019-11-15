@@ -36,7 +36,7 @@ private slots:
 
   void onHelpKey();
   void on_aExecScript_triggered();
-
+  void onFindObject(QString word, Qt::KeyboardModifiers modifiers);
 private:
   Ui::QueryEditorWindow *ui;
   QStructureItemModel* _model;
@@ -46,6 +46,8 @@ private:
   QSqlSyntaxHighlighter* _highlighter;
   QSimpleTooltip* _helpTooltip;
   QString connectionName();
+  QString dbUrl();
+  QDBObjectItem* dbObject();
 };
 
 #endif // QUERYEDITORWINDOW_H

@@ -19,6 +19,17 @@ public:
     virtual bool eventFilter(QObject *watched, QEvent *event);
 };
 
+class LMousePressedInterceptor : public QObject
+{
+  Q_OBJECT
+public:
+    LMousePressedInterceptor(QObject* parent = Q_NULLPTR);
+
+    // QObject interface
+public:
+    bool eventFilter(QObject *watched, QEvent *event);
+};
+
 class LQueryEditor : public QPlainTextEdit
 {
     Q_OBJECT
@@ -26,6 +37,11 @@ public:
     LQueryEditor(QWidget *parent = Q_NULLPTR);
     QString currentWord();
     QPoint cursorGlobalPos();
+signals:
+    void wordClicked(QString word, Qt::KeyboardModifiers modifiers);
+    // QWidget interface
+protected:
+    void mousePressEvent(QMouseEvent *event);
 };
 
 #endif // LQUERYEDITOR_H

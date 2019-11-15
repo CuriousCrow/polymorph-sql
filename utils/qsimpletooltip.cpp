@@ -72,11 +72,15 @@ bool QSimpleTooltip::event(QEvent *event)
         }
     }
     else if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = (QKeyEvent*)event;
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         if (isVisible() && keyEvent->key() == Qt::Key_Escape) {
             _showTimer->stop();
             hide();
         }
     }
     return QLabel::event(event);
+}
+
+HelpLookupProvider::~HelpLookupProvider()
+{
 }

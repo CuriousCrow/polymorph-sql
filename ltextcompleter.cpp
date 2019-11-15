@@ -61,7 +61,7 @@ bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
 {
   if ((e->type() == QEvent::KeyPress) && isMultilineEditor()){
     QKeyEvent *ke = static_cast<QKeyEvent *>(e);
-    qDebug() << "Key pressed:" << ke->text();
+//    qDebug() << "Key pressed:" << ke->text();
     switch (ke->key()) {      
     case Qt::Key_Return:
     case Qt::Key_Enter:
@@ -90,7 +90,7 @@ bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
       }
     }
     if (ke->text().isSimpleText() && !ke->text().isEmpty()) {
-      qDebug() << "Simple text:" << ke->text();
+//      qDebug() << "Simple text:" << ke->text();
       QString prefix = getCompletionPrefix().append(ke->text());
       if (popup()->isVisible() && tryToComplete(prefix))
         return true;
