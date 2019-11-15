@@ -150,7 +150,7 @@ private:
   bool submitRecord(LSqlRecord &rec);
   bool reloadRow(int row);
   bool isNull(const QModelIndex &index);
-  QVariant sqlValue(QString strVal, QVariant::Type type);
+  QVariant sqlValue(QVariant val, QVariant::Type type);
   //Get next sequence value
   qlonglong nextSequenceNumber();
   bool returningInsertMode();

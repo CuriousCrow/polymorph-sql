@@ -218,11 +218,10 @@ bool LSqlTableModel::setData(const QModelIndex &index, const QVariant &value, in
   if (role == Qt::EditRole) {
     LSqlRecord &rec = _recMap[_recIndex.at(index.row())];
 
-    qDebug() << "Input value:" << value;
     QVariant oldVal = rec.value(index.column());
     QVariant::Type fieldType = _patternRec.field(index.column()).type();
-    QVariant newVal = sqlValue(value.toString(), fieldType);
-    if (oldVal != newVal){
+    QVariant newVal = sqlValue(value, fieldType);
+    if (oldVal != newVal || oldVal.isNull() != newVal.isNull()){
       qDebug() << "Record" << index.row() << "updated:"
                << oldVal << "->" << newVal;
       if (newVal.isNull())
@@ -475,19 +474,20 @@ bool LSqlTableModel::isNull(const QModelIndex &index)
   return field.isNull();
 }
 
-QVariant LSqlTableModel::sqlValue(QString strVal, QVariant::Type type)
+QVariant LSqlTableModel::sqlValue(QVariant val, QVariant::Type type)
 {
   QVariant varVal(type);
+  if (!val.isValid())
+    return varVal;
 
-  if (strVal.isEmpty()) {
+  if (val.toString().isEmpty()) {
     if (type == QVariant::String)
       return "";
     else
       return varVal;
   }
   else {
-    varVal.setValue(strVal);
-    return varVal;
+    return val;
   }
 }
 

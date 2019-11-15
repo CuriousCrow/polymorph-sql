@@ -18,6 +18,11 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, QDBTableItem* tableItem)
   _proxyModel = new QSortFilterProxyModel(this);
   _proxyModel->setSourceModel(_sourceModel);
   ui->tableView->setModel(_proxyModel);
+
+
+  _mnuContext = new QMenu(this);
+  _mnuContext->addAction(ui->aSetNull);
+
   qDebug() << "TableBrowserWindow" << objectName() << "created";
 }
 
@@ -56,4 +61,16 @@ void TableBrowserWindow::on_aRefresh_triggered()
   _sourceModel->setTable(_sourceModel->tableName());
   //get actual table data
   _sourceModel->select();
+}
+
+void TableBrowserWindow::on_tableView_pressed(const QModelIndex &index)
+{
+    if (QApplication::mouseButtons().testFlag(Qt::RightButton)) {
+      _mnuContext->popup(QCursor::pos());
+    }
+}
+
+void TableBrowserWindow::on_aSetNull_triggered()
+{
+  _sourceModel->setData(ui->tableView->currentIndex(), QVariant());
 }

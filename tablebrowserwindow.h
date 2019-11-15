@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
+#include <QMenu>
 #include "lsqltablemodel.h"
 #include <QSortFilterProxyModel>
 #include "dbms/qdbtableitem.h"
@@ -31,12 +32,17 @@ private slots:
 
   void on_aRefresh_triggered();
 
+  void on_tableView_pressed(const QModelIndex &index);
+
+  void on_aSetNull_triggered();
+
 private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;
   QString _connectionName;
   LSqlTableModel* _sourceModel;
   QSortFilterProxyModel* _proxyModel;
+  QMenu* _mnuContext;
 };
 
 #endif // TABLEBROWSERWINDOW_H
