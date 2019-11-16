@@ -106,14 +106,14 @@ bool QDBTableItem::updateMe()
   }
   else if (editType == SqlColumnModel::CreateTable) {
     return insertMe();
-  } 
+  }
   else {
     if (editType == SqlColumnModel::NoChanges && !isModified()) {
       qDebug() << "No changes";
       return true;
     }
-//    qDebug() << "Table" << fieldValue("caption").toString() << "modified";
-//    qDebug() << _columnsModel->columnChanges();
+    //    qDebug() << "Table" << fieldValue("caption").toString() << "modified";
+    //    qDebug() << _columnsModel->columnChanges();
     return false;
   }
 }

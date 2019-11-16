@@ -9,13 +9,13 @@
     for a single database table.
 
     The main idea of LSqlTableModel is to avoid full table reselection after rows deletion
-    and creation. There isn't any caching for \c removeRow() operation though row modification and 
+    and creation. There isn't any caching for \c removeRow() operation though row modification and
     new rows creation is cached until \c submit or \c revert methods called.
     
 */
 
 LSqlTableModel::LSqlTableModel(QObject *parent, QSqlDatabase db) :
-    QAbstractTableModel(parent)
+  QAbstractTableModel(parent)
 {
   _db = db.isValid() ? db : QSqlDatabase::database();
   _query = QSqlQuery(_db);
@@ -159,7 +159,7 @@ bool LSqlTableModel::submitAll()
 */
 int LSqlTableModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
+  Q_UNUSED(parent)
   return _recMap.count();
 }
 
@@ -181,21 +181,21 @@ QVariant LSqlTableModel::data(const QModelIndex &index, int role) const
   if (!index.isValid())
     return QVariant();
   switch (role) {
-    case Qt::DisplayRole:    
-    case Qt::EditRole:
-    {      
-      LSqlRecord rec = _recMap[_recIndex.at(index.row())];
-      if (index.column() >= rec.count()){
-        LLookupField lookupField = _lookupFields.at(index.column() - rec.count());
-        qlonglong key = rec.value(lookupField.keyField).toLongLong();
-        return lookupField.data(key);
-      }
-      else {
-        return rec.value(index.column());
-      }
+  case Qt::DisplayRole:
+  case Qt::EditRole:
+  {
+    LSqlRecord rec = _recMap[_recIndex.at(index.row())];
+    if (index.column() >= rec.count()){
+      LLookupField lookupField = _lookupFields.at(index.column() - rec.count());
+      qlonglong key = rec.value(lookupField.keyField).toLongLong();
+      return lookupField.data(key);
     }
-    default:
-      return QVariant();
+    else {
+      return rec.value(index.column());
+    }
+  }
+  default:
+    return QVariant();
   }
 }
 
@@ -210,7 +210,7 @@ QVariant LSqlTableModel::data(int row, QString columnName, int role)
 
 /*!
     Overriden virtual method that used to save the data to the model.
-    Rows modified by this method would be marked with cache action \c LSqlRecord::Update 
+    Rows modified by this method would be marked with cache action \c LSqlRecord::Update
     unless they are already marked with cache action \c LSqlRecord::Insert.
 */
 bool LSqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -293,7 +293,7 @@ bool LSqlTableModel::insertRows(int row, int count, const QModelIndex &parent)
   LSqlRecord newRec(_patternRec);
   newRec.clearValues();
 
-  //Trying to get next id value    
+  //Trying to get next id value
   qlonglong newId;
   //Autoincrement ID field
   if (_autoIncrementID || returningInsertMode()) {
@@ -496,9 +496,9 @@ bool LSqlTableModel::selectRowInTable(QSqlRecord &values)
 {
   QSqlRecord whereValues = primaryValues(values);
   QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, _tableName,
-                                                   values, false);
+                                            values, false);
   QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, _tableName,
-                                                     whereValues, false);
+                                             whereValues, false);
   QString sql = Sql::concat(stmt, where);
   bool result = execQuery(sql);
   //Query was successfully executed and returns a record
@@ -514,21 +514,21 @@ bool LSqlTableModel::selectRowInTable(QSqlRecord &values)
 
 bool LSqlTableModel::updateRowInTable(const QSqlRecord &values)
 {
-    QSqlRecord rec(values);    
-    QSqlRecord whereValues = primaryValues(values);
+  QSqlRecord rec(values);
+  QSqlRecord whereValues = primaryValues(values);
 
-    QString stmt = _db.driver()->sqlStatement(QSqlDriver::UpdateStatement, tableName(),
-                                                     rec, false);
-    QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
-                                                       whereValues, false);
-    QString sql = Sql::concat(stmt, where);
-    return execQuery(sql);
+  QString stmt = _db.driver()->sqlStatement(QSqlDriver::UpdateStatement, tableName(),
+                                            rec, false);
+  QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
+                                             whereValues, false);
+  QString sql = Sql::concat(stmt, where);
+  return execQuery(sql);
 }
 
 bool LSqlTableModel::insertRowInTable(const QSqlRecord &values)
 {
   QString stmt = _db.driver()->sqlStatement(QSqlDriver::InsertStatement, tableName(),
-                                                   values, false);
+                                            values, false);
   if (returningInsertMode())
     stmt.append(Sql::sp() + "RETURNING ID");
   return execQuery(stmt);
@@ -540,7 +540,7 @@ bool LSqlTableModel::deleteRowInTable(const QSqlRecord &values)
   QString stmt = _db.driver()->sqlStatement(QSqlDriver::DeleteStatement, tableName(),
                                             rec, false);
   QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
-                                                     values, false);
+                                             values, false);
   QString sql = Sql::concat(stmt, where);
   return execQuery(sql);
 }
@@ -581,7 +581,7 @@ int LSqlTableModel::primaryKeyCount()
 QString LSqlTableModel::selectAllSql()
 {
   QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
-                                                   _patternRec, false);
+                                            _patternRec, false);
   QString where = _sqlFilter.isEmpty() ? "" : " where " + _sqlFilter;
   return Sql::concat(Sql::concat(stmt, where), _orderByClause);
 }
@@ -599,8 +599,8 @@ qlonglong LSqlTableModel::nextSequenceNumber()
 
   QString sql = "select GEN_ID(%1, 1) from rdb$database";
   if (!execQuery(sql.arg(_sequenceName))){
-      qDebug() << "Error handling sequence: " << _sequenceName;
-      return -1;
+    qDebug() << "Error handling sequence: " << _sequenceName;
+    return -1;
   }
   _query.next();
   return _query.value(0).toLongLong();

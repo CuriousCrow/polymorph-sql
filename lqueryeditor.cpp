@@ -10,10 +10,10 @@ LQueryEditor::LQueryEditor(QWidget *parent) : QPlainTextEdit(parent)
 
 QString LQueryEditor::currentWord()
 {
-    QTextCursor cursor = this->textCursor();
-    cursor.movePosition(QTextCursor::StartOfWord);
-    cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
-    return cursor.selectedText();
+  QTextCursor cursor = this->textCursor();
+  cursor.movePosition(QTextCursor::StartOfWord);
+  cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+  return cursor.selectedText();
 }
 
 QPoint LQueryEditor::cursorGlobalPos()
@@ -36,26 +36,26 @@ LKeySequenceInterceptor::LKeySequenceInterceptor(QObject *parent) : QObject(pare
 
 void LKeySequenceInterceptor::setKeySequence(QKeySequence keySequence)
 {
-    _keySequence = keySequence;
+  _keySequence = keySequence;
 }
 
 void LKeySequenceInterceptor::applyToWidget(QWidget *widget)
 {
-    widget->installEventFilter(this);
+  widget->installEventFilter(this);
 }
 
 bool LKeySequenceInterceptor::eventFilter(QObject *watched, QEvent *event)
 {
-    Q_UNUSED(watched)
+  Q_UNUSED(watched)
 
-    if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        int key = keyEvent->key();
-        if (_keySequence.matches(QKeySequence(keyEvent->modifiers(), key))) {
-            emit keySequencePressed(_keySequence);
-        }
+  if (event->type() == QEvent::KeyPress) {
+    QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+    int key = keyEvent->key();
+    if (_keySequence.matches(QKeySequence(keyEvent->modifiers(), key))) {
+      emit keySequencePressed(_keySequence);
     }
-    return false;
+  }
+  return false;
 }
 
 LMousePressedInterceptor::LMousePressedInterceptor(QObject *parent) : QObject(parent)
@@ -64,7 +64,7 @@ LMousePressedInterceptor::LMousePressedInterceptor(QObject *parent) : QObject(pa
 
 bool LMousePressedInterceptor::eventFilter(QObject *watched, QEvent *event)
 {
-   Q_UNUSED(watched)
+  Q_UNUSED(watched)
   qDebug() << "Event filter:" << event;
   if (event->type() == QEvent::MouseButtonPress) {
     qDebug() << "Mouse press event" << static_cast<QMouseEvent*>(event);

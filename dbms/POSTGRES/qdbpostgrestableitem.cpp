@@ -40,7 +40,7 @@ bool QDBPostgresTableItem::updateMe()
   qDebug() << "Changes size:" << changes.count();
   foreach (SqlColumn fromCol, changes.keys()) {
     SqlColumn toCol = changes[fromCol];
-//    qDebug() << "Changes:" << fromCol << toCol;
+    //    qDebug() << "Changes:" << fromCol << toCol;
     if (fromCol.type() == ColumnType::NoType) {
       //Добавление колонки
       qDebug() << "Add col:" << toCol;
@@ -97,9 +97,9 @@ void QDBPostgresTableItem::reloadColumnsModel()
     return;
   _columnsModel->clear();
   QString sql = "select t.column_name, t.data_type, t.is_nullable, t.column_default, t.character_maximum_length, t.numeric_precision, t.numeric_scale, c.constraint_type from INFORMATION_SCHEMA.columns t "
-      "LEFT JOIN information_schema.key_column_usage u ON t.table_name = u.table_name AND t.column_name = u.column_name AND t.table_catalog = u.table_catalog "
-      "LEFT JOIN INFORMATION_SCHEMA.table_constraints c ON c.constraint_name = u.constraint_name AND u.table_catalog = c.table_catalog "
-      "WHERE t.table_catalog='#databaseName#' AND t.table_name='#caption#'";
+                "LEFT JOIN information_schema.key_column_usage u ON t.table_name = u.table_name AND t.column_name = u.column_name AND t.table_catalog = u.table_catalog "
+                "LEFT JOIN INFORMATION_SCHEMA.table_constraints c ON c.constraint_name = u.constraint_name AND u.table_catalog = c.table_catalog "
+                "WHERE t.table_catalog='#databaseName#' AND t.table_name='#caption#'";
   QString preparedSql = fillPatternWithFields(sql);
   QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {

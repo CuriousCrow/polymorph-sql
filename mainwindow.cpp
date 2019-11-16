@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
   NotifiableWindow(parent),
   ui(new Ui::MainWindow)
 {
-  ui->setupUi(this);  
+  ui->setupUi(this);
 
   qDebug() << QSqlDatabase::drivers();
   //Connection to properies DB
@@ -218,23 +218,23 @@ void MainWindow::dropCurrentDatabaseObject()
   case QDBObjectItem::View:
   case QDBObjectItem::Table:
   case QDBObjectItem::Trigger:
-      removeTabsByItemUrl(itemToRemove->objectUrl().url());
-      if (itemToRemove->deleteMe()) {
-        _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
-                              ui->tvDatabaseStructure->currentIndex().parent());
-        refreshQueryEditorAssistance();
-      }
-      break;
+    removeTabsByItemUrl(itemToRemove->objectUrl().url());
+    if (itemToRemove->deleteMe()) {
+      _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
+                                 ui->tvDatabaseStructure->currentIndex().parent());
+      refreshQueryEditorAssistance();
+    }
+    break;
   default:
-      break;
+    break;
   }
   //TODO: Implementation for other DB objects
 }
 
 void MainWindow::updateStructureContextMenu()
 {
-    QDBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    _editAction->setText(item->isEditable() ? tr("Edit object") : tr("View object"));
+  QDBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  _editAction->setText(item->isEditable() ? tr("Edit object") : tr("View object"));
 }
 
 void MainWindow::showCreateItemEditor()
@@ -278,7 +278,7 @@ void MainWindow::saveTableChanges()
     editForm->objItem()->deleteMe();
     refreshQueryEditorAssistance();
   }
-  else if (action == AbstractDatabaseEditForm::Create) {    
+  else if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     _structureModel->appendItem(editForm->objItem(), currentItem);
     editForm->objItem()->insertMe();
@@ -296,9 +296,9 @@ void MainWindow::saveViewChanges()
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-      _structureModel->appendItem(editForm->objItem(), currentItem);
-      editForm->objItem()->insertMe();
-      refreshQueryEditorAssistance();
+    _structureModel->appendItem(editForm->objItem(), currentItem);
+    editForm->objItem()->insertMe();
+    refreshQueryEditorAssistance();
   }
 }
 

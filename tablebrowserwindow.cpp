@@ -67,9 +67,9 @@ void TableBrowserWindow::on_aRefresh_triggered()
 void TableBrowserWindow::on_tableView_pressed(const QModelIndex &index)
 {
   Q_UNUSED(index)
-    if (QApplication::mouseButtons().testFlag(Qt::RightButton)) {
-      _mnuContext->popup(QCursor::pos());
-    }
+  if (QApplication::mouseButtons().testFlag(Qt::RightButton)) {
+    _mnuContext->popup(QCursor::pos());
+  }
 }
 
 void TableBrowserWindow::on_aSetNull_triggered()

@@ -71,13 +71,13 @@ private:
 };
 
 inline uint qHash(const SqlColumn &key) {
-    return qHash(key.name());
+  return qHash(key.name());
 }
 
 inline bool operator ==(const SqlColumn &col1, const SqlColumn &col2) {
-    return (col1.name() == col2.name()) && (col1.type() == col2.type())
-            && (col1.length() == col2.length()) && (col1.isPrimary() == col2.isPrimary())
-            && (col1.notNull() == col2.notNull()) && (col1.defaultValue() == col2.defaultValue());
+  return (col1.name() == col2.name()) && (col1.type() == col2.type())
+      && (col1.length() == col2.length()) && (col1.isPrimary() == col2.isPrimary())
+      && (col1.notNull() == col2.notNull()) && (col1.defaultValue() == col2.defaultValue());
 }
 
 QDebug operator<<(QDebug dbg, const SqlColumn &column);
@@ -87,10 +87,10 @@ class SqlColumnModel : public QAbstractTableModel
   Q_OBJECT
 public:
   enum EditType {
-      NoChanges = 0,
-      ModifyTable = 1,
-      CreateTable = 2,
-      DropTable = 3
+    NoChanges = 0,
+    ModifyTable = 1,
+    CreateTable = 2,
+    DropTable = 3
   };
   SqlColumnModel(QObject *parent = Q_NULLPTR);
   virtual ColumnTypes supportedColumnTypes() = 0;
@@ -115,7 +115,7 @@ public:
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
 public slots:
-//  virtual bool submit();
+  //  virtual bool submit();
 protected:
   qlonglong getNextId();
 private:

@@ -5,12 +5,12 @@
 LAbstractTreeItem::LAbstractTreeItem(QString name, QObject *parent) : QObject(parent)
 {
   setObjectName(name);
-//  qDebug() << "item" << this << "created";
+  //  qDebug() << "item" << this << "created";
 }
 
 LAbstractTreeItem::~LAbstractTreeItem()
 {
-//  qDebug() << "item" << this << "destroyed";
+  //  qDebug() << "item" << this << "destroyed";
 }
 
 bool LAbstractTreeItem::hasChildren()

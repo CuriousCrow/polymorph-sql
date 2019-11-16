@@ -6,33 +6,33 @@ QSettings* AppSettings::_settings = nullptr;
 
 QVariant AppSettings::val(QString name, QVariant defValue)
 {
-    if (!_settings) {
-        QString settingsPath = QApplication::applicationDirPath() + "/demalexmanager.ini";
-        qDebug() << "Loading settings: " + settingsPath;
-        _settings = new QSettings(settingsPath, QSettings::IniFormat);
-    }
-    return _settings->value(name, defValue);
+  if (!_settings) {
+    QString settingsPath = QApplication::applicationDirPath() + "/demalexmanager.ini";
+    qDebug() << "Loading settings: " + settingsPath;
+    _settings = new QSettings(settingsPath, QSettings::IniFormat);
+  }
+  return _settings->value(name, defValue);
 }
 
 QString AppSettings::strVal(QString name, QVariant defValue)
 {
-    return val(name, defValue).toString();
+  return val(name, defValue).toString();
 }
 
 int AppSettings::intVal(QString name, QVariant defValue)
 {
-    return val(name, defValue).toInt();
+  return val(name, defValue).toInt();
 }
 
 bool AppSettings::boolVal(QString name, QVariant defValue)
 {
-    return val(name, defValue).toBool();
+  return val(name, defValue).toBool();
 }
 
 void AppSettings::sync()
 {
-    val("");
-    _settings->sync();
+  val("");
+  _settings->sync();
 }
 
 AppSettings::AppSettings(){}

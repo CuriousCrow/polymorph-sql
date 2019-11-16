@@ -2,18 +2,18 @@
 
 
 AbstractDatabaseEditForm::AbstractDatabaseEditForm(QWidget *parent, Qt::WindowFlags f)
-    : QDialog(parent, f)
+  : QDialog(parent, f)
 {
 }
 
 QDBObjectItem *AbstractDatabaseEditForm::objItem() const
 {
-    return _objItem;
+  return _objItem;
 }
 
 void AbstractDatabaseEditForm::setObjItem(QDBObjectItem *objItem)
 {
-    _objItem = objItem;
+  _objItem = objItem;
 }
 
 AbstractDatabaseEditForm::UserAction AbstractDatabaseEditForm::userAction() const

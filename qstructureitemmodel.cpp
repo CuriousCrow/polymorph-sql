@@ -44,7 +44,7 @@ bool QStructureItemModel::loadRegisteredDatabases()
 {
   QString sql = "select id id, name caption, driver driverName, local_path databaseName, "
                 "host_address hostName, username userName, password password from t_database";
-  QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);  
+  QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);
   while (sqlResult.next()) {
     QSqlRecord rec = sqlResult.record();
     QString driverName = rec.value(F_DRIVER_NAME).toString();

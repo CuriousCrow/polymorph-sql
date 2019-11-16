@@ -140,8 +140,8 @@ void QDBObjectItem::updateObjectName()
   QUrl objUrl = objectUrl();
   QString newObjectName = objUrl.url();
   _connectionName = objUrl.host();
-//  qDebug() << this << "connection name:" << objUrl.host();
-//  qDebug() << this << "new object name:" << newObjectName;
+  //  qDebug() << this << "connection name:" << objUrl.host();
+  //  qDebug() << this << "new object name:" << newObjectName;
   setObjectName(newObjectName);
   for (int i=0; i<children().count(); i++){
     qobject_cast<QDBObjectItem*>(children().at(i))->updateObjectName();
@@ -222,7 +222,7 @@ void QDBObjectItem::registerField(QString fieldName)
 
 QVariant QDBObjectField::value() const
 {
-    return _value;
+  return _value;
 }
 
 void QDBObjectField::setValue(const QVariant &value)

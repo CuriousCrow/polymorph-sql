@@ -7,7 +7,7 @@
 
 class QDBTableItem : public QDBObjectItem
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
   QDBTableItem(QString caption, QObject* parent = nullptr);
   virtual ~QDBTableItem() override;

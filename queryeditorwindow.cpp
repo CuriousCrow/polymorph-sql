@@ -35,9 +35,9 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   completer->setCaseSensitivity(Qt::CaseInsensitive);
   completer->setWidget(ui->teQueryEditor);
 
-//  MapHelpLookupProvider* helpProvider = new MapHelpLookupProvider(this);
-//  helpProvider->addItem("SELECT", "<b>SELECT</b> is the most common keyword");
-//  helpProvider->addItem("FROM", "FROM - is keyword used with SELECT clause");
+  //  MapHelpLookupProvider* helpProvider = new MapHelpLookupProvider(this);
+  //  helpProvider->addItem("SELECT", "<b>SELECT</b> is the most common keyword");
+  //  helpProvider->addItem("FROM", "FROM - is keyword used with SELECT clause");
 
   _helpTooltip = new QSimpleTooltip(this);
   _helpTooltip->setWidget(ui->teQueryEditor);
@@ -74,7 +74,7 @@ void QueryEditorWindow::setStructureModel(QStructureItemModel *model)
 void QueryEditorWindow::on_aExecuteQuery_triggered()
 {
   QSqlQuery query =
-    QSqlDatabase::database(connectionName()).exec(ui->teQueryEditor->toPlainText());
+      QSqlDatabase::database(connectionName()).exec(ui->teQueryEditor->toPlainText());
   if (!query.lastError().isValid()){
     _resultModel->setQuery(query);
     ui->tabWidget->setCurrentWidget(ui->tabResult);
@@ -127,19 +127,19 @@ void QueryEditorWindow::refreshConnectionList()
 
 void QueryEditorWindow::refreshCompleterData()
 {
-    _compModel->reload(_highlighter->keyWords(), connectionName());
+  _compModel->reload(_highlighter->keyWords(), connectionName());
 }
 
 void QueryEditorWindow::on_cmbDatabase_activated(const QString &arg1)
 {
-    Q_UNUSED(arg1)
-    refreshCompleterData();
+  Q_UNUSED(arg1)
+  refreshCompleterData();
 }
 
 void QueryEditorWindow::onHelpKey()
 {
-    _helpTooltip->popup(ui->teQueryEditor->currentWord(),
-                        ui->teQueryEditor->cursorGlobalPos());
+  _helpTooltip->popup(ui->teQueryEditor->currentWord(),
+                      ui->teQueryEditor->cursorGlobalPos());
 }
 
 void QueryEditorWindow::on_aExecScript_triggered()

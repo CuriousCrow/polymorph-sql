@@ -34,10 +34,10 @@ bool LTextCompleter::tryToComplete(QString prefix, bool replaceIfOneOption)
     setCompletionPrefix(prefix);
     //Если есть только один вариант, то сразу его подставляем
     if (replaceIfOneOption && completionCount() == 1) {
-        cursor.removeSelectedText();
-        QAbstractItemModel* popupModel = popup()->model();
-        cursor.insertText(popupModel->data(popupModel->index(0, completionColumn())).toString());
-        return true;
+      cursor.removeSelectedText();
+      QAbstractItemModel* popupModel = popup()->model();
+      cursor.insertText(popupModel->data(popupModel->index(0, completionColumn())).toString());
+      return true;
     }
     QRect rect = QRect(cursorRect().bottomLeft(), QSize(_popupWidth, 5));
     complete(rect);
@@ -61,8 +61,8 @@ bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
 {
   if ((e->type() == QEvent::KeyPress) && isMultilineEditor()){
     QKeyEvent *ke = static_cast<QKeyEvent *>(e);
-//    qDebug() << "Key pressed:" << ke->text();
-    switch (ke->key()) {      
+    //    qDebug() << "Key pressed:" << ke->text();
+    switch (ke->key()) {
     case Qt::Key_Return:
     case Qt::Key_Enter:
     case Qt::Key_Tab:
@@ -90,12 +90,12 @@ bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
       }
     }
     if (ke->text().isSimpleText() && !ke->text().isEmpty()) {
-//      qDebug() << "Simple text:" << ke->text();
+      //      qDebug() << "Simple text:" << ke->text();
       QString prefix = getCompletionPrefix().append(ke->text());
       if (popup()->isVisible() && tryToComplete(prefix))
         return true;
     }
-  }  
+  }
   return QCompleter::eventFilter(o, e);
 }
 int LTextCompleter::minCompletionPrefixLength() const

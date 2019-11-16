@@ -22,16 +22,16 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
   QString sql;
   if (db.driverName() == DRIVER_PSQL) {
     sql = "select table_name, 'table' FROM information_schema.tables "
-      "WHERE table_schema = 'public' AND table_type = 'BASE TABLE' "
-      "UNION ALL "
-      "SELECT table_name, 'view' FROM information_schema.views "
-      "WHERE table_schema = 'public' "
-      "UNION ALL "
-      "SELECT sequence_name, 'sequence' FROM information_schema.sequences "
-      "UNION ALL "
-      "SELECT routine_name, 'procedure' FROM information_schema.routines "
-      "WHERE specific_schema NOT IN ('pg_catalog', 'information_schema') "
-      "AND type_udt_name != 'trigger'";
+          "WHERE table_schema = 'public' AND table_type = 'BASE TABLE' "
+          "UNION ALL "
+          "SELECT table_name, 'view' FROM information_schema.views "
+          "WHERE table_schema = 'public' "
+          "UNION ALL "
+          "SELECT sequence_name, 'sequence' FROM information_schema.sequences "
+          "UNION ALL "
+          "SELECT routine_name, 'procedure' FROM information_schema.routines "
+          "WHERE specific_schema NOT IN ('pg_catalog', 'information_schema') "
+          "AND type_udt_name != 'trigger'";
   }
   else if (db.driverName() == DRIVER_MYSQL) {
     sql = "SELECT table_name, 'table' FROM information_schema.tables "
@@ -55,11 +55,11 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
     sql = "SELECT name, type FROM sqlite_master";
   }
   if (!sql.isEmpty()) {
-      QSqlQuery query(db);
-      query.exec(sql);
-      while (query.next()) {
-          _dataList.append(DbObj(query.value(0).toString(), query.value(1).toString()));
-      }
+    QSqlQuery query(db);
+    query.exec(sql);
+    while (query.next()) {
+      _dataList.append(DbObj(query.value(0).toString(), query.value(1).toString()));
+    }
   }
   emit endResetModel();
 }

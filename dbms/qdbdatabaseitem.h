@@ -43,7 +43,7 @@ protected:
   // QDBObjectItem interface
 public:
   virtual bool loadChildren();
-  virtual QUrl objectUrl();  
+  virtual QUrl objectUrl();
   virtual bool insertMe();
   virtual bool updateMe();
   virtual bool deleteMe();

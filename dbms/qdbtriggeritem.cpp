@@ -37,22 +37,22 @@ bool QDBTriggerItem::loadChildren()
 
 int QDBTriggerItem::type()
 {
-    return Trigger;
+  return Trigger;
 }
 
 bool QDBTriggerItem::insertMe()
 {
-    return true;
+  return true;
 }
 
 bool QDBTriggerItem::updateMe()
 {
-    return true;
+  return true;
 }
 
 bool QDBTriggerItem::deleteMe()
 {
-    QString sql = "drop trigger #caption#";
-    QString preparedSql = fillSqlPattern(sql);
-    return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  QString sql = "drop trigger #caption#";
+  QString preparedSql = fillSqlPattern(sql);
+  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }

@@ -27,7 +27,7 @@ QStringList QSqlSyntaxHighlighter::keyWords()
 void QSqlSyntaxHighlighter::highlightBlock(const QString &text)
 {
   QTextCharFormat format;
-  format.setFontWeight(QFont::Bold);   
+  format.setFontWeight(QFont::Bold);
 
   QRegExp rx;
   rx.setCaseSensitivity(Qt::CaseInsensitive);
@@ -36,9 +36,9 @@ void QSqlSyntaxHighlighter::highlightBlock(const QString &text)
     rx.setPattern("(?:^|\\s)(" + keyword + ")(?:$|\\s)");
 
     int index = rx.indexIn(text, 0);
-    while (index >= 0){      
+    while (index >= 0){
       int capNum = (rx.captureCount() == 0) ? 0 : 1;
-        //применение формата на найденную подстроку
+      //применение формата на найденную подстроку
       setFormat(rx.pos(capNum), rx.cap(capNum).length(), format);
       index = rx.indexIn(text, rx.pos(capNum) + rx.cap(capNum).length());
     }

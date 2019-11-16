@@ -61,7 +61,7 @@ bool QDBDatabaseItem::loadChildren()
   tableFolderItem->setChildrenType(Table);
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
-    QDBTableItem* tableItem = createNewTableItem(name, tableFolderItem);    
+    QDBTableItem* tableItem = createNewTableItem(name, tableFolderItem);
     tableItem->updateObjectName();
   }
 
@@ -69,7 +69,7 @@ bool QDBDatabaseItem::loadChildren()
   QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
   loadViewItems(viewFolderItem);
 
-//  //Creating system table items
+  //  //Creating system table items
   QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
   systemFolderItem->setChildrenType(Table);
   QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
@@ -107,7 +107,7 @@ bool QDBDatabaseItem::insertMe()
   QString sql = "insert into t_database (NAME, DRIVER, LOCAL_PATH, HOST_ADDRESS, USERNAME, PASSWORD) "
                 "values ('#caption#','#driverName#', '#databaseName#', '#hostName#', '#userName#', '#password#')";
   QSqlQuery sqlResult = QSqlQueryHelper::execSql(fillSqlPattern(sql));
-  if (sqlResult.lastError().isValid()){    
+  if (sqlResult.lastError().isValid()){
     return false;
   }
   else {
@@ -119,8 +119,8 @@ bool QDBDatabaseItem::insertMe()
 bool QDBDatabaseItem::updateMe()
 {
   QString sql = "update t_database set NAME='#caption#', DRIVER='#driverName#',"
-    "LOCAL_PATH='#databaseName#',HOST_ADDRESS='#hostName#',"
-    "USERNAME='#userName#',PASSWORD='#password#' where id=#id#";
+                "LOCAL_PATH='#databaseName#',HOST_ADDRESS='#hostName#',"
+                "USERNAME='#userName#',PASSWORD='#password#' where id=#id#";
 
   return !QSqlQueryHelper::execSql(fillSqlPattern(sql)).lastError().isValid();
 }
@@ -136,7 +136,7 @@ QVariant QDBDatabaseItem::colData(int column, int role)
   switch (role) {
   case Qt::DecorationRole:
     if (column == 0)
-      return QIcon(":/icons/database.png");  
+      return QIcon(":/icons/database.png");
   }
   return QDBObjectItem::colData(column, role);
 }
@@ -186,7 +186,7 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
       QDBSequenceItem* sequenceItem
-        = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+          = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->updateObjectName();
     }
   }
@@ -222,10 +222,10 @@ void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
 
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
   while (resultSet.next()){
-      QDBProcedureItem* sequenceItem
-          = new QDBProcedureItem(resultSet.value(F_NAME).toString(), parentItem);
-      sequenceItem->updateObjectName();
-    }
+    QDBProcedureItem* sequenceItem
+        = new QDBProcedureItem(resultSet.value(F_NAME).toString(), parentItem);
+    sequenceItem->updateObjectName();
+  }
 
 }
 

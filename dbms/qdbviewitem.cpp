@@ -7,8 +7,8 @@
 QDBViewItem::QDBViewItem(QString caption, QObject *parent):
   QDBTableItem(caption, parent)
 {
-    _editable = false;
-    registerField(F_QUERY_TEXT);
+  _editable = false;
+  registerField(F_QUERY_TEXT);
 }
 
 QDBViewItem::~QDBViewItem()

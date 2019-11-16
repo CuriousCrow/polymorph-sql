@@ -12,7 +12,7 @@ void TableRowModel::setTableItem(QDBObjectItem *item)
   _tableItem = item;
   beginResetModel();
   _infoRec = QSqlQueryHelper::tableRowInfo(item->fieldValue(F_CAPTION).toString(),
-                                                     item->connectionName());\
+                                           item->connectionName());\
   endResetModel();
 }
 

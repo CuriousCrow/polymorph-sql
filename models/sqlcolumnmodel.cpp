@@ -46,20 +46,20 @@ QHash<SqlColumn, SqlColumn> SqlColumnModel::columnChanges()
 {
   QHash<SqlColumn, SqlColumn> result;
   foreach (qlonglong colId, _changes.keys()) {
-      if (_idxList.contains(colId)) {
-          //Modified column
-          if (_dataHash.contains(colId)) {
-              result.insert(_dataHash.value(colId), _changes.value(colId));
-          }
-          //New column
-          else {
-              result.insert(SqlColumn("Empty_" + QString::number(colId), ColumnType::NoType), _changes.value(colId));
-          }
+    if (_idxList.contains(colId)) {
+      //Modified column
+      if (_dataHash.contains(colId)) {
+        result.insert(_dataHash.value(colId), _changes.value(colId));
       }
-      //Removed column
+      //New column
       else {
-          result.insert(_dataHash.value(colId), SqlColumn("", ColumnType::NoType));
+        result.insert(SqlColumn("Empty_" + QString::number(colId), ColumnType::NoType), _changes.value(colId));
       }
+    }
+    //Removed column
+    else {
+      result.insert(_dataHash.value(colId), SqlColumn("", ColumnType::NoType));
+    }
   }
   return result;
 }
@@ -83,16 +83,16 @@ QHash<QString, QString> SqlColumnModel::permanentColNames()
 SqlColumnModel::EditType SqlColumnModel::editType()
 {
   if (_changes.isEmpty()) {
-      return EditType::NoChanges;
+    return EditType::NoChanges;
   }
   else if (_idxList.isEmpty()) {
-      return EditType::DropTable;
+    return EditType::DropTable;
   }
   else if (_dataHash.isEmpty()) {
-      return EditType::CreateTable;
+    return EditType::CreateTable;
   }
   else {
-      return EditType::ModifyTable;
+    return EditType::ModifyTable;
   }
 }
 
@@ -113,11 +113,11 @@ bool SqlColumnModel::hasOnlyIntegerPK()
 
 void SqlColumnModel::clear()
 {
-    emit beginResetModel();
-    _idxList.clear();
-    _changes.clear();
-    _dataHash.clear();
-    emit endResetModel();
+  emit beginResetModel();
+  _idxList.clear();
+  _changes.clear();
+  _dataHash.clear();
+  emit endResetModel();
 }
 
 int SqlColumnModel::rowCount(const QModelIndex &parent) const
@@ -310,14 +310,14 @@ SqlColumn::SqlColumn(QString name, ColumnType type)
 
 SqlColumn::SqlColumn(const SqlColumn &other)
 {
-    this->_name = other.name();
-    this->_type = other.type();
-    this->_length = other.length();
-    this->_precision = other.precision();
-    this->_isPrimary = other.isPrimary();
-    this->_notNull = other.notNull();
-    this->_defaultValue = other.defaultValue();
-    this->_autoIncrement = other.autoIncrement();
+  this->_name = other.name();
+  this->_type = other.type();
+  this->_length = other.length();
+  this->_precision = other.precision();
+  this->_isPrimary = other.isPrimary();
+  this->_notNull = other.notNull();
+  this->_defaultValue = other.defaultValue();
+  this->_autoIncrement = other.autoIncrement();
 }
 
 QString SqlColumn::name() const
@@ -426,10 +426,10 @@ QVariant SqlColumn::valueByIndex(int idx)
 
 bool SqlColumn::operator ==(const SqlColumn &other)
 {
-    return (this->name() == other.name()) && (this->type() == other.type())
-            && (this->length() == other.length()) && (this->isPrimary() == other.isPrimary())
-            && (this->notNull() == other.notNull()) && (this->defaultValue() == other.defaultValue())
-            && (this->autoIncrement() == other.autoIncrement());
+  return (this->name() == other.name()) && (this->type() == other.type())
+      && (this->length() == other.length()) && (this->isPrimary() == other.isPrimary())
+      && (this->notNull() == other.notNull()) && (this->defaultValue() == other.defaultValue())
+      && (this->autoIncrement() == other.autoIncrement());
 }
 
 SqliteTableColumnsModel::SqliteTableColumnsModel(QObject *parent)
@@ -462,10 +462,10 @@ QString SqliteTableColumnsModel::columnTypeCaption(const ColumnType type) const
 
 QDebug operator<<(QDebug dbg, const SqlColumn &column)
 {
-    dbg.noquote().nospace() << "Column {name: " << column.name() << ", type:" << column.type()
-                            << ", length: " << column.length() << ", notNull: " << column.notNull()
-                            << ", defaultValue: " << column.defaultValue() << ", autoIncrement: " << column.autoIncrement() + "}";
-    return dbg;
+  dbg.noquote().nospace() << "Column {name: " << column.name() << ", type:" << column.type()
+                          << ", length: " << column.length() << ", notNull: " << column.notNull()
+                          << ", defaultValue: " << column.defaultValue() << ", autoIncrement: " << column.autoIncrement() + "}";
+  return dbg;
 }
 
 MysqlTableColumnModel::MysqlTableColumnModel(QObject *parent) : SqlColumnModel(parent)

@@ -45,10 +45,10 @@ bool QDBMysqlItem::loadChildren()
     tableItem->updateObjectName();
   }
 
-//  //Creating trigger items
-//  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this);
-//  triggerFolderItem->setChildrenType(Trigger);
-//  loadTriggerItems(triggerFolderItem);
+  //  //Creating trigger items
+  //  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this);
+  //  triggerFolderItem->setChildrenType(Trigger);
+  //  loadTriggerItems(triggerFolderItem);
 
   return true;
 }

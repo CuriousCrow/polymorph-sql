@@ -66,13 +66,13 @@ Qt::ItemFlags SimpleCachedTableModel::flags(const QModelIndex &index) const
 
 bool SimpleCachedTableModel::submit()
 {
-//
+  //
   return false;
 }
 
 void SimpleCachedTableModel::revert()
 {
-//
+  //
 }
 
 CacheField::CacheField(QString name, QVariant initValue)
