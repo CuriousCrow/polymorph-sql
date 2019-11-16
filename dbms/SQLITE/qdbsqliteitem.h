@@ -10,14 +10,14 @@ public:
     QDBSqliteItem(QString caption, QObject* parent = nullptr);
 
 public:
-    virtual bool loadChildren();
-    virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
+    virtual bool loadChildren() override;
+    virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr) override;
     // QDBDatabaseItem interface
 protected:
-    virtual QString getViewListSql();
-    virtual QString getSequenceListSql();
-    virtual QString getTriggerListSql();
-    virtual QString getProcedureListSql();
+    virtual QString getViewListSql() override;
+    virtual QString getSequenceListSql() override;
+    virtual QString getTriggerListSql() override;
+    virtual QString getProcedureListSql() override;
 };
 
 #endif // QDBSQLITEITEM_H

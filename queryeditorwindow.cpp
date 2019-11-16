@@ -10,6 +10,7 @@
 #include "core/maphelplookupprovider.h"
 #include "core/sqlhelplookupprovider.h"
 #include "core/localeventnotifier.h"
+#include "dbms/appconst.h"
 
 QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -166,7 +167,7 @@ void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifie
     return;
   DbObj dbObj = _compModel->findByName(word);
   //If current word is a table/view name then open table browser
-  if (dbObj.isValid() && (dbObj.type == "table" || dbObj.type == "view")) {
+  if (dbObj.isValid() && (dbObj.type == OBJTYPE_TABLE || dbObj.type == OBJTYPE_VIEW)) {
     LocalEventNotifier::postLocalEvent(ShowObjectEvent, dbUrl() + "/" + dbObj.name);
   }
 }

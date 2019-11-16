@@ -35,7 +35,7 @@ SOURCES += main.cpp\
     qsqlsyntaxhighlighter.cpp \
     qactiveconnectionmodel.cpp \
     ltextcompleter.cpp \
-    vieweditdialog.cpp \
+    forms/vieweditdialog.cpp \
     qknowledgebase.cpp \
     dbms/FIREBIRD/qdbfirebirditem.cpp \
     ldbobjectmodel.cpp \
@@ -63,6 +63,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
     core/localeventnotifier.h \
+    dbms/appconst.h \
     tablebrowserwindow.h \
     lsqltablemodel.h \
     qstructureitemmodel.h \
@@ -81,7 +82,7 @@ HEADERS  += mainwindow.h \
     qsqlsyntaxhighlighter.h \
     qactiveconnectionmodel.h \
     ltextcompleter.h \
-    vieweditdialog.h \
+    forms/vieweditdialog.h \
     qknowledgebase.h \
     dbms/FIREBIRD/qdbfirebirditem.h \
     ldbobjectmodel.h \
@@ -110,7 +111,7 @@ FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
     tablebrowserwindow.ui \
     queryeditorwindow.ui \
-    vieweditdialog.ui \
+    forms/vieweditdialog.ui \
     forms/tableeditform.ui
 
 RESOURCES += \

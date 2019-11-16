@@ -185,7 +185,7 @@ bool SqlColumnModel::setData(const QModelIndex &index, const QVariant &value, in
       col.setName(value.toString());
       break;
     case 2:
-      col.setType((ColumnType)value.toInt());
+      col.setType(static_cast<ColumnType>(value.toInt()));
       break;
     case 3:
       col.setLength(value.toInt());

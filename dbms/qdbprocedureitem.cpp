@@ -1,5 +1,5 @@
 #include "qdbprocedureitem.h"
-
+#include "dbms/appconst.h"
 
 QDBProcedureItem::QDBProcedureItem(QString caption, QObject *parent):
   QDBObjectItem(caption, parent)
@@ -22,7 +22,7 @@ QVariant QDBProcedureItem::colData(int column, int role)
 
   switch (role) {
   case Qt::DisplayRole:
-    return fieldValue("caption");
+    return fieldValue(F_CAPTION);
   default:
     return QVariant();
   }

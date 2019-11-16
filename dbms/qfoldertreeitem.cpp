@@ -1,4 +1,6 @@
 #include "qfoldertreeitem.h"
+#include "dbms/appconst.h"
+
 
 QFolderTreeItem::QFolderTreeItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
@@ -21,7 +23,7 @@ QVariant QFolderTreeItem::colData(int column, int role)
 
   switch (role) {
   case Qt::DisplayRole:
-    return QString("%1 (%2)").arg(fieldValue("caption").toString(), QString::number(children().count()));
+    return QString("%1 (%2)").arg(fieldValue(F_CAPTION).toString(), QString::number(children().count()));
   default:
     return QVariant();
   }

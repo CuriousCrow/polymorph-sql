@@ -3,6 +3,8 @@
 
 #include <QSettings>
 
+#define PRM_DATABASE "database"
+
 class AppSettings
 {
 public:

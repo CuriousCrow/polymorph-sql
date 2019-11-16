@@ -5,6 +5,7 @@
 #include "dbms/SQLITE/qdbsqliteitem.h"
 #include "dbms/MYSQL/qdbmysqlitem.h"
 #include "dbms/POSTGRES/qdbpostgresitem.h"
+#include "dbms/appconst.h"
 #include <QDebug>
 #include <QUrl>
 #include "qsqlqueryhelper.h"
@@ -46,7 +47,7 @@ bool QStructureItemModel::loadRegisteredDatabases()
   QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);  
   while (sqlResult.next()) {
     QSqlRecord rec = sqlResult.record();
-    QString driverName = rec.value("driverName").toString();
+    QString driverName = rec.value(F_DRIVER_NAME).toString();
     QDBDatabaseItem* item = dbItemByDriver(driverName);
     for (int i=0; i<rec.count(); i++) {
       item->setFieldValue(rec.fieldName(i), rec.value(i));
@@ -80,7 +81,7 @@ QDBDatabaseItem *QStructureItemModel::dbItemByDriver(QString driverName)
 void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)
 {
   for (int row=first; row<last; row++){
-    QDBObjectItem* item = (QDBObjectItem*)itemByIndex(index(row, 0, parent));
+    QDBObjectItem* item = qobject_cast<QDBObjectItem*>(itemByIndex(index(row, 0, parent)));
     emit itemAboutToBeRemoved(item->objectUrl().url());
   }
 }
@@ -88,7 +89,7 @@ void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int firs
 
 Qt::ItemFlags QStructureItemModel::flags(const QModelIndex &index) const
 {
-  QDBObjectItem* item = (QDBObjectItem*)itemByIndex(index);
+  QDBObjectItem* item = qobject_cast<QDBObjectItem*>(itemByIndex(index));
   if ((item->type() == QDBObjectItem::Database)
       && item->children().count() > 0){
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;

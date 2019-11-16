@@ -4,8 +4,8 @@
 #include "qsqlqueryhelper.h"
 #include <QSqlField>
 #include <QSqlRecord>
+#include "dbms/appconst.h"
 
-#define NEW_COLUMN_NAME "NewColumn"
 
 QDBTableItem::QDBTableItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
@@ -30,11 +30,11 @@ void QDBTableItem::addDefaultColumn()
 {  
   int newColNumber = 1;
   forever {
-    if (_columnsModel->rowByName(NEW_COLUMN_NAME + QString::number(newColNumber)) < 0)
+    if (_columnsModel->rowByName(DEF_COLUMN_NAME + QString::number(newColNumber)) < 0)
       break;
     newColNumber++;
   }
-  _columnsModel->addSqlColumn(SqlColumn(NEW_COLUMN_NAME + QString::number(newColNumber), ColumnType::Varchar));
+  _columnsModel->addSqlColumn(SqlColumn(DEF_COLUMN_NAME + QString::number(newColNumber), ColumnType::Varchar));
 }
 
 QHash<int, QString> QDBTableItem::getColumnTypesHash()
@@ -42,8 +42,8 @@ QHash<int, QString> QDBTableItem::getColumnTypesHash()
   QHash<int, QString> resHash;
   int val = 1;
   while (val <= ColumnType::Blob) {
-    if (_columnsModel->supportedColumnTypes().testFlag((ColumnType)val)) {
-      resHash.insert(val, _columnsModel->columnTypeCaption((ColumnType)val));
+    if (_columnsModel->supportedColumnTypes().testFlag(static_cast<ColumnType>(val))) {
+      resHash.insert(val, _columnsModel->columnTypeCaption(static_cast<ColumnType>(val)));
     }
     val *= 2;
   }
@@ -59,7 +59,7 @@ bool QDBTableItem::loadChildren()
 QUrl QDBTableItem::objectUrl()
 {
   QUrl url = QDBObjectItem::objectUrl();
-  url.setPath("/" + fieldValue("caption").toString());
+  url.setPath("/" + fieldValue(F_CAPTION).toString());
   return url;
 }
 
@@ -75,7 +75,7 @@ QVariant QDBTableItem::colData(int column, int role)
   case Qt::DisplayRole:
     switch (column) {
     case 0:
-      return fieldValue("caption");
+      return fieldValue(F_CAPTION);
     default:
       return QVariant();
     }
@@ -89,7 +89,7 @@ QVariant QDBTableItem::colData(int column, int role)
 bool QDBTableItem::deleteMe()
 {
   QString sql = "drop table \"%1\"";
-  QString preparedSql = sql.arg(fieldValue("caption").toString());
+  QString preparedSql = sql.arg(fieldValue(F_CAPTION).toString());
   return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }
 

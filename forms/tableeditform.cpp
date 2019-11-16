@@ -1,6 +1,7 @@
 #include "tableeditform.h"
 #include "ui_tableeditform.h"
 #include <QMessageBox>
+#include "../dbms/appconst.h"
 
 TableEditForm::TableEditForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),
@@ -18,7 +19,7 @@ TableEditForm::~TableEditForm()
 
 void TableEditForm::objectToForm()
 {
-  QString tableName = _objItem->fieldValue("caption").toString();
+  QString tableName = _objItem->fieldValue(F_CAPTION).toString();
   setWindowTitle("Редактор таблицы " + tableName);
   ui->lineEdit->setText(tableName);
   QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(_objItem);
@@ -29,7 +30,7 @@ void TableEditForm::objectToForm()
 
 void TableEditForm::formToObject()
 {
-  _objItem->setFieldValue("caption", ui->lineEdit->text());
+  _objItem->setFieldValue(F_CAPTION, ui->lineEdit->text());
   //Модель автоматически обновится при редактировании
 }
 
@@ -56,6 +57,6 @@ void TableEditForm::on_btnDelete_clicked()
     qobject_cast<QDBTableItem*>(_objItem)->columnsModel()->removeRow(selectedRow);
   }
   else {
-    QMessageBox::warning(this, trUtf8("Warning"), "Please, select the column you want to drop");
+    QMessageBox::warning(this, trUtf8(TITLE_WARNING), "Please, select the column you want to drop");
   }
 }

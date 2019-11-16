@@ -1,25 +1,18 @@
 #include "qdbviewitem.h"
 #include <QIcon>
 #include "qsqlqueryhelper.h"
+#include "dbms/appconst.h"
 
 
 QDBViewItem::QDBViewItem(QString caption, QObject *parent):
   QDBTableItem(caption, parent)
 {
     _editable = false;
+    registerField(F_QUERY_TEXT);
 }
 
 QDBViewItem::~QDBViewItem()
 {
-}
-QString QDBViewItem::queryText() const
-{
-  return _queryText;
-}
-
-void QDBViewItem::setQueryText(const QString &queryText)
-{
-  _queryText = queryText;
 }
 
 int QDBViewItem::colCount()
@@ -35,9 +28,9 @@ QVariant QDBViewItem::colData(int column, int role)
   case Qt::EditRole:
     switch (column) {
     case 0:
-      return fieldValue("caption");
+      return fieldValue(F_CAPTION);
     case 1:
-      return queryText();
+      return fieldValue(F_QUERY_TEXT);
     default:
       return QVariant();
     }
@@ -53,16 +46,24 @@ int QDBViewItem::type()
   return View;
 }
 
+bool QDBViewItem::insertMe()
+{
+  qDebug() << "Connection name" << connectionName();
+  QString sql = "create view #caption# as #queryText#";
+  QString preparedSql = fillSqlPattern(sql);
+  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+}
+
 
 bool QDBViewItem::setData(int column, QVariant value, int role)
 {
   if (role == Qt::EditRole){
     switch (column) {
     case 0:
-      setFieldValue("caption", value);
+      setFieldValue(F_CAPTION, value);
       break;
     case 1:
-      setFieldValue("queryText", value);
+      setFieldValue(F_QUERY_TEXT, value);
       break;
     default:
       break;
@@ -77,9 +78,4 @@ bool QDBViewItem::deleteMe()
   QString sql = "drop view #caption#";
   QString preparedSql = fillSqlPattern(sql);
   return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
-}
-
-void QDBViewItem::reloadColumnsModel()
-{
-  //
 }

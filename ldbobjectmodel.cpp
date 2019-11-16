@@ -1,5 +1,6 @@
 #include "ldbobjectmodel.h"
 #include <QDebug>
+#include "dbms/appconst.h"
 
 //Поиск имени таблицы по алиасу
 //(FROM|JOIN)\s+([^\s]+)\s+t
@@ -15,11 +16,11 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
   emit beginResetModel();
   _dataList.clear();
   foreach (QString keyword, keywords) {
-    _dataList.append(DbObj(keyword, "keyword"));
+    _dataList.append(DbObj(keyword, F_KEYWORD));
   }
   QSqlDatabase db = QSqlDatabase::database(connName);
   QString sql;
-  if (db.driverName() == "QPSQL") {
+  if (db.driverName() == DRIVER_PSQL) {
     sql = "select table_name, 'table' FROM information_schema.tables "
       "WHERE table_schema = 'public' AND table_type = 'BASE TABLE' "
       "UNION ALL "
@@ -32,7 +33,7 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
       "WHERE specific_schema NOT IN ('pg_catalog', 'information_schema') "
       "AND type_udt_name != 'trigger'";
   }
-  else if (db.driverName() == "QMYSQL") {
+  else if (db.driverName() == DRIVER_MYSQL) {
     sql = "SELECT table_name, 'table' FROM information_schema.tables "
           "WHERE table_schema = 'test' AND table_type = 'BASE TABLE' "
           "UNION ALL "
@@ -41,7 +42,7 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
           "SELECT routine_name, 'procedure' FROM information_schema.routines "
           "WHERE ROUTINE_TYPE='PROCEDURE' ";
   }
-  else if (db.driverName() == "QIBASE") {
+  else if (db.driverName() == DRIVER_FIREBIRD) {
     sql = "select trim(rdb$relation_name), 'table' from rdb$relations where rdb$relation_type=0 and (rdb$system_flag is null or rdb$system_flag = 0) "
           "union all "
           "select trim(rdb$relation_name) name, 'view' from rdb$relations where rdb$relation_type=1 "
@@ -50,7 +51,7 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
           "union all "
           "select trim(rdb$procedure_name) name, 'procedure' from rdb$procedures";
   }
-  else if (db.driverName() == "QSQLITE") {
+  else if (db.driverName() == DRIVER_SQLITE) {
     sql = "SELECT name, type FROM sqlite_master";
   }
   if (!sql.isEmpty()) {

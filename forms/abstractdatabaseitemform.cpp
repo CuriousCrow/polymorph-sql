@@ -24,4 +24,5 @@ AbstractDatabaseEditForm::UserAction AbstractDatabaseEditForm::userAction() cons
 void AbstractDatabaseEditForm::setUserAction(const UserAction &userAction)
 {
   _userAction = userAction;
+  emit userActionChanged();
 }

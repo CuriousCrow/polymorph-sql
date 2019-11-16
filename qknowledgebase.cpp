@@ -1,5 +1,6 @@
 #include "qknowledgebase.h"
 #include <QDebug>
+#include "dbms/appconst.h"
 
 QKnowledgeBase* QKnowledgeBase::_kb = nullptr;
 
@@ -15,7 +16,7 @@ QKnowledgeBase::QKnowledgeBase(QObject *parent) : QObject(parent)
 {
   qDebug() << "Knowledge base created";
   mKeywords = new LSqlTableModel(this);
-  mKeywords->setTable("t_keywords");
+  mKeywords->setTable(T_KEYWORDS);
   mKeywords->select();
   qDebug() << mKeywords->rowCount() << "keywords loaded";
 }

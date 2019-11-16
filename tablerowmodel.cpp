@@ -1,6 +1,7 @@
 #include "tablerowmodel.h"
 #include "qsqlqueryhelper.h"
 #include <QSqlField>
+#include "dbms/AppConst.h"
 
 TableRowModel::TableRowModel(QObject *parent) : QAbstractTableModel(parent)
 {
@@ -10,7 +11,7 @@ void TableRowModel::setTableItem(QDBObjectItem *item)
 {
   _tableItem = item;
   beginResetModel();
-  _infoRec = QSqlQueryHelper::tableRowInfo(item->fieldValue("caption").toString(),
+  _infoRec = QSqlQueryHelper::tableRowInfo(item->fieldValue(F_CAPTION).toString(),
                                                      item->connectionName());\
   endResetModel();
 }
@@ -41,7 +42,7 @@ QVariant TableRowModel::data(const QModelIndex &index, int role) const
     case 2:
       return field.requiredStatus() == 0;
     case 3:
-      return field.name().compare("ID", Qt::CaseInsensitive) == 0;
+      return field.name().compare(F_ID, Qt::CaseInsensitive) == 0;
     case 4:
       return false;
     default:
@@ -85,8 +86,8 @@ QVariant TableRowModel::headerData(int section, Qt::Orientation orientation, int
 QDBFieldItem::QDBFieldItem(QString caption, QObject *parent)
   : QDBObjectItem(caption, parent)
 {
-  registerField("size");
-  registerField("null");
-  registerField("pk");
-  registerField("unique");
+  registerField(F_SIZE);
+  registerField(F_NULL);
+  registerField(F_PK);
+  registerField(F_UNIQUE);
 }

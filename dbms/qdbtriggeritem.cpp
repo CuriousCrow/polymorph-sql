@@ -1,5 +1,6 @@
 #include "qdbtriggeritem.h"
 #include "qsqlqueryhelper.h"
+#include "dbms/appconst.h"
 
 
 QDBTriggerItem::QDBTriggerItem(QString caption, QObject *parent):
@@ -23,7 +24,7 @@ QVariant QDBTriggerItem::colData(int column, int role)
 
   switch (role) {
   case Qt::DisplayRole:
-    return fieldValue("caption");
+    return fieldValue(F_CAPTION);
   default:
     return QVariant();
   }

@@ -13,7 +13,7 @@ QDBPostgresItem::~QDBPostgresItem()
 
 QString QDBPostgresItem::getViewListSql()
 {
-  return "select table_name \"name\" from INFORMATION_SCHEMA.views where table_schema = 'public'";
+  return "select table_name \"name\", view_definition \"queryText\" from INFORMATION_SCHEMA.views where table_schema = 'public'";
 }
 
 QString QDBPostgresItem::getSequenceListSql()

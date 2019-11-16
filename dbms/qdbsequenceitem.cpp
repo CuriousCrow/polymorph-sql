@@ -1,4 +1,5 @@
 #include "qdbsequenceitem.h"
+#include "dbms/appconst.h"
 
 
 QDBSequenceItem::QDBSequenceItem(QString caption, QObject *parent):
@@ -21,7 +22,7 @@ QVariant QDBSequenceItem::colData(int column, int role)
 
   switch (role) {
   case Qt::DisplayRole:
-    return fieldValue("caption");
+    return fieldValue(F_CAPTION);
   default:
     return QVariant();
   }

@@ -24,6 +24,8 @@ public:
 
   virtual void objectToForm() = 0;
   virtual void formToObject() = 0;
+signals:
+  void userActionChanged();
 protected:
   QDBObjectItem* _objItem;
 private:

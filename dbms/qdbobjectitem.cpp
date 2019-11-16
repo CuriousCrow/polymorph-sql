@@ -4,12 +4,13 @@
 
 #include <QMetaProperty>
 #include "qsqlqueryhelper.h"
+#include "dbms/appconst.h"
 
 
 QDBObjectItem::QDBObjectItem(QString caption, QObject* parent): LAbstractTreeItem(caption, parent)
 {
-  registerField("caption");
-  setFieldValue("caption", caption);
+  registerField(F_CAPTION);
+  setFieldValue(F_CAPTION, caption);
 }
 
 QDBObjectItem::~QDBObjectItem()

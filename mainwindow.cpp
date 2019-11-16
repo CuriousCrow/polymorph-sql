@@ -14,6 +14,7 @@
 //#include "dbms/MYSQL/qdbmysqltableitem.h"
 #include "qknowledgebase.h"
 #include "core/appsettings.h"
+#include "dbms/appconst.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   NotifiableWindow(parent),
@@ -23,8 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   qDebug() << QSqlDatabase::drivers();
   //Connection to properies DB
-  appDB = QSqlDatabase::addDatabase("QSQLITE");
-  QString dbPath = AppSettings::strVal("database", "properties.sqlite");
+  appDB = QSqlDatabase::addDatabase(DRIVER_SQLITE);
+  QString dbPath = AppSettings::strVal(PRM_DATABASE, "properties.sqlite");
   qDebug() << "dbPath:" << dbPath;
   appDB.setDatabaseName(dbPath);
 
@@ -32,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //Trying to connect
   if (!appDB.open()){
-    QMessageBox::critical(this, "Error", appDB.lastError().text());
+    QMessageBox::critical(this, TITLE_ERROR, appDB.lastError().text());
     return;
   }
   qDebug() << "Success!";
@@ -63,7 +64,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //View editor window
   _viewEditorWindow = new ViewEditDialog(this);
-  _viewEditorWindow->setModel(_structureModel);
+  connect(_viewEditorWindow, SIGNAL(accepted()),
+          this, SLOT(saveViewChanges()));
 
   //Table item editor
   _tableEditForm = new TableEditForm(this);
@@ -83,7 +85,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_aAddDatabase_triggered()
 {
-  QDBDatabaseItem* newItem = new QDBDatabaseItem("New database");
+  QDBDatabaseItem* newItem = new QDBDatabaseItem(DEF_DATABASE_NAME);
   if (newItem->insertMe()){
     _structureModel->appendItem(newItem);
     _connectionEditDialog->mapper()->toLast();
@@ -161,8 +163,7 @@ void MainWindow::on_aRemoveDatabase_triggered()
   if (itemToRemove->type() == QDBObjectItem::Database){
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
     if (itemToRemove->deleteMe())
-      _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
-                            QModelIndex());
+      _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(), QModelIndex());
   }
 }
 
@@ -192,7 +193,9 @@ void MainWindow::showEditorForCurrentItem()
   QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   switch (currentItem->type()) {
   case QDBObjectItem::View:
-    _viewEditorWindow->onModelIndexChanged(ui->tvDatabaseStructure->currentIndex());
+    _viewEditorWindow->setObjItem(currentItem);
+    _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Edit);
+    _viewEditorWindow->objectToForm();
     _viewEditorWindow->show();
     break;
   case QDBObjectItem::Table:
@@ -202,7 +205,7 @@ void MainWindow::showEditorForCurrentItem()
     _tableEditForm->show();
     break;
   default:
-    QMessageBox::warning(this, "Warning", "Edit form isn't supported yet");
+    QMessageBox::warning(this, TITLE_WARNING, "Edit form isn't supported yet");
   }
   //TODO: Implementation for other DB objects
 }
@@ -247,11 +250,19 @@ void MainWindow::showCreateItemEditor()
 
   switch (folderItem->childrenType()) {
   case QDBObjectItem::Table: {
-    QDBTableItem* newTableItem = databaseItem->createNewTableItem("NewTable");
+    QDBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME);
     _tableEditForm->setObjItem(newTableItem);
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _tableEditForm->objectToForm();
     _tableEditForm->show();
+    break;
+  }
+  case QDBObjectItem::View: {
+    QDBTableItem* newViewItem = databaseItem->createNewViewItem(DEF_VIEW_NAME);
+    _viewEditorWindow->setObjItem(newViewItem);
+    _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Create);
+    _viewEditorWindow->objectToForm();
+    _viewEditorWindow->show();
     break;
   }
   default:
@@ -276,6 +287,18 @@ void MainWindow::saveTableChanges()
   else {
     editForm->objItem()->updateMe();
     refreshQueryEditorAssistance();
+  }
+}
+
+void MainWindow::saveViewChanges()
+{
+  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
+  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
+  if (action == AbstractDatabaseEditForm::Create) {
+    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+      _structureModel->appendItem(editForm->objItem(), currentItem);
+      editForm->objItem()->insertMe();
+      refreshQueryEditorAssistance();
   }
 }
 
@@ -325,10 +348,10 @@ void MainWindow::openTableEditor(QDBTableItem *tableItem)
   QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
   if (!tableWidget){
     tableWidget = new TableBrowserWindow(this, tableItem);
-    ui->tabWidget->addTab(tableWidget, tableItem->fieldValue("caption").toString());
+    ui->tabWidget->addTab(tableWidget, tableItem->fieldValue(F_CAPTION).toString());
   }
   ui->tabWidget->setCurrentWidget(tableWidget);
-  //  QSqlQueryHelper::tableRowInfo(tableItem->fieldValue("caption").toString(), tableItem->connectionName());
+  //  QSqlQueryHelper::tableRowInfo(tableItem->fieldValue(F_CAPTION).toString(), tableItem->connectionName());
 }
 
 void MainWindow::localEvent(LocalEvent *event)
@@ -346,5 +369,5 @@ void MainWindow::on_aOpenSqlEditor_triggered()
   //Создаем вкладку с редактором SQL-запросов
   QueryEditorWindow* newQueryEditor = new QueryEditorWindow(this);
   newQueryEditor->setStructureModel(_structureModel);
-  ui->tabWidget->addTab(newQueryEditor, "Query editor");
+  ui->tabWidget->addTab(newQueryEditor, tr("Query"));
 }

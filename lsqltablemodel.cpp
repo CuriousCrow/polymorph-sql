@@ -1,6 +1,7 @@
 #include "lsqltablemodel.h"
 #include <QDebug>
 #include <QSqlError>
+#include "dbms/appconst.h"
 
 /*!
     \class LSqlTableModel
@@ -120,8 +121,8 @@ bool LSqlTableModel::select()
   clearData();
   //Fills index and data map with query result data
   while (_query.next()){
-    _recIndex.append(_query.value("ID").toLongLong());
-    _recMap.insert(_query.value("ID").toLongLong(), LSqlRecord(_query.record()));
+    _recIndex.append(_query.value(F_ID).toLongLong());
+    _recMap.insert(_query.value(F_ID).toLongLong(), LSqlRecord(_query.record()));
   }
   endResetModel();
 
@@ -304,7 +305,7 @@ bool LSqlTableModel::insertRows(int row, int count, const QModelIndex &parent)
     if (newId < 0)
       return false;
   }
-  newRec.setValue("ID", QVariant(newId));
+  newRec.setValue(F_ID, QVariant(newId));
 
   //Signal to initialize the row with default values
   emit beforeInsert(newRec);
@@ -331,7 +332,7 @@ bool LSqlTableModel::removeRows(int row, int count, const QModelIndex &parent)
   //No need to delete record in DB if it isn't there yet
   if (_recMap.value(_recIndex[row]).cacheAction() != LSqlRecord::Insert){
     QSqlRecord delRec(_primaryIndex);
-    delRec.setValue("ID", static_cast<qlonglong>(_recIndex.at(row)));
+    delRec.setValue(F_ID, static_cast<qlonglong>(_recIndex.at(row)));
 
     if (!deleteRowInTable(delRec))
       return false;
@@ -396,14 +397,14 @@ bool LSqlTableModel::submitRecord(LSqlRecord &rec)
   }
   else if (rec.cacheAction() == LSqlRecord::Insert) {
     //Clear temporary ID for DB autoincrement
-    if (rec.value("ID").toLongLong() < 0)
-      rec.setValue("ID", QVariant());
+    if (rec.value(F_ID).toLongLong() < 0)
+      rec.setValue(F_ID, QVariant());
     result = insertRowInTable(rec);
     //Update ID with generated value
     if (result && _autoIncrementID)
-      rec.setValue("ID", _query.lastInsertId());
+      rec.setValue(F_ID, _query.lastInsertId());
     if (result && returningInsertMode() && _query.next())
-      rec.setValue("ID", _query.value(0));
+      rec.setValue(F_ID, _query.value(0));
   }
   if (result){
     setCacheAction(rec, LSqlRecord::None);
@@ -607,7 +608,7 @@ qlonglong LSqlTableModel::nextSequenceNumber()
 
 bool LSqlTableModel::returningInsertMode()
 {
-  return _db.driverName() == "QIBASE" && _sequenceName.isEmpty();
+  return _db.driverName() == DRIVER_FIREBIRD && _sequenceName.isEmpty();
 }
 
 /*!

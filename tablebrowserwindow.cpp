@@ -2,6 +2,7 @@
 #include "ui_tablebrowserwindow.h"
 #include <QDebug>
 #include <QUrl>
+#include "dbms/appconst.h"
 
 TableBrowserWindow::TableBrowserWindow(QWidget *parent, QDBTableItem* tableItem) :
   QMainWindow(parent),
@@ -11,7 +12,7 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, QDBTableItem* tableItem)
   QUrl url = tableItem->objectUrl();
   setObjectName(url.url());
   _connectionName = url.host();
-  _tableName = tableItem->fieldValue("caption").toString();
+  _tableName = tableItem->fieldValue(F_CAPTION).toString();
   _sourceModel = new LSqlTableModel(this, QSqlDatabase::database(_connectionName));
   _sourceModel->setTable(_tableName);
   _sourceModel->select();
@@ -65,6 +66,7 @@ void TableBrowserWindow::on_aRefresh_triggered()
 
 void TableBrowserWindow::on_tableView_pressed(const QModelIndex &index)
 {
+  Q_UNUSED(index)
     if (QApplication::mouseButtons().testFlag(Qt::RightButton)) {
       _mnuContext->popup(QCursor::pos());
     }

@@ -11,23 +11,24 @@
 #include "qdbsequenceitem.h"
 #include "qdbtriggeritem.h"
 #include "qdbprocedureitem.h"
+#include "dbms/appconst.h"
 
 
 QDBDatabaseItem::QDBDatabaseItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
 {
   //1
-  registerField("id");
+  registerField(F_ID);
   //2
-  registerField("hostName");
+  registerField(F_HOSTNAME);
   //3
-  registerField("userName");
+  registerField(F_USERNAME);
   //4
-  registerField("password");
+  registerField(F_PASSWORD);
   //5
-  registerField("driverName");
+  registerField(F_DRIVER_NAME);
   //6
-  registerField("databaseName");
+  registerField(F_DATABASE_NAME);
 }
 
 QDBDatabaseItem::~QDBDatabaseItem()
@@ -37,16 +38,16 @@ QDBDatabaseItem::~QDBDatabaseItem()
 bool QDBDatabaseItem::createDbConnection()
 {
   QSqlDatabase db = QSqlDatabase::addDatabase(driver(), _connectionName);
-  db.setDatabaseName(fieldValue("databaseName").toString());
-  db.setUserName(fieldValue("userName").toString());
-  db.setPassword(fieldValue("password").toString());
+  db.setDatabaseName(fieldValue(F_DATABASE_NAME).toString());
+  db.setUserName(fieldValue(F_USERNAME).toString());
+  db.setPassword(fieldValue(F_PASSWORD).toString());
 
   //Trying to connect
   if (!db.open()){
-    QMessageBox::critical(nullptr, "Error", db.lastError().text());
+    QMessageBox::critical(nullptr, TITLE_ERROR, db.lastError().text());
     return false;
   }
-  qDebug() << "DB" << fieldValue("caption").toString() << "connected";
+  qDebug() << "DB" << fieldValue(F_CAPTION).toString() << "connected";
   return true;
 }
 
@@ -97,7 +98,7 @@ QUrl QDBDatabaseItem::objectUrl()
 {
   QUrl url = QDBObjectItem::objectUrl();
   url.setScheme(driver());
-  url.setHost(fieldValue("caption").toString().replace(' ', '_'), QUrl::TolerantMode);
+  url.setHost(fieldValue(F_CAPTION).toString().replace(' ', '_'), QUrl::TolerantMode);
   return url;
 }
 
@@ -160,8 +161,8 @@ void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
       QDBViewItem* viewItem
-          = new QDBViewItem(resultSet.value("name").toString(), parentItem);
-      viewItem->setQueryText(resultSet.value("queryText").toString());
+          = new QDBViewItem(resultSet.value(F_NAME).toString(), parentItem);
+      viewItem->setFieldValue(F_QUERY_TEXT, resultSet.value(F_QUERY_TEXT).toString());
       viewItem->updateObjectName();
     }
   }
@@ -176,7 +177,7 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
       QDBSequenceItem* sequenceItem
-          = new QDBSequenceItem(resultSet.value("name").toString(), parentItem);
+          = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->updateObjectName();
     }
   }
@@ -185,7 +186,16 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
       QDBSequenceItem* sequenceItem
-        = new QDBSequenceItem(resultSet.value("name").toString(), parentItem);
+        = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+      sequenceItem->updateObjectName();
+    }
+  }
+  else if (isDriver(DRIVER_SQLITE)) {
+    sql = "SELECT name FROM sqlite_sequence";
+    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    while (resultSet.next()) {
+      QDBSequenceItem* sequenceItem
+          = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->updateObjectName();
     }
   }
@@ -198,7 +208,7 @@ void QDBDatabaseItem::loadTriggerItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
       QDBTriggerItem* sequenceItem
-          = new QDBTriggerItem(resultSet.value("name").toString(), parentItem);
+          = new QDBTriggerItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->updateObjectName();
     }
   }
@@ -213,7 +223,7 @@ void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
   while (resultSet.next()){
       QDBProcedureItem* sequenceItem
-          = new QDBProcedureItem(resultSet.value("name").toString(), parentItem);
+          = new QDBProcedureItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->updateObjectName();
     }
 
@@ -266,7 +276,7 @@ QString QDBDatabaseItem::getProcedureListSql()
 
 QString QDBDatabaseItem::driver()
 {
-  return fieldValue("driverName").toString();
+  return fieldValue(F_DRIVER_NAME).toString();
 }
 
 bool QDBDatabaseItem::isDriver(QString name)

@@ -6,11 +6,10 @@
 #include <QSqlTableModel>
 #include <lsqltablemodel.h>
 #include "connectioneditdialog.h"
-#include "vieweditdialog.h"
+#include "forms/vieweditdialog.h"
 #include <QMenu>
 #include "qstructureitemmodel.h"
 #include "queryeditorwindow.h"
-#include "vieweditdialog.h"
 #include "forms/tableeditform.h"
 #include "dbms/qdbtableitem.h"
 #include "core/localeventnotifier.h"
@@ -53,6 +52,9 @@ private slots:
   void showCreateItemEditor();
 
   void saveTableChanges();
+
+  void saveViewChanges();
+
   void on_aOpenSqlEditor_triggered();
 
 private:
