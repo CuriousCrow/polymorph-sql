@@ -49,7 +49,7 @@ int QDBViewItem::type()
 bool QDBViewItem::insertMe()
 {
   qDebug() << "Connection name" << connectionName();
-  QString sql = "create view #caption# as #queryText#";
+  QString sql = "create view \"#caption#\" as #queryText#";
   QString preparedSql = fillSqlPattern(sql);
   return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }

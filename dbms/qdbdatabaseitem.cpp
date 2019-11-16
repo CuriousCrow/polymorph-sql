@@ -67,6 +67,7 @@ bool QDBDatabaseItem::loadChildren()
 
   //Creating views items
   QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
+  viewFolderItem->setChildrenType(View);
   loadViewItems(viewFolderItem);
 
   //  //Creating system table items
