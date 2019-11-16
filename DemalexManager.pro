@@ -15,6 +15,7 @@ RC_ICONS = icons/cc_16.ico
 
 SOURCES += main.cpp\
   core/localeventnotifier.cpp \
+  forms/sequenceeditform.cpp \
         mainwindow.cpp \
     connectioneditdialog.cpp \
     tablebrowserwindow.cpp \
@@ -64,6 +65,7 @@ HEADERS  += mainwindow.h \
     connectioneditdialog.h \
     core/localeventnotifier.h \
     dbms/appconst.h \
+    forms/sequenceeditform.h \
     tablebrowserwindow.h \
     lsqltablemodel.h \
     qstructureitemmodel.h \
@@ -109,6 +111,7 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
+    forms/sequenceeditform.ui \
     tablebrowserwindow.ui \
     queryeditorwindow.ui \
     forms/vieweditdialog.ui \

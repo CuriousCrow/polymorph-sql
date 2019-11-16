@@ -11,6 +11,7 @@
 #define F_DRIVER_NAME "driverName"
 #define F_DATABASE_NAME "databaseName"
 #define F_KEYWORD "keyword"
+#define F_CURRENT_VALUE "currentValue"
 
 #define F_SIZE "size"
 #define F_NULL "null"

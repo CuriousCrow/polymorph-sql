@@ -5,6 +5,7 @@
 QDBSequenceItem::QDBSequenceItem(QString caption, QObject *parent):
   QDBObjectItem(caption, parent)
 {
+  registerField(F_CURRENT_VALUE);
 }
 
 QDBSequenceItem::~QDBSequenceItem()

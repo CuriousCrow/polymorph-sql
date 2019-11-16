@@ -11,6 +11,7 @@
 #include "qstructureitemmodel.h"
 #include "queryeditorwindow.h"
 #include "forms/tableeditform.h"
+#include "forms/sequenceeditform.h"
 #include "dbms/qdbtableitem.h"
 #include "core/localeventnotifier.h"
 
@@ -64,6 +65,7 @@ private:
   ConnectionEditDialog* _connectionEditDialog;
   ViewEditDialog* _viewEditorWindow;
   TableEditForm* _tableEditForm;
+  SequenceEditForm* _sequenceEditForm;
   QMenu* _itemContextMenu;
   QMenu* _folderContextMenu;
   QAction* _editAction;

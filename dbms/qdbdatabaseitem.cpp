@@ -192,11 +192,12 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     }
   }
   else if (isDriver(DRIVER_SQLITE)) {
-    sql = "SELECT name FROM sqlite_sequence";
+    sql = "SELECT name, seq currentValue FROM sqlite_sequence";
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
       QDBSequenceItem* sequenceItem
           = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+      sequenceItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
       sequenceItem->updateObjectName();
     }
   }

@@ -73,6 +73,9 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(_tableEditForm, SIGNAL(accepted()),
           this, SLOT(saveTableChanges()));
 
+  _sequenceEditForm = new SequenceEditForm(this);
+  _sequenceEditForm->setModal(true);
+
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(removeTabByIndex(int)));
@@ -203,6 +206,12 @@ void MainWindow::showEditorForCurrentItem()
     _tableEditForm->setObjItem(currentItem);
     _tableEditForm->objectToForm();
     _tableEditForm->show();
+    break;
+  case QDBObjectItem::Sequence:
+    _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
+    _sequenceEditForm->setObjItem(currentItem);
+    _sequenceEditForm->objectToForm();
+    _sequenceEditForm->show();
     break;
   default:
     QMessageBox::warning(this, TITLE_WARNING, "Edit form isn't supported yet");

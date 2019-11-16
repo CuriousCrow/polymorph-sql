@@ -75,7 +75,7 @@ bool QDBViewItem::setData(int column, QVariant value, int role)
 
 bool QDBViewItem::deleteMe()
 {
-  QString sql = "drop view #caption#";
+  QString sql = "drop view \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);
   return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }
