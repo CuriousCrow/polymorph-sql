@@ -82,6 +82,34 @@ QString QDBObjectItem::fillPatternWithFields(QString pattern)
   return result;
 }
 
+QString QDBObjectItem::fillWithModifiedFields(QString pattern)
+{
+  pattern = filterUnmodifiedFields(pattern);
+  return fillPatternWithFields(pattern);
+}
+
+QString QDBObjectItem::filterUnmodifiedFields(QString pattern)
+{
+  QString resSql;
+  QStringList parts = pattern.split(QRegExp("[\\{\\}]"), QString::SkipEmptyParts);
+  QRegExp rxParam("#([A-Za-z_]+)#");
+  foreach(QString part, parts) {
+    int paramIdx = 0;
+    bool include = true;
+    while (rxParam.indexIn(part, paramIdx) >= 0) {
+      QString paramName = rxParam.cap(1);
+      if (!fieldModified(paramName)) {
+        include = false;
+        break;
+      }
+      paramIdx += rxParam.pos() + rxParam.matchedLength();
+    }
+    if (include)
+      resSql.append(part);
+  }
+  return resSql;
+}
+
 QVariant QDBObjectItem::fieldValue(QString fieldName)
 {
   int index = fieldIndex(fieldName);
@@ -117,7 +145,7 @@ bool QDBObjectItem::fieldModified(QString fieldName)
   int index = fieldIndex(fieldName);
   if (index >= 0)
     return fields[index].isModified();
-  return true;
+  return false;
 }
 
 void QDBObjectItem::setFieldValue(QString fieldName, QVariant value)
@@ -156,6 +184,11 @@ bool QDBObjectItem::setData(int column, QVariant value, int role)
   if (role == Qt::EditRole){
     fields[column].setValue(value);
   }
+  return true;
+}
+
+bool QDBObjectItem::refresh()
+{
   return true;
 }
 

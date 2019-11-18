@@ -12,6 +12,10 @@
 #define F_DATABASE_NAME "databaseName"
 #define F_KEYWORD "keyword"
 #define F_CURRENT_VALUE "currentValue"
+#define F_MIN_VALUE "minValue"
+#define F_MAX_VALUE "maxValue"
+#define F_STEP "step"
+#define F_START_VALUE "startValue"
 
 #define F_SIZE "size"
 #define F_NULL "null"

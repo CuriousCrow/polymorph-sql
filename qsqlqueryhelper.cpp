@@ -61,14 +61,31 @@ QStringList QSqlQueryHelper::propertyList(const QMetaObject *metaObj)
 
 QString QSqlQueryHelper::fillSqlPattern(QString pattern, QObject *object)
 {
-  QRegExp rx = QRegExp("#([A-Za-z]+)#");
+  QString resSql;
+  QStringList parts = pattern.split(QRegExp("[\\{\\}]"), QString::SkipEmptyParts);
+  QRegExp rxParam = QRegExp("#([A-Za-z_]+)#");
+  foreach(QString sqlPart, parts) {
+    int paramIdx = 0;
+    bool include = true;
+    while (rxParam.indexIn(sqlPart, paramIdx) >= 0) {
+      QString paramName = rxParam.cap(1);
+      if (object->property(paramName.toUtf8()).isValid()) {
+        include = false;
+        break;
+      }
+      paramIdx += rxParam.pos() + rxParam.matchedLength();
+    }
+    if (include)
+      resSql.append(sqlPart);
+  }
+
   QStringList fields;
   int index = 0;
   while (index >= 0){
-    index = rx.indexIn(pattern, index);
+    index = rxParam.indexIn(pattern, index);
     if (index >= 0){
-      fields.append(rx.cap(1));
-      index += rx.cap().length();
+      fields.append(rxParam.cap(1));
+      index += rxParam.cap().length();
     }
   }
   fields.removeDuplicates();

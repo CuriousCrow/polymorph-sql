@@ -75,6 +75,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   _sequenceEditForm = new SequenceEditForm(this);
   _sequenceEditForm->setModal(true);
+  connect(_sequenceEditForm, SIGNAL(accepted()),
+          this, SLOT(saveSequenceChanges()));
 
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
@@ -128,10 +130,14 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     break;
   }
   case QDBObjectItem::Table:
-  case QDBObjectItem::View:
+  case QDBObjectItem::View: {
     //Show or add table editor
     QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(objectItem);
     openTableEditor(tableItem);
+    break;
+  }
+  case QDBObjectItem::Sequence:
+    showEditorForCurrentItem();
     break;
   }
 }
@@ -208,6 +214,7 @@ void MainWindow::showEditorForCurrentItem()
     _tableEditForm->show();
     break;
   case QDBObjectItem::Sequence:
+    currentItem->refresh();
     _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
     _sequenceEditForm->setObjItem(currentItem);
     _sequenceEditForm->objectToForm();
@@ -227,6 +234,8 @@ void MainWindow::dropCurrentDatabaseObject()
   case QDBObjectItem::View:
   case QDBObjectItem::Table:
   case QDBObjectItem::Trigger:
+  case QDBObjectItem::Sequence:
+  case QDBObjectItem::Procedure:
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
     if (itemToRemove->deleteMe()) {
       _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
@@ -274,6 +283,14 @@ void MainWindow::showCreateItemEditor()
     _viewEditorWindow->show();
     break;
   }
+  case QDBObjectItem::Sequence: {
+    QDBSequenceItem* newSequenceItem = databaseItem->createNewSequenceItem(DEF_SEQUENCE_NAME);
+    _sequenceEditForm->setObjItem(newSequenceItem);
+    _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Create);
+    _sequenceEditForm->objectToForm();
+    _sequenceEditForm->show();
+    break;
+  }
   default:
     break;
   }
@@ -307,6 +324,22 @@ void MainWindow::saveViewChanges()
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     _structureModel->appendItem(editForm->objItem(), currentItem);
     editForm->objItem()->insertMe();
+    refreshQueryEditorAssistance();
+  }
+}
+
+void MainWindow::saveSequenceChanges()
+{
+  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
+  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
+  if (action == AbstractDatabaseEditForm::Create) {
+    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    _structureModel->appendItem(editForm->objItem(), currentItem);
+    editForm->objItem()->insertMe();
+    refreshQueryEditorAssistance();
+  }
+  else {
+    editForm->objItem()->updateMe();
     refreshQueryEditorAssistance();
   }
 }

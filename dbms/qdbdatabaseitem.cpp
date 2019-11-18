@@ -81,14 +81,17 @@ bool QDBDatabaseItem::loadChildren()
 
   //Creating sequence items
   QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Sequences"), this);
+  sequenceFolderItem->setChildrenType(Sequence);
   loadSequenceItems(sequenceFolderItem);
 
   //Creating trigger items
   QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this);
+  triggerFolderItem->setChildrenType(Trigger);
   loadTriggerItems(triggerFolderItem);
 
   //Creating procedure items
   QFolderTreeItem* procedureFolderItem = new QFolderTreeItem(tr("Procedures"), this);
+  procedureFolderItem->setChildrenType(Procedure);
   loadProcedureItems(procedureFolderItem);
 
   return true;
@@ -183,13 +186,7 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     }
   }
   else if (isDriver(DRIVER_POSTGRES)) {
-    sql = "SELECT c.relname \"name\" FROM pg_class c WHERE c.relkind = 'S'";
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
-    while (resultSet.next()) {
-      QDBSequenceItem* sequenceItem
-          = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
-      sequenceItem->updateObjectName();
-    }
+//перенесено в СУБД-зависимого наследника
   }
   else if (isDriver(DRIVER_SQLITE)) {
     sql = "SELECT name, seq currentValue FROM sqlite_sequence";

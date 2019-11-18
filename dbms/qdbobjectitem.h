@@ -47,6 +47,7 @@ public:
   virtual QUrl objectUrl();
   virtual int type() = 0;
   virtual bool setData(int column, QVariant value, int role);
+  virtual bool refresh();
 
   virtual bool insertMe();
   virtual bool updateMe();
@@ -76,6 +77,8 @@ protected:
   QString fillSqlPattern(QString pattern);
   QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap);
   QString fillPatternWithFields(QString pattern);
+  QString fillWithModifiedFields(QString pattern);
+  QString filterUnmodifiedFields(QString pattern);
 public slots:
   void updateObjectName();
 

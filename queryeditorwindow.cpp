@@ -49,12 +49,6 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   connect(keyInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
           this, SLOT(onHelpKey()));
 
-  LKeySequenceInterceptor* keyInterceptor2 = new LKeySequenceInterceptor(this);
-  keyInterceptor2->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_T));
-  keyInterceptor2->applyToWidget(ui->teQueryEditor);
-  connect(keyInterceptor2, SIGNAL(keySequencePressed(QKeySequence)),
-          this, SLOT(onShowTableUnderCursor()));
-
   connect(ui->teQueryEditor, SIGNAL(wordClicked(QString, Qt::KeyboardModifiers)),
           this, SLOT(onFindObject(QString, Qt::KeyboardModifiers)));
 }

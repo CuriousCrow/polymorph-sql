@@ -15,6 +15,7 @@ RC_ICONS = icons/cc_16.ico
 
 SOURCES += main.cpp\
   core/localeventnotifier.cpp \
+  dbms/POSTGRES/qdbpostgresequence.cpp \
   forms/sequenceeditform.cpp \
         mainwindow.cpp \
     connectioneditdialog.cpp \
@@ -64,6 +65,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
     core/localeventnotifier.h \
+    dbms/POSTGRES/qdbpostgresequence.h \
     dbms/appconst.h \
     forms/sequenceeditform.h \
     tablebrowserwindow.h \

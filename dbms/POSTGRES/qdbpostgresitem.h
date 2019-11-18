@@ -20,6 +20,14 @@ protected:
   // QDBDatabaseItem interface
 public:
   virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent);
+  virtual QDBSequenceItem *createNewSequenceItem(QString caption, QObject *parent);
+
+  // QDBDatabaseItem interface
+protected:
+  void loadViewItems(QDBObjectItem *parentItem);
+  void loadSequenceItems(QDBObjectItem *parentItem);
+  void loadTriggerItems(QDBObjectItem *parentItem);
+  void loadProcedureItems(QDBObjectItem *parentItem);
 };
 
 #endif // QDBPOSTGRESITEM_H

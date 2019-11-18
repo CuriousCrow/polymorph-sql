@@ -19,6 +19,12 @@ public:
 public:
   virtual bool loadChildren();
   virtual int type();
+
+  // QDBObjectItem interface
+public:
+  bool insertMe();
+  bool updateMe();
+  bool deleteMe();
 };
 
 #endif // QDBSEQUENCEITEM_H

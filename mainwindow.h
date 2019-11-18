@@ -56,6 +56,8 @@ private slots:
 
   void saveViewChanges();
 
+  void saveSequenceChanges();
+
   void on_aOpenSqlEditor_triggered();
 
 private:

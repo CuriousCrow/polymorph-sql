@@ -21,6 +21,7 @@ private slots:
 
   void on_btnCancel_clicked();
 
+
 private:
   Ui::SequenceEditForm *ui;
 
