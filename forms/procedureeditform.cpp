@@ -18,6 +18,7 @@ ProcedureEditForm::~ProcedureEditForm()
 void ProcedureEditForm::objectToForm()
 {
   ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtSourceCode->setPlainText(_objItem->fieldValue(F_SOURCE_CODE).toString());
 }
 
 void ProcedureEditForm::formToObject()

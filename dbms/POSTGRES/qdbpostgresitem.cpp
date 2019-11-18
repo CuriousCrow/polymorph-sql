@@ -2,6 +2,7 @@
 #include "qdbpostgrestableitem.h"
 #include "qdbpostgresequence.h"
 #include "../appconst.h"
+#include "qdbpostgreqfunctionitem.h"
 
 
 QDBPostgresItem::QDBPostgresItem(QString caption, QObject *parent) : QDBDatabaseItem(caption, parent)
@@ -71,4 +72,15 @@ void QDBPostgresItem::loadTriggerItems(QDBObjectItem *parentItem)
 void QDBPostgresItem::loadProcedureItems(QDBObjectItem *parentItem)
 {
   QDBDatabaseItem::loadProcedureItems(parentItem);
+}
+
+
+QDBProcedureItem *QDBPostgresItem::createNewProcedureItem(QString caption, QObject *parent)
+{
+  return new QDBPostgreqFunctionItem(caption, parent);
+}
+
+QDBTriggerItem *QDBPostgresItem::createNewTriggerItem(QString caption, QObject *parent)
+{
+  return QDBDatabaseItem::createNewTriggerItem(caption, parent);
 }

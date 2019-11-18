@@ -5,6 +5,7 @@
 QDBProcedureItem::QDBProcedureItem(QString caption, QObject *parent):
   QDBObjectItem(caption, parent)
 {
+  registerField(F_SOURCE_CODE);
 }
 
 QDBProcedureItem::~QDBProcedureItem()

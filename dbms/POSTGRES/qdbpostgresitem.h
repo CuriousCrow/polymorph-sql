@@ -21,6 +21,8 @@ protected:
 public:
   virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent);
   virtual QDBSequenceItem *createNewSequenceItem(QString caption, QObject *parent);
+  virtual QDBProcedureItem *createNewProcedureItem(QString caption, QObject *parent);
+  virtual QDBTriggerItem *createNewTriggerItem(QString caption, QObject *parent);
 
   // QDBDatabaseItem interface
 protected:

@@ -157,7 +157,7 @@ void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
   if (sql.isEmpty()){
     QStringList viewNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
     foreach (QString name, viewNames){
-      QDBViewItem* viewItem = new QDBViewItem(name, parentItem);
+      QDBViewItem* viewItem = createNewViewItem(name, parentItem);
       viewItem->updateObjectName();
     }
   }
@@ -165,7 +165,7 @@ void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
       QDBViewItem* viewItem
-          = new QDBViewItem(resultSet.value(F_NAME).toString(), parentItem);
+          = createNewViewItem(resultSet.value(F_NAME).toString(), parentItem);
       viewItem->setFieldValue(F_QUERY_TEXT, resultSet.value(F_QUERY_TEXT).toString());
       viewItem->updateObjectName();
     }
@@ -181,7 +181,7 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
       QDBSequenceItem* sequenceItem
-          = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+          = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->updateObjectName();
     }
   }
@@ -193,7 +193,7 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
       QDBSequenceItem* sequenceItem
-          = new QDBSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+          = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
       sequenceItem->updateObjectName();
     }
@@ -207,7 +207,7 @@ void QDBDatabaseItem::loadTriggerItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
       QDBTriggerItem* sequenceItem
-          = new QDBTriggerItem(resultSet.value(F_NAME).toString(), parentItem);
+          = createNewTriggerItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->updateObjectName();
     }
   }
@@ -222,7 +222,7 @@ void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
   while (resultSet.next()){
     QDBProcedureItem* sequenceItem
-        = new QDBProcedureItem(resultSet.value(F_NAME).toString(), parentItem);
+        = createNewProcedureItem(resultSet.value(F_NAME).toString(), parentItem);
     sequenceItem->updateObjectName();
   }
 

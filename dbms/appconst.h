@@ -16,6 +16,7 @@
 #define F_MAX_VALUE "maxValue"
 #define F_STEP "step"
 #define F_START_VALUE "startValue"
+#define F_SOURCE_CODE "sourceCode"
 
 #define F_SIZE "size"
 #define F_NULL "null"
