@@ -1,5 +1,6 @@
 #include "qdbprocedureitem.h"
 #include "dbms/appconst.h"
+#include <QIcon>
 
 QDBProcedureItem::QDBProcedureItem(QString caption, QObject *parent):
   QDBObjectItem(caption, parent)
@@ -23,6 +24,8 @@ QVariant QDBProcedureItem::colData(int column, int role)
   switch (role) {
   case Qt::DisplayRole:
     return fieldValue(F_CAPTION);
+  case Qt::DecorationRole:
+    return QIcon(":/icons/function.png");
   default:
     return QVariant();
   }

@@ -1,6 +1,7 @@
 #include "qdbsequenceitem.h"
 #include "dbms/appconst.h"
 #include "qsqlqueryhelper.h"
+#include <QIcon>
 
 
 QDBSequenceItem::QDBSequenceItem(QString caption, QObject *parent):
@@ -29,6 +30,8 @@ QVariant QDBSequenceItem::colData(int column, int role)
   switch (role) {
   case Qt::DisplayRole:
     return fieldValue(F_CAPTION);
+  case Qt::DecorationRole:
+    return QIcon(":/icons/sequence.png");
   default:
     return QVariant();
   }

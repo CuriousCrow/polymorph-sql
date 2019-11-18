@@ -20,5 +20,8 @@
         <file>icons/run_script.png</file>
         <file>icons/cc_64.png</file>
         <file>icons/cc_16.ico</file>
+        <file>icons/function.png</file>
+        <file>icons/sequence.png</file>
+        <file>icons/trigger.png</file>
     </qresource>
 </RCC>
