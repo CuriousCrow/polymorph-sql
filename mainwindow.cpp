@@ -137,6 +137,9 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
 
     break;
   }
+  case QDBObjectItem::Folder:
+    ui->tvDatabaseStructure->setExpanded(index, !ui->tvDatabaseStructure->isExpanded(index));
+    break;
   case QDBObjectItem::Table:
   case QDBObjectItem::View: {
     //Show or add table editor
