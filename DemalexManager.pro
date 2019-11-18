@@ -16,7 +16,9 @@ RC_ICONS = icons/cc_16.ico
 SOURCES += main.cpp\
   core/localeventnotifier.cpp \
   dbms/POSTGRES/qdbpostgresequence.cpp \
+  forms/procedureeditform.cpp \
   forms/sequenceeditform.cpp \
+  forms/triggereditform.cpp \
         mainwindow.cpp \
     connectioneditdialog.cpp \
     tablebrowserwindow.cpp \
@@ -67,7 +69,9 @@ HEADERS  += mainwindow.h \
     core/localeventnotifier.h \
     dbms/POSTGRES/qdbpostgresequence.h \
     dbms/appconst.h \
+    forms/procedureeditform.h \
     forms/sequenceeditform.h \
+    forms/triggereditform.h \
     tablebrowserwindow.h \
     lsqltablemodel.h \
     qstructureitemmodel.h \
@@ -113,7 +117,9 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
+    forms/procedureeditform.ui \
     forms/sequenceeditform.ui \
+    forms/triggereditform.ui \
     tablebrowserwindow.ui \
     queryeditorwindow.ui \
     forms/vieweditdialog.ui \

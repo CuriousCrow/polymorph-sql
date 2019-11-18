@@ -15,17 +15,20 @@ QDBPostgresItem::~QDBPostgresItem()
 
 QString QDBPostgresItem::getViewListSql()
 {
-  return "select table_name \"name\", view_definition \"queryText\" from INFORMATION_SCHEMA.views where table_schema = 'public'";
+  return "select table_name \"name\", view_definition \"queryText\" "
+         "from INFORMATION_SCHEMA.views where table_schema = 'public'";
 }
 
 QString QDBPostgresItem::getSequenceListSql()
 {
-  return "SELECT sequence_name \"name\", start_value \"startValue\", minimum_value \"minValue\", maximum_value \"maxValue\", increment \"step\" FROM information_schema.sequences";
+  return "SELECT sequence_name \"name\", start_value \"startValue\", minimum_value \"minValue\", maximum_value \"maxValue\", increment \"step\" "
+         "FROM information_schema.sequences order by 1";
 }
 
 QString QDBPostgresItem::getTriggerListSql()
 {
-  return "SELECT distinct(trigger_name) \"name\" FROM information_schema.triggers order by 1";
+  return "SELECT distinct(trigger_name) \"name\" "
+         "FROM information_schema.triggers order by 1";
 }
 
 QString QDBPostgresItem::getProcedureListSql()

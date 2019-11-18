@@ -78,6 +78,14 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(_sequenceEditForm, SIGNAL(accepted()),
           this, SLOT(saveSequenceChanges()));
 
+  _procedureEditForm = new ProcedureEditForm(this);
+  connect(_procedureEditForm, SIGNAL(accepted()),
+          this, SLOT(saveProcedureChanges()));
+
+  _triggerEditForm = new TriggerEditForm(this);
+  connect(_triggerEditForm, SIGNAL(accepted()),
+          this, SLOT(saveTriggerChanges()));
+
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(removeTabByIndex(int)));
@@ -137,6 +145,8 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     break;
   }
   case QDBObjectItem::Sequence:
+  case QDBObjectItem::Procedure:
+  case QDBObjectItem::Trigger:
     showEditorForCurrentItem();
     break;
   }
@@ -220,6 +230,20 @@ void MainWindow::showEditorForCurrentItem()
     _sequenceEditForm->objectToForm();
     _sequenceEditForm->show();
     break;
+  case QDBObjectItem::Procedure:
+    currentItem->refresh();
+    _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
+    _procedureEditForm->setObjItem(currentItem);
+    _procedureEditForm->objectToForm();
+    _procedureEditForm->show();
+    break;
+  case QDBObjectItem::Trigger:
+    currentItem->refresh();
+    _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
+    _triggerEditForm->setObjItem(currentItem);
+    _triggerEditForm->objectToForm();
+    _triggerEditForm->show();
+    break;
   default:
     QMessageBox::warning(this, TITLE_WARNING, "Edit form isn't supported yet");
   }
@@ -291,6 +315,22 @@ void MainWindow::showCreateItemEditor()
     _sequenceEditForm->show();
     break;
   }
+  case QDBObjectItem::Procedure: {
+    QDBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME);
+    _procedureEditForm->setObjItem(newProcedureItem);
+    _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Create);
+    _procedureEditForm->objectToForm();
+    _procedureEditForm->show();
+    break;
+  }
+  case QDBObjectItem::Trigger: {
+    QDBTriggerItem* newTriggerItem = databaseItem->createNewTriggerItem(DEF_TRIGGER_NAME);
+    _triggerEditForm->setObjItem(newTriggerItem);
+    _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Create);
+    _triggerEditForm->objectToForm();
+    _triggerEditForm->show();
+    break;
+  }
   default:
     break;
   }
@@ -342,6 +382,16 @@ void MainWindow::saveSequenceChanges()
     editForm->objItem()->updateMe();
     refreshQueryEditorAssistance();
   }
+}
+
+void MainWindow::saveProcedureChanges()
+{
+
+}
+
+void MainWindow::saveTriggerChanges()
+{
+
 }
 
 QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)

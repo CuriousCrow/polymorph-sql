@@ -6,12 +6,14 @@
 #include <QSqlTableModel>
 #include <lsqltablemodel.h>
 #include "connectioneditdialog.h"
-#include "forms/vieweditdialog.h"
 #include <QMenu>
 #include "qstructureitemmodel.h"
 #include "queryeditorwindow.h"
 #include "forms/tableeditform.h"
 #include "forms/sequenceeditform.h"
+#include "forms/procedureeditform.h"
+#include "forms/vieweditdialog.h"
+#include "forms/triggereditform.h"
 #include "dbms/qdbtableitem.h"
 #include "core/localeventnotifier.h"
 
@@ -58,6 +60,10 @@ private slots:
 
   void saveSequenceChanges();
 
+  void saveProcedureChanges();
+
+  void saveTriggerChanges();
+
   void on_aOpenSqlEditor_triggered();
 
 private:
@@ -67,7 +73,9 @@ private:
   ConnectionEditDialog* _connectionEditDialog;
   ViewEditDialog* _viewEditorWindow;
   TableEditForm* _tableEditForm;
+  ProcedureEditForm* _procedureEditForm;
   SequenceEditForm* _sequenceEditForm;
+  TriggerEditForm* _triggerEditForm;
   QMenu* _itemContextMenu;
   QMenu* _folderContextMenu;
   QAction* _editAction;
