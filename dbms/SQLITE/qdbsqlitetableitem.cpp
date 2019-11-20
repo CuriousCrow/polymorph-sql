@@ -7,7 +7,7 @@
 
 QDBSqliteTableItem::QDBSqliteTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
 {
-  _columnsModel = new SqliteTableColumnsModel();
+  _columnsModel = new SqlColumnModel();
 }
 
 void QDBSqliteTableItem::reloadColumnsModel()
@@ -18,16 +18,16 @@ void QDBSqliteTableItem::reloadColumnsModel()
         connectionName());
   for (int i=0; i<sqlColumns.count(); i++) {
     QSqlField field = sqlColumns.field(i);
-    ColumnType colType = NoType;
+    int colType = NoType;
     switch (field.type()) {
     case QVariant::String:
-      colType = ColumnType::Varchar;
+      colType = colTypeFromString("TEXT");
       break;
     case QVariant::Int:
-      colType = ColumnType::Integer;
+      colType = colTypeFromString("INTEGER");
       break;
     case QVariant::Double:
-      colType = ColumnType::Numeric;
+      colType = colTypeFromString("REAL");
       break;
     default:
       break;

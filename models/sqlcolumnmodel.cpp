@@ -1,9 +1,15 @@
 #include "sqlcolumnmodel.h"
 #include <QDebug>
+#include "qknowledgebase.h"
 
 SqlColumnModel::SqlColumnModel(QObject *parent) : QAbstractTableModel(parent)
 {
 
+}
+
+QString SqlColumnModel::columnTypeCaption(int type) const
+{
+  return QKnowledgeBase::kb()->typeName(type);
 }
 
 void SqlColumnModel::addSqlColumn(SqlColumn col, bool init)
@@ -53,12 +59,12 @@ QHash<SqlColumn, SqlColumn> SqlColumnModel::columnChanges()
       }
       //New column
       else {
-        result.insert(SqlColumn("Empty_" + QString::number(colId), ColumnType::NoType), _changes.value(colId));
+        result.insert(SqlColumn("Empty_" + QString::number(colId), 0), _changes.value(colId));
       }
     }
     //Removed column
     else {
-      result.insert(_dataHash.value(colId), SqlColumn("", ColumnType::NoType));
+      result.insert(_dataHash.value(colId), SqlColumn("", 0));
     }
   }
   return result;
@@ -98,17 +104,19 @@ SqlColumnModel::EditType SqlColumnModel::editType()
 
 bool SqlColumnModel::hasOnlyIntegerPK()
 {
-  int pkCount = 0;
-  int intPkCount = 0;
-  for(int i=0; i<rowCount(); i++) {
-    SqlColumn col = columnByIndex(i);
-    if (col.isPrimary()) {
-      if (col.type() == ColumnType::Integer)
-        intPkCount++;
-      pkCount++;
-    }
-  }
-  return (pkCount == 1) && (intPkCount == 1);
+//        //TODO: Надо разобраться
+//  int pkCount = 0;
+//  int intPkCount = 0;
+//  for(int i=0; i<rowCount(); i++) {
+//    SqlColumn col = columnByIndex(i);
+//    if (col.isPrimary()) {
+//      if (col.type() == ColumnType::Integer)
+//        intPkCount++;
+//      pkCount++;
+//    }
+//  }
+//  return (pkCount == 1) && (intPkCount == 1);
+  return true;
 }
 
 void SqlColumnModel::clear()
@@ -141,7 +149,7 @@ QVariant SqlColumnModel::data(const QModelIndex &index, int role) const
   if (_changes.contains(_idxList.at(index.row()))) {
     col =_changes.value(_idxList.at(index.row()));
     SqlColumn oldCol = _dataHash.value(_idxList.at(index.row()));
-    if (oldCol.type() == ColumnType::NoType) {
+    if (oldCol.type() == NoType) {
       modified = true;
     }
     else {
@@ -153,8 +161,8 @@ QVariant SqlColumnModel::data(const QModelIndex &index, int role) const
     col = _dataHash.value(_idxList.at(index.row()));
   if (role == Qt::DisplayRole || role == Qt::EditRole) {
     QVariant resVal = col.valueByIndex(index.column());
-    if (index.column() == 2)
-      resVal = columnTypeCaption((ColumnType)resVal.toInt());
+    if (index.column() == COL_IDX_TYPE)
+      resVal = columnTypeCaption(resVal.toInt());
     return resVal;
   }
   else if (role == Qt::BackgroundColorRole) {
@@ -185,7 +193,7 @@ bool SqlColumnModel::setData(const QModelIndex &index, const QVariant &value, in
       col.setName(value.toString());
       break;
     case 2:
-      col.setType(static_cast<ColumnType>(value.toInt()));
+      col.setType(value.toInt());
       break;
     case 3:
       col.setLength(value.toInt());
@@ -222,7 +230,7 @@ QVariant SqlColumnModel::headerData(int section, Qt::Orientation orientation, in
       return trUtf8("Primary key");
     case 1:
       return trUtf8("Column name");
-    case COL_IDX_TYPE:
+    case 2:
       return trUtf8("Type");
     case 3:
       return trUtf8("Length");
@@ -251,7 +259,7 @@ bool SqlColumnModel::insertRows(int row, int count, const QModelIndex &parent)
 
   emit beginInsertRows(QModelIndex(), row, row);
   QString newColname = trUtf8("Column") + QString::number(rowCount() + 1);
-  SqlColumn newCol(newColname, ColumnType::Integer);
+  SqlColumn newCol(newColname, NoType);
   qlonglong newId = getNextId();
   _idxList.insert(row, newId);
   _changes.insert(newId, newCol);
@@ -296,7 +304,7 @@ SqlColumn::SqlColumn()
   _autoIncrement = false;
 }
 
-SqlColumn::SqlColumn(QString name, ColumnType type)
+SqlColumn::SqlColumn(QString name, int type)
 {
   _name = name;
   _type = type;
@@ -330,12 +338,12 @@ void SqlColumn::setName(const QString &name)
   _name = name;
 }
 
-ColumnType SqlColumn::type() const
+int SqlColumn::type() const
 {
   return _type;
 }
 
-void SqlColumn::setType(const ColumnType &type)
+void SqlColumn::setType(const int &type)
 {
   _type = type;
 }
@@ -432,160 +440,10 @@ bool SqlColumn::operator ==(const SqlColumn &other)
       && (this->autoIncrement() == other.autoIncrement());
 }
 
-SqliteTableColumnsModel::SqliteTableColumnsModel(QObject *parent)
-  : SqlColumnModel(parent)
-{
-}
-
-ColumnTypes SqliteTableColumnsModel::supportedColumnTypes()
-{
-  return ColumnType::Varchar | ColumnType::Integer | ColumnType::Numeric | ColumnType::Blob;
-}
-
-QString SqliteTableColumnsModel::columnTypeCaption(const ColumnType type) const
-{
-  switch (type) {
-  case Varchar:
-    return "TEXT";
-  case Integer:
-    return "INTEGER";
-  case Numeric:
-    return "REAL";
-  case Blob:
-    return "BLOB";
-  default:
-    //Другие типы не поддерживаются
-    Q_ASSERT(false);
-  }
-  return "";
-}
-
 QDebug operator<<(QDebug dbg, const SqlColumn &column)
 {
   dbg.noquote().nospace() << "Column {name: " << column.name() << ", type:" << column.type()
                           << ", length: " << column.length() << ", notNull: " << column.notNull()
                           << ", defaultValue: " << column.defaultValue() << ", autoIncrement: " << column.autoIncrement() + "}";
   return dbg;
-}
-
-MysqlTableColumnModel::MysqlTableColumnModel(QObject *parent) : SqlColumnModel(parent)
-{
-}
-
-ColumnTypes MysqlTableColumnModel::supportedColumnTypes()
-{
-  return BigInt | Integer | SmallInt | Varchar | Numeric | Char | Date |
-      Time | Timestamp | Blob;
-}
-
-QString MysqlTableColumnModel::columnTypeCaption(const ColumnType type) const
-{
-  switch (type) {
-  case BigInt:
-    return "BIGINT";
-  case Integer:
-    return "INTEGER";
-  case SmallInt:
-    return "SMALLINT";
-  case Varchar:
-    return "VARCHAR";
-  case Numeric:
-    return "NUMERIC";
-  case Char:
-    return "CHAR";
-  case Date:
-    return "DATE";
-  case Time:
-    return "TIME";
-  case Timestamp:
-    return "TIMESTAMP";
-  case Blob:
-    return "BLOB";
-  default:
-    //Другие типы не поддерживаются
-    Q_ASSERT(false);
-  }
-  return "";
-}
-
-PostgresTableColumnModel::PostgresTableColumnModel(QObject *parent) : SqlColumnModel(parent)
-{
-}
-
-ColumnTypes PostgresTableColumnModel::supportedColumnTypes()
-{
-  return BigInt | Integer | SmallInt | Varchar | Numeric | Char | Date |
-      Time | Timestamp | Blob | Boolean;
-}
-
-QString PostgresTableColumnModel::columnTypeCaption(const ColumnType type) const
-{
-  switch (type) {
-  case BigInt:
-    return "BIGINT";
-  case Integer:
-    return "INTEGER";
-  case SmallInt:
-    return "SMALLINT";
-  case Varchar:
-    return "VARCHAR";
-  case Numeric:
-    return "NUMERIC";
-  case Char:
-    return "CHAR";
-  case Date:
-    return "DATE";
-  case Time:
-    return "TIME";
-  case Timestamp:
-    return "TIMESTAMP";
-  case Blob:
-    return "BLOB";
-  case Boolean:
-    return "BOOLEAN";
-  default:
-    //Другие типы не поддерживаются
-    Q_ASSERT(false);
-  }
-  return "";
-}
-
-FirebirdTableColumnModel::FirebirdTableColumnModel(QObject *parent) : SqlColumnModel(parent)
-{
-}
-
-ColumnTypes FirebirdTableColumnModel::supportedColumnTypes()
-{
-  return BigInt | Integer | SmallInt | Varchar | Numeric | Char | Date |
-      Time | Timestamp | Blob;
-}
-
-QString FirebirdTableColumnModel::columnTypeCaption(const ColumnType type) const
-{
-  switch (type) {
-  case BigInt:
-    return "BIGINT";
-  case Integer:
-    return "INTEGER";
-  case SmallInt:
-    return "SMALLINT";
-  case Varchar:
-    return "VARCHAR";
-  case Numeric:
-    return "NUMERIC";
-  case Char:
-    return "CHAR";
-  case Date:
-    return "DATE";
-  case Time:
-    return "TIME";
-  case Timestamp:
-    return "TIMESTAMP";
-  case Blob:
-    return "BLOB";
-  default:
-    //Другие типы не поддерживаются
-    Q_ASSERT(false);
-  }
-  return "";
 }

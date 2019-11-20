@@ -5,7 +5,7 @@
 
 QDBMysqlTableItem::QDBMysqlTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
 {
-  _columnsModel = new MysqlTableColumnModel();
+  _columnsModel = new SqlColumnModel();
 }
 
 QDBMysqlTableItem::~QDBMysqlTableItem()
@@ -28,7 +28,7 @@ bool QDBMysqlTableItem::updateMe()
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
   foreach (SqlColumn fromCol, changes.keys()) {
     SqlColumn toCol = changes[fromCol];
-    if (fromCol.type() == ColumnType::NoType) {
+    if (fromCol.type() == NoType) {
       //Добавление колонки
       qDebug() << "Add col:" << toCol;
       QString sql = "alter table #caption.new# add column %1";
@@ -36,7 +36,7 @@ bool QDBMysqlTableItem::updateMe()
       QString preparedSql = fillPatternWithFields(sql).arg(colDef);
       QSqlQueryHelper::execSql(preparedSql, connectionName());
     }
-    else if (toCol.type() == ColumnType::NoType) {
+    else if (toCol.type() == NoType) {
       //Удаление колонки
       qDebug() << "Drop col:" << fromCol;
       QString sql = "alter table #caption.old# drop column %1";
@@ -101,44 +101,6 @@ QString QDBMysqlTableItem::createTableQuery(QString table)
   }
   QString preparedSql = createPattern.arg(table).arg(colDefList.join(", "));
   return preparedSql;
-}
-
-ColumnType QDBMysqlTableItem::colTypeFromString(QString strType)
-{
-  qDebug() << "Field type:" << strType;
-  if (strType.compare("varchar", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Varchar;
-  }
-  else if (strType.compare("bigint", Qt::CaseInsensitive) == 0) {
-    return ColumnType::BigInt;
-  }
-  else if (strType.compare("int", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Integer;
-  }
-  else if (strType.compare("smallint", Qt::CaseInsensitive) == 0) {
-    return ColumnType::SmallInt;
-  }
-  else if (strType.compare("numeric", Qt::CaseInsensitive) == 0
-           || strType.compare("decimal", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Numeric;
-  }
-  else if (strType.compare("char", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Char;
-  }
-  else if (strType.compare("date", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Date;
-  }
-  else if (strType.compare("time", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Time;
-  }
-  else if (strType.compare("timestamp", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Timestamp;
-  }
-  else if (strType.compare("blob", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Blob;
-  }
-  Q_ASSERT_X(false, "colTypeFromString", "Unsupported field type");
-  return ColumnType::NoType;
 }
 
 QString QDBMysqlTableItem::columnDef(const SqlColumn &col)

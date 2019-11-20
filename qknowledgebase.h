@@ -16,6 +16,11 @@ public:
 
   static QKnowledgeBase* kb(QObject* parent = nullptr);
   LSqlTableModel* mKeywords;
+  LSqlTableModel* mTypes;
+
+  QHash<int, QString> typesHash(QString dbms);
+  QString typeName(int type);
+  int typeByName(QString dbms, QString name);
 private:
   static QKnowledgeBase* _kb;
 signals:

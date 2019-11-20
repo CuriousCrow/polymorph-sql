@@ -17,6 +17,17 @@ QDBObjectItem::~QDBObjectItem()
 {
 }
 
+void QDBObjectItem::setDriverName(QString driverName)
+{
+  _driverName = driverName;
+}
+
+QString QDBObjectItem::driverName()
+{
+  QString res = objectUrl().scheme();
+  return res.isEmpty() ? _driverName : res.toUpper();
+}
+
 QUrl QDBObjectItem::objectUrl()
 {
   if (parent() && parent()->inherits("LAbstractTreeItem"))

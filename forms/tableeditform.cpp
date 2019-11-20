@@ -2,6 +2,7 @@
 #include "ui_tableeditform.h"
 #include <QMessageBox>
 #include "../dbms/appconst.h"
+#include "../qknowledgebase.h"
 
 TableEditForm::TableEditForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),
@@ -24,7 +25,7 @@ void TableEditForm::objectToForm()
   ui->lineEdit->setText(tableName);
   QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(_objItem);
   tableItem->reloadColumnsModel();
-  _colTypeDelegate->setItemsHash(tableItem->getColumnTypesHash());
+  _colTypeDelegate->setItemsHash(QKnowledgeBase::kb()->typesHash(_objItem->driverName()));
   ui->tableView->setModel(tableItem->columnsModel());
 }
 

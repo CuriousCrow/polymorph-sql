@@ -4,7 +4,7 @@
 
 QDBFirebirdTableItem::QDBFirebirdTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
 {
-  _columnsModel = new FirebirdTableColumnModel();
+  _columnsModel = new SqlColumnModel();
 }
 
 QDBFirebirdTableItem::~QDBFirebirdTableItem()
@@ -61,43 +61,4 @@ void QDBFirebirdTableItem::reloadColumnsModel()
     col.setNotNull(query.value("cnot_null").toBool());
     _columnsModel->addSqlColumn(col, true);
   }
-}
-
-ColumnType QDBFirebirdTableItem::colTypeFromString(QString strType)
-{
-  qDebug() << "String coltype:" << strType;
-  if (strType.compare("BIGINT", Qt::CaseInsensitive) == 0) {
-    return ColumnType::BigInt;
-  }
-  else if (strType.compare("INTEGER", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Integer;
-  }
-  else if (strType.compare("SMALLINT", Qt::CaseInsensitive) == 0) {
-    return ColumnType::SmallInt;
-  }
-  else if (strType.compare("VARCHAR", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Varchar;
-  }
-  else if (strType.startsWith("TIMESTAMP", Qt::CaseInsensitive)) {
-    return ColumnType::Timestamp;
-  }
-  else if (strType.startsWith("TIME", Qt::CaseInsensitive)) {
-    return ColumnType::Time;
-  }
-  else if (strType.startsWith("DATE", Qt::CaseInsensitive)) {
-    return ColumnType::Date;
-  }
-  else if (strType.compare("CHAR", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Char;
-  }
-  else if (strType.compare("BLOB", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Blob;
-  }
-  else if (strType.compare("FLOAT", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Numeric;
-  }
-  else {
-    Q_ASSERT_X(false, "colTypeFromString", "Unknown data type");
-  }
-  return ColumnType::NoType;
 }

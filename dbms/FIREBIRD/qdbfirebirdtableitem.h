@@ -18,7 +18,6 @@ public:
   virtual void reloadColumnsModel();
 private:
   QString createTableQuery(QString table);
-  ColumnType colTypeFromString(QString strType);
   QString columnDef(const SqlColumn &col);
 };
 

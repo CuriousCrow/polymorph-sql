@@ -296,6 +296,7 @@ void MainWindow::showCreateItemEditor()
   switch (folderItem->childrenType()) {
   case QDBObjectItem::Table: {
     QDBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME);
+    newTableItem->setDriverName(databaseItem->driverName());
     _tableEditForm->setObjItem(newTableItem);
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _tableEditForm->objectToForm();

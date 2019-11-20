@@ -6,7 +6,7 @@
 
 QDBPostgresTableItem::QDBPostgresTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
 {
-  _columnsModel = new PostgresTableColumnModel();
+  _columnsModel = new SqlColumnModel();
 }
 
 QDBPostgresTableItem::~QDBPostgresTableItem()
@@ -41,7 +41,7 @@ bool QDBPostgresTableItem::updateMe()
   foreach (SqlColumn fromCol, changes.keys()) {
     SqlColumn toCol = changes[fromCol];
     //    qDebug() << "Changes:" << fromCol << toCol;
-    if (fromCol.type() == ColumnType::NoType) {
+    if (fromCol.type() == NoType) {
       //Добавление колонки
       qDebug() << "Add col:" << toCol;
       QString sql = "ALTER TABLE \"#caption.new#\" ADD COLUMN %1";
@@ -49,7 +49,7 @@ bool QDBPostgresTableItem::updateMe()
       QString preparedSql = fillPatternWithFields(sql).arg(colDef);
       QSqlQueryHelper::execSql(preparedSql, connectionName());
     }
-    else if (toCol.type() == ColumnType::NoType) {
+    else if (toCol.type() == NoType) {
       //Удаление колонки
       qDebug() << "Drop col:" << fromCol;
       QString sql = "ALTER TABLE \"#caption.new#\" DROP COLUMN %1";
@@ -138,49 +138,6 @@ QString QDBPostgresTableItem::createTableQuery(QString table)
   return preparedSql;
 }
 
-ColumnType QDBPostgresTableItem::colTypeFromString(QString strType)
-{
-  qDebug() << "String coltype:" << strType;
-  if (strType.compare("bigint", Qt::CaseInsensitive) == 0) {
-    return ColumnType::BigInt;
-  }
-  else if (strType.compare("integer", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Integer;
-  }
-  else if (strType.compare("smallint", Qt::CaseInsensitive) == 0) {
-    return ColumnType::SmallInt;
-  }
-  else if (strType.compare("character varying", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Varchar;
-  }
-  else if (strType.compare("boolean", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Boolean;
-  }
-  else if (strType.startsWith("timestamp", Qt::CaseInsensitive)) {
-    return ColumnType::Timestamp;
-  }
-  else if (strType.startsWith("time", Qt::CaseInsensitive)) {
-    return ColumnType::Time;
-  }
-  else if (strType.startsWith("date", Qt::CaseInsensitive)) {
-    return ColumnType::Date;
-  }
-  else if (strType.compare("\"char\"", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Char;
-  }
-  else if (strType.compare("blob", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Blob;
-  }
-  else if (strType.compare("numeric", Qt::CaseInsensitive) == 0) {
-    return ColumnType::Numeric;
-  }
-  else {
-    Q_ASSERT_X(false, "colTypeFromString", "Unknown data type");
-  }
-  return ColumnType::NoType;
-}
-
-
 QString QDBPostgresTableItem::columnDef(const SqlColumn &col)
 {
   QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
@@ -195,24 +152,24 @@ QString QDBPostgresTableItem::columnDef(const SqlColumn &col)
 
 QString QDBPostgresTableItem::typeDef(const SqlColumn &col)
 {
-  switch (col.type()) {
-  case ColumnType::BigInt:
-    return "bigint";
-  case ColumnType::Integer:
-    return "integer";
-  case ColumnType::SmallInt:
-    return "smallint";
-  case ColumnType::Varchar:
-    return QString("varchar(%1)").arg(col.length());
-  case ColumnType::Boolean:
-    return "boolean";
-  case ColumnType::Date:
-    return "date";
-  case ColumnType::Time:
-    return "time";
-  default:
+//  switch (col.type()) {
+//  case ColumnType::BigInt:
+//    return "bigint";
+//  case ColumnType::Integer:
+//    return "integer";
+//  case ColumnType::SmallInt:
+//    return "smallint";
+//  case ColumnType::Varchar:
+//    return QString("varchar(%1)").arg(col.length());
+//  case ColumnType::Boolean:
+//    return "boolean";
+//  case ColumnType::Date:
+//    return "date";
+//  case ColumnType::Time:
+//    return "time";
+//  default:
     return "";
-  }
+//  }
 }
 
 QString QDBPostgresTableItem::defaultDef(const SqlColumn &col)
@@ -220,18 +177,18 @@ QString QDBPostgresTableItem::defaultDef(const SqlColumn &col)
   if (col.defaultValue().isNull())
     return "";
 
-  switch (col.type()) {
-  case ColumnType::BigInt:
-  case ColumnType::Integer:
-  case ColumnType::SmallInt:
-    return col.defaultValue().toString();
-  case ColumnType::Varchar:
-    return "'" + col.defaultValue().toString() + "'";
-  case ColumnType::Date:
-    return "'" + col.defaultValue().toString() + "'";
-  case ColumnType::Time:
-    return "'" + col.defaultValue().toString() + "'";
-  default:
+//  switch (col.type()) {
+//  case ColumnType::BigInt:
+//  case ColumnType::Integer:
+//  case ColumnType::SmallInt:
+//    return col.defaultValue().toString();
+//  case ColumnType::Varchar:
+//    return "'" + col.defaultValue().toString() + "'";
+//  case ColumnType::Date:
+//    return "'" + col.defaultValue().toString() + "'";
+//  case ColumnType::Time:
+//    return "'" + col.defaultValue().toString() + "'";
+//  default:
     return "";
-  }
+//  }
 }

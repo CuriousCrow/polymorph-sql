@@ -13,8 +13,9 @@ public:
   virtual ~QDBTableItem() override;
   virtual void reloadColumnsModel();
   QAbstractTableModel* columnsModel();
+  int colTypeFromString(QString name);
   void addDefaultColumn();
-  QHash<int, QString> getColumnTypesHash();
+//  QHash<int, QString> getColumnTypesHash();
 
   // QDBObjectItem interface
 public:

@@ -42,6 +42,8 @@ public:
   QDBObjectItem(QString caption, QObject* parent = nullptr);
   ~QDBObjectItem();
   QString connectionName(){ return _connectionName; }
+  void setDriverName(QString driverName);
+  QString driverName();
 
   virtual bool loadChildren() = 0;
   virtual QUrl objectUrl();
@@ -86,6 +88,8 @@ public slots:
 public:
   virtual int colCount();
   virtual QVariant colData(int column, int role);
+private:
+  QString _driverName;
 };
 
 #endif // QDBOBJECTITEM_H

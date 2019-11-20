@@ -21,7 +21,6 @@ protected:
   QString caption();
 private:
   QString createTableQuery(QString table);
-  ColumnType colTypeFromString(QString strType);
   QString columnDef(const SqlColumn &col);
   QString typeDef(const SqlColumn &col);
   QString defaultDef(const SqlColumn &col);

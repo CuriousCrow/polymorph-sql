@@ -4,38 +4,20 @@
 #include <QAbstractTableModel>
 #include <QColor>
 
+#define NoType 0
 #define COL_IDX_TYPE 2
-
-enum ColumnType {
-  NoType     = 0x0,
-  BigInt     = 0x1,
-  Integer    = 0x2,
-  SmallInt   = 0x4,
-  Varchar    = 0x8,
-  Numeric    = 0x10,
-  Char       = 0x20,
-  Date       = 0x40,
-  Time       = 0x80,
-  Timestamp  = 0x100,
-  Boolean    = 0x200,
-  Blob       = 0x400,
-  AllTypes   = 0xFFF
-};
-
-Q_DECLARE_FLAGS(ColumnTypes, ColumnType)
-Q_DECLARE_OPERATORS_FOR_FLAGS(ColumnTypes)
 
 class SqlColumn
 {
 public:
   SqlColumn();
-  SqlColumn(QString name, ColumnType type);
+  SqlColumn(QString name, int type);
   SqlColumn(const SqlColumn &other);
   QString name() const;
   void setName(const QString &name);
 
-  ColumnType type() const;
-  void setType(const ColumnType &type);
+  int type() const;
+  void setType(const int &type);
 
   int length() const;
   void setLength(int length);
@@ -61,7 +43,7 @@ public:
 
 private:
   QString _name;
-  ColumnType _type;
+  int _type;
   int _length;
   int _precision;
   bool _notNull;
@@ -93,8 +75,8 @@ public:
     DropTable = 3
   };
   SqlColumnModel(QObject *parent = Q_NULLPTR);
-  virtual ColumnTypes supportedColumnTypes() = 0;
-  virtual QString columnTypeCaption(const ColumnType type) const = 0;
+//  virtual ColumnTypes supportedColumnTypes() = 0;
+  virtual QString columnTypeCaption(int type) const;
   void addSqlColumn(SqlColumn col, bool init = false);
   SqlColumn columnByIndex(int idx);
   int rowByName(const QString name);
@@ -125,46 +107,6 @@ private:
   QHash<qlonglong, SqlColumn> _changes;
   QColor _modifiedColor = Qt::green;
   QColor _errorColor = Qt::red;
-};
-
-class SqliteTableColumnsModel : public SqlColumnModel
-{
-  Q_OBJECT
-public:
-  SqliteTableColumnsModel(QObject* parent = nullptr);
-public:
-  virtual ColumnTypes supportedColumnTypes();
-  virtual QString columnTypeCaption(const ColumnType type) const;
-};
-
-class MysqlTableColumnModel : public SqlColumnModel
-{
-  Q_OBJECT
-public:
-  MysqlTableColumnModel(QObject* parent = nullptr);
-public:
-  virtual ColumnTypes supportedColumnTypes();
-  virtual QString columnTypeCaption(const ColumnType type) const;
-};
-
-class PostgresTableColumnModel : public SqlColumnModel
-{
-  Q_OBJECT
-public:
-  PostgresTableColumnModel(QObject* parent = nullptr);
-public:
-  virtual ColumnTypes supportedColumnTypes();
-  virtual QString columnTypeCaption(const ColumnType type) const;
-};
-
-class FirebirdTableColumnModel : public SqlColumnModel
-{
-  Q_OBJECT
-public:
-  FirebirdTableColumnModel(QObject* parent = nullptr);
-public:
-  virtual ColumnTypes supportedColumnTypes();
-  virtual QString columnTypeCaption(const ColumnType type) const;
 };
 
 #endif // SQLCOLUMNMODEL_H

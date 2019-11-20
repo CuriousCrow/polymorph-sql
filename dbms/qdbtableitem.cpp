@@ -5,6 +5,7 @@
 #include <QSqlField>
 #include <QSqlRecord>
 #include "dbms/appconst.h"
+#include "qknowledgebase.h"
 
 
 QDBTableItem::QDBTableItem(QString caption, QObject* parent):
@@ -26,6 +27,11 @@ QAbstractTableModel *QDBTableItem::columnsModel()
   return _columnsModel;
 }
 
+int QDBTableItem::colTypeFromString(QString name)
+{
+  return QKnowledgeBase::kb()->typeByName(driverName(), name.toUpper());
+}
+
 void QDBTableItem::addDefaultColumn()
 {  
   int newColNumber = 1;
@@ -34,21 +40,21 @@ void QDBTableItem::addDefaultColumn()
       break;
     newColNumber++;
   }
-  _columnsModel->addSqlColumn(SqlColumn(DEF_COLUMN_NAME + QString::number(newColNumber), ColumnType::Varchar));
+  _columnsModel->addSqlColumn(SqlColumn(DEF_COLUMN_NAME + QString::number(newColNumber), NoType));
 }
 
-QHash<int, QString> QDBTableItem::getColumnTypesHash()
-{
-  QHash<int, QString> resHash;
-  int val = 1;
-  while (val <= ColumnType::Blob) {
-    if (_columnsModel->supportedColumnTypes().testFlag(static_cast<ColumnType>(val))) {
-      resHash.insert(val, _columnsModel->columnTypeCaption(static_cast<ColumnType>(val)));
-    }
-    val *= 2;
-  }
-  return resHash;
-}
+//QHash<int, QString> QDBTableItem::getColumnTypesHash()
+//{
+//  QHash<int, QString> resHash;
+//  int val = 1;
+//  while (val <= ColumnType::Blob) {
+//    if (_columnsModel->supportedColumnTypes().testFlag(static_cast<ColumnType>(val))) {
+//      resHash.insert(val, _columnsModel->columnTypeCaption(static_cast<ColumnType>(val)));
+//    }
+//    val *= 2;
+//  }
+//  return resHash;
+//}
 
 bool QDBTableItem::loadChildren()
 {

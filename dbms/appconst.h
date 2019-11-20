@@ -17,6 +17,7 @@
 #define F_STEP "step"
 #define F_START_VALUE "startValue"
 #define F_SOURCE_CODE "sourceCode"
+#define F_DBMS "dbms"
 
 #define F_SIZE "size"
 #define F_NULL "null"
@@ -32,6 +33,7 @@
 
 #define T_KEYWORDS "t_keywords"
 #define T_DATABASE "t_database"
+#define T_TYPES "t_types"
 
 #define DEF_DATABASE_NAME "New database"
 #define DEF_VIEW_NAME "NewView"
