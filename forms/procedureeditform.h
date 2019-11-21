@@ -18,6 +18,7 @@ public:
 
 private:
   Ui::ProcedureEditForm *ui;
+  void reloadTypes();
 
   // AbstractDatabaseEditForm interface
 public:
@@ -26,6 +27,7 @@ public:
 private slots:
   void on_btnApply_clicked();
   void on_btnCancel_clicked();
+  void onUserActionChanged();
 };
 
 #endif // PROCEDUREEDITFORM_H

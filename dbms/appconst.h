@@ -17,6 +17,8 @@
 #define F_STEP "step"
 #define F_START_VALUE "startValue"
 #define F_SOURCE_CODE "sourceCode"
+#define F_LANGUAGE "language"
+#define F_RETURN_TYPE "returnType"
 #define F_DBMS "dbms"
 
 #define F_SIZE "size"

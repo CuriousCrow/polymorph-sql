@@ -321,6 +321,7 @@ void MainWindow::showCreateItemEditor()
   }
   case QDBObjectItem::Procedure: {
     QDBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME);
+    newProcedureItem->setDriverName(databaseItem->driverName());
     _procedureEditForm->setObjItem(newProcedureItem);
     _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _procedureEditForm->objectToForm();

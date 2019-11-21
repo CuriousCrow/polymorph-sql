@@ -11,13 +11,15 @@ QDBPostgreqFunctionItem::QDBPostgreqFunctionItem(QString caption, QObject *paren
 
 bool QDBPostgreqFunctionItem::refresh()
 {
-  QString sql = "SELECT routine_definition \"sourceCode\" FROM information_schema.routines "
+  QString sql = "SELECT data_type \"returnType\", external_language \"language\", routine_definition \"sourceCode\" FROM information_schema.routines "
                 "WHERE routine_type='FUNCTION' and specific_schema='public' "
                 "and routine_name='#caption#'";
   QString preparedSql = fillSqlPattern(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_SOURCE_CODE, resultSet.value(F_SOURCE_CODE));
+    setFieldValue(F_LANGUAGE, resultSet.value(F_LANGUAGE));
+    setFieldValue(F_RETURN_TYPE, resultSet.value(F_RETURN_TYPE));
     submit();
     return true;
   }
@@ -30,8 +32,8 @@ bool QDBPostgreqFunctionItem::insertMe()
 {
   QString sql =
       "CREATE OR REPLACE FUNCTION #caption#() "
-      "RETURNS void "
-      "LANGUAGE 'plpgsql' "
+      "RETURNS #returnType# "
+      "LANGUAGE '#language#' "
       "AS $BODY$#sourceCode#$BODY$";
   QString preparedSql = fillSqlPattern(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());

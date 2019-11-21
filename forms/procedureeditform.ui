@@ -23,7 +23,7 @@
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
@@ -35,6 +35,59 @@
          </item>
          <item>
           <widget class="QLineEdit" name="edtName"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QLabel" name="lblResultType">
+             <property name="text">
+              <string>Result type</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cmbResultType"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QLabel" name="lblLanguage">
+             <property name="text">
+              <string>Language</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cmbLanguage">
+             <item>
+              <property name="text">
+               <string>plpgsql</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>sql</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>c</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>internal</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
