@@ -28,10 +28,17 @@ bool QDBPostgreqFunctionItem::refresh()
 
 bool QDBPostgreqFunctionItem::insertMe()
 {
-  return false;
+  QString sql =
+      "CREATE OR REPLACE FUNCTION #caption#() "
+      "RETURNS void "
+      "LANGUAGE 'plpgsql' "
+      "AS $BODY$#sourceCode#$BODY$";
+  QString preparedSql = fillSqlPattern(sql);
+  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  return !resultSet.lastError().isValid();
 }
 
 bool QDBPostgreqFunctionItem::updateMe()
 {
-  return false;
+  return insertMe();
 }

@@ -23,7 +23,8 @@ void ProcedureEditForm::objectToForm()
 
 void ProcedureEditForm::formToObject()
 {
-
+  _objItem->setFieldValue(F_CAPTION, ui->edtName->text());
+  _objItem->setFieldValue(F_SOURCE_CODE, ui->edtSourceCode->toPlainText());
 }
 
 void ProcedureEditForm::on_btnApply_clicked()
