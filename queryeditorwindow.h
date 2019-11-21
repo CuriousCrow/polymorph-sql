@@ -9,6 +9,7 @@
 #include "qactiveconnectionmodel.h"
 #include "ldbobjectmodel.h"
 #include "utils/qsimpletooltip.h"
+#include "core/datastore.h"
 
 namespace Ui {
 class QueryEditorWindow;
@@ -22,7 +23,6 @@ public:
   explicit QueryEditorWindow(QWidget *parent = nullptr);
   ~QueryEditorWindow();
 
-  void setStructureModel(QStructureItemModel* model);
   void refreshConnectionList();
   void refreshCompleterData();
 private slots:
@@ -39,7 +39,6 @@ private slots:
   void onFindObject(QString word, Qt::KeyboardModifiers modifiers);
 private:
   Ui::QueryEditorWindow *ui;
-  QStructureItemModel* _model;
   QActiveConnectionModel* _activeConnectionModel;
   QSqlQueryModel* _resultModel;
   LDBObjectModel* _compModel;

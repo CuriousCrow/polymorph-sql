@@ -15,6 +15,11 @@ QDBTriggerItem::QDBTriggerItem(QString caption, QObject *parent):
   registerField(F_TABLE);
   registerField(F_FUNCTION);
   registerField(F_ENABLED);
+
+  setFieldValue(F_EVENT_INSERT, false);
+  setFieldValue(F_EVENT_UPDATE, false);
+  setFieldValue(F_EVENT_DELETE, false);
+  setFieldValue(F_EVENT_TRUNCATE, false);
 }
 
 QDBTriggerItem::~QDBTriggerItem()

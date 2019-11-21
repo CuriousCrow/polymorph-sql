@@ -1,6 +1,7 @@
 #include "qfoldertreeitem.h"
 #include "dbms/appconst.h"
-
+#include <QUrl>
+#include <QDebug>
 
 QFolderTreeItem::QFolderTreeItem(QString caption, QObject* parent):
   QDBObjectItem(caption, parent)
@@ -48,3 +49,10 @@ void QFolderTreeItem::setChildrenType(QDBObjectItem::ItemType childrenType)
 {
   _childrenType = childrenType;
 }
+
+//QUrl QFolderTreeItem::objectUrl()
+//{
+//  QUrl url = QDBObjectItem::objectUrl();
+//  url.setPath("/" + fieldValue(F_CAPTION).toString());
+//  return url;
+//}

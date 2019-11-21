@@ -14,6 +14,7 @@ TEMPLATE = app
 RC_ICONS = icons/cc_16.ico
 
 SOURCES += main.cpp\
+  core/datastore.cpp \
   core/localeventnotifier.cpp \
   dbms/POSTGRES/postgrestriggeritem.cpp \
   dbms/POSTGRES/qdbpostgreqfunctionitem.cpp \
@@ -68,6 +69,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
+    core/datastore.h \
     core/localeventnotifier.h \
     dbms/POSTGRES/postgrestriggeritem.h \
     dbms/POSTGRES/qdbpostgreqfunctionitem.h \
