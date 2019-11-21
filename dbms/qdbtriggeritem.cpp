@@ -7,6 +7,14 @@
 QDBTriggerItem::QDBTriggerItem(QString caption, QObject *parent):
   QDBObjectItem(caption, parent)
 {
+  registerField(F_EVENT_INSERT);
+  registerField(F_EVENT_UPDATE);
+  registerField(F_EVENT_DELETE);
+  registerField(F_EVENT_TRUNCATE);
+  registerField(F_TIMING);
+  registerField(F_TABLE);
+  registerField(F_FUNCTION);
+  registerField(F_ENABLED);
 }
 
 QDBTriggerItem::~QDBTriggerItem()

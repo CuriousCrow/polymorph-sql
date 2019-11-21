@@ -21,6 +21,15 @@
 #define F_RETURN_TYPE "returnType"
 #define F_DBMS "dbms"
 
+#define F_EVENT_INSERT "eventInsert"
+#define F_EVENT_UPDATE "eventUpdate"
+#define F_EVENT_DELETE "eventDelete"
+#define F_EVENT_TRUNCATE "eventTruncate"
+#define F_TIMING "timing"
+#define F_TABLE "table"
+#define F_FUNCTION "function"
+#define F_ENABLED "enabled"
+
 #define F_SIZE "size"
 #define F_NULL "null"
 #define F_PK "pk"

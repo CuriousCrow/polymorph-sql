@@ -26,7 +26,8 @@ public:
   void formToObject();
 private slots:
   void on_btnApply_clicked();
-  void on_btnCaption_clicked();
+  void on_btnCancel_clicked();
+  void onUserActionChanged();
 };
 
 #endif // TRIGGEREDITFORM_H
