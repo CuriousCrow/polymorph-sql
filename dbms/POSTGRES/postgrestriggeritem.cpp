@@ -43,6 +43,22 @@ bool PostgresTriggerItem::insertMe()
 
 bool PostgresTriggerItem::updateMe()
 {
+  if (fieldModified(F_CAPTION)) {
+    qDebug() << "Rename trigger:" << fieldOldValue(F_CAPTION) << fieldValue(F_CAPTION);
+    QString sql =
+        "ALTER TRIGGER \"#caption.old#\" ON \"#table#\" "
+        "RENAME TO \"#caption.new#\"";
+    QString preparedSql = fillPatternWithFields(sql);
+    QSqlQueryHelper::execSql(preparedSql, connectionName());
+  }
+
+  if (fieldModified(F_ENABLED)) {
+    qDebug() << "Set trigger" << fieldValue(F_CAPTION) << "enabled:" << fieldValue(F_ENABLED);
+    QString sql = "ALTER TABLE \"#table#\" %1 TRIGGER \"#caption#\"";
+    sql = sql.arg(fieldValue(F_ENABLED).toBool() ? "ENABLE" : "DISABLE");
+    QString preparedSql = fillPatternWithFields(sql);
+    QSqlQueryHelper::execSql(preparedSql, connectionName());
+  }
   return false;
 }
 

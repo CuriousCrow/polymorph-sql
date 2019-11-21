@@ -407,7 +407,18 @@ void MainWindow::saveProcedureChanges()
 
 void MainWindow::saveTriggerChanges()
 {
-
+  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
+  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
+  if (action == AbstractDatabaseEditForm::Create) {
+    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    _structureModel->appendItem(editForm->objItem(), currentItem);
+    editForm->objItem()->insertMe();
+    refreshQueryEditorAssistance();
+  }
+  else {
+    editForm->objItem()->updateMe();
+    refreshQueryEditorAssistance();
+  }
 }
 
 QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)

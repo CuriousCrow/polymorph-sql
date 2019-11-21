@@ -31,6 +31,7 @@ void TriggerEditForm::objectToForm()
 void TriggerEditForm::formToObject()
 {
   _objItem->setFieldValue(F_CAPTION, ui->edtName->text());
+  _objItem->setFieldValue(F_ENABLED, ui->chkEnabled->isChecked());
 }
 
 void TriggerEditForm::on_btnApply_clicked()
