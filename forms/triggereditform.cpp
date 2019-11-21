@@ -1,5 +1,7 @@
 #include "triggereditform.h"
 #include "ui_triggereditform.h"
+#include "../qstructureitemmodel.h"
+#include "../core/datastore.h"
 
 TriggerEditForm::TriggerEditForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),
@@ -27,10 +29,13 @@ void TriggerEditForm::objectToForm()
   ui->chkUpdateEvent->setChecked(_objItem->fieldValue(F_EVENT_UPDATE).toBool());
   ui->chkDeleteEvent->setChecked(_objItem->fieldValue(F_EVENT_DELETE).toBool());
   ui->chkTruncateEvent->setChecked(_objItem->fieldValue(F_EVENT_TRUNCATE).toBool());
+
+  QStructureItemModel* structModel = DataStore::instance()->structureModel();
+
 }
 
 void TriggerEditForm::formToObject()
-{
+{ 
   _objItem->setFieldValue(F_CAPTION, ui->edtName->text());
   _objItem->setFieldValue(F_ENABLED, ui->chkEnabled->isChecked());
   _objItem->setFieldValue(F_TIMING, ui->cmbBeforeAfter->currentText());
@@ -38,7 +43,7 @@ void TriggerEditForm::formToObject()
   _objItem->setFieldValue(F_TABLE, ui->cmbTargetTable->currentText());
   _objItem->setFieldValue(F_EVENT_INSERT, ui->chkInsertEvent->isChecked());
   _objItem->setFieldValue(F_EVENT_UPDATE, ui->chkUpdateEvent->isChecked());
-  _objItem->setFieldValue(F_EVENT_DELETE, ui->chkUpdateEvent->isChecked());
+  _objItem->setFieldValue(F_EVENT_DELETE, ui->chkDeleteEvent->isChecked());
   _objItem->setFieldValue(F_EVENT_TRUNCATE, ui->chkTruncateEvent->isChecked());
 }
 

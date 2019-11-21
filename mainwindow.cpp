@@ -10,10 +10,9 @@
 #include "dbms/qdbdatabaseitem.h"
 #include "dbms/qdbobjectitem.h"
 #include "dbms/qfoldertreeitem.h"
-//#include "dbms/SQLITE/qdbsqlitetableitem.h"
-//#include "dbms/MYSQL/qdbmysqltableitem.h"
 #include "qknowledgebase.h"
 #include "core/appsettings.h"
+#include "core/datastore.h"
 #include "dbms/appconst.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -22,29 +21,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  qDebug() << QSqlDatabase::drivers();
-  //Connection to properies DB
-  appDB = QSqlDatabase::addDatabase(DRIVER_SQLITE);
-  QString dbPath = AppSettings::strVal(PRM_DATABASE, "properties.sqlite");
-  qDebug() << "dbPath:" << dbPath;
-  appDB.setDatabaseName(dbPath);
-
-  qDebug() << appDB.driver()->hasFeature(QSqlDriver::LastInsertId);
-
-  //Trying to connect
-  if (!appDB.open()){
-    QMessageBox::critical(this, TITLE_ERROR, appDB.lastError().text());
-    return;
-  }
-  qDebug() << "Success!";
+  DataStore* ds = DataStore::instance(this);
+  QStructureItemModel* structureModel = ds->structureModel();
 
   QKnowledgeBase::kb(this);
 
-  _structureModel = new QStructureItemModel(this, appDB);
   //Showing first column only
   //TODO: create utility methods for hiding columns
-  ui->tvDatabaseStructure->setModel(_structureModel);
-  for (int i=1; i<_structureModel->columnCount(QModelIndex()); i++){
+  ui->tvDatabaseStructure->setModel(structureModel);
+  for (int i=1; i<structureModel->columnCount(QModelIndex()); i++){
     ui->tvDatabaseStructure->hideColumn(i);
   }
 
@@ -60,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //Создаем окно редактирования соединений с БД
   _connectionEditDialog = new ConnectionEditDialog(this);
-  _connectionEditDialog->setModel(_structureModel);
+  _connectionEditDialog->setModel(structureModel);
 
   //View editor window
   _viewEditorWindow = new ViewEditDialog(this);
@@ -89,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(removeTabByIndex(int)));
+
+
 }
 
 MainWindow::~MainWindow()
@@ -100,7 +87,7 @@ void MainWindow::on_aAddDatabase_triggered()
 {
   QDBDatabaseItem* newItem = new QDBDatabaseItem(DEF_DATABASE_NAME);
   if (newItem->insertMe()){
-    _structureModel->appendItem(newItem);
+    DataStore::instance()->structureModel()->appendItem(newItem);
     _connectionEditDialog->mapper()->toLast();
     _connectionEditDialog->show();
   }
@@ -129,7 +116,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     }
     //Database disconnection (clear all database items)
     else {
-      _structureModel->deleteChildren(index);
+      DataStore::instance()->structureModel()->deleteChildren(index);
       removeTabsByItemUrl(dbItem->objectUrl().url());
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
@@ -185,7 +172,7 @@ void MainWindow::on_aRemoveDatabase_triggered()
   if (itemToRemove->type() == QDBObjectItem::Database){
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
     if (itemToRemove->deleteMe())
-      _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(), QModelIndex());
+      DataStore::instance()->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(), QModelIndex());
   }
 }
 
@@ -265,7 +252,7 @@ void MainWindow::dropCurrentDatabaseObject()
   case QDBObjectItem::Procedure:
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
     if (itemToRemove->deleteMe()) {
-      _structureModel->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
+      DataStore::instance()->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                                  ui->tvDatabaseStructure->currentIndex().parent());
       refreshQueryEditorAssistance();
     }
@@ -351,7 +338,7 @@ void MainWindow::saveTableChanges()
   }
   else if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    _structureModel->appendItem(editForm->objItem(), currentItem);
+    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
     editForm->objItem()->insertMe();
     refreshQueryEditorAssistance();
   }
@@ -367,7 +354,7 @@ void MainWindow::saveViewChanges()
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    _structureModel->appendItem(editForm->objItem(), currentItem);
+    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
     editForm->objItem()->insertMe();
     refreshQueryEditorAssistance();
   }
@@ -379,7 +366,7 @@ void MainWindow::saveSequenceChanges()
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    _structureModel->appendItem(editForm->objItem(), currentItem);
+    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
     editForm->objItem()->insertMe();
     refreshQueryEditorAssistance();
   }
@@ -395,7 +382,7 @@ void MainWindow::saveProcedureChanges()
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    _structureModel->appendItem(editForm->objItem(), currentItem);
+    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
     editForm->objItem()->insertMe();
     refreshQueryEditorAssistance();
   }
@@ -411,7 +398,7 @@ void MainWindow::saveTriggerChanges()
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    _structureModel->appendItem(editForm->objItem(), currentItem);
+    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
     editForm->objItem()->insertMe();
     refreshQueryEditorAssistance();
   }
@@ -423,12 +410,12 @@ void MainWindow::saveTriggerChanges()
 
 QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)
 {
-  return qobject_cast<QDBObjectItem*>(_structureModel->itemByIndex(index));
+  return qobject_cast<QDBObjectItem*>(DataStore::instance()->structureModel()->itemByIndex(index));
 }
 
 QDBObjectItem *MainWindow::itemByName(QString name)
 {
-  return qobject_cast<QDBObjectItem*>(_structureModel->itemByName(name));
+  return qobject_cast<QDBObjectItem*>(DataStore::instance()->structureModel()->itemByName(name));
 }
 
 void MainWindow::refreshConnectionList()
@@ -487,6 +474,5 @@ void MainWindow::on_aOpenSqlEditor_triggered()
 {
   //Создаем вкладку с редактором SQL-запросов
   QueryEditorWindow* newQueryEditor = new QueryEditorWindow(this);
-  newQueryEditor->setStructureModel(_structureModel);
   ui->tabWidget->addTab(newQueryEditor, tr("Query"));
 }

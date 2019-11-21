@@ -26,7 +26,7 @@ public:
   virtual QDBViewItem* createNewViewItem(QString caption, QObject* parent = nullptr);
   virtual QDBProcedureItem* createNewProcedureItem(QString caption, QObject* parent = nullptr);
   virtual QDBSequenceItem* createNewSequenceItem(QString caption, QObject* parent = nullptr);
-  virtual QDBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = nullptr);\
+  virtual QDBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = nullptr);
 protected:
   virtual void loadViewItems(QDBObjectItem* parentItem);
   virtual void loadSequenceItems(QDBObjectItem* parentItem);

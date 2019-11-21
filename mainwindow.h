@@ -68,8 +68,6 @@ private slots:
 
 private:
   Ui::MainWindow *ui;
-  QSqlDatabase appDB;
-  QStructureItemModel* _structureModel;
   ConnectionEditDialog* _connectionEditDialog;
   ViewEditDialog* _viewEditorWindow;
   TableEditForm* _tableEditForm;

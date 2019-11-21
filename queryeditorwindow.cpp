@@ -17,6 +17,7 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   ui(new Ui::QueryEditorWindow)
 {
   ui->setupUi(this);
+  _activeConnectionModel->setSourceModel(DataStore::instance()->structureModel());
 
   _resultModel = new QSqlQueryModel(this);
   ui->tvResultSet->setModel(_resultModel);
@@ -59,12 +60,6 @@ QueryEditorWindow::~QueryEditorWindow()
   delete ui;
 }
 
-void QueryEditorWindow::setStructureModel(QStructureItemModel *model)
-{
-  _model = model;
-  _activeConnectionModel->setSourceModel(_model);
-}
-
 void QueryEditorWindow::on_aExecuteQuery_triggered()
 {
   QSqlQuery query =
@@ -100,7 +95,7 @@ QDBObjectItem *QueryEditorWindow::dbObject()
   QModelIndex proxyIndex = _activeConnectionModel->index(ui->cmbDatabase->currentIndex(), 0);
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
-  return qobject_cast<QDBObjectItem*>(_model->itemByIndex(sourceIndex));
+  return qobject_cast<QDBObjectItem*>(DataStore::instance()->structureModel()->itemByIndex(sourceIndex));
 }
 
 void QueryEditorWindow::on_aCommit_triggered()

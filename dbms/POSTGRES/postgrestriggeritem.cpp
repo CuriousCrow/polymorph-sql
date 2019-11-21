@@ -19,6 +19,7 @@ bool PostgresTriggerItem::refresh()
       "where trigger_name='#caption#'";
   QString preparedSql = fillSqlPattern(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  clearEventFields();
   if (resultSet.next()) {
     qDebug() << "Table:" << resultSet.value(F_TABLE);
     setFieldValue(F_TABLE, resultSet.value(F_TABLE));
@@ -85,6 +86,14 @@ void PostgresTriggerItem::setEventByName(QString event)
   else {
     qWarning() << "Unknown trigger event";
   }
+}
+
+void PostgresTriggerItem::clearEventFields()
+{
+  setFieldValue(F_EVENT_INSERT, false);
+  setFieldValue(F_EVENT_UPDATE, false);
+  setFieldValue(F_EVENT_DELETE, false);
+  setFieldValue(F_EVENT_TRUNCATE, false);
 }
 
 QString PostgresTriggerItem::parseActionStatement(QString statement)

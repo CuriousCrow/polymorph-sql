@@ -8,23 +8,25 @@ class QFolderTreeItem : public QDBObjectItem
   Q_OBJECT
 public:
   QFolderTreeItem(QString caption, QObject* parent = nullptr);
-  ~QFolderTreeItem();
+  virtual ~QFolderTreeItem() override;
 
   QDBObjectItem::ItemType childrenType() const;
   void setChildrenType(QDBObjectItem::ItemType childrenType);
 
   // LAbstractTreeItem interface
 public:
-  virtual int colCount();
-  virtual QVariant colData(int column, int role);
+  virtual int colCount() override;
+  virtual QVariant colData(int column, int role) override;
 
   // QDBObjectItem interface
 public:
-  virtual bool loadChildren();
-  virtual int type();
+  virtual bool loadChildren() override;
+  virtual int type() override;
+//  virtual QUrl objectUrl() override;
 
 private:
   QDBObjectItem::ItemType _childrenType = UnknownType;
+
 };
 
 #endif // QFOLDERTREEITEM_H
