@@ -18,6 +18,8 @@ public:
   virtual bool deleteMe() override;
 private:
   void setEventByName(QString event);
+  QString parseActionStatement(QString statement);
+  QStringList events();
 
 };
 

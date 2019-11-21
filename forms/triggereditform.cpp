@@ -21,6 +21,7 @@ void TriggerEditForm::objectToForm()
   ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
   ui->cmbBeforeAfter->setCurrentText(_objItem->fieldValue(F_TIMING).toString());
   ui->cmbFunction->setCurrentText(_objItem->fieldValue(F_FUNCTION).toString());
+  ui->cmbTargetTable->setCurrentText(_objItem->fieldValue(F_TABLE).toString());
   ui->chkEnabled->setChecked(_objItem->fieldValue(F_ENABLED).toBool());
   ui->chkInsertEvent->setChecked(_objItem->fieldValue(F_EVENT_INSERT).toBool());
   ui->chkUpdateEvent->setChecked(_objItem->fieldValue(F_EVENT_UPDATE).toBool());
@@ -32,6 +33,13 @@ void TriggerEditForm::formToObject()
 {
   _objItem->setFieldValue(F_CAPTION, ui->edtName->text());
   _objItem->setFieldValue(F_ENABLED, ui->chkEnabled->isChecked());
+  _objItem->setFieldValue(F_TIMING, ui->cmbBeforeAfter->currentText());
+  _objItem->setFieldValue(F_FUNCTION, ui->cmbFunction->currentText());
+  _objItem->setFieldValue(F_TABLE, ui->cmbTargetTable->currentText());
+  _objItem->setFieldValue(F_EVENT_INSERT, ui->chkInsertEvent->isChecked());
+  _objItem->setFieldValue(F_EVENT_UPDATE, ui->chkUpdateEvent->isChecked());
+  _objItem->setFieldValue(F_EVENT_DELETE, ui->chkUpdateEvent->isChecked());
+  _objItem->setFieldValue(F_EVENT_TRUNCATE, ui->chkTruncateEvent->isChecked());
 }
 
 void TriggerEditForm::on_btnApply_clicked()
@@ -49,6 +57,7 @@ void TriggerEditForm::onUserActionChanged()
 {
   ui->cmbBeforeAfter->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->cmbFunction->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+  ui->cmbTargetTable->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->chkInsertEvent->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->chkUpdateEvent->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->chkDeleteEvent->setEnabled(userAction() == AbstractDatabaseEditForm::Create);

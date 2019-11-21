@@ -20,9 +20,10 @@ bool PostgresTriggerItem::refresh()
   QString preparedSql = fillSqlPattern(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
+    qDebug() << "Table:" << resultSet.value(F_TABLE);
     setFieldValue(F_TABLE, resultSet.value(F_TABLE));
     setFieldValue(F_TIMING, resultSet.value(F_TIMING));
-    setFieldValue(F_FUNCTION, resultSet.value(F_FUNCTION));
+    setFieldValue(F_FUNCTION, parseActionStatement(resultSet.value(F_FUNCTION).toString()));
     setFieldValue(F_ENABLED, resultSet.value(F_ENABLED).toString() == "O"); //"0" - Enabled, "D" - Disabled
     setEventByName(resultSet.value("event").toString());
     while (resultSet.next()) {
@@ -38,7 +39,16 @@ bool PostgresTriggerItem::refresh()
 
 bool PostgresTriggerItem::insertMe()
 {
-  return false;
+  qDebug() << "Create trigger" << fieldValue(F_CAPTION);
+  QString sql =
+      "CREATE TRIGGER \"#caption#\" "
+      "#timing# %1 "
+      "ON \"#table#\" "
+      "FOR EACH ROW "
+      "EXECUTE PROCEDURE #function#";
+  sql = sql.arg(events().join(" OR "));
+  QString preparedSql = fillPatternWithFields(sql);
+  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }
 
 bool PostgresTriggerItem::updateMe()
@@ -59,7 +69,7 @@ bool PostgresTriggerItem::updateMe()
     QString preparedSql = fillPatternWithFields(sql);
     QSqlQueryHelper::execSql(preparedSql, connectionName());
   }
-  return false;
+  return true;
 }
 
 void PostgresTriggerItem::setEventByName(QString event)
@@ -75,6 +85,25 @@ void PostgresTriggerItem::setEventByName(QString event)
   else {
     qWarning() << "Unknown trigger event";
   }
+}
+
+QString PostgresTriggerItem::parseActionStatement(QString statement)
+{
+  return statement.section(" ", -1, -1);
+}
+
+QStringList PostgresTriggerItem::events()
+{
+  QStringList list;
+  if (fieldValue(F_EVENT_INSERT).toBool())
+    list.append("INSERT");
+  if (fieldValue(F_EVENT_UPDATE).toBool())
+    list.append("UPDATE");
+  if (fieldValue(F_EVENT_DELETE).toBool())
+    list.append("DELETE");
+  if (fieldValue(F_EVENT_TRUNCATE).toBool())
+    list.append("TRUNCATE");
+  return list;
 }
 
 

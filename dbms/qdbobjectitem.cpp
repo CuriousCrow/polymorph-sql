@@ -254,6 +254,15 @@ bool QDBObjectItem::submit()
   return true;
 }
 
+bool QDBObjectItem::hasField(QString fieldName)
+{
+  foreach(QDBObjectField field, fields) {
+    if (field.name == fieldName)
+      return true;
+  }
+  return false;
+}
+
 QDBObjectField::QDBObjectField(QString fieldName)
 {
   name = fieldName;
@@ -261,6 +270,7 @@ QDBObjectField::QDBObjectField(QString fieldName)
 
 void QDBObjectItem::registerField(QString fieldName)
 {
+  Q_ASSERT(!hasField(fieldName)); //Doubles are forbidden
   fields.append(QDBObjectField(fieldName));
 }
 

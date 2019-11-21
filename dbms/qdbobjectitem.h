@@ -59,6 +59,7 @@ public:
   virtual bool isModified();
   virtual bool submit();
 
+  bool hasField(QString fieldName);
   void registerField(QString fieldName);
   QVariant fieldValue(QString fieldName);
   QVariant fieldValue(int colNumber);
