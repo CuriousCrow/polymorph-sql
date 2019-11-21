@@ -15,8 +15,10 @@ public:
   virtual bool refresh() override;
   virtual bool insertMe() override;
   virtual bool updateMe() override;
+  virtual bool deleteMe() override;
 private:
   void setEventByName(QString event);
+
 };
 
 #endif // POSTGRESTRIGGERITEM_H

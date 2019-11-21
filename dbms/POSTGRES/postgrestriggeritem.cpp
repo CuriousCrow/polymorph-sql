@@ -76,3 +76,12 @@ void PostgresTriggerItem::setEventByName(QString event)
     qWarning() << "Unknown trigger event";
   }
 }
+
+
+bool PostgresTriggerItem::deleteMe()
+{
+  refresh();
+  QString sql = "drop trigger \"#caption#\" on \"#table#\"";
+  QString preparedSql = fillSqlPattern(sql);
+  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+}
