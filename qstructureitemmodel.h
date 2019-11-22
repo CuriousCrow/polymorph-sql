@@ -23,7 +23,7 @@ private:
   QSqlDatabase _db;
   bool loadRegisteredDatabases();
   //Fabric method
-  QDBDatabaseItem* dbItemByDriver(QString driverName);
+  QDBDatabaseItem* dbItemByDriver(QString caption, QString driverName);
 private slots:
   void onAboutToBeRemoved(const QModelIndex & parent, int first, int last);
 

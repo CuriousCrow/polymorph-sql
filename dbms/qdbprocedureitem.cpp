@@ -2,8 +2,8 @@
 #include "dbms/appconst.h"
 #include <QIcon>
 
-QDBProcedureItem::QDBProcedureItem(QString caption, QUrl url, QObject *parent):
-  QDBObjectItem(caption, url, parent)
+QDBProcedureItem::QDBProcedureItem(QString caption, QObject *parent):
+  QDBObjectItem(caption, parent)
 {
   registerField(F_SOURCE_CODE);
   registerField(F_LANGUAGE);

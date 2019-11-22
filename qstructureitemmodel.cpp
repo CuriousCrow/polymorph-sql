@@ -26,13 +26,20 @@ QStructureItemModel::~QStructureItemModel()
 void QStructureItemModel::appendItem(QDBObjectItem *item, QDBObjectItem *parent)
 {
   addItem(item, parent);
-  item->updateObjectName();
+  if (parent)
+    item->setParentUrl(parent->objectUrl());
+  else
+    item->setParentUrl(QUrl());
 }
 
 void QStructureItemModel::appendItem(QDBObjectItem *item, QModelIndex parent)
 {
-  item->updateObjectName();
   addItem(item, parent);
+  if (parent.isValid()) {
+    QDBObjectItem* parentItem = qobject_cast<QDBObjectItem*>(itemByIndex(parent));
+    Q_ASSERT(parentItem);
+    item->setParentUrl(parentItem->objectUrl());
+  }
 }
 
 bool QStructureItemModel::deleteChildren(QModelIndex parent)
@@ -47,8 +54,9 @@ bool QStructureItemModel::loadRegisteredDatabases()
   QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);
   while (sqlResult.next()) {
     QSqlRecord rec = sqlResult.record();
+    QString caption = rec.value(F_CAPTION).toString();
     QString driverName = rec.value(F_DRIVER_NAME).toString();
-    QDBDatabaseItem* item = dbItemByDriver(driverName);
+    QDBDatabaseItem* item = dbItemByDriver(caption, driverName);
     for (int i=0; i<rec.count(); i++) {
       item->setFieldValue(rec.fieldName(i), rec.value(i));
     }
@@ -57,23 +65,23 @@ bool QStructureItemModel::loadRegisteredDatabases()
   return true;
 }
 
-QDBDatabaseItem *QStructureItemModel::dbItemByDriver(QString driverName)
+QDBDatabaseItem *QStructureItemModel::dbItemByDriver(QString caption, QString driverName)
 {
   QDBDatabaseItem* item;
   if (driverName == DRIVER_FIREBIRD) {
-    item = new QDBFirebirdItem("");
+    item = new QDBFirebirdItem(caption);
   }
   else if (driverName == DRIVER_SQLITE) {
-    item = new QDBSqliteItem("");
+    item = new QDBSqliteItem(caption);
   }
   else if (driverName == DRIVER_MYSQL) {
-    item = new QDBMysqlItem("");
+    item = new QDBMysqlItem(caption);
   }
   else if (driverName == DRIVER_POSTGRES) {
-    item = new QDBPostgresItem("");
+    item = new QDBPostgresItem(caption);
   }
   else {
-    item = new QDBDatabaseItem("");
+    item = new QDBDatabaseItem(caption);
   }
   return item;
 }

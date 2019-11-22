@@ -57,47 +57,50 @@ bool QDBDatabaseItem::loadChildren()
     return false;
 
   //Creating table items
-  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this->objectUrl(), this);
+  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this);
+  tableFolderItem->setParentUrl(this->objectUrl());
+
   tableFolderItem->setChildrenType(Table);
-  tableFolderItem->updateObjectName();
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
-    QDBTableItem* tableItem = createNewTableItem(name, tableFolderItem->objectUrl(), tableFolderItem);
-    tableItem->updateObjectName();
+    QUrl folderUrl = tableFolderItem->objectUrl();
+    QDBTableItem* tableItem = createNewTableItem(name, tableFolderItem);
+    tableItem->setParentUrl(tableFolderItem->objectUrl());
   }
 
   //Creating views items
-  QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this->objectUrl(), this);
+  QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
   viewFolderItem->setChildrenType(View);
-  viewFolderItem->updateObjectName();
+  viewFolderItem->setParentUrl(this->objectUrl());
   loadViewItems(viewFolderItem);
 
   //  //Creating system table items
-  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this->objectUrl(), this);
+  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
   systemFolderItem->setChildrenType(Table);
-  systemFolderItem->updateObjectName();
+  systemFolderItem->setParentUrl(this->objectUrl());
+
   QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
   foreach (QString name, sysTableNames){
-    QDBTableItem* tableItem = createNewTableItem(name, systemFolderItem->objectUrl(), systemFolderItem);
-    tableItem->updateObjectName();
+    QDBTableItem* sysTableItem = createNewTableItem(name, systemFolderItem);
+    sysTableItem->setParentUrl(systemFolderItem->objectUrl());
   }
 
   //Creating sequence items
-  QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Sequences"), this->objectUrl(), this);
+  QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Sequences"), this);
   sequenceFolderItem->setChildrenType(Sequence);
-  sequenceFolderItem->updateObjectName();
+  sequenceFolderItem->setParentUrl(this->objectUrl());
   loadSequenceItems(sequenceFolderItem);
 
   //Creating trigger items
-  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this->objectUrl(), this);
+  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this);
   triggerFolderItem->setChildrenType(Trigger);
-  triggerFolderItem->updateObjectName();
+  triggerFolderItem->setParentUrl(this->objectUrl());
   loadTriggerItems(triggerFolderItem);
 
   //Creating procedure items
-  QFolderTreeItem* procedureFolderItem = new QFolderTreeItem(tr("Procedures"), this->objectUrl(), this);
+  QFolderTreeItem* procedureFolderItem = new QFolderTreeItem(tr("Procedures"), this);
   procedureFolderItem->setChildrenType(Procedure);
-  procedureFolderItem->updateObjectName();
+  procedureFolderItem->setParentUrl(this->objectUrl());
   loadProcedureItems(procedureFolderItem);
 
   return true;
@@ -106,7 +109,7 @@ bool QDBDatabaseItem::loadChildren()
 
 QUrl QDBDatabaseItem::objectUrl()
 {
-  QUrl url = QDBObjectItem::objectUrl();
+  QUrl url;
   url.setScheme(driver());
   url.setHost(fieldValue(F_CAPTION).toString().replace(' ', '_'), QUrl::TolerantMode);
   return url;
@@ -163,17 +166,17 @@ void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
   if (sql.isEmpty()){
     QStringList viewNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
     foreach (QString name, viewNames){
-      QDBViewItem* viewItem = createNewViewItem(name, parentItem->objectUrl(), parentItem);
-      viewItem->updateObjectName();
+      QDBViewItem* viewItem = createNewViewItem(name, parentItem);
+      viewItem->setParentUrl(parentItem->objectUrl());
     }
   }
   else {
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
       QDBViewItem* viewItem
-          = createNewViewItem(resultSet.value(F_NAME).toString(), parentItem->objectUrl(), parentItem);
+          = createNewViewItem(resultSet.value(F_NAME).toString(), parentItem);
       viewItem->setFieldValue(F_QUERY_TEXT, resultSet.value(F_QUERY_TEXT).toString());
-      viewItem->updateObjectName();
+      viewItem->setParentUrl(parentItem->objectUrl());
     }
   }
 }
@@ -186,9 +189,8 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     sql = getSequenceListSql();
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
-      QDBSequenceItem* sequenceItem
-          = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem->objectUrl(), parentItem);
-      sequenceItem->updateObjectName();
+      QDBSequenceItem* sequenceItem = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+      sequenceItem->setParentUrl(parentItem->objectUrl());
     }
   }
   else if (isDriver(DRIVER_POSTGRES)) {
@@ -199,9 +201,9 @@ void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
       QDBSequenceItem* sequenceItem
-          = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem->objectUrl(), parentItem);
+          = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
       sequenceItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
-      sequenceItem->updateObjectName();
+      sequenceItem->setParentUrl(parentItem->objectUrl());
     }
   }
 }
@@ -212,9 +214,8 @@ void QDBDatabaseItem::loadTriggerItems(QDBObjectItem *parentItem)
   if (!sql.isEmpty()){
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
-      QDBTriggerItem* sequenceItem
-          = createNewTriggerItem(resultSet.value(F_NAME).toString(), parentItem->objectUrl(), parentItem);
-      sequenceItem->updateObjectName();
+      QDBTriggerItem* triggerItem = createNewTriggerItem(resultSet.value(F_NAME).toString(), parentItem);
+      triggerItem->setParentUrl(parentItem->objectUrl());
     }
   }
 }
@@ -227,36 +228,35 @@ void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
 
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
   while (resultSet.next()){
-    QDBProcedureItem* sequenceItem
-        = createNewProcedureItem(resultSet.value(F_NAME).toString(), parentItem->objectUrl(), parentItem);
-    sequenceItem->updateObjectName();
+    QDBProcedureItem* procItem = createNewProcedureItem(resultSet.value(F_NAME).toString(), parentItem);
+    procItem->setParentUrl(parentItem->objectUrl());
   }
 
 }
 
-QDBTableItem *QDBDatabaseItem::createNewTableItem(QString caption, QUrl url, QObject* parent)
+QDBTableItem *QDBDatabaseItem::createNewTableItem(QString caption, QObject* parent)
 {
-  return new QDBTableItem(caption, url, parent);
+  return new QDBTableItem(caption, parent);
 }
 
-QDBViewItem *QDBDatabaseItem::createNewViewItem(QString caption, QUrl url, QObject* parent)
+QDBViewItem *QDBDatabaseItem::createNewViewItem(QString caption, QObject* parent)
 {
-  return new QDBViewItem(caption, url, parent);
+  return new QDBViewItem(caption, parent);
 }
 
-QDBProcedureItem *QDBDatabaseItem::createNewProcedureItem(QString caption, QUrl url, QObject* parent)
+QDBProcedureItem *QDBDatabaseItem::createNewProcedureItem(QString caption, QObject* parent)
 {
-  return new QDBProcedureItem(caption, url, parent);
+  return new QDBProcedureItem(caption, parent);
 }
 
-QDBSequenceItem *QDBDatabaseItem::createNewSequenceItem(QString caption, QUrl url, QObject* parent)
+QDBSequenceItem *QDBDatabaseItem::createNewSequenceItem(QString caption, QObject* parent)
 {
-  return new QDBSequenceItem(caption, url, parent);
+  return new QDBSequenceItem(caption, parent);
 }
 
-QDBTriggerItem *QDBDatabaseItem::createNewTriggerItem(QString caption, QUrl url, QObject* parent)
+QDBTriggerItem *QDBDatabaseItem::createNewTriggerItem(QString caption, QObject* parent)
 {
-  return new QDBTriggerItem(caption, url, parent);
+  return new QDBTriggerItem(caption, parent);
 }
 
 QString QDBDatabaseItem::getViewListSql()

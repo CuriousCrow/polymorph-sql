@@ -4,8 +4,8 @@
 #include <QIcon>
 
 
-QDBTriggerItem::QDBTriggerItem(QString caption, QUrl url, QObject *parent):
-  QDBObjectItem(caption, url, parent)
+QDBTriggerItem::QDBTriggerItem(QString caption, QObject *parent):
+  QDBObjectItem(caption, parent)
 {
   registerField(F_EVENT_INSERT);
   registerField(F_EVENT_UPDATE);

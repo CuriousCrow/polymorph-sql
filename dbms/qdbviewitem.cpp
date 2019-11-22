@@ -4,8 +4,8 @@
 #include "dbms/appconst.h"
 
 
-QDBViewItem::QDBViewItem(QString caption, QUrl url, QObject *parent):
-  QDBTableItem(caption, url, parent)
+QDBViewItem::QDBViewItem(QString caption, QObject *parent):
+  QDBTableItem(caption, parent)
 {
   _editable = false;
   registerField(F_QUERY_TEXT);

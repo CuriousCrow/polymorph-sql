@@ -19,7 +19,7 @@ protected:
 
   // QDBDatabaseItem interface
 public:
-  virtual QDBTableItem *createNewTableItem(QString caption, QUrl url, QObject *parent);
+  virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent);
 };
 
 #endif // QDBFIREBIRDITEM_H

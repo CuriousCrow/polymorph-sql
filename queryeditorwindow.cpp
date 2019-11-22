@@ -17,12 +17,12 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   ui(new Ui::QueryEditorWindow)
 {
   ui->setupUi(this);
-  _activeConnectionModel->setSourceModel(DataStore::instance()->structureModel());
 
   _resultModel = new QSqlQueryModel(this);
   ui->tvResultSet->setModel(_resultModel);
 
   _activeConnectionModel = new QActiveConnectionModel(this);
+  _activeConnectionModel->setSourceModel(DataStore::instance()->structureModel());
   ui->cmbDatabase->setModel(_activeConnectionModel);
   ui->cmbDatabase->setModelColumn(0);
 

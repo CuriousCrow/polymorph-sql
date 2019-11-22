@@ -10,7 +10,7 @@ public:
   QDBMysqlItem(QString caption);
   ~QDBMysqlItem();
 
-  virtual QDBTableItem* createNewTableItem(QString caption, QUrl url, QObject* parent = nullptr);
+  virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
   // QDBObjectItem interface
 public:
   virtual bool loadChildren();

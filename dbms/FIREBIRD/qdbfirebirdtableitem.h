@@ -7,7 +7,7 @@ class QDBFirebirdTableItem : public QDBTableItem
 {
   Q_OBJECT
 public:
-  QDBFirebirdTableItem(QString caption, QUrl url, QObject* parent = nullptr);
+  QDBFirebirdTableItem(QString caption, QObject* parent = nullptr);
   ~QDBFirebirdTableItem();
   // QDBObjectItem interface
 public:

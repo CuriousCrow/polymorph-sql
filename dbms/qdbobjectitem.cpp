@@ -7,8 +7,8 @@
 #include "dbms/appconst.h"
 
 
-QDBObjectItem::QDBObjectItem(QString caption, QUrl parentUrl, QObject* parent):
-  LAbstractTreeItem(caption, parent), _parentUrl(parentUrl)
+QDBObjectItem::QDBObjectItem(QString caption, QObject* parent):
+  LAbstractTreeItem(caption, parent)
 {
   registerField(F_CAPTION);
   setFieldValue(F_CAPTION, caption);
@@ -21,22 +21,26 @@ QDBObjectItem::~QDBObjectItem()
 void QDBObjectItem::setParentUrl(const QUrl &url)
 {
   _parentUrl = url;
-}
-
-void QDBObjectItem::setDriverName(QString driverName)
-{
-  _driverName = driverName;
+  QUrl newUrl = objectUrl();
+  _connectionName = newUrl.host();
+  _driverName = newUrl.scheme();
+  setObjectName(newUrl.url());
+  for (int i=0; i<children().count(); i++){
+    qobject_cast<QDBObjectItem*>(children().at(i))->setParentUrl(newUrl);
+  }
 }
 
 QString QDBObjectItem::driverName()
 {
-  QString res = objectUrl().scheme();
-  return res.isEmpty() ? _driverName : res.toUpper();
+  return _driverName;
 }
 
 QUrl QDBObjectItem::objectUrl()
 {
-  return _parentUrl;
+  QUrl url = _parentUrl;
+  QString path = url.path() + "/" + fieldValue(F_CAPTION).toString().toLower().replace(" ", "_");
+  url.setPath(path);
+  return url;
 }
 
 QStringList QDBObjectItem::propertyList()
@@ -177,19 +181,6 @@ void QDBObjectItem::setFieldValue(int colNumber, QVariant value)
   fields[colNumber].setValue(value);
 }
 
-void QDBObjectItem::updateObjectName()
-{
-  QUrl objUrl = objectUrl();
-  QString newObjectName = objUrl.url();
-  _connectionName = objUrl.host();
-  //  qDebug() << this << "connection name:" << objUrl.host();
-  //  qDebug() << this << "new object name:" << newObjectName;
-  setObjectName(newObjectName);
-  for (int i=0; i<children().count(); i++){
-    qobject_cast<QDBObjectItem*>(children().at(i))->updateObjectName();
-  }
-}
-
 bool QDBObjectItem::setData(int column, QVariant value, int role)
 {
   if (column >= colCount())
@@ -232,7 +223,7 @@ bool QDBObjectItem::updateMe()
 
 bool QDBObjectItem::deleteMe()
 {    
-  return true;
+  return false;
 }
 
 bool QDBObjectItem::isEditable()

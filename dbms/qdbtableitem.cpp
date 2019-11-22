@@ -8,8 +8,8 @@
 #include "qknowledgebase.h"
 
 
-QDBTableItem::QDBTableItem(QString caption, QUrl url, QObject* parent):
-  QDBObjectItem(caption, url, parent)
+QDBTableItem::QDBTableItem(QString caption, QObject* parent):
+  QDBObjectItem(caption, parent)
 {      
 }
 
@@ -43,33 +43,10 @@ void QDBTableItem::addDefaultColumn()
   _columnsModel->addSqlColumn(SqlColumn(DEF_COLUMN_NAME + QString::number(newColNumber), NoType));
 }
 
-//QHash<int, QString> QDBTableItem::getColumnTypesHash()
-//{
-//  QHash<int, QString> resHash;
-//  int val = 1;
-//  while (val <= ColumnType::Blob) {
-//    if (_columnsModel->supportedColumnTypes().testFlag(static_cast<ColumnType>(val))) {
-//      resHash.insert(val, _columnsModel->columnTypeCaption(static_cast<ColumnType>(val)));
-//    }
-//    val *= 2;
-//  }
-//  return resHash;
-//}
-
 bool QDBTableItem::loadChildren()
 {
   return true;
 }
-
-
-QUrl QDBTableItem::objectUrl()
-{
-  QUrl url = QDBObjectItem::objectUrl();
-  QString path = url.path() + "/" + fieldValue(F_CAPTION).toString();
-  url.setPath(path);
-  return url;
-}
-
 
 int QDBTableItem::colCount()
 {

@@ -8,6 +8,7 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, QDBTableItem* tableItem)
   QMainWindow(parent),
   ui(new Ui::TableBrowserWindow)
 {
+  qDebug() << "Connections:" << QSqlDatabase::connectionNames();
   ui->setupUi(this);
   QUrl url = tableItem->objectUrl();
   setObjectName(url.url());

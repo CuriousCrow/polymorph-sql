@@ -5,8 +5,8 @@
 #include <QSqlRecord>
 #include <QSqlField>
 
-QDBSqliteTableItem::QDBSqliteTableItem(QString caption, QUrl url, QObject *parent)
-  : QDBTableItem(caption, url, parent)
+QDBSqliteTableItem::QDBSqliteTableItem(QString caption, QObject *parent)
+  : QDBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
 }

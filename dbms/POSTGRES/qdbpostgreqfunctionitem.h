@@ -8,13 +8,14 @@ class QDBPostgreqFunctionItem : public QDBProcedureItem
 {
   Q_OBJECT
 public:
-  QDBPostgreqFunctionItem(QString caption, QUrl url, QObject* parent = nullptr);
+  QDBPostgreqFunctionItem(QString caption, QObject* parent = nullptr);
 
   // QDBObjectItem interface
 public:
-  bool refresh();
-  bool insertMe();
-  bool updateMe();
+  virtual bool refresh() override;
+  virtual bool insertMe() override;
+  virtual bool updateMe() override;
+  virtual bool deleteMe() override;
 };
 
 #endif // QDBPOSTGREQFUNCTIONITEM_H

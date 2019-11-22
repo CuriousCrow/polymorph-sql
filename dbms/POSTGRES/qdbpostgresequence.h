@@ -8,7 +8,7 @@ class QDBPostgreSequence : public QDBSequenceItem
 {
   Q_OBJECT
 public:
-  QDBPostgreSequence(QString caption, QUrl url, QObject* parent = nullptr);
+  QDBPostgreSequence(QString caption, QObject* parent = nullptr);
 
   // QDBObjectItem interface
 public:

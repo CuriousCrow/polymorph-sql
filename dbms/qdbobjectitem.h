@@ -40,11 +40,10 @@ public:
     Field
   };
 
-  QDBObjectItem(QString caption, QUrl parentUrl = QUrl(), QObject* parent = nullptr);
+  QDBObjectItem(QString caption, QObject* parent = nullptr);
   ~QDBObjectItem();
   QString connectionName(){ return _connectionName; }
   void setParentUrl(const QUrl &url);
-  void setDriverName(QString driverName);
   QString driverName();
 
   virtual bool loadChildren() = 0;
@@ -75,6 +74,8 @@ public:
 protected:
   QString _connectionName;
   bool _editable = true;
+  QUrl _parentUrl;
+  QString _driverName;
   QList<QDBObjectField> fields;
   int fieldIndex(QString fieldName);
   QString databaseName();
@@ -84,16 +85,11 @@ protected:
   QString fillPatternWithFields(QString pattern);
   QString fillWithModifiedFields(QString pattern);
   QString filterUnmodifiedFields(QString pattern);
-public slots:
-  void updateObjectName();
 
   // LAbstractTreeItem interface
 public:
   virtual int colCount();
   virtual QVariant colData(int column, int role);
-private:
-  QUrl _parentUrl;
-  QString _driverName;
 };
 
 #endif // QDBOBJECTITEM_H

@@ -3,8 +3,8 @@
 #include "../../qsqlqueryhelper.h"
 
 
-QDBPostgreqFunctionItem::QDBPostgreqFunctionItem(QString caption, QUrl url, QObject *parent)
-  : QDBProcedureItem(caption, url, parent)
+QDBPostgreqFunctionItem::QDBPostgreqFunctionItem(QString caption, QObject *parent)
+  : QDBProcedureItem(caption, parent)
 {
 }
 
@@ -43,4 +43,11 @@ bool QDBPostgreqFunctionItem::insertMe()
 bool QDBPostgreqFunctionItem::updateMe()
 {
   return insertMe();
+}
+
+bool QDBPostgreqFunctionItem::deleteMe()
+{
+  QString sql = "DROP FUNCTION \"#caption#\"";
+  QString preparedSql = fillSqlPattern(sql);
+  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
 }

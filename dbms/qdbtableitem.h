@@ -9,7 +9,7 @@ class QDBTableItem : public QDBObjectItem
 {
   Q_OBJECT
 public:
-  QDBTableItem(QString caption, QUrl url, QObject* parent = nullptr);
+  QDBTableItem(QString caption, QObject* parent = nullptr);
   virtual ~QDBTableItem() override;
   virtual void reloadColumnsModel();
   QAbstractTableModel* columnsModel();
@@ -20,7 +20,6 @@ public:
   // QDBObjectItem interface
 public:
   virtual bool loadChildren() override;
-  virtual QUrl objectUrl() override;
   virtual int type() override;
 
   // LAbstractTreeItem interface

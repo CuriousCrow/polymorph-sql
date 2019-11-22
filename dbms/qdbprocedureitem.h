@@ -7,7 +7,7 @@ class QDBProcedureItem : public QDBObjectItem
 {
   Q_OBJECT
 public:
-  QDBProcedureItem(QString caption, QUrl url, QObject* parent = nullptr);
+  QDBProcedureItem(QString caption, QObject* parent = nullptr);
   ~QDBProcedureItem();
 
   // LAbstractTreeItem interface
