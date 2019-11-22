@@ -145,6 +145,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
 void MainWindow::on_tvDatabaseStructure_clicked(const QModelIndex &index)
 {
   _connectionEditDialog->onDatabaseIndexChanged(index);
+  qDebug() << "Obj url:" << DataStore::instance()->structureModel()->itemByIndex(index)->objectName();
 }
 
 void MainWindow::removeTabByIndex(int index)
@@ -282,7 +283,7 @@ void MainWindow::showCreateItemEditor()
 
   switch (folderItem->childrenType()) {
   case QDBObjectItem::Table: {
-    QDBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME);
+    QDBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME, folderItem->objectUrl());
     newTableItem->setDriverName(databaseItem->driverName());
     _tableEditForm->setObjItem(newTableItem);
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -291,7 +292,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case QDBObjectItem::View: {
-    QDBTableItem* newViewItem = databaseItem->createNewViewItem(DEF_VIEW_NAME);
+    QDBTableItem* newViewItem = databaseItem->createNewViewItem(DEF_VIEW_NAME, folderItem->objectUrl());
     _viewEditorWindow->setObjItem(newViewItem);
     _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Create);
     _viewEditorWindow->objectToForm();
@@ -299,7 +300,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case QDBObjectItem::Sequence: {
-    QDBSequenceItem* newSequenceItem = databaseItem->createNewSequenceItem(DEF_SEQUENCE_NAME);
+    QDBSequenceItem* newSequenceItem = databaseItem->createNewSequenceItem(DEF_SEQUENCE_NAME, folderItem->objectUrl());
     _sequenceEditForm->setObjItem(newSequenceItem);
     _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _sequenceEditForm->objectToForm();
@@ -307,7 +308,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case QDBObjectItem::Procedure: {
-    QDBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME);
+    QDBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME, folderItem->objectUrl());
     newProcedureItem->setDriverName(databaseItem->driverName());
     _procedureEditForm->setObjItem(newProcedureItem);
     _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -316,7 +317,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case QDBObjectItem::Trigger: {
-    QDBTriggerItem* newTriggerItem = databaseItem->createNewTriggerItem(DEF_TRIGGER_NAME);
+    QDBTriggerItem* newTriggerItem = databaseItem->createNewTriggerItem(DEF_TRIGGER_NAME, folderItem->objectUrl());
     _triggerEditForm->setObjItem(newTriggerItem);
     _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _triggerEditForm->objectToForm();

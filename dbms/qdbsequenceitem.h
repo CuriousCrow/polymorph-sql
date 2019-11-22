@@ -7,7 +7,7 @@ class QDBSequenceItem : public QDBObjectItem
 {
   Q_OBJECT
 public:
-  QDBSequenceItem(QString caption, QObject* parent = nullptr);
+  QDBSequenceItem(QString caption, QUrl url, QObject* parent = nullptr);
   ~QDBSequenceItem();
 
   // LAbstractTreeItem interface

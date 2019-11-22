@@ -4,7 +4,8 @@
 #include "qsqlqueryhelper.h"
 #include "../../models/sqlcolumnmodel.h"
 
-QDBPostgresTableItem::QDBPostgresTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
+QDBPostgresTableItem::QDBPostgresTableItem(QString caption, QUrl url, QObject *parent)
+  : QDBTableItem(caption, url, parent)
 {
   _columnsModel = new SqlColumnModel();
 }

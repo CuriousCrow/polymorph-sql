@@ -3,8 +3,8 @@
 #include "../appconst.h"
 
 
-QDBPostgreSequence::QDBPostgreSequence(QString caption, QObject* parent)
-  : QDBSequenceItem(caption, parent)
+QDBPostgreSequence::QDBPostgreSequence(QString caption, QUrl url, QObject* parent)
+  : QDBSequenceItem(caption, url, parent)
 {
 
 }

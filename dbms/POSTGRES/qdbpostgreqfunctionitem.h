@@ -8,7 +8,7 @@ class QDBPostgreqFunctionItem : public QDBProcedureItem
 {
   Q_OBJECT
 public:
-  QDBPostgreqFunctionItem(QString caption, QObject* parent = nullptr);
+  QDBPostgreqFunctionItem(QString caption, QUrl url, QObject* parent = nullptr);
 
   // QDBObjectItem interface
 public:

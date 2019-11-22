@@ -3,7 +3,8 @@
 #include <QDebug>
 #include <QUrl>
 
-QDBMysqlTableItem::QDBMysqlTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
+QDBMysqlTableItem::QDBMysqlTableItem(QString caption, QUrl url, QObject *parent)
+  : QDBTableItem(caption, url, parent)
 {
   _columnsModel = new SqlColumnModel();
 }

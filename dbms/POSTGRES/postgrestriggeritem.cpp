@@ -4,8 +4,8 @@
 #include <QDebug>
 
 
-PostgresTriggerItem::PostgresTriggerItem(QString caption, QObject *parent)
-  : QDBTriggerItem(caption, parent)
+PostgresTriggerItem::PostgresTriggerItem(QString caption, QUrl url, QObject *parent)
+  : QDBTriggerItem(caption, url, parent)
 {
 }
 

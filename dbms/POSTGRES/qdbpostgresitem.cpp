@@ -6,7 +6,7 @@
 #include "postgrestriggeritem.h"
 
 
-QDBPostgresItem::QDBPostgresItem(QString caption, QObject *parent) : QDBDatabaseItem(caption, parent)
+QDBPostgresItem::QDBPostgresItem(QString caption) : QDBDatabaseItem(caption)
 {
 
 }
@@ -39,14 +39,14 @@ QString QDBPostgresItem::getProcedureListSql()
       "WHERE routine_type='FUNCTION' and specific_schema='public' order by 1";
 }
 
-QDBTableItem *QDBPostgresItem::createNewTableItem(QString caption, QObject *parent)
+QDBTableItem *QDBPostgresItem::createNewTableItem(QString caption, QUrl url, QObject *parent)
 {
-  return new QDBPostgresTableItem(caption, parent);
+  return new QDBPostgresTableItem(caption, url, parent);
 }
 
-QDBSequenceItem *QDBPostgresItem::createNewSequenceItem(QString caption, QObject *parent)
+QDBSequenceItem *QDBPostgresItem::createNewSequenceItem(QString caption, QUrl url, QObject *parent)
 {
-  return new QDBPostgreSequence(caption, parent);
+  return new QDBPostgreSequence(caption, url, parent);
 }
 
 void QDBPostgresItem::loadViewItems(QDBObjectItem *parentItem)
@@ -60,7 +60,7 @@ void QDBPostgresItem::loadSequenceItems(QDBObjectItem *parentItem)
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
   while (resultSet.next()) {
     QDBSequenceItem* sequenceItem
-        = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+        = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem->objectUrl(), parentItem);
     sequenceItem->updateObjectName();
   }
 }
@@ -76,12 +76,12 @@ void QDBPostgresItem::loadProcedureItems(QDBObjectItem *parentItem)
 }
 
 
-QDBProcedureItem *QDBPostgresItem::createNewProcedureItem(QString caption, QObject *parent)
+QDBProcedureItem *QDBPostgresItem::createNewProcedureItem(QString caption, QUrl url, QObject *parent)
 {
-  return new QDBPostgreqFunctionItem(caption, parent);
+  return new QDBPostgreqFunctionItem(caption, url, parent);
 }
 
-QDBTriggerItem *QDBPostgresItem::createNewTriggerItem(QString caption, QObject *parent)
+QDBTriggerItem *QDBPostgresItem::createNewTriggerItem(QString caption, QUrl url, QObject *parent)
 {
-  return new PostgresTriggerItem(caption, parent);
+  return new PostgresTriggerItem(caption, url, parent);
 }

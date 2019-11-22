@@ -7,7 +7,7 @@ class QFolderTreeItem : public QDBObjectItem
 {
   Q_OBJECT
 public:
-  QFolderTreeItem(QString caption, QObject* parent = nullptr);
+  QFolderTreeItem(QString caption, QUrl url, QObject* parent = nullptr);
   virtual ~QFolderTreeItem() override;
 
   QDBObjectItem::ItemType childrenType() const;
@@ -22,7 +22,7 @@ public:
 public:
   virtual bool loadChildren() override;
   virtual int type() override;
-//  virtual QUrl objectUrl() override;
+  virtual QUrl objectUrl() override;
 
 private:
   QDBObjectItem::ItemType _childrenType = UnknownType;

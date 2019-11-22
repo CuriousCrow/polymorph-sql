@@ -7,11 +7,11 @@ class QDBSqliteItem : public QDBDatabaseItem
 {
     Q_OBJECT
 public:
-    QDBSqliteItem(QString caption, QObject* parent = nullptr);
+    QDBSqliteItem(QString caption);
 
 public:
     virtual bool loadChildren() override;
-    virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr) override;
+    virtual QDBTableItem* createNewTableItem(QString caption, QUrl url, QObject* parent = nullptr) override;
     // QDBDatabaseItem interface
 protected:
     virtual QString getViewListSql() override;

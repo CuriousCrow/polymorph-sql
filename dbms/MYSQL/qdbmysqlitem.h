@@ -7,10 +7,10 @@ class QDBMysqlItem : public QDBDatabaseItem
 {
   Q_OBJECT
 public:
-  QDBMysqlItem(QString caption, QObject* parent = nullptr);
+  QDBMysqlItem(QString caption);
   ~QDBMysqlItem();
 
-  virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
+  virtual QDBTableItem* createNewTableItem(QString caption, QUrl url, QObject* parent = nullptr);
   // QDBObjectItem interface
 public:
   virtual bool loadChildren();

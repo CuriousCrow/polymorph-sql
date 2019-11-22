@@ -3,6 +3,7 @@
 
 #include "lstandardtreemodel.h"
 #include <QSqlDatabase>
+#include <QUrl>
 
 class QDBObjectField
 {
@@ -39,9 +40,10 @@ public:
     Field
   };
 
-  QDBObjectItem(QString caption, QObject* parent = nullptr);
+  QDBObjectItem(QString caption, QUrl parentUrl = QUrl(), QObject* parent = nullptr);
   ~QDBObjectItem();
   QString connectionName(){ return _connectionName; }
+  void setParentUrl(const QUrl &url);
   void setDriverName(QString driverName);
   QString driverName();
 
@@ -90,6 +92,7 @@ public:
   virtual int colCount();
   virtual QVariant colData(int column, int role);
 private:
+  QUrl _parentUrl;
   QString _driverName;
 };
 

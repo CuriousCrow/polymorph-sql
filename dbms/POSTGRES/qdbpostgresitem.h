@@ -7,7 +7,7 @@ class QDBPostgresItem : public QDBDatabaseItem
 {
   Q_OBJECT
 public:
-  QDBPostgresItem(QString caption, QObject* parent = nullptr);
+  QDBPostgresItem(QString caption);
   ~QDBPostgresItem();
 
   // QDBDatabaseItem interface
@@ -19,10 +19,10 @@ protected:
 
   // QDBDatabaseItem interface
 public:
-  virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent);
-  virtual QDBSequenceItem *createNewSequenceItem(QString caption, QObject *parent);
-  virtual QDBProcedureItem *createNewProcedureItem(QString caption, QObject *parent);
-  virtual QDBTriggerItem *createNewTriggerItem(QString caption, QObject *parent);
+  virtual QDBTableItem *createNewTableItem(QString caption, QUrl url, QObject *parent);
+  virtual QDBSequenceItem *createNewSequenceItem(QString caption, QUrl url, QObject *parent);
+  virtual QDBProcedureItem *createNewProcedureItem(QString caption, QUrl url, QObject *parent);
+  virtual QDBTriggerItem *createNewTriggerItem(QString caption, QUrl url, QObject *parent);
 
   // QDBDatabaseItem interface
 protected:

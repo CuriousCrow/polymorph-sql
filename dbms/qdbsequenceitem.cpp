@@ -4,8 +4,8 @@
 #include <QIcon>
 
 
-QDBSequenceItem::QDBSequenceItem(QString caption, QObject *parent):
-  QDBObjectItem(caption, parent)
+QDBSequenceItem::QDBSequenceItem(QString caption, QUrl url, QObject *parent):
+  QDBObjectItem(caption, url, parent)
 {
   registerField(F_CURRENT_VALUE);
   registerField(F_MIN_VALUE);

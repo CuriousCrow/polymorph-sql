@@ -7,7 +7,7 @@ class QDBViewItem : public QDBTableItem
 {
   Q_OBJECT
 public:
-  QDBViewItem(QString caption, QObject* parent = nullptr);
+  QDBViewItem(QString caption, QUrl url, QObject* parent = nullptr);
   virtual ~QDBViewItem() override;
 
 private:

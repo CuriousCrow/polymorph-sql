@@ -8,7 +8,7 @@ class PostgresTriggerItem : public QDBTriggerItem
 {
   Q_OBJECT
 public:
-  PostgresTriggerItem(QString caption, QObject* parent = nullptr);
+  PostgresTriggerItem(QString caption, QUrl url, QObject* parent = nullptr);
 
   // QDBObjectItem interface
 public:

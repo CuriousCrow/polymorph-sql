@@ -83,8 +83,8 @@ QVariant TableRowModel::headerData(int section, Qt::Orientation orientation, int
   return QVariant();
 }
 
-QDBFieldItem::QDBFieldItem(QString caption, QObject *parent)
-  : QDBObjectItem(caption, parent)
+QDBFieldItem::QDBFieldItem(QString caption, QUrl url, QObject *parent)
+  : QDBObjectItem(caption, url, parent)
 {
   registerField(F_SIZE);
   registerField(F_NULL);

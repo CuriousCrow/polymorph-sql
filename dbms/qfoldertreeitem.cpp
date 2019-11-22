@@ -3,8 +3,8 @@
 #include <QUrl>
 #include <QDebug>
 
-QFolderTreeItem::QFolderTreeItem(QString caption, QObject* parent):
-  QDBObjectItem(caption, parent)
+QFolderTreeItem::QFolderTreeItem(QString caption, QUrl url, QObject* parent):
+  QDBObjectItem(caption, url, parent)
 {
 }
 
@@ -50,9 +50,9 @@ void QFolderTreeItem::setChildrenType(QDBObjectItem::ItemType childrenType)
   _childrenType = childrenType;
 }
 
-//QUrl QFolderTreeItem::objectUrl()
-//{
-//  QUrl url = QDBObjectItem::objectUrl();
-//  url.setPath("/" + fieldValue(F_CAPTION).toString());
-//  return url;
-//}
+QUrl QFolderTreeItem::objectUrl()
+{
+  QUrl url = QDBObjectItem::objectUrl();
+  url.setPath("/" + fieldValue(F_CAPTION).toString().toLower().replace(" ", "_"));
+  return url;
+}

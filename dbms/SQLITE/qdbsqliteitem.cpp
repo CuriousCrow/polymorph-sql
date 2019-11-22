@@ -5,7 +5,8 @@
 
 
 
-QDBSqliteItem::QDBSqliteItem(QString caption, QObject *parent) : QDBDatabaseItem(caption, parent)
+QDBSqliteItem::QDBSqliteItem(QString caption)
+  : QDBDatabaseItem(caption)
 {
 }
 
@@ -16,44 +17,49 @@ bool QDBSqliteItem::loadChildren()
     return false;
 
   //Creating table items
-  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this);
+  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this->objectUrl(), this);
   tableFolderItem->setChildrenType(Table);
+  tableFolderItem->updateObjectName();
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
-    QDBTableItem* tableItem = new QDBSqliteTableItem(name, tableFolderItem);
+    QDBTableItem* tableItem = new QDBSqliteTableItem(name, tableFolderItem->objectUrl(), tableFolderItem);
     tableItem->updateObjectName();
   }
 
   //Creating views items
-  QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
+  QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this->objectUrl(), this);
   viewFolderItem->setChildrenType(View);
+  viewFolderItem->updateObjectName();
   loadViewItems(viewFolderItem);
 
   //Creating system table items
-  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
+  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this->objectUrl(), this);
   systemFolderItem->setChildrenType(Table);
+  systemFolderItem->updateObjectName();
   QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
   foreach (QString name, sysTableNames){
-    QDBTableItem* tableItem = new QDBSqliteTableItem(name, systemFolderItem);
+    QDBTableItem* tableItem = new QDBSqliteTableItem(name, systemFolderItem->objectUrl(), systemFolderItem);
     tableItem->updateObjectName();
   }
 
   //Creating sequence items
-  QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Generators"), this);
+  QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Generators"), this->objectUrl(), this);
   sequenceFolderItem->setChildrenType(Sequence);
+  sequenceFolderItem->updateObjectName();
   loadSequenceItems(sequenceFolderItem);
 
   //Creating trigger items
-  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this);
+  QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this->objectUrl(), this);
   triggerFolderItem->setChildrenType(Trigger);
+  triggerFolderItem->updateObjectName();
   loadTriggerItems(triggerFolderItem);
 
   return true;
 }
 
-QDBTableItem *QDBSqliteItem::createNewTableItem(QString caption, QObject *parent)
+QDBTableItem *QDBSqliteItem::createNewTableItem(QString caption, QUrl url, QObject *parent)
 {
-  return new QDBSqliteTableItem(caption, parent);
+  return new QDBSqliteTableItem(caption, url, parent);
 }
 
 QString QDBSqliteItem::getViewListSql()

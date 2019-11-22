@@ -3,7 +3,8 @@
 #include "../qfoldertreeitem.h"
 
 
-QDBMysqlItem::QDBMysqlItem(QString caption, QObject *parent) : QDBDatabaseItem(caption, parent)
+QDBMysqlItem::QDBMysqlItem(QString caption)
+  : QDBDatabaseItem(caption)
 {
 
 }
@@ -12,9 +13,9 @@ QDBMysqlItem::~QDBMysqlItem()
 {
 }
 
-QDBTableItem *QDBMysqlItem::createNewTableItem(QString caption, QObject *parent)
+QDBTableItem *QDBMysqlItem::createNewTableItem(QString caption, QUrl url, QObject *parent)
 {
-  return new QDBMysqlTableItem(caption, parent);
+  return new QDBMysqlTableItem(caption, url, parent);
 }
 
 bool QDBMysqlItem::loadChildren()
@@ -23,25 +24,25 @@ bool QDBMysqlItem::loadChildren()
     return false;
 
   //Creating table items
-  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this);
+  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this->objectUrl(), this);
   tableFolderItem->setChildrenType(Table);
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
-    QDBTableItem* tableItem = createNewTableItem(name, tableFolderItem);
+    QDBTableItem* tableItem = createNewTableItem(name, tableFolderItem->objectUrl(), tableFolderItem);
     tableItem->updateObjectName();
   }
 
   //Creating views items
-  QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
+  QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this->objectUrl(), this);
   viewFolderItem->setChildrenType(View);
   loadViewItems(viewFolderItem);
 
   //Creating system table items
-  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
+  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this->objectUrl(), this);
   systemFolderItem->setChildrenType(Table);
   QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
   foreach (QString name, sysTableNames){
-    QDBTableItem* tableItem = new QDBMysqlTableItem(name, systemFolderItem);
+    QDBTableItem* tableItem = new QDBMysqlTableItem(name, systemFolderItem->objectUrl(), systemFolderItem);
     tableItem->updateObjectName();
   }
 

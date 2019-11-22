@@ -2,7 +2,8 @@
 #include "qsqlqueryhelper.h"
 
 
-QDBFirebirdTableItem::QDBFirebirdTableItem(QString caption, QObject *parent) : QDBTableItem(caption, parent)
+QDBFirebirdTableItem::QDBFirebirdTableItem(QString caption, QUrl url, QObject *parent)
+  : QDBTableItem(caption, url, parent)
 {
   _columnsModel = new SqlColumnModel();
 }

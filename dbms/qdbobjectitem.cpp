@@ -7,7 +7,8 @@
 #include "dbms/appconst.h"
 
 
-QDBObjectItem::QDBObjectItem(QString caption, QObject* parent): LAbstractTreeItem(caption, parent)
+QDBObjectItem::QDBObjectItem(QString caption, QUrl parentUrl, QObject* parent):
+  LAbstractTreeItem(caption, parent), _parentUrl(parentUrl)
 {
   registerField(F_CAPTION);
   setFieldValue(F_CAPTION, caption);
@@ -15,6 +16,11 @@ QDBObjectItem::QDBObjectItem(QString caption, QObject* parent): LAbstractTreeIte
 
 QDBObjectItem::~QDBObjectItem()
 {
+}
+
+void QDBObjectItem::setParentUrl(const QUrl &url)
+{
+  _parentUrl = url;
 }
 
 void QDBObjectItem::setDriverName(QString driverName)
@@ -30,10 +36,7 @@ QString QDBObjectItem::driverName()
 
 QUrl QDBObjectItem::objectUrl()
 {
-  if (parent() && parent()->inherits("LAbstractTreeItem"))
-    return (qobject_cast<QDBObjectItem*>(parent()))->objectUrl();
-  else
-    return QUrl();
+  return _parentUrl;
 }
 
 QStringList QDBObjectItem::propertyList()

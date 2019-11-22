@@ -8,8 +8,8 @@
 #include "qknowledgebase.h"
 
 
-QDBTableItem::QDBTableItem(QString caption, QObject* parent):
-  QDBObjectItem(caption, parent)
+QDBTableItem::QDBTableItem(QString caption, QUrl url, QObject* parent):
+  QDBObjectItem(caption, url, parent)
 {      
 }
 
@@ -65,7 +65,8 @@ bool QDBTableItem::loadChildren()
 QUrl QDBTableItem::objectUrl()
 {
   QUrl url = QDBObjectItem::objectUrl();
-  url.setPath("/" + fieldValue(F_CAPTION).toString());
+  QString path = url.path() + "/" + fieldValue(F_CAPTION).toString();
+  url.setPath(path);
   return url;
 }
 

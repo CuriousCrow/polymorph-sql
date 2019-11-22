@@ -3,8 +3,8 @@
 #include "../../qsqlqueryhelper.h"
 
 
-QDBPostgreqFunctionItem::QDBPostgreqFunctionItem(QString caption, QObject *parent)
-  : QDBProcedureItem(caption, parent)
+QDBPostgreqFunctionItem::QDBPostgreqFunctionItem(QString caption, QUrl url, QObject *parent)
+  : QDBProcedureItem(caption, url, parent)
 {
 }
 
