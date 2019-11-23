@@ -19,18 +19,7 @@ ViewEditDialog::~ViewEditDialog()
 
 void ViewEditDialog::on_btnOk_clicked()
 {
-  ActionResult res;
-  formToObject();
-
-  if (userAction() == AbstractDatabaseEditForm::Create) {
-    res = _objItem->insertMe();
-  }
-  if (res.isSuccess())
-    accept();
-  else {
-    QMessageBox::warning(this, TITLE_ERROR, "Operation failed\r\n" + res.description());
-  }
-
+  tryUserAction();
 }
 
 void ViewEditDialog::on_btnCancel_clicked()

@@ -28,6 +28,7 @@ signals:
   void userActionChanged();
 protected:
   QDBObjectItem* _objItem;
+  virtual void tryUserAction();
 private:
   UserAction _userAction;
 };
