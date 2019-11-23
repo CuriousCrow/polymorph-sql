@@ -98,7 +98,7 @@ void PostgresTriggerItem::clearEventFields()
 
 QString PostgresTriggerItem::parseActionStatement(QString statement)
 {
-  return statement.section(" ", -1, -1);
+  return statement.section(" ", -1, -1).remove("()");
 }
 
 QStringList PostgresTriggerItem::events()

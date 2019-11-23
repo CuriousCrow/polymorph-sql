@@ -398,8 +398,14 @@ void MainWindow::saveTriggerChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
-    editForm->objItem()->insertMe();
-    refreshQueryEditorAssistance();
+    bool insertResult = editForm->objItem()->insertMe();
+    if (insertResult) {
+      refreshQueryEditorAssistance();
+    }
+    else {
+      QMessageBox::critical(this, TITLE_ERROR, "Trigger creation failed");
+    }
+
   }
   else {
     editForm->objItem()->updateMe();

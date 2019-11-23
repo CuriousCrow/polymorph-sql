@@ -20,6 +20,15 @@ TriggerEditForm::~TriggerEditForm()
 
 void TriggerEditForm::objectToForm()
 {
+  QStructureItemModel* structModel = DataStore::instance()->structureModel();
+  QModelIndex idx = structModel->indexByName("qpsql://schoolug/tables");
+  ui->cmbTargetTable->setModel(structModel);
+  ui->cmbTargetTable->setRootModelIndex(idx);
+
+  idx = structModel->indexByName("qpsql://schoolug/procedures");
+  ui->cmbFunction->setModel(structModel);
+  ui->cmbFunction->setRootModelIndex(idx);
+
   ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
   ui->cmbBeforeAfter->setCurrentText(_objItem->fieldValue(F_TIMING).toString());
   ui->cmbFunction->setCurrentText(_objItem->fieldValue(F_FUNCTION).toString());
@@ -30,14 +39,10 @@ void TriggerEditForm::objectToForm()
   ui->chkDeleteEvent->setChecked(_objItem->fieldValue(F_EVENT_DELETE).toBool());
   ui->chkTruncateEvent->setChecked(_objItem->fieldValue(F_EVENT_TRUNCATE).toBool());
 
-  QStructureItemModel* structModel = DataStore::instance()->structureModel();
-  QModelIndex idx = structModel->indexByName("qpsql://schoolug/tables");
-  ui->cmbTargetTable->setModel(structModel);
-  ui->cmbTargetTable->setRootModelIndex(idx);
-
-  idx = structModel->indexByName("qpsql://schoolug/procedures");
-  ui->cmbFunction->setModel(structModel);
-  ui->cmbFunction->setRootModelIndex(idx);
+  if (userAction() == AbstractDatabaseEditForm::Create) {
+    ui->cmbFunction->setCurrentIndex(0);
+    ui->cmbTargetTable->setCurrentIndex(0);
+  }
 }
 
 void TriggerEditForm::formToObject()
@@ -74,4 +79,9 @@ void TriggerEditForm::onUserActionChanged()
   ui->chkUpdateEvent->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->chkDeleteEvent->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->chkTruncateEvent->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+}
+
+void TriggerEditForm::on_pushButton_clicked()
+{
+
 }
