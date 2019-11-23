@@ -22,9 +22,9 @@ public:
 
   // QDBObjectItem interface
 public:
-  bool insertMe();
-  bool updateMe();
-  bool deleteMe();
+  ActionResult insertMe();
+  ActionResult updateMe();
+  ActionResult deleteMe();
 };
 
 #endif // QDBSEQUENCEITEM_H

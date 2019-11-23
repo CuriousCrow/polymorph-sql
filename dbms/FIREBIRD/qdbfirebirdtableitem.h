@@ -8,14 +8,10 @@ class QDBFirebirdTableItem : public QDBTableItem
   Q_OBJECT
 public:
   QDBFirebirdTableItem(QString caption, QObject* parent = nullptr);
-  ~QDBFirebirdTableItem();
-  // QDBObjectItem interface
-public:
-  virtual bool insertMe();
-  virtual bool updateMe();
+  virtual ~QDBFirebirdTableItem() override;
   // QDBTableItem interface
 public:
-  virtual void reloadColumnsModel();
+  virtual void reloadColumnsModel() override;
 private:
   QString createTableQuery(QString table);
   QString columnDef(const SqlColumn &col);

@@ -44,9 +44,9 @@ protected:
 public:
   virtual bool loadChildren();
   virtual QUrl objectUrl();
-  virtual bool insertMe();
-  virtual bool updateMe();
-  virtual bool deleteMe();
+  virtual ActionResult insertMe();
+  virtual ActionResult updateMe();
+  virtual ActionResult deleteMe();
 
   // LAbstractTreeItem interface
 public:  

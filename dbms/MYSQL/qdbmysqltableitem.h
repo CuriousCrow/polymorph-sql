@@ -8,16 +8,16 @@ class QDBMysqlTableItem : public QDBTableItem
   Q_OBJECT
 public:
   QDBMysqlTableItem(QString caption, QObject* parent = nullptr);
-  ~QDBMysqlTableItem();
+  virtual ~QDBMysqlTableItem() override;
 
   // QDBObjectItem interface
 public:
-  virtual bool insertMe();
-  virtual bool updateMe();
+  virtual ActionResult insertMe() override;
+  virtual ActionResult updateMe() override;
 
   // QDBTableItem interface
 public:
-  virtual void reloadColumnsModel();
+  virtual void reloadColumnsModel() override;
 private:
   QString createTableQuery(QString table);
   QString columnDef(const SqlColumn &col);

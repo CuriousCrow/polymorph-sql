@@ -29,9 +29,8 @@ public:
 
   // QDBObjectItem interface
 public:
-  virtual bool deleteMe() override;
-  virtual bool insertMe() override;
-  virtual bool updateMe() override;
+  virtual ActionResult deleteMe() override;
+  virtual ActionResult updateMe() override;
 protected:
   SqlColumnModel* _columnsModel;
 };

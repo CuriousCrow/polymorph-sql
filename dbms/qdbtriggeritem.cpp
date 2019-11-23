@@ -56,19 +56,19 @@ int QDBTriggerItem::type()
   return Trigger;
 }
 
-bool QDBTriggerItem::insertMe()
+ActionResult QDBTriggerItem::insertMe()
 {
-  return true;
+  return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-bool QDBTriggerItem::updateMe()
+ActionResult QDBTriggerItem::updateMe()
 {
-  return true;
+  return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-bool QDBTriggerItem::deleteMe()
+ActionResult QDBTriggerItem::deleteMe()
 {
   QString sql = "drop trigger #caption#";
   QString preparedSql = fillSqlPattern(sql);
-  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }

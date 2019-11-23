@@ -12,8 +12,8 @@ public:
   ~QDBPostgresTableItem();
   // QDBObjectItem interface
 public:
-  virtual bool insertMe();
-  virtual bool updateMe();
+  virtual ActionResult insertMe();
+  virtual ActionResult updateMe();
   // QDBTableItem interface
 public:
   virtual void reloadColumnsModel();

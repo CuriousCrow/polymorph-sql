@@ -14,16 +14,16 @@ QDBMysqlTableItem::~QDBMysqlTableItem()
   delete _columnsModel;
 }
 
-bool QDBMysqlTableItem::insertMe()
+ActionResult QDBMysqlTableItem::insertMe()
 {
   QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName());
   return submit();
 }
 
-bool QDBMysqlTableItem::updateMe()
+ActionResult QDBMysqlTableItem::updateMe()
 {
   qDebug() << "QDBMysqlTableItem::updateMe()";
-  if (QDBTableItem::updateMe())
+  if (QDBTableItem::updateMe().isSuccess())
     return true;
 
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();

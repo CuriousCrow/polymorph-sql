@@ -86,10 +86,14 @@ MainWindow::~MainWindow()
 void MainWindow::on_aAddDatabase_triggered()
 {
   QDBDatabaseItem* newItem = new QDBDatabaseItem(DEF_DATABASE_NAME);
-  if (newItem->insertMe()){
+  ActionResult res = newItem->insertMe();
+  if (res.isSuccess()){
     DataStore::instance()->structureModel()->appendItem(newItem);
     _connectionEditDialog->mapper()->toLast();
     _connectionEditDialog->show();
+  }
+  else {
+    qWarning() << "Error:" << res.description();
   }
 }
 
@@ -172,8 +176,13 @@ void MainWindow::on_aRemoveDatabase_triggered()
   QDBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   if (itemToRemove->type() == QDBObjectItem::Database){
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
-    if (itemToRemove->deleteMe())
+    ActionResult res = itemToRemove->deleteMe();
+    if (res.isSuccess()) {
       DataStore::instance()->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(), QModelIndex());
+    }
+    else {
+      qWarning() << "Remove database error:" << res.description();
+    }
   }
 }
 
@@ -250,14 +259,19 @@ void MainWindow::dropCurrentDatabaseObject()
   case QDBObjectItem::Table:
   case QDBObjectItem::Trigger:
   case QDBObjectItem::Sequence:
-  case QDBObjectItem::Procedure:
+  case QDBObjectItem::Procedure: {
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
-    if (itemToRemove->deleteMe()) {
+    ActionResult res = itemToRemove->deleteMe();
+    if (res.isSuccess()) {
       DataStore::instance()->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                                  ui->tvDatabaseStructure->currentIndex().parent());
       refreshQueryEditorAssistance();
     }
+    else {
+      QMessageBox::warning(this, TITLE_ERROR, "Delete operation failed: " + res.description());
+    }
     break;
+  }
   default:
     break;
   }
@@ -291,7 +305,8 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case QDBObjectItem::View: {
-    QDBTableItem* newViewItem = databaseItem->createNewViewItem(DEF_VIEW_NAME, folderItem);
+    QDBTableItem* newViewItem = databaseItem->createNewViewItem(DEF_VIEW_NAME);
+    newViewItem->setParentUrl(folderItem->objectUrl());
     _viewEditorWindow->setObjItem(newViewItem);
     _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Create);
     _viewEditorWindow->objectToForm();
@@ -352,10 +367,18 @@ void MainWindow::saveViewChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
-    editForm->objItem()->insertMe();
-    refreshQueryEditorAssistance();
+    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    QDBObjectItem* newItem = editForm->objItem();
+    ActionResult res = newItem->insertMe();
+    if (res.isSuccess()) {
+      newItem->setParent(folderItem);
+      DataStore::instance()->structureModel()->appendItem(editForm->objItem(), folderItem);
+      refreshQueryEditorAssistance();
+    }
+    else {
+      newItem->deleteLater();
+      QMessageBox::warning(this, TITLE_ERROR, "View creation failed: " + res.description());
+    }
   }
 }
 
@@ -398,8 +421,8 @@ void MainWindow::saveTriggerChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
-    bool insertResult = editForm->objItem()->insertMe();
-    if (insertResult) {
+    ActionResult insertResult = editForm->objItem()->insertMe();
+    if (insertResult.isSuccess()) {
       refreshQueryEditorAssistance();
     }
     else {

@@ -13,16 +13,6 @@ QDBFirebirdTableItem::~QDBFirebirdTableItem()
   delete _columnsModel;
 }
 
-bool QDBFirebirdTableItem::insertMe()
-{
-  return false;
-}
-
-bool QDBFirebirdTableItem::updateMe()
-{
-  return false;
-}
-
 void QDBFirebirdTableItem::reloadColumnsModel()
 {
   //Новая, еще не вставленная таблица

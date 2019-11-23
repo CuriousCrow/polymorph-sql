@@ -7,11 +7,11 @@ class QDBSqliteTableItem : public QDBTableItem
 {
 public:
     QDBSqliteTableItem(QString caption, QObject* parent = nullptr);
-    virtual void reloadColumnsModel();
+    virtual void reloadColumnsModel() override;
     // QDBObjectItem interface
 public:
-    virtual bool insertMe();
-    virtual bool updateMe();
+    virtual ActionResult insertMe() override;
+    virtual ActionResult updateMe() override;
 private:
     QString createTableQuery(QString table);
 };

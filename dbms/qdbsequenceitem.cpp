@@ -47,25 +47,25 @@ int QDBSequenceItem::type()
   return Sequence;
 }
 
-bool QDBSequenceItem::insertMe()
+ActionResult QDBSequenceItem::insertMe()
 {
   QString sql = "CREATE SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" {INCREMENT #step# }"
       "{MINVALUE #minValue# }{MAXVALUE #maxValue# }{START WITH #startValue#}";
   QString preparedSql = fillWithModifiedFields(sql);
-  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }
 
-bool QDBSequenceItem::updateMe()
+ActionResult QDBSequenceItem::updateMe()
 {
   QString sql = "ALTER SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" {INCREMENT BY #step# }{MINVALUE #minValue# }"
       "{MAXVALUE #maxValue# }{START WITH #startValue# }{RESTART WITH #currentValue#}";
   QString preparedSql = fillWithModifiedFields(sql);
-  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }
 
-bool QDBSequenceItem::deleteMe()
+ActionResult QDBSequenceItem::deleteMe()
 {
   QString sql = "DROP SEQUENCE \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);
-  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }

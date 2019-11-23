@@ -13,9 +13,9 @@ public:
   // QDBObjectItem interface
 public:
   virtual bool refresh() override;
-  virtual bool insertMe() override;
-  virtual bool updateMe() override;
-  virtual bool deleteMe() override;
+  virtual ActionResult insertMe() override;
+  virtual ActionResult updateMe() override;
+  virtual ActionResult deleteMe() override;
 private:
   void setEventByName(QString event);
   void clearEventFields();

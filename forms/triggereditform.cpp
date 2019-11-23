@@ -80,8 +80,3 @@ void TriggerEditForm::onUserActionChanged()
   ui->chkDeleteEvent->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->chkTruncateEvent->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
 }
-
-void TriggerEditForm::on_pushButton_clicked()
-{
-
-}

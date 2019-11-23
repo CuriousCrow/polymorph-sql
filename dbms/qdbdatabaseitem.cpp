@@ -115,33 +115,33 @@ QUrl QDBDatabaseItem::objectUrl()
   return url;
 }
 
-bool QDBDatabaseItem::insertMe()
+ActionResult QDBDatabaseItem::insertMe()
 {
   QString sql = "insert into t_database (NAME, DRIVER, LOCAL_PATH, HOST_ADDRESS, USERNAME, PASSWORD) "
                 "values ('#caption#','#driverName#', '#databaseName#', '#hostName#', '#userName#', '#password#')";
   QSqlQuery sqlResult = QSqlQueryHelper::execSql(fillSqlPattern(sql));
   if (sqlResult.lastError().isValid()){
-    return false;
+    return ActionResult(ERR_QUERY_ERROR, sqlResult.lastError().databaseText());
   }
   else {
     setFieldValue("id", sqlResult.lastInsertId());
-    return true;
+    return ActionResult(RES_OK_CODE);
   }
 }
 
-bool QDBDatabaseItem::updateMe()
+ActionResult QDBDatabaseItem::updateMe()
 {
   QString sql = "update t_database set NAME='#caption#', DRIVER='#driverName#',"
                 "LOCAL_PATH='#databaseName#',HOST_ADDRESS='#hostName#',"
                 "USERNAME='#userName#',PASSWORD='#password#' where id=#id#";
 
-  return !QSqlQueryHelper::execSql(fillSqlPattern(sql)).lastError().isValid();
+  return execSql(fillSqlPattern(sql));
 }
 
-bool QDBDatabaseItem::deleteMe()
+ActionResult QDBDatabaseItem::deleteMe()
 {
   QString sql = "delete from t_database where id=#id#";
-  return !QSqlQueryHelper::execSql(fillSqlPattern(sql)).lastError().isValid();
+  return execSql(fillSqlPattern(sql));
 }
 
 QVariant QDBDatabaseItem::colData(int column, int role)

@@ -7,23 +7,23 @@ class QDBTriggerItem : public QDBObjectItem
 {
 public:
   QDBTriggerItem(QString caption, QObject* parent = nullptr);
-  ~QDBTriggerItem();
+  virtual ~QDBTriggerItem() override;
 
   // LAbstractTreeItem interface
 public:
-  virtual int colCount();
-  virtual QVariant colData(int column, int role);
+  virtual int colCount() override;
+  virtual QVariant colData(int column, int role) override;
 
   // QDBObjectItem interface
 public:
-  virtual bool loadChildren();
-  virtual int type();
+  virtual bool loadChildren() override;
+  virtual int type() override;
   
   // QDBObjectItem interface
 public:
-  virtual bool insertMe();
-  virtual bool updateMe();
-  virtual bool deleteMe();
+  virtual ActionResult insertMe() override;
+  virtual ActionResult updateMe() override;
+  virtual ActionResult deleteMe() override;
 };
 
 #endif // QDBTRIGGERITEM_H

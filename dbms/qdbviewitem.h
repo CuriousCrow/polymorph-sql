@@ -20,8 +20,8 @@ public:
   // QDBObjectItem interface
 public:
   virtual int type() override;
-  virtual bool insertMe() override;
-  virtual bool deleteMe() override;
+  virtual ActionResult insertMe() override;
+  virtual ActionResult deleteMe() override;
 };
 
 #endif // QDBVIEWITEM_H

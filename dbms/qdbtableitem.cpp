@@ -70,19 +70,14 @@ QVariant QDBTableItem::colData(int column, int role)
   }
 }
 
-bool QDBTableItem::deleteMe()
+ActionResult QDBTableItem::deleteMe()
 {
   QString sql = "drop table \"%1\"";
   QString preparedSql = sql.arg(fieldValue(F_CAPTION).toString());
-  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }
 
-bool QDBTableItem::insertMe()
-{
-  return false;
-}
-
-bool QDBTableItem::updateMe()
+ActionResult QDBTableItem::updateMe()
 {
   SqlColumnModel::EditType editType = _columnsModel->editType();
   if (editType == SqlColumnModel::DropTable) {
@@ -94,11 +89,11 @@ bool QDBTableItem::updateMe()
   else {
     if (editType == SqlColumnModel::NoChanges && !isModified()) {
       qDebug() << "No changes";
-      return true;
+      return ActionResult();
     }
     //    qDebug() << "Table" << fieldValue("caption").toString() << "modified";
     //    qDebug() << _columnsModel->columnChanges();
-    return false;
+    return ActionResult(RES_BASE_ERROR, "Раньше возвращалось false. Надо проверить");
   }
 }
 

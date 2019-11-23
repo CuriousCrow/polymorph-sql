@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QSqlDatabase>
+#include <QMessageBox>
 
 ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
   QDialog(parent),
@@ -56,8 +57,13 @@ void ConnectionEditDialog::on_btnOk_clicked()
 {  
   _mapper->submit();
   QDBObjectItem* item = qobject_cast<QDBObjectItem*>(_model->itemByIndex(_model->index(_mapper->currentIndex(),0, _mapper->rootIndex())));
-  if (item->updateMe())
+  ActionResult res = item->updateMe();
+  if (res.isSuccess()) {
     accept();
+  }
+  else {
+    QMessageBox::warning(this, "Warning", "Error connecting database: " + res.description());
+  }
 }
 
 void ConnectionEditDialog::on_btnBrowseLocalAddress_clicked()

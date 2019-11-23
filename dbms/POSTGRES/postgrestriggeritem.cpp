@@ -38,7 +38,7 @@ bool PostgresTriggerItem::refresh()
   }
 }
 
-bool PostgresTriggerItem::insertMe()
+ActionResult PostgresTriggerItem::insertMe()
 {
   qDebug() << "Create trigger" << fieldValue(F_CAPTION);
   QString sql =
@@ -49,18 +49,22 @@ bool PostgresTriggerItem::insertMe()
       "EXECUTE PROCEDURE #function#";
   sql = sql.arg(events().join(" OR "));
   QString preparedSql = fillPatternWithFields(sql);
-  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }
 
-bool PostgresTriggerItem::updateMe()
+ActionResult PostgresTriggerItem::updateMe()
 {
+  ActionResult res;
+
   if (fieldModified(F_CAPTION)) {
     qDebug() << "Rename trigger:" << fieldOldValue(F_CAPTION) << fieldValue(F_CAPTION);
     QString sql =
         "ALTER TRIGGER \"#caption.old#\" ON \"#table#\" "
         "RENAME TO \"#caption.new#\"";
     QString preparedSql = fillPatternWithFields(sql);
-    QSqlQueryHelper::execSql(preparedSql, connectionName());
+    res = execSql(preparedSql, connectionName());
+    if (!res.isSuccess())
+      return res;
   }
 
   if (fieldModified(F_ENABLED)) {
@@ -68,9 +72,11 @@ bool PostgresTriggerItem::updateMe()
     QString sql = "ALTER TABLE \"#table#\" %1 TRIGGER \"#caption#\"";
     sql = sql.arg(fieldValue(F_ENABLED).toBool() ? "ENABLE" : "DISABLE");
     QString preparedSql = fillPatternWithFields(sql);
-    QSqlQueryHelper::execSql(preparedSql, connectionName());
+    res = execSql(preparedSql, connectionName());
+    if (!res.isSuccess())
+      return res;
   }
-  return true;
+  return ActionResult();
 }
 
 void PostgresTriggerItem::setEventByName(QString event)
@@ -116,10 +122,10 @@ QStringList PostgresTriggerItem::events()
 }
 
 
-bool PostgresTriggerItem::deleteMe()
+ActionResult PostgresTriggerItem::deleteMe()
 {
   refresh();
   QString sql = "drop trigger \"#caption#\" on \"#table#\"";
   QString preparedSql = fillSqlPattern(sql);
-  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }

@@ -44,16 +44,17 @@ void QDBSqliteTableItem::reloadColumnsModel()
   }
 }
 
-bool QDBSqliteTableItem::insertMe()
+ActionResult QDBSqliteTableItem::insertMe()
 {
   return !QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName()).lastError().isValid();
 }
 
-bool QDBSqliteTableItem::updateMe()
+ActionResult QDBSqliteTableItem::updateMe()
 {
   qDebug() << "QDBSqliteTableItem::updateMe()";
-  if (QDBTableItem::updateMe())
-    return true;
+  ActionResult res = QDBTableItem::updateMe();
+  if (res.isSuccess())
+    return res;
 
   //Создание новой таблицы
   QString sql = createTableQuery("tempTable");
@@ -69,20 +70,24 @@ bool QDBSqliteTableItem::updateMe()
   }
   sql = "INSERT INTO tempTable (%1) SELECT %2 FROM #caption.old#";
   QString preparedSql = fillPatternWithFields(sql).arg(newNames.join(", "), oldNames.join(", "));
-  QSqlQueryHelper::execSql(preparedSql, connectionName());
+  res = execSql(preparedSql, connectionName());
+  if (!res.isSuccess())
+    return res;
 
   sql = "DROP TABLE #caption.old#";
   preparedSql = fillPatternWithFields(sql);
-  QSqlQueryHelper::execSql(preparedSql, connectionName());
+  res = execSql(preparedSql, connectionName());
+  if (!res.isSuccess())
+    return res;
 
   //Переименовываем новую таблицу обратно
   sql = "ALTER TABLE tempTable RENAME TO #caption.new#";
   preparedSql = fillPatternWithFields(sql);
-  QSqlQueryHelper::execSql(preparedSql, connectionName());
+  res = execSql(preparedSql, connectionName());
+  if (!res.isSuccess())
+    return res;
 
-  submit();
-
-  return true;
+  return ActionResult();
 }
 
 QString QDBSqliteTableItem::createTableQuery(QString table)

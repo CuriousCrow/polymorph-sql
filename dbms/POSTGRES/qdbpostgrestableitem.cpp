@@ -15,15 +15,15 @@ QDBPostgresTableItem::~QDBPostgresTableItem()
   delete _columnsModel;
 }
 
-bool QDBPostgresTableItem::insertMe()
+ActionResult QDBPostgresTableItem::insertMe()
 {
-  QSqlQueryHelper::execSql(createTableQuery(caption()), connectionName());
-  return submit();
+  return execSql(createTableQuery(caption()), connectionName());
 }
 
-bool QDBPostgresTableItem::updateMe()
+ActionResult QDBPostgresTableItem::updateMe()
 {
   qDebug() << "QDBPostgreqlTableItem::updateMe()";
+  ActionResult res;
 
   //Переименование таблицы
   //TODO: Сделать отдельный виртуальный метод renameMe для всех объектов
@@ -31,11 +31,14 @@ bool QDBPostgresTableItem::updateMe()
     qDebug() << "Rename table";
     QString sql = "ALTER TABLE \"#caption.old#\" RENAME TO \"#caption.new#\"";
     QString preparedSql = fillPatternWithFields(sql);
-    QSqlQueryHelper::execSql(preparedSql, connectionName());
+    res = execSql(preparedSql, connectionName());
+    if (!res.isSuccess())
+      return res;
   }
 
-  if (QDBTableItem::updateMe())
-    return true;
+  res = QDBTableItem::updateMe();
+  if (res.isSuccess())
+    return ActionResult();
 
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
   qDebug() << "Changes size:" << changes.count();
@@ -48,14 +51,18 @@ bool QDBPostgresTableItem::updateMe()
       QString sql = "ALTER TABLE \"#caption.new#\" ADD COLUMN %1";
       QString colDef = columnDef(toCol);
       QString preparedSql = fillPatternWithFields(sql).arg(colDef);
-      QSqlQueryHelper::execSql(preparedSql, connectionName());
+      res = execSql(preparedSql, connectionName());
+      if (!res.isSuccess())
+        return res;
     }
     else if (toCol.type() == NoType) {
       //Удаление колонки
       qDebug() << "Drop col:" << fromCol;
       QString sql = "ALTER TABLE \"#caption.new#\" DROP COLUMN %1";
       QString preparedSql = fillPatternWithFields(sql).arg(fromCol.name());
-      QSqlQueryHelper::execSql(preparedSql, connectionName());
+      res = execSql(preparedSql, connectionName());
+      if (!res.isSuccess())
+        return res;
     }
     else {
       //Изменения колонки
@@ -85,10 +92,12 @@ bool QDBPostgresTableItem::updateMe()
       }
       QString sql = "ALTER TABLE \"#caption.new#\" " + difs.join(",\n");
       QString preparedSql = fillPatternWithFields(sql);
-      QSqlQueryHelper::execSql(preparedSql, connectionName());
+      res = execSql(preparedSql, connectionName());
+      if (!res.isSuccess())
+        return res;
     }
   }
-  return submit();
+  return res;
 }
 
 void QDBPostgresTableItem::reloadColumnsModel()

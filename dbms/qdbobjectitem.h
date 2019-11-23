@@ -5,6 +5,23 @@
 #include <QSqlDatabase>
 #include <QUrl>
 
+#define RES_OK_CODE 0
+#define RES_BASE_ERROR 100
+#define ERR_NOT_IMPLEMENTED 101
+#define ERR_QUERY_ERROR 102
+
+class ActionResult
+{
+public:
+  ActionResult(int code = RES_OK_CODE, QString description = "");
+  bool isSuccess();
+  int resCode();
+  QString description();
+private:
+  int _resultCode;
+  QString _description;
+};
+
 class QDBObjectField
 {
 public:
@@ -52,9 +69,9 @@ public:
   virtual bool setData(int column, QVariant value, int role);
   virtual bool refresh();
 
-  virtual bool insertMe();
-  virtual bool updateMe();
-  virtual bool deleteMe();
+  virtual ActionResult insertMe();
+  virtual ActionResult updateMe();
+  virtual ActionResult deleteMe();
 
   bool isEditable();
   virtual bool isModified();
@@ -85,6 +102,7 @@ protected:
   QString fillPatternWithFields(QString pattern);
   QString fillWithModifiedFields(QString pattern);
   QString filterUnmodifiedFields(QString pattern);
+  ActionResult execSql(QString sql, QString connectionName = "");
 
   // LAbstractTreeItem interface
 public:

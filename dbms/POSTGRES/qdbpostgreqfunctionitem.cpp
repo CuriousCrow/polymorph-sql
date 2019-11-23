@@ -28,7 +28,7 @@ bool QDBPostgreqFunctionItem::refresh()
   }
 }
 
-bool QDBPostgreqFunctionItem::insertMe()
+ActionResult QDBPostgreqFunctionItem::insertMe()
 {
   QString sql =
       "CREATE OR REPLACE FUNCTION #caption#() "
@@ -36,18 +36,17 @@ bool QDBPostgreqFunctionItem::insertMe()
       "LANGUAGE '#language#' "
       "AS $BODY$#sourceCode#$BODY$";
   QString preparedSql = fillSqlPattern(sql);
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
-  return !resultSet.lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }
 
-bool QDBPostgreqFunctionItem::updateMe()
+ActionResult QDBPostgreqFunctionItem::updateMe()
 {
   return insertMe();
 }
 
-bool QDBPostgreqFunctionItem::deleteMe()
+ActionResult QDBPostgreqFunctionItem::deleteMe()
 {
   QString sql = "DROP FUNCTION \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);
-  return !QSqlQueryHelper::execSql(preparedSql, connectionName()).lastError().isValid();
+  return execSql(preparedSql, connectionName());
 }

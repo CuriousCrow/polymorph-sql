@@ -128,6 +128,17 @@ QString QDBObjectItem::filterUnmodifiedFields(QString pattern)
   return resSql;
 }
 
+ActionResult QDBObjectItem::execSql(QString sql, QString connectionName)
+{
+  QSqlQuery query = QSqlQueryHelper::execSql(sql, connectionName);
+  if (query.lastError().isValid()) {
+    return ActionResult(ERR_QUERY_ERROR, query.lastError().databaseText());
+  }
+  else {
+    return ActionResult(RES_OK_CODE);
+  }
+}
+
 QVariant QDBObjectItem::fieldValue(QString fieldName)
 {
   int index = fieldIndex(fieldName);
@@ -212,18 +223,18 @@ QVariant QDBObjectItem::colData(int column, int role)
   return QVariant();
 }
 
-bool QDBObjectItem::insertMe(){
-  return true;
+ActionResult QDBObjectItem::insertMe(){
+  return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-bool QDBObjectItem::updateMe()
+ActionResult QDBObjectItem::updateMe()
 {
-  return true;
+  return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-bool QDBObjectItem::deleteMe()
+ActionResult QDBObjectItem::deleteMe()
 {    
-  return false;
+  return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
 bool QDBObjectItem::isEditable()
@@ -298,4 +309,25 @@ void QDBObjectField::submit()
 void QDBObjectField::revert()
 {
   _value = _oldValue;
+}
+
+ActionResult::ActionResult(int code, QString description)
+{
+  _resultCode = code;
+  _description = description;
+}
+
+bool ActionResult::isSuccess()
+{
+  return _resultCode == RES_OK_CODE;
+}
+
+int ActionResult::resCode()
+{
+  return _resultCode;
+}
+
+QString ActionResult::description()
+{
+  return _description;
 }
