@@ -31,7 +31,13 @@ void TriggerEditForm::objectToForm()
   ui->chkTruncateEvent->setChecked(_objItem->fieldValue(F_EVENT_TRUNCATE).toBool());
 
   QStructureItemModel* structModel = DataStore::instance()->structureModel();
+  QModelIndex idx = structModel->indexByName("qpsql://schoolug/tables");
+  ui->cmbTargetTable->setModel(structModel);
+  ui->cmbTargetTable->setRootModelIndex(idx);
 
+  idx = structModel->indexByName("qpsql://schoolug/procedures");
+  ui->cmbFunction->setModel(structModel);
+  ui->cmbFunction->setRootModelIndex(idx);
 }
 
 void TriggerEditForm::formToObject()
@@ -39,7 +45,7 @@ void TriggerEditForm::formToObject()
   _objItem->setFieldValue(F_CAPTION, ui->edtName->text());
   _objItem->setFieldValue(F_ENABLED, ui->chkEnabled->isChecked());
   _objItem->setFieldValue(F_TIMING, ui->cmbBeforeAfter->currentText());
-  _objItem->setFieldValue(F_FUNCTION, ui->cmbFunction->currentText());
+  _objItem->setFieldValue(F_FUNCTION, ui->cmbFunction->currentText() + "()");
   _objItem->setFieldValue(F_TABLE, ui->cmbTargetTable->currentText());
   _objItem->setFieldValue(F_EVENT_INSERT, ui->chkInsertEvent->isChecked());
   _objItem->setFieldValue(F_EVENT_UPDATE, ui->chkUpdateEvent->isChecked());
@@ -60,6 +66,7 @@ void TriggerEditForm::on_btnCancel_clicked()
 
 void TriggerEditForm::onUserActionChanged()
 {
+  ui->chkEnabled->setEnabled(userAction() == AbstractDatabaseEditForm::Edit);
   ui->cmbBeforeAfter->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->cmbFunction->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->cmbTargetTable->setEnabled(userAction() == AbstractDatabaseEditForm::Create);

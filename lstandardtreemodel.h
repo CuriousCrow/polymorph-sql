@@ -30,6 +30,7 @@ public:
   void addItem(LAbstractTreeItem* item, QModelIndex parent);
   LAbstractTreeItem* itemByIndex(QModelIndex index) const;
   LAbstractTreeItem* itemByName(QString name) const;
+  QModelIndex indexByName(QString name);
   QModelIndex indexByItem(LAbstractTreeItem* item);
 
   virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
