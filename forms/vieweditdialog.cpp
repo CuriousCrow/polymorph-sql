@@ -1,6 +1,7 @@
 #include "vieweditdialog.h"
 #include "ui_vieweditdialog.h"
 #include "../dbms/appconst.h"
+#include <QMessageBox>
 
 ViewEditDialog::ViewEditDialog(QWidget *parent) :
   AbstractDatabaseEditForm(parent),
@@ -18,12 +19,25 @@ ViewEditDialog::~ViewEditDialog()
 
 void ViewEditDialog::on_btnOk_clicked()
 {
+  ActionResult res;
   formToObject();
-  accept();
+
+  if (userAction() == AbstractDatabaseEditForm::Create) {
+    res = _objItem->insertMe();
+  }
+  if (res.isSuccess())
+    accept();
+  else {
+    QMessageBox::warning(this, TITLE_ERROR, "Operation failed\r\n" + res.description());
+  }
+
 }
 
 void ViewEditDialog::on_btnCancel_clicked()
 {
+  if (userAction() == AbstractDatabaseEditForm::Create) {
+    delete  _objItem;
+  }
   reject();
 }
 

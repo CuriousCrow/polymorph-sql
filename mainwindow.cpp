@@ -369,16 +369,9 @@ void MainWindow::saveViewChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     QDBObjectItem* newItem = editForm->objItem();
-    ActionResult res = newItem->insertMe();
-    if (res.isSuccess()) {
-      newItem->setParent(folderItem);
-      DataStore::instance()->structureModel()->appendItem(editForm->objItem(), folderItem);
-      refreshQueryEditorAssistance();
-    }
-    else {
-      newItem->deleteLater();
-      QMessageBox::warning(this, TITLE_ERROR, "View creation failed: " + res.description());
-    }
+    newItem->setParent(folderItem);
+    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), folderItem);
+    refreshQueryEditorAssistance();
   }
 }
 
