@@ -37,8 +37,7 @@ void TableEditForm::formToObject()
 
 void TableEditForm::on_pushButton_clicked()
 {
-  formToObject();
-  accept();
+  tryUserAction();
 }
 
 void TableEditForm::on_pushButton_2_clicked()

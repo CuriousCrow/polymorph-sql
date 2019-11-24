@@ -90,6 +90,11 @@ ActionResult QDBPostgresTableItem::updateMe()
         pattern = "RENAME COLUMN \"%1\" TO \"%2\"";
         difs.append(pattern.arg(fromCol.name()).arg(toCol.name()));
       }
+      if (difs.isEmpty()) {
+        qWarning() << "Column unchanged case! Ignore column.";
+        continue;
+      }
+
       QString sql = "ALTER TABLE \"#caption.new#\" " + difs.join(",\n");
       QString preparedSql = fillPatternWithFields(sql);
       res = execSql(preparedSql, connectionName());
@@ -118,7 +123,7 @@ void QDBPostgresTableItem::reloadColumnsModel()
     col.setIsPrimary(query.value("constraint_type").toString() == "PRIMARY KEY");
     col.setLength(query.value("character_maximum_length").toInt());
     col.setPrecision(query.value("numeric_precision").toInt());
-    col.setNotNull(query.value("is_nullable").toString() == "YES");
+    col.setNotNull(query.value("is_nullable").toString() == "NO");
     _columnsModel->addSqlColumn(col, true);
   }
 }
@@ -162,24 +167,7 @@ QString QDBPostgresTableItem::columnDef(const SqlColumn &col)
 
 QString QDBPostgresTableItem::typeDef(const SqlColumn &col)
 {
-//  switch (col.type()) {
-//  case ColumnType::BigInt:
-//    return "bigint";
-//  case ColumnType::Integer:
-//    return "integer";
-//  case ColumnType::SmallInt:
-//    return "smallint";
-//  case ColumnType::Varchar:
-//    return QString("varchar(%1)").arg(col.length());
-//  case ColumnType::Boolean:
-//    return "boolean";
-//  case ColumnType::Date:
-//    return "date";
-//  case ColumnType::Time:
-//    return "time";
-//  default:
-    return "";
-//  }
+  return _columnsModel->columnTypeCaption(col.type());
 }
 
 QString QDBPostgresTableItem::defaultDef(const SqlColumn &col)

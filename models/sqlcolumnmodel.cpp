@@ -119,6 +119,11 @@ bool SqlColumnModel::hasOnlyIntegerPK()
   return true;
 }
 
+bool SqlColumnModel::isModified()
+{
+  return !_changes.isEmpty();
+}
+
 void SqlColumnModel::clear()
 {
   emit beginResetModel();

@@ -84,6 +84,7 @@ public:
   QHash<QString, QString> permanentColNames();
   EditType editType();
   bool hasOnlyIntegerPK();
+  bool isModified();
   void clear();
   // QAbstractItemModel interface
 public:

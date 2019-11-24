@@ -23,8 +23,15 @@ void AbstractDatabaseEditForm::tryUserAction()
   ActionResult res;
   formToObject();
 
+  //TODO: Automatically disable "Apply" button if unmodified
+  if (!_objItem->isModified())
+    reject();
+
   if (userAction() == AbstractDatabaseEditForm::Create) {
     res = _objItem->insertMe();
+  }
+  else if (userAction() == AbstractDatabaseEditForm::Edit) {
+    res = _objItem->updateMe();
   }
   if (res.isSuccess())
     accept();

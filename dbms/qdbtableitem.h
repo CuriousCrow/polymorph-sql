@@ -17,11 +17,6 @@ public:
   void addDefaultColumn();
 //  QHash<int, QString> getColumnTypesHash();
 
-  // QDBObjectItem interface
-public:
-  virtual bool loadChildren() override;
-  virtual int type() override;
-
   // LAbstractTreeItem interface
 public:
   virtual int colCount() override;
@@ -29,8 +24,13 @@ public:
 
   // QDBObjectItem interface
 public:
-  virtual ActionResult deleteMe() override;
+  virtual bool loadChildren() override;
+  virtual int type() override;
+
   virtual ActionResult updateMe() override;
+  virtual ActionResult deleteMe() override;
+
+  virtual bool isModified() override;
 protected:
   SqlColumnModel* _columnsModel;
 };

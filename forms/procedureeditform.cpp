@@ -46,8 +46,7 @@ void ProcedureEditForm::formToObject()
 
 void ProcedureEditForm::on_btnApply_clicked()
 {
-  formToObject();
-  accept();
+  tryUserAction();
 }
 
 void ProcedureEditForm::on_btnCancel_clicked()

@@ -17,12 +17,7 @@ SequenceEditForm::~SequenceEditForm()
 
 void SequenceEditForm::on_btnApply_clicked()
 {
-  formToObject();
-  qDebug() << "Sequence modified:" << _objItem->isModified();
-  if (_objItem->isModified())
-    accept();
-  else
-    reject();
+  tryUserAction();
 }
 
 void SequenceEditForm::on_btnCancel_clicked()

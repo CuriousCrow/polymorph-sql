@@ -14,13 +14,11 @@ QKnowledgeBase *QKnowledgeBase::kb(QObject *parent)
 
 QHash<int, QString> QKnowledgeBase::typesHash(QString dbms)
 {
-  Q_UNUSED(dbms)
-
   QHash<int, QString> resHash;
 
   for(int row=0; row<mTypes->rowCount(); row++) {
     QSqlRecord rec = mTypes->record(row);
-    if (rec.value(F_DBMS).toString() == dbms)
+    if (rec.value(F_DBMS).toString() == dbms.toUpper())
       resHash.insert(rec.value(F_ID).toInt(), rec.value(F_NAME).toString());
   }
   return resHash;

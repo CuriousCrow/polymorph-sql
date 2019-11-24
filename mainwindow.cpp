@@ -297,7 +297,8 @@ void MainWindow::showCreateItemEditor()
 
   switch (folderItem->childrenType()) {
   case QDBObjectItem::Table: {
-    QDBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME, folderItem);
+    QDBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME);
+    newTableItem->setParentUrl(folderItem->objectUrl());
     _tableEditForm->setObjItem(newTableItem);
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _tableEditForm->objectToForm();
@@ -314,7 +315,8 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case QDBObjectItem::Sequence: {
-    QDBSequenceItem* newSequenceItem = databaseItem->createNewSequenceItem(DEF_SEQUENCE_NAME, folderItem);
+    QDBSequenceItem* newSequenceItem = databaseItem->createNewSequenceItem(DEF_SEQUENCE_NAME);
+    newSequenceItem->setParentUrl(folderItem->objectUrl());
     _sequenceEditForm->setObjItem(newSequenceItem);
     _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _sequenceEditForm->objectToForm();
@@ -322,7 +324,8 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case QDBObjectItem::Procedure: {
-    QDBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME, folderItem);
+    QDBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME);
+    newProcedureItem->setParentUrl(folderItem->objectUrl());
     _procedureEditForm->setObjItem(newProcedureItem);
     _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _procedureEditForm->objectToForm();
@@ -330,7 +333,8 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case QDBObjectItem::Trigger: {
-    QDBTriggerItem* newTriggerItem = databaseItem->createNewTriggerItem(DEF_TRIGGER_NAME, folderItem);
+    QDBTriggerItem* newTriggerItem = databaseItem->createNewTriggerItem(DEF_TRIGGER_NAME);
+    newTriggerItem->setParentUrl(folderItem->objectUrl());
     _triggerEditForm->setObjItem(newTriggerItem);
     _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Create);
     _triggerEditForm->objectToForm();
@@ -346,19 +350,17 @@ void MainWindow::saveTableChanges()
 {
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
-  if (action == AbstractDatabaseEditForm::Drop) {
-    editForm->objItem()->deleteMe();
+  if (action == AbstractDatabaseEditForm::Create) {
+    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    QDBObjectItem* newItem = editForm->objItem();
+    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
-  else if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
-    editForm->objItem()->insertMe();
+  else if (action == AbstractDatabaseEditForm::Edit) {
     refreshQueryEditorAssistance();
   }
   else {
-    editForm->objItem()->updateMe();
-    refreshQueryEditorAssistance();
+    qWarning() << "Table delete action is not possible from edit form";
   }
 }
 
@@ -369,9 +371,11 @@ void MainWindow::saveViewChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     QDBObjectItem* newItem = editForm->objItem();
-    newItem->setParent(folderItem);
-    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), folderItem);
+    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
+  }
+  else {
+    qWarning() << "Table delete action is not possible from edit form";
   }
 }
 
@@ -380,13 +384,12 @@ void MainWindow::saveSequenceChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
-    editForm->objItem()->insertMe();
+    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    QDBObjectItem* newItem = editForm->objItem();
+    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
-  else {
-    editForm->objItem()->updateMe();
+  else if (action == AbstractDatabaseEditForm::Edit) {
     refreshQueryEditorAssistance();
   }
 }
@@ -396,13 +399,12 @@ void MainWindow::saveProcedureChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
-    editForm->objItem()->insertMe();
+    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    QDBObjectItem* newItem = editForm->objItem();
+    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
-  else {
-    editForm->objItem()->updateMe();
+  else if (action == AbstractDatabaseEditForm::Edit) {
     refreshQueryEditorAssistance();
   }
 }
@@ -412,19 +414,12 @@ void MainWindow::saveTriggerChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DataStore::instance()->structureModel()->appendItem(editForm->objItem(), currentItem);
-    ActionResult insertResult = editForm->objItem()->insertMe();
-    if (insertResult.isSuccess()) {
-      refreshQueryEditorAssistance();
-    }
-    else {
-      QMessageBox::critical(this, TITLE_ERROR, "Trigger creation failed");
-    }
-
+    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    QDBObjectItem* newItem = editForm->objItem();
+    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
+    refreshQueryEditorAssistance();
   }
-  else {
-    editForm->objItem()->updateMe();
+  else if (action == AbstractDatabaseEditForm::Edit) {
     refreshQueryEditorAssistance();
   }
 }

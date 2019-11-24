@@ -60,8 +60,7 @@ void TriggerEditForm::formToObject()
 
 void TriggerEditForm::on_btnApply_clicked()
 {
-  formToObject();
-  accept();
+  tryUserAction();
 }
 
 void TriggerEditForm::on_btnCancel_clicked()

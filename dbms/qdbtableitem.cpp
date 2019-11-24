@@ -29,7 +29,8 @@ QAbstractTableModel *QDBTableItem::columnsModel()
 
 int QDBTableItem::colTypeFromString(QString name)
 {
-  return QKnowledgeBase::kb()->typeByName(driverName(), name.toUpper());
+  qDebug() << "ColTypeFromString:" << name.toUpper();
+  return QKnowledgeBase::kb()->typeByName(driverName().toUpper(), name.toUpper());
 }
 
 void QDBTableItem::addDefaultColumn()
@@ -75,6 +76,13 @@ ActionResult QDBTableItem::deleteMe()
   QString sql = "drop table \"%1\"";
   QString preparedSql = sql.arg(fieldValue(F_CAPTION).toString());
   return execSql(preparedSql, connectionName());
+}
+
+bool QDBTableItem::isModified()
+{
+  if (QDBObjectItem::isModified())
+    return true;
+  return _columnsModel->isModified();
 }
 
 ActionResult QDBTableItem::updateMe()
