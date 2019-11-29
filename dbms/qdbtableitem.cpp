@@ -22,14 +22,29 @@ void QDBTableItem::reloadColumnsModel()
   //Необходимо переопределять для каждой отдельной СУБД
 }
 
+void QDBTableItem::reloadConstraintsModel()
+{
+  //Необходимо переопределить для каждой отдельной СУБД
+}
+
 QAbstractTableModel *QDBTableItem::columnsModel()
 {
   return _columnsModel;
 }
 
+QAbstractTableModel *QDBTableItem::constraintsModel()
+{
+  return _constraintsModel;
+}
+
+QDBForeignKey *QDBTableItem::newForeignKey()
+{
+  return new QDBForeignKey("fk_" + fieldValue(F_CAPTION).toString());
+}
+
 int QDBTableItem::colTypeFromString(QString name)
 {
-  qDebug() << "ColTypeFromString:" << name.toUpper();
+//  qDebug() << "ColTypeFromString:" << name.toUpper();
   return QKnowledgeBase::kb()->typeByName(driverName().toUpper(), name.toUpper());
 }
 

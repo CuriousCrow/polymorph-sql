@@ -3,7 +3,8 @@
 
 #include "qdbobjectitem.h"
 #include "models/sqlcolumnmodel.h"
-
+#include "models/variantmaptablemodel.h"
+#include "qdbforeignkey.h"
 
 class QDBTableItem : public QDBObjectItem
 {
@@ -12,7 +13,13 @@ public:
   QDBTableItem(QString caption, QObject* parent = nullptr);
   virtual ~QDBTableItem() override;
   virtual void reloadColumnsModel();
+  virtual void reloadConstraintsModel();
+
   QAbstractTableModel* columnsModel();
+  QAbstractTableModel* constraintsModel();
+
+  virtual QDBForeignKey* newForeignKey();
+
   int colTypeFromString(QString name);
   void addDefaultColumn();
 //  QHash<int, QString> getColumnTypesHash();
@@ -33,6 +40,7 @@ public:
   virtual bool isModified() override;
 protected:
   SqlColumnModel* _columnsModel;
+  VariantMapTableModel* _constraintsModel;
 };
 
 #endif // QDBTABLEITEM_H

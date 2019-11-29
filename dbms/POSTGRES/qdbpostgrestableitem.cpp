@@ -3,16 +3,22 @@
 #include <QDebug>
 #include "qsqlqueryhelper.h"
 #include "../../models/sqlcolumnmodel.h"
+#include "../appconst.h"
 
 QDBPostgresTableItem::QDBPostgresTableItem(QString caption, QObject *parent)
   : QDBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
+
+  _constraintsModel = new VariantMapTableModel();
+  _constraintsModel->registerColumn(F_TYPE, tr("Type"));
+  _constraintsModel->registerColumn(F_NAME, tr("Name"));
 }
 
 QDBPostgresTableItem::~QDBPostgresTableItem()
 {
   delete _columnsModel;
+  delete _constraintsModel;
 }
 
 ActionResult QDBPostgresTableItem::insertMe()
@@ -126,6 +132,31 @@ void QDBPostgresTableItem::reloadColumnsModel()
     col.setNotNull(query.value("is_nullable").toString() == "NO");
     _columnsModel->addSqlColumn(col, true);
   }
+}
+
+
+void QDBPostgresTableItem::reloadConstraintsModel()
+{
+  //Новая, еще не вставленная таблица
+  if (connectionName().isEmpty())
+    return;
+  _constraintsModel->clear();
+  QString sql =
+      "select c2.constraint_name \"name\", c2.constraint_type \"type\"\n"
+      "from information_schema.key_column_usage c1\n"
+      "left join INFORMATION_SCHEMA.table_constraints c2 on c1.constraint_name=c2.constraint_name\n"
+      "where c1.table_name='#caption#'";
+  QString preparedSql = fillPatternWithFields(sql);
+  QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  int fakeId = 1;
+  while (query.next()) {
+    QVariantMap item;
+    item.insert(F_ID, fakeId++);
+    item.insert(F_NAME, query.value(F_NAME));
+    item.insert(F_TYPE, query.value(F_TYPE));
+    _constraintsModel->addRow(item);
+  }
+
 }
 
 QString QDBPostgresTableItem::caption()

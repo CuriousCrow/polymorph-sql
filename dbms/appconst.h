@@ -27,6 +27,11 @@
 #define F_EVENT_TRUNCATE "eventTruncate"
 #define F_TIMING "timing"
 #define F_TABLE "table"
+#define F_COLUMN "column"
+#define F_REFTABLE "reftable"
+#define F_REFCOLUMN "refcolumn"
+#define F_ON_UPDATE "onUpdate"
+#define F_ON_DELETE "onDelete"
 #define F_FUNCTION "function"
 #define F_ENABLED "enabled"
 
@@ -34,6 +39,7 @@
 #define F_NULL "null"
 #define F_PK "pk"
 #define F_UNIQUE "unique"
+#define F_TYPE "type"
 
 #define OBJTYPE_TABLE "table"
 #define OBJTYPE_VIEW "view"

@@ -54,7 +54,12 @@ public:
     Trigger,
     Procedure,
     Folder,
-    Field
+    Field,
+    Constraint,
+    PrimaryKey,
+    ForeignKey,
+    UniqueConstraint,
+    CheckConstraint
   };
 
   QDBObjectItem(QString caption, QObject* parent = nullptr);

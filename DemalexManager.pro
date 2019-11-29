@@ -19,11 +19,15 @@ SOURCES += main.cpp\
   dbms/POSTGRES/postgrestriggeritem.cpp \
   dbms/POSTGRES/qdbpostgreqfunctionitem.cpp \
   dbms/POSTGRES/qdbpostgresequence.cpp \
+  dbms/qdbconstraintitem.cpp \
+  dbms/qdbforeignkey.cpp \
+  forms/addforeignkeyform.cpp \
   forms/procedureeditform.cpp \
   forms/sequenceeditform.cpp \
   forms/triggereditform.cpp \
         mainwindow.cpp \
     connectioneditdialog.cpp \
+  models/variantmaptablemodel.cpp \
     tablebrowserwindow.cpp \
     lsqltablemodel.cpp \
     qstructureitemmodel.cpp \
@@ -75,9 +79,13 @@ HEADERS  += mainwindow.h \
     dbms/POSTGRES/qdbpostgreqfunctionitem.h \
     dbms/POSTGRES/qdbpostgresequence.h \
     dbms/appconst.h \
+    dbms/qdbconstraintitem.h \
+    dbms/qdbforeignkey.h \
+    forms/addforeignkeyform.h \
     forms/procedureeditform.h \
     forms/sequenceeditform.h \
     forms/triggereditform.h \
+    models/variantmaptablemodel.h \
     tablebrowserwindow.h \
     lsqltablemodel.h \
     qstructureitemmodel.h \
@@ -123,6 +131,7 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
+    forms/addforeignkeyform.ui \
     forms/procedureeditform.ui \
     forms/sequenceeditform.ui \
     forms/triggereditform.ui \
