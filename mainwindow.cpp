@@ -282,8 +282,9 @@ void MainWindow::dropCurrentDatabaseObject()
 void MainWindow::reloadItemChildren()
 {
   QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
-  QDBObjectItem* item = itemByIndex(curIdx);
-  item->reloadChildren();
+  DataStore::instance()->structureModel()->deleteChildren(curIdx);
+  QFolderTreeItem* folderItem = qobject_cast<QFolderTreeItem*>(itemByIndex(curIdx));
+  folderItem->reloadChildren();
   DataStore::instance()->structureModel()->dataChanged(curIdx, curIdx);
 }
 

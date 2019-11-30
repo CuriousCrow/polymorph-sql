@@ -191,8 +191,6 @@ void QDBDatabaseItem::onFolderRequestReload()
 
 void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
 {
-  deleteChildren();
-
   QString sql = getViewListSql();
 
   if (sql.isEmpty()){
