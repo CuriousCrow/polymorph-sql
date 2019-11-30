@@ -10,7 +10,7 @@ public:
     QDBSqliteItem(QString caption);
 
 public:
-    virtual bool loadChildren() override;
+    virtual bool reloadChildren() override;
     virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr) override;
     // QDBDatabaseItem interface
 protected:
@@ -18,6 +18,10 @@ protected:
     virtual QString getSequenceListSql() override;
     virtual QString getTriggerListSql() override;
     virtual QString getProcedureListSql() override;
+
+    // QDBDatabaseItem interface
+protected:
+    virtual void loadSequenceItems(QDBObjectItem *parentItem) override;
 };
 
 #endif // QDBSQLITEITEM_H

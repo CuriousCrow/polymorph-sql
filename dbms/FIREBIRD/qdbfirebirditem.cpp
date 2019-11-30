@@ -35,3 +35,14 @@ QDBTableItem *QDBFirebirdItem::createNewTableItem(QString caption, QObject *pare
 {
   return new QDBFirebirdTableItem(caption, parent);
 }
+
+
+void QDBFirebirdItem::loadSequenceItems(QDBObjectItem *parentItem)
+{
+  QString sql = getSequenceListSql();
+  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+  while (resultSet.next()){
+    QDBSequenceItem* sequenceItem = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+    sequenceItem->setParentUrl(parentItem->objectUrl());
+  }
+}

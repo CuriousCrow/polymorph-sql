@@ -59,7 +59,7 @@ void QDBTableItem::addDefaultColumn()
   _columnsModel->addSqlColumn(SqlColumn(DEF_COLUMN_NAME + QString::number(newColNumber), NoType));
 }
 
-bool QDBTableItem::loadChildren()
+bool QDBTableItem::reloadChildren()
 {
   return true;
 }

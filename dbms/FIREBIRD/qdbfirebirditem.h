@@ -12,14 +12,18 @@ public:
 
   // QDBDatabaseItem interface
 protected:
-  virtual QString getViewListSql();
-  virtual QString getSequenceListSql();
-  virtual QString getTriggerListSql();
-  virtual QString getProcedureListSql();
+  virtual QString getViewListSql() override;
+  virtual QString getSequenceListSql() override;
+  virtual QString getTriggerListSql() override;
+  virtual QString getProcedureListSql() override;
 
   // QDBDatabaseItem interface
 public:
-  virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent);
+  virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent) override;
+
+  // QDBDatabaseItem interface
+protected:
+  virtual void loadSequenceItems(QDBObjectItem *parentItem) override;
 };
 
 #endif // QDBFIREBIRDITEM_H

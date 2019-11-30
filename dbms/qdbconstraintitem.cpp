@@ -10,7 +10,7 @@ QDBConstraintItem::QDBConstraintItem(QString caption, QObject *parent)
 }
 
 
-bool QDBConstraintItem::loadChildren()
+bool QDBConstraintItem::reloadChildren()
 {
   return false;
 }

@@ -16,7 +16,7 @@ public:
 
   // QDBObjectItem interface
 public:
-  virtual bool loadChildren() override;
+  virtual bool reloadChildren() override;
   virtual int type() override;
   
   // QDBObjectItem interface

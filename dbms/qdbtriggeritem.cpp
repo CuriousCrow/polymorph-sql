@@ -46,7 +46,7 @@ QVariant QDBTriggerItem::colData(int column, int role)
   }
 }
 
-bool QDBTriggerItem::loadChildren()
+bool QDBTriggerItem::reloadChildren()
 {
   return true;
 }

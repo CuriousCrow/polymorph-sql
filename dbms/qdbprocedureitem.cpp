@@ -34,7 +34,7 @@ QVariant QDBProcedureItem::colData(int column, int role)
   }
 }
 
-bool QDBProcedureItem::loadChildren()
+bool QDBProcedureItem::reloadChildren()
 {
   return true;
 }

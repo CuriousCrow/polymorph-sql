@@ -19,7 +19,7 @@ QDBTableItem *QDBMysqlItem::createNewTableItem(QString caption, QObject *parent)
   return new QDBMysqlTableItem(caption, parent);
 }
 
-bool QDBMysqlItem::loadChildren()
+bool QDBMysqlItem::reloadChildren()
 {
   if (!children().isEmpty())
     return false;

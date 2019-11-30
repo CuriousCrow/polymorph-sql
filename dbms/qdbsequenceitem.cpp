@@ -37,7 +37,7 @@ QVariant QDBSequenceItem::colData(int column, int role)
   }
 }
 
-bool QDBSequenceItem::loadChildren()
+bool QDBSequenceItem::reloadChildren()
 {
   return true;
 }

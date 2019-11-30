@@ -13,7 +13,7 @@ QDBSqliteItem::QDBSqliteItem(QString caption)
 }
 
 
-bool QDBSqliteItem::loadChildren()
+bool QDBSqliteItem::reloadChildren()
 {
   if (!children().isEmpty())
     return false;
@@ -75,4 +75,16 @@ QString QDBSqliteItem::getTriggerListSql()
 QString QDBSqliteItem::getProcedureListSql()
 {
   return "";
+}
+
+void QDBSqliteItem::loadSequenceItems(QDBObjectItem *parentItem)
+{
+  QString sql = "SELECT name, seq currentValue FROM sqlite_sequence";
+  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+  while (resultSet.next()) {
+    QDBSequenceItem* sequenceItem
+        = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+    sequenceItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
+    sequenceItem->setParentUrl(parentItem->objectUrl());
+  }
 }

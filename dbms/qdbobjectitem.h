@@ -68,7 +68,7 @@ public:
   void setParentUrl(const QUrl &url);
   QString driverName();
 
-  virtual bool loadChildren() = 0;
+  virtual bool reloadChildren() = 0;
   virtual QUrl objectUrl();
   virtual int type() = 0;
   virtual bool setData(int column, QVariant value, int role);

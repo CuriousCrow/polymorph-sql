@@ -114,7 +114,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     if (dbItem->children().isEmpty()){
       if (!dbItem->createDbConnection())
         break;
-      dbItem->loadChildren();
+      dbItem->reloadChildren();
       ui->tvDatabaseStructure->reset();
       ui->tvDatabaseStructure->expand(index);
     }

@@ -30,7 +30,7 @@ QVariant QFolderTreeItem::colData(int column, int role)
   }
 }
 
-bool QFolderTreeItem::loadChildren()
+bool QFolderTreeItem::reloadChildren()
 {
   return true;
 }

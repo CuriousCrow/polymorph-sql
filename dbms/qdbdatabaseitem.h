@@ -42,7 +42,7 @@ protected:
   bool isDriver(QString name);
   // QDBObjectItem interface
 public:
-  virtual bool loadChildren();
+  virtual bool reloadChildren();
   virtual QUrl objectUrl();
   virtual ActionResult insertMe();
   virtual ActionResult updateMe();

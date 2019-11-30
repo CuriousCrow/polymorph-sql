@@ -13,7 +13,7 @@ public:
   virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
   // QDBObjectItem interface
 public:
-  virtual bool loadChildren();
+  virtual bool reloadChildren();
 
   // QDBDatabaseItem interface
 protected:

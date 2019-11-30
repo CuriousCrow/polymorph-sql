@@ -17,7 +17,7 @@ public:
 
   // QDBObjectItem interface
 public:
-  virtual bool loadChildren();
+  virtual bool reloadChildren();
   virtual int type();
 
   // QDBObjectItem interface

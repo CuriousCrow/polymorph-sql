@@ -51,7 +51,7 @@ bool QDBDatabaseItem::createDbConnection()
   return true;
 }
 
-bool QDBDatabaseItem::loadChildren()
+bool QDBDatabaseItem::reloadChildren()
 {
   if (!children().isEmpty())
     return false;
@@ -183,29 +183,8 @@ void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
 
 void QDBDatabaseItem::loadSequenceItems(QDBObjectItem *parentItem)
 {
-  QString sql;
-
-  if (isDriver(DRIVER_FIREBIRD)){
-    sql = getSequenceListSql();
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
-    while (resultSet.next()){
-      QDBSequenceItem* sequenceItem = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
-      sequenceItem->setParentUrl(parentItem->objectUrl());
-    }
-  }
-  else if (isDriver(DRIVER_POSTGRES)) {
-//перенесено в СУБД-зависимого наследника
-  }
-  else if (isDriver(DRIVER_SQLITE)) {
-    sql = "SELECT name, seq currentValue FROM sqlite_sequence";
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
-    while (resultSet.next()) {
-      QDBSequenceItem* sequenceItem
-          = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
-      sequenceItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
-      sequenceItem->setParentUrl(parentItem->objectUrl());
-    }
-  }
+  Q_UNUSED(parentItem)
+  //Should be overritten in descendants
 }
 
 void QDBDatabaseItem::loadTriggerItems(QDBObjectItem *parentItem)
