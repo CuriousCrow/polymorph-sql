@@ -52,6 +52,9 @@ public:
 public:  
   virtual QVariant colData(int column, int role);
   virtual int type();
+
+public slots:
+  void onFolderRequestReload();
 };
 
 #endif // QDBDATABASEITEM_H

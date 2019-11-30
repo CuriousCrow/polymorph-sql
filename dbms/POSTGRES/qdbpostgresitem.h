@@ -26,7 +26,6 @@ public:
 
   // QDBDatabaseItem interface
 protected:
-  void loadViewItems(QDBObjectItem *parentItem);
   void loadSequenceItems(QDBObjectItem *parentItem);
   void loadTriggerItems(QDBObjectItem *parentItem);
   void loadProcedureItems(QDBObjectItem *parentItem);

@@ -49,11 +49,6 @@ QDBSequenceItem *QDBPostgresItem::createNewSequenceItem(QString caption, QObject
   return new QDBPostgreSequence(caption, parent);
 }
 
-void QDBPostgresItem::loadViewItems(QDBObjectItem *parentItem)
-{
-  QDBDatabaseItem::loadViewItems(parentItem);
-}
-
 void QDBPostgresItem::loadSequenceItems(QDBObjectItem *parentItem)
 {
   QString sql = getSequenceListSql();

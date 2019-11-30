@@ -12,7 +12,8 @@ public:
 
   QDBObjectItem::ItemType childrenType() const;
   void setChildrenType(QDBObjectItem::ItemType childrenType);
-
+signals:
+  void reloadMe();
   // LAbstractTreeItem interface
 public:
   virtual int colCount() override;

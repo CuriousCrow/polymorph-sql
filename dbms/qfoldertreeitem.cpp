@@ -32,6 +32,7 @@ QVariant QFolderTreeItem::colData(int column, int role)
 
 bool QFolderTreeItem::reloadChildren()
 {
+  emit reloadMe();
   return true;
 }
 

@@ -67,6 +67,7 @@ public:
   QString connectionName(){ return _connectionName; }
   void setParentUrl(const QUrl &url);
   QString driverName();
+  void deleteChildren();
 
   virtual bool reloadChildren() = 0;
   virtual QUrl objectUrl();

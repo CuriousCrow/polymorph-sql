@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   _folderContextMenu = new QMenu(ui->tvDatabaseStructure);
   _folderContextMenu->addAction("Create object", this, SLOT(showCreateItemEditor()));
+  _reloadAction = _folderContextMenu->addAction("Refresh", this, SLOT(reloadItemChildren()));
 
 
   //Создаем окно редактирования соединений с БД
@@ -278,10 +279,19 @@ void MainWindow::dropCurrentDatabaseObject()
   //TODO: Implementation for other DB objects
 }
 
+void MainWindow::reloadItemChildren()
+{
+  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
+  QDBObjectItem* item = itemByIndex(curIdx);
+  item->reloadChildren();
+  DataStore::instance()->structureModel()->dataChanged(curIdx, curIdx);
+}
+
 void MainWindow::updateStructureContextMenu()
 {
   QDBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   _editAction->setText(item->isEditable() ? tr("Edit object") : tr("View object"));
+  _reloadAction->setVisible(item->type() == QDBObjectItem::Folder);
 }
 
 void MainWindow::showCreateItemEditor()

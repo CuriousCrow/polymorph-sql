@@ -72,6 +72,8 @@ bool QDBDatabaseItem::reloadChildren()
   QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
   viewFolderItem->setChildrenType(View);
   viewFolderItem->setParentUrl(this->objectUrl());
+  connect(viewFolderItem, SIGNAL(reloadMe()),
+          this, SLOT(onFolderRequestReload()));
   loadViewItems(viewFolderItem);
 
   //  //Creating system table items
@@ -89,18 +91,24 @@ bool QDBDatabaseItem::reloadChildren()
   QFolderTreeItem* sequenceFolderItem = new QFolderTreeItem(tr("Sequences"), this);
   sequenceFolderItem->setChildrenType(Sequence);
   sequenceFolderItem->setParentUrl(this->objectUrl());
+  connect(sequenceFolderItem, SIGNAL(reloadMe()),
+          this, SLOT(onFolderRequestReload()));
   loadSequenceItems(sequenceFolderItem);
 
   //Creating trigger items
   QFolderTreeItem* triggerFolderItem = new QFolderTreeItem(tr("Triggers"), this);
   triggerFolderItem->setChildrenType(Trigger);
   triggerFolderItem->setParentUrl(this->objectUrl());
+  connect(triggerFolderItem, SIGNAL(reloadMe()),
+          this, SLOT(onFolderRequestReload()));
   loadTriggerItems(triggerFolderItem);
 
   //Creating procedure items
   QFolderTreeItem* procedureFolderItem = new QFolderTreeItem(tr("Procedures"), this);
   procedureFolderItem->setChildrenType(Procedure);
   procedureFolderItem->setParentUrl(this->objectUrl());
+  connect(procedureFolderItem, SIGNAL(reloadMe()),
+          this, SLOT(onFolderRequestReload()));
   loadProcedureItems(procedureFolderItem);
 
   return true;
@@ -159,8 +167,32 @@ int QDBDatabaseItem::type()
   return Database;
 }
 
+void QDBDatabaseItem::onFolderRequestReload()
+{
+  QFolderTreeItem* folderItem = qobject_cast<QFolderTreeItem*>(sender());
+  qDebug() << "Folder" << folderItem->fieldValue(F_CAPTION).toString() << "reload request";
+  switch (folderItem->childrenType()) {
+  case QDBObjectItem::View:
+    loadViewItems(folderItem);
+    break;
+  case QDBObjectItem::Sequence:
+    loadSequenceItems(folderItem);
+    break;
+  case QDBObjectItem::Trigger:
+    loadTriggerItems(folderItem);
+    break;
+  case QDBObjectItem::Procedure:
+    loadProcedureItems(folderItem);
+    break;
+  default:
+    break;
+  }
+}
+
 void QDBDatabaseItem::loadViewItems(QDBObjectItem *parentItem)
 {
+  deleteChildren();
+
   QString sql = getViewListSql();
 
   if (sql.isEmpty()){
@@ -206,6 +238,7 @@ void QDBDatabaseItem::loadProcedureItems(QDBObjectItem *parentItem)
     return;
 
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+
   while (resultSet.next()){
     QDBProcedureItem* procItem = createNewProcedureItem(resultSet.value(F_NAME).toString(), parentItem);
     procItem->setParentUrl(parentItem->objectUrl());

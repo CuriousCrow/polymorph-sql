@@ -35,6 +35,14 @@ QString QDBObjectItem::driverName()
   return _driverName;
 }
 
+void QDBObjectItem::deleteChildren()
+{
+  foreach(QDBObjectItem* childItem, findChildren<QDBObjectItem*>(QString(), Qt::FindDirectChildrenOnly)){
+    childItem->setParent(nullptr);
+    delete childItem;
+  }
+}
+
 QUrl QDBObjectItem::objectUrl()
 {
   QUrl url = _parentUrl;
