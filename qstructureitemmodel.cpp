@@ -42,6 +42,16 @@ void QStructureItemModel::appendItem(DBObjectItem *item, QModelIndex parent)
   }
 }
 
+QModelIndex QStructureItemModel::indexByUrl(const AppUrl &url)
+{
+  return indexByName(url.toString());
+}
+
+DBObjectItem *QStructureItemModel::itemByUrl(const AppUrl &url)
+{
+  return qobject_cast<DBObjectItem*>(itemByName(url.toString()));
+}
+
 bool QStructureItemModel::deleteChildren(QModelIndex parent)
 {
   return removeRows(0, rowCount(parent), parent);

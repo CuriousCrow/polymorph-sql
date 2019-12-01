@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "dbms/appconst.h"
 #include "core/datastore.h"
-
+#include "dbms/appurl.h"
 
 AddForeignKeyForm::AddForeignKeyForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),
@@ -21,11 +21,15 @@ AddForeignKeyForm::~AddForeignKeyForm()
 void AddForeignKeyForm::objectToForm()
 {
   QStructureItemModel* structModel = DataStore::structureModel();
-  QModelIndex idx = structModel->indexByName("qpsql://ughistory/tables");
+  AppUrl tablesUrl = _objItem->objectUrl().folderUrl(FOLDER_TABLES);
+  qDebug() << "Tables url:" << tablesUrl.toString();
+  QModelIndex idx = structModel->indexByUrl(tablesUrl);
   ui->cmbReferenceTable->setModel(structModel);
   ui->cmbReferenceTable->setRootModelIndex(idx);
 
-  DBTableItem* targetObj = qobject_cast<DBTableItem*>(structModel->itemByName("qpsql://ughistory/tables/" + _objItem->fieldValue(F_TABLE).toString()));
+  AppUrl targetTableUrl = AppUrl(tablesUrl).cd(_objItem->fieldValue(F_TABLE).toString());
+  qDebug() << "Target table url:" << targetTableUrl.toString();
+  DBTableItem* targetObj = qobject_cast<DBTableItem*>(structModel->itemByUrl(targetTableUrl));
   ui->cmbTargetColumn->setModel(targetObj->columnsModel());
   ui->cmbTargetColumn->setModelColumn(1);
 
@@ -59,12 +63,12 @@ void AddForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &r
 {
   qDebug() << "Reference table selected:" << refTable;
   QStructureItemModel* structModel = DataStore::structureModel();
-  QString refName = "qpsql://ughistory/tables/" + refTable;
-  qDebug() << "Reference name:" << refName;
+  AppUrl refTableUrl = _objItem->objectUrl().folderUrl(FOLDER_TABLES).cd(refTable);
+  qDebug() << "Reference table url:" << refTableUrl.toString();
   DBTableItem* refObj =
-      qobject_cast<DBTableItem*>(structModel->itemByName(refName));
+      qobject_cast<DBTableItem*>(structModel->itemByUrl(refTableUrl));
   if (refObj) {
-    qDebug() << "Reference table found:" << refName;
+    qDebug() << "Reference table found:" << refTableUrl.toString();
     refObj->reloadColumnsModel();
     ui->cmbReferenceColumn->setModel(refObj->columnsModel());
     ui->cmbReferenceColumn->setModelColumn(1);

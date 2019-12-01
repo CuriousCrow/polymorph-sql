@@ -21,11 +21,13 @@ TriggerEditForm::~TriggerEditForm()
 void TriggerEditForm::objectToForm()
 {
   QStructureItemModel* structModel = DataStore::structureModel();
-  QModelIndex idx = structModel->indexByName("qpsql://schoolug/tables");
+  AppUrl tablesUrl = _objItem->objectUrl().folderUrl(FOLDER_TABLES);
+  QModelIndex idx = structModel->indexByUrl(tablesUrl);
   ui->cmbTargetTable->setModel(structModel);
   ui->cmbTargetTable->setRootModelIndex(idx);
 
-  idx = structModel->indexByName("qpsql://schoolug/procedures");
+  AppUrl proceduresUrl = _objItem->objectUrl().folderUrl(FOLDER_PROCEDURES);
+  idx = structModel->indexByUrl(proceduresUrl);
   ui->cmbFunction->setModel(structModel);
   ui->cmbFunction->setRootModelIndex(idx);
 

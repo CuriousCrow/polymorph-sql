@@ -27,6 +27,7 @@ public:
   QString database() const;
   void setDatabase(const QString &database);
 
+  friend QDataStream &operator<<(QDataStream &out, const AppUrl &url);
 private:
   QString _driver;
   QString _database;

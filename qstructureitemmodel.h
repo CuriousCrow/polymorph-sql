@@ -16,6 +16,9 @@ public:
   void appendItem(DBObjectItem* item, DBObjectItem* parent = nullptr);
   void appendItem(DBObjectItem* item, QModelIndex parent);
 
+  QModelIndex indexByUrl(const AppUrl &url);
+  DBObjectItem* itemByUrl(const AppUrl &url);
+
   bool deleteChildren(QModelIndex parent);
 signals:
   void itemAboutToBeRemoved(QString itemUrl);

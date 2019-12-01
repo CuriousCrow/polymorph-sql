@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QColor>
 
+
 LAbstractTreeItem::LAbstractTreeItem(QString name, QObject *parent) : QObject(parent)
 {
   setObjectName(name);

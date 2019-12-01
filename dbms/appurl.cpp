@@ -1,5 +1,6 @@
 #include "appurl.h"
 #include <QDebug>
+#include <QDataStream>
 
 #define URL_DELIMITER "/"
 
@@ -107,4 +108,12 @@ QString AppUrl::database() const
 void AppUrl::setDatabase(const QString &database)
 {
   _database = database;
+}
+
+
+QDataStream &operator<<(QDataStream &out, const AppUrl &url)
+{
+  out.setVersion(QDataStream::Qt_4_7);
+  out << url.toString();
+  return out;
 }
