@@ -3,11 +3,11 @@
 
 #include "qdbobjectitem.h"
 
-class QDBTriggerItem : public QDBObjectItem
+class DBTriggerItem : public DBObjectItem
 {
 public:
-  QDBTriggerItem(QString caption, QObject* parent = nullptr);
-  virtual ~QDBTriggerItem() override;
+  DBTriggerItem(QString caption, QObject* parent = nullptr);
+  virtual ~DBTriggerItem() override;
 
   // LAbstractTreeItem interface
 public:

@@ -31,7 +31,7 @@ void TableEditForm::objectToForm()
   QString tableName = _objItem->fieldValue(F_CAPTION).toString();
   setWindowTitle("Редактор таблицы " + tableName);
   ui->lineEdit->setText(tableName);
-  QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(_objItem);
+  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
   tableItem->reloadColumnsModel();
 
   _colTypeDelegate->setItemsHash(QKnowledgeBase::kb()->typesHash(_objItem->driverName()));
@@ -59,14 +59,14 @@ void TableEditForm::on_pushButton_2_clicked()
 
 void TableEditForm::on_btnAdd_clicked()
 {
-  qobject_cast<QDBTableItem*>(_objItem)->addDefaultColumn();
+  qobject_cast<DBTableItem*>(_objItem)->addDefaultColumn();
 }
 
 void TableEditForm::on_btnDelete_clicked()
 {
   int selectedRow = ui->tableView->currentIndex().row();
   if (selectedRow >= 0) {
-    qobject_cast<QDBTableItem*>(_objItem)->columnsModel()->removeRow(selectedRow);
+    qobject_cast<DBTableItem*>(_objItem)->columnsModel()->removeRow(selectedRow);
   }
   else {
     QMessageBox::warning(this, trUtf8(TITLE_WARNING), "Please, select the column you want to drop");
@@ -81,8 +81,8 @@ void TableEditForm::on_btnDropConstraint_clicked()
 
   QString constraintName = ui->tvConstraints->model()->index(curIdx.row(), 1).data().toString();
   qDebug() << "Deleting constraint:" << constraintName;
-  QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(_objItem);
-  QDBConstraintItem* constraintItem = new QDBConstraintItem(constraintName);
+  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBConstraintItem* constraintItem = new DBConstraintItem(constraintName);
   constraintItem->setParentUrl(tableItem->objectUrl());
   constraintItem->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
 
@@ -99,10 +99,10 @@ void TableEditForm::on_btnDropConstraint_clicked()
 void TableEditForm::onShowForeignKeyEditor()
 {
   qDebug() << "Show foreign key editor";
-  QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(_objItem);
+  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
   AddForeignKeyForm* foreignKeyForm = new AddForeignKeyForm(this);
   foreignKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
-  QDBForeignKey* newFkObj = tableItem->newForeignKey();
+  DBForeignKey* newFkObj = tableItem->newForeignKey();
   newFkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
   newFkObj->setParentUrl(tableItem->objectUrl());
   foreignKeyForm->setObjItem(newFkObj);
@@ -126,7 +126,7 @@ void TableEditForm::onShowCheckConstraintEditor()
 
 void TableEditForm::onNewForeignKeySuccess()
 {
-  QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(_objItem);
+  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
   sender()->deleteLater();
   tableItem->reloadConstraintsModel();
 }

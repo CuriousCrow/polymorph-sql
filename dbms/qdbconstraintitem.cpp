@@ -2,25 +2,25 @@
 #include "appconst.h"
 
 
-QDBConstraintItem::QDBConstraintItem(QString caption, QObject *parent)
-  : QDBObjectItem(caption, parent)
+DBConstraintItem::DBConstraintItem(QString caption, QObject *parent)
+  : DBObjectItem(caption, parent)
 {
   registerField(F_TABLE);
   registerField(F_COLUMN);
 }
 
 
-bool QDBConstraintItem::reloadChildren()
+bool DBConstraintItem::reloadChildren()
 {
   return false;
 }
 
-int QDBConstraintItem::type()
+int DBConstraintItem::type()
 {
-  return QDBObjectItem::Constraint;
+  return DBObjectItem::Constraint;
 }
 
-ActionResult QDBConstraintItem::deleteMe()
+ActionResult DBConstraintItem::deleteMe()
 {
   QString sql = "alter table \"#table#\" drop constraint \"#caption#\"";
   QString preparedSql = fillPatternWithFields(sql);
@@ -28,7 +28,7 @@ ActionResult QDBConstraintItem::deleteMe()
 }
 
 
-ActionResult QDBConstraintItem::updateMe()
+ActionResult DBConstraintItem::updateMe()
 {
   return ActionResult(ERR_NOT_IMPLEMENTED);
 }

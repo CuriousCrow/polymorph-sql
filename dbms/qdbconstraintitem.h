@@ -4,11 +4,11 @@
 #include <QObject>
 #include "qdbobjectitem.h"
 
-class QDBConstraintItem : public QDBObjectItem
+class DBConstraintItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  QDBConstraintItem(QString caption, QObject* parent = nullptr);
+  DBConstraintItem(QString caption, QObject* parent = nullptr);
 
   // QDBObjectItem interface
 public:

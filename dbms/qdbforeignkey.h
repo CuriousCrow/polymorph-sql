@@ -5,11 +5,11 @@
 #include "qdbconstraintitem.h"
 
 
-class QDBForeignKey : public QDBConstraintItem
+class DBForeignKey : public DBConstraintItem
 {
   Q_OBJECT
 public:
-  QDBForeignKey(QString caption, QObject* parent = nullptr);
+  DBForeignKey(QString caption, QObject* parent = nullptr);
 
   // QDBObjectItem interface
 public:

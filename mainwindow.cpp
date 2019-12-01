@@ -86,7 +86,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_aAddDatabase_triggered()
 {
-  QDBDatabaseItem* newItem = new QDBDatabaseItem(DEF_DATABASE_NAME);
+  DBDatabaseItem* newItem = new DBDatabaseItem(DEF_DATABASE_NAME);
   ActionResult res = newItem->insertMe();
   if (res.isSuccess()){
     DataStore::structureModel()->appendItem(newItem);
@@ -107,10 +107,10 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
 {
   if (!index.isValid())
     return;
-  QDBObjectItem* objectItem = itemByIndex(index);
+  DBObjectItem* objectItem = itemByIndex(index);
   switch (objectItem->type()) {
-  case QDBObjectItem::Database: {
-    QDBDatabaseItem* dbItem = qobject_cast<QDBDatabaseItem*>(objectItem);
+  case DBObjectItem::Database: {
+    DBDatabaseItem* dbItem = qobject_cast<DBDatabaseItem*>(objectItem);
     //Database connection (loading database items)
     if (dbItem->children().isEmpty()){
       if (!dbItem->createDbConnection())
@@ -129,19 +129,19 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
 
     break;
   }
-  case QDBObjectItem::Folder:
+  case DBObjectItem::Folder:
     ui->tvDatabaseStructure->setExpanded(index, !ui->tvDatabaseStructure->isExpanded(index));
     break;
-  case QDBObjectItem::Table:
-  case QDBObjectItem::View: {
+  case DBObjectItem::Table:
+  case DBObjectItem::View: {
     //Show or add table editor
-    QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(objectItem);
+    DBTableItem* tableItem = qobject_cast<DBTableItem*>(objectItem);
     openTableEditor(tableItem);
     break;
   }
-  case QDBObjectItem::Sequence:
-  case QDBObjectItem::Procedure:
-  case QDBObjectItem::Trigger:
+  case DBObjectItem::Sequence:
+  case DBObjectItem::Procedure:
+  case DBObjectItem::Trigger:
     showEditorForCurrentItem();
     break;
   }
@@ -174,8 +174,8 @@ void MainWindow::removeTabsByItemUrl(QString url)
 void MainWindow::on_aRemoveDatabase_triggered()
 {
   //TODO: Here should be existance check
-  QDBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  if (itemToRemove->type() == QDBObjectItem::Database){
+  DBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  if (itemToRemove->type() == DBObjectItem::Database){
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
     ActionResult res = itemToRemove->deleteMe();
     if (res.isSuccess()) {
@@ -192,12 +192,12 @@ void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
   //Show context menu by right mouse click
   if (QApplication::mouseButtons().testFlag(Qt::RightButton)){
     switch (itemByIndex(index)->type()) {
-    case QDBObjectItem::View:
-    case QDBObjectItem::Trigger:
-    case QDBObjectItem::Table:
+    case DBObjectItem::View:
+    case DBObjectItem::Trigger:
+    case DBObjectItem::Table:
       _itemContextMenu->popup(QCursor::pos());
       break;
-    case QDBObjectItem::Folder:
+    case DBObjectItem::Folder:
       _folderContextMenu->popup(QCursor::pos());
       break;
     default:
@@ -210,35 +210,35 @@ void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
 void MainWindow::showEditorForCurrentItem()
 {
   //Show view editor window
-  QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   switch (currentItem->type()) {
-  case QDBObjectItem::View:
+  case DBObjectItem::View:
     _viewEditorWindow->setObjItem(currentItem);
     _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Edit);
     _viewEditorWindow->objectToForm();
     _viewEditorWindow->show();
     break;
-  case QDBObjectItem::Table:
+  case DBObjectItem::Table:
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
     _tableEditForm->setObjItem(currentItem);
     _tableEditForm->objectToForm();
     _tableEditForm->show();
     break;
-  case QDBObjectItem::Sequence:
+  case DBObjectItem::Sequence:
     currentItem->refresh();
     _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
     _sequenceEditForm->setObjItem(currentItem);
     _sequenceEditForm->objectToForm();
     _sequenceEditForm->show();
     break;
-  case QDBObjectItem::Procedure:
+  case DBObjectItem::Procedure:
     currentItem->refresh();
     _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
     _procedureEditForm->setObjItem(currentItem);
     _procedureEditForm->objectToForm();
     _procedureEditForm->show();
     break;
-  case QDBObjectItem::Trigger:
+  case DBObjectItem::Trigger:
     currentItem->refresh();
     _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
     _triggerEditForm->setObjItem(currentItem);
@@ -254,13 +254,13 @@ void MainWindow::showEditorForCurrentItem()
 void MainWindow::dropCurrentDatabaseObject()
 {
   //Drop database object
-  QDBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  DBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   switch (itemToRemove->type()) {
-  case QDBObjectItem::View:
-  case QDBObjectItem::Table:
-  case QDBObjectItem::Trigger:
-  case QDBObjectItem::Sequence:
-  case QDBObjectItem::Procedure: {
+  case DBObjectItem::View:
+  case DBObjectItem::Table:
+  case DBObjectItem::Trigger:
+  case DBObjectItem::Sequence:
+  case DBObjectItem::Procedure: {
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
     ActionResult res = itemToRemove->deleteMe();
     if (res.isSuccess()) {
@@ -283,31 +283,31 @@ void MainWindow::reloadItemChildren()
 {
   QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
   DataStore::structureModel()->deleteChildren(curIdx);
-  QFolderTreeItem* folderItem = qobject_cast<QFolderTreeItem*>(itemByIndex(curIdx));
+  FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(itemByIndex(curIdx));
   folderItem->reloadChildren();
   DataStore::structureModel()->dataChanged(curIdx, curIdx);
 }
 
 void MainWindow::updateStructureContextMenu()
 {
-  QDBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  DBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   _editAction->setText(item->isEditable() ? tr("Edit object") : tr("View object"));
 }
 
 void MainWindow::showCreateItemEditor()
 {
   qDebug() << "Create window";
-  QDBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  QFolderTreeItem* folderItem = qobject_cast<QFolderTreeItem*>(currentItem);
-  QDBDatabaseItem* databaseItem = qobject_cast<QDBDatabaseItem*>(folderItem->parent());
+  DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(currentItem);
+  DBDatabaseItem* databaseItem = qobject_cast<DBDatabaseItem*>(folderItem->parent());
   if (!folderItem) {
     qWarning() << "Create item action: Not folder item";
     return;
   }
 
   switch (folderItem->childrenType()) {
-  case QDBObjectItem::Table: {
-    QDBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME);
+  case DBObjectItem::Table: {
+    DBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME);
     newTableItem->setParentUrl(folderItem->objectUrl());
     _tableEditForm->setObjItem(newTableItem);
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -315,8 +315,8 @@ void MainWindow::showCreateItemEditor()
     _tableEditForm->show();
     break;
   }
-  case QDBObjectItem::View: {
-    QDBTableItem* newViewItem = databaseItem->createNewViewItem(DEF_VIEW_NAME);
+  case DBObjectItem::View: {
+    DBTableItem* newViewItem = databaseItem->createNewViewItem(DEF_VIEW_NAME);
     newViewItem->setParentUrl(folderItem->objectUrl());
     _viewEditorWindow->setObjItem(newViewItem);
     _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Create);
@@ -324,8 +324,8 @@ void MainWindow::showCreateItemEditor()
     _viewEditorWindow->show();
     break;
   }
-  case QDBObjectItem::Sequence: {
-    QDBSequenceItem* newSequenceItem = databaseItem->createNewSequenceItem(DEF_SEQUENCE_NAME);
+  case DBObjectItem::Sequence: {
+    DBSequenceItem* newSequenceItem = databaseItem->createNewSequenceItem(DEF_SEQUENCE_NAME);
     newSequenceItem->setParentUrl(folderItem->objectUrl());
     _sequenceEditForm->setObjItem(newSequenceItem);
     _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -333,8 +333,8 @@ void MainWindow::showCreateItemEditor()
     _sequenceEditForm->show();
     break;
   }
-  case QDBObjectItem::Procedure: {
-    QDBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME);
+  case DBObjectItem::Procedure: {
+    DBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME);
     newProcedureItem->setParentUrl(folderItem->objectUrl());
     _procedureEditForm->setObjItem(newProcedureItem);
     _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -342,8 +342,8 @@ void MainWindow::showCreateItemEditor()
     _procedureEditForm->show();
     break;
   }
-  case QDBObjectItem::Trigger: {
-    QDBTriggerItem* newTriggerItem = databaseItem->createNewTriggerItem(DEF_TRIGGER_NAME);
+  case DBObjectItem::Trigger: {
+    DBTriggerItem* newTriggerItem = databaseItem->createNewTriggerItem(DEF_TRIGGER_NAME);
     newTriggerItem->setParentUrl(folderItem->objectUrl());
     _triggerEditForm->setObjItem(newTriggerItem);
     _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -361,8 +361,8 @@ void MainWindow::saveTableChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    QDBObjectItem* newItem = editForm->objItem();
+    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    DBObjectItem* newItem = editForm->objItem();
     DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
@@ -379,8 +379,8 @@ void MainWindow::saveViewChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    QDBObjectItem* newItem = editForm->objItem();
+    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    DBObjectItem* newItem = editForm->objItem();
     DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
@@ -394,8 +394,8 @@ void MainWindow::saveSequenceChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    QDBObjectItem* newItem = editForm->objItem();
+    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    DBObjectItem* newItem = editForm->objItem();
     DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
@@ -409,8 +409,8 @@ void MainWindow::saveProcedureChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    QDBObjectItem* newItem = editForm->objItem();
+    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    DBObjectItem* newItem = editForm->objItem();
     DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
@@ -424,8 +424,8 @@ void MainWindow::saveTriggerChanges()
   AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
-    QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    QDBObjectItem* newItem = editForm->objItem();
+    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+    DBObjectItem* newItem = editForm->objItem();
     DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
@@ -434,14 +434,14 @@ void MainWindow::saveTriggerChanges()
   }
 }
 
-QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)
+DBObjectItem *MainWindow::itemByIndex(QModelIndex index)
 {
-  return qobject_cast<QDBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
+  return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
 }
 
-QDBObjectItem *MainWindow::itemByName(QString name)
+DBObjectItem *MainWindow::itemByName(QString name)
 {
-  return qobject_cast<QDBObjectItem*>(DataStore::structureModel()->itemByName(name));
+  return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByName(name));
 }
 
 void MainWindow::refreshConnectionList()
@@ -462,19 +462,19 @@ void MainWindow::refreshQueryEditorAssistance()
   }
 }
 
-void MainWindow::showItemInfoWidget(QDBObjectItem *dbItem)
+void MainWindow::showItemInfoWidget(DBObjectItem *dbItem)
 {
   switch (dbItem->type()) {
-  case QDBObjectItem::Table:
-  case QDBObjectItem::View:
+  case DBObjectItem::Table:
+  case DBObjectItem::View:
     //Show or add table editor
-    QDBTableItem* tableItem = qobject_cast<QDBTableItem*>(dbItem);
+    DBTableItem* tableItem = qobject_cast<DBTableItem*>(dbItem);
     openTableEditor(tableItem);
     break;
   }
 }
 
-void MainWindow::openTableEditor(QDBTableItem *tableItem)
+void MainWindow::openTableEditor(DBTableItem *tableItem)
 {
   QString itemUrl = tableItem->objectUrl().url();
   QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
@@ -490,7 +490,7 @@ void MainWindow::localEvent(LocalEvent *event)
 {
   qDebug() << "Local event received from" << event->url();
   if (event->type() == ShowObjectEvent) {
-    QDBObjectItem* item = itemByName(event->url());
+    DBObjectItem* item = itemByName(event->url());
     if (item)
       showItemInfoWidget(item);
   }

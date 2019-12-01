@@ -4,11 +4,11 @@
 #include <QObject>
 #include "../qdbprocedureitem.h"
 
-class QDBPostgreqFunctionItem : public QDBProcedureItem
+class DBPostgreqFunctionItem : public DBProcedureItem
 {
   Q_OBJECT
 public:
-  QDBPostgreqFunctionItem(QString caption, QObject* parent = nullptr);
+  DBPostgreqFunctionItem(QString caption, QObject* parent = nullptr);
 
   // QDBObjectItem interface
 public:

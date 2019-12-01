@@ -3,12 +3,12 @@
 
 #include "qdbtableitem.h"
 
-class QDBViewItem : public QDBTableItem
+class DBViewItem : public DBTableItem
 {
   Q_OBJECT
 public:
-  QDBViewItem(QString caption, QObject* parent = nullptr);
-  virtual ~QDBViewItem() override;
+  DBViewItem(QString caption, QObject* parent = nullptr);
+  virtual ~DBViewItem() override;
 
 private:
 

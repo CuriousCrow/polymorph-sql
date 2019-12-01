@@ -3,15 +3,15 @@
 
 #include "../qdbdatabaseitem.h"
 
-class QDBSqliteItem : public QDBDatabaseItem
+class DBSqliteItem : public DBDatabaseItem
 {
     Q_OBJECT
 public:
-    QDBSqliteItem(QString caption);
+    DBSqliteItem(QString caption);
 
 public:
     virtual bool reloadChildren() override;
-    virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr) override;
+    virtual DBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr) override;
     // QDBDatabaseItem interface
 protected:
     virtual QString getViewListSql() override;
@@ -21,7 +21,7 @@ protected:
 
     // QDBDatabaseItem interface
 protected:
-    virtual void loadSequenceItems(QDBObjectItem *parentItem) override;
+    virtual void loadSequenceItems(DBObjectItem *parentItem) override;
 };
 
 #endif // QDBSQLITEITEM_H

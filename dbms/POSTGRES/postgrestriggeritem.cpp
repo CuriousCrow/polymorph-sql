@@ -5,7 +5,7 @@
 
 
 PostgresTriggerItem::PostgresTriggerItem(QString caption, QObject *parent)
-  : QDBTriggerItem(caption, parent)
+  : DBTriggerItem(caption, parent)
 {
 }
 

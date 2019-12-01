@@ -8,47 +8,47 @@
 #include "qknowledgebase.h"
 
 
-QDBTableItem::QDBTableItem(QString caption, QObject* parent):
-  QDBObjectItem(caption, parent)
+DBTableItem::DBTableItem(QString caption, QObject* parent):
+  DBObjectItem(caption, parent)
 {      
 }
 
-QDBTableItem::~QDBTableItem()
+DBTableItem::~DBTableItem()
 {
 }
 
-void QDBTableItem::reloadColumnsModel()
+void DBTableItem::reloadColumnsModel()
 {
   //Необходимо переопределять для каждой отдельной СУБД
 }
 
-void QDBTableItem::reloadConstraintsModel()
+void DBTableItem::reloadConstraintsModel()
 {
   //Необходимо переопределить для каждой отдельной СУБД
 }
 
-QAbstractTableModel *QDBTableItem::columnsModel()
+QAbstractTableModel *DBTableItem::columnsModel()
 {
   return _columnsModel;
 }
 
-QAbstractTableModel *QDBTableItem::constraintsModel()
+QAbstractTableModel *DBTableItem::constraintsModel()
 {
   return _constraintsModel;
 }
 
-QDBForeignKey *QDBTableItem::newForeignKey()
+DBForeignKey *DBTableItem::newForeignKey()
 {
-  return new QDBForeignKey("fk_" + fieldValue(F_CAPTION).toString());
+  return new DBForeignKey("fk_" + fieldValue(F_CAPTION).toString());
 }
 
-int QDBTableItem::colTypeFromString(QString name)
+int DBTableItem::colTypeFromString(QString name)
 {
 //  qDebug() << "ColTypeFromString:" << name.toUpper();
   return QKnowledgeBase::kb()->typeByName(driverName().toUpper(), name.toUpper());
 }
 
-void QDBTableItem::addDefaultColumn()
+void DBTableItem::addDefaultColumn()
 {  
   int newColNumber = 1;
   forever {
@@ -59,17 +59,17 @@ void QDBTableItem::addDefaultColumn()
   _columnsModel->addSqlColumn(SqlColumn(DEF_COLUMN_NAME + QString::number(newColNumber), NoType));
 }
 
-bool QDBTableItem::reloadChildren()
+bool DBTableItem::reloadChildren()
 {
   return true;
 }
 
-int QDBTableItem::colCount()
+int DBTableItem::colCount()
 {
   return 1;
 }
 
-QVariant QDBTableItem::colData(int column, int role)
+QVariant DBTableItem::colData(int column, int role)
 {
   switch (role) {
   case Qt::DisplayRole:
@@ -86,21 +86,21 @@ QVariant QDBTableItem::colData(int column, int role)
   }
 }
 
-ActionResult QDBTableItem::deleteMe()
+ActionResult DBTableItem::deleteMe()
 {
   QString sql = "drop table \"%1\"";
   QString preparedSql = sql.arg(fieldValue(F_CAPTION).toString());
   return execSql(preparedSql, connectionName());
 }
 
-bool QDBTableItem::isModified()
+bool DBTableItem::isModified()
 {
-  if (QDBObjectItem::isModified())
+  if (DBObjectItem::isModified())
     return true;
   return _columnsModel->isModified();
 }
 
-ActionResult QDBTableItem::updateMe()
+ActionResult DBTableItem::updateMe()
 {
   SqlColumnModel::EditType editType = _columnsModel->editType();
   if (editType == SqlColumnModel::DropTable) {
@@ -121,7 +121,7 @@ ActionResult QDBTableItem::updateMe()
 }
 
 
-int QDBTableItem::type()
+int DBTableItem::type()
 {
   return Table;
 }

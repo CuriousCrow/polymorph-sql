@@ -3,22 +3,22 @@
 #include <QUrl>
 #include <QDebug>
 
-QFolderTreeItem::QFolderTreeItem(QString caption, QObject* parent):
-  QDBObjectItem(caption, parent)
+FolderTreeItem::FolderTreeItem(QString caption, QObject* parent):
+  DBObjectItem(caption, parent)
 {
 }
 
-QFolderTreeItem::~QFolderTreeItem()
+FolderTreeItem::~FolderTreeItem()
 {
 
 }
 
-int QFolderTreeItem::colCount()
+int FolderTreeItem::colCount()
 {
   return 1;
 }
 
-QVariant QFolderTreeItem::colData(int column, int role)
+QVariant FolderTreeItem::colData(int column, int role)
 {
   Q_UNUSED(column)
 
@@ -30,23 +30,23 @@ QVariant QFolderTreeItem::colData(int column, int role)
   }
 }
 
-bool QFolderTreeItem::reloadChildren()
+bool FolderTreeItem::reloadChildren()
 {
   emit reloadMe();
   return true;
 }
 
-int QFolderTreeItem::type()
+int FolderTreeItem::type()
 {
   return Folder;
 }
 
-QDBObjectItem::ItemType QFolderTreeItem::childrenType() const
+DBObjectItem::ItemType FolderTreeItem::childrenType() const
 {
   return _childrenType;
 }
 
-void QFolderTreeItem::setChildrenType(QDBObjectItem::ItemType childrenType)
+void FolderTreeItem::setChildrenType(DBObjectItem::ItemType childrenType)
 {
   _childrenType = childrenType;
 }

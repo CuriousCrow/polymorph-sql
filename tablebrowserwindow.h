@@ -18,7 +18,7 @@ class TableBrowserWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  explicit TableBrowserWindow(QWidget *parent, QDBTableItem* tableItem);
+  explicit TableBrowserWindow(QWidget *parent, DBTableItem* tableItem);
   ~TableBrowserWindow();
 
 private slots:

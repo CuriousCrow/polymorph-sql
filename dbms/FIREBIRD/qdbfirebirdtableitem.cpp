@@ -2,18 +2,18 @@
 #include "qsqlqueryhelper.h"
 
 
-QDBFirebirdTableItem::QDBFirebirdTableItem(QString caption, QObject *parent)
-  : QDBTableItem(caption, parent)
+DBFirebirdTableItem::DBFirebirdTableItem(QString caption, QObject *parent)
+  : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
 }
 
-QDBFirebirdTableItem::~QDBFirebirdTableItem()
+DBFirebirdTableItem::~DBFirebirdTableItem()
 {
   delete _columnsModel;
 }
 
-void QDBFirebirdTableItem::reloadColumnsModel()
+void DBFirebirdTableItem::reloadColumnsModel()
 {
   //Новая, еще не вставленная таблица
   if (connectionName().isEmpty())

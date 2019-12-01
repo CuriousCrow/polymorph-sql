@@ -25,7 +25,7 @@ void AddForeignKeyForm::objectToForm()
   ui->cmbReferenceTable->setModel(structModel);
   ui->cmbReferenceTable->setRootModelIndex(idx);
 
-  QDBTableItem* targetObj = qobject_cast<QDBTableItem*>(structModel->itemByName("qpsql://ughistory/tables/" + _objItem->fieldValue(F_TABLE).toString()));
+  DBTableItem* targetObj = qobject_cast<DBTableItem*>(structModel->itemByName("qpsql://ughistory/tables/" + _objItem->fieldValue(F_TABLE).toString()));
   ui->cmbTargetColumn->setModel(targetObj->columnsModel());
   ui->cmbTargetColumn->setModelColumn(1);
 
@@ -61,8 +61,8 @@ void AddForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &r
   QStructureItemModel* structModel = DataStore::structureModel();
   QString refName = "qpsql://ughistory/tables/" + refTable;
   qDebug() << "Reference name:" << refName;
-  QDBTableItem* refObj =
-      qobject_cast<QDBTableItem*>(structModel->itemByName(refName));
+  DBTableItem* refObj =
+      qobject_cast<DBTableItem*>(structModel->itemByName(refName));
   if (refObj) {
     qDebug() << "Reference table found:" << refName;
     refObj->reloadColumnsModel();

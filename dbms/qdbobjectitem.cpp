@@ -7,18 +7,18 @@
 #include "dbms/appconst.h"
 
 
-QDBObjectItem::QDBObjectItem(QString caption, QObject* parent):
+DBObjectItem::DBObjectItem(QString caption, QObject* parent):
   LAbstractTreeItem(caption, parent)
 {
   registerField(F_CAPTION);
   setFieldValue(F_CAPTION, caption);
 }
 
-QDBObjectItem::~QDBObjectItem()
+DBObjectItem::~DBObjectItem()
 {
 }
 
-void QDBObjectItem::setParentUrl(const QUrl &url)
+void DBObjectItem::setParentUrl(const QUrl &url)
 {
   _parentUrl = url;
   QUrl newUrl = objectUrl();
@@ -26,24 +26,24 @@ void QDBObjectItem::setParentUrl(const QUrl &url)
   _driverName = newUrl.scheme();
   setObjectName(newUrl.url());
   for (int i=0; i<children().count(); i++){
-    qobject_cast<QDBObjectItem*>(children().at(i))->setParentUrl(newUrl);
+    qobject_cast<DBObjectItem*>(children().at(i))->setParentUrl(newUrl);
   }
 }
 
-QString QDBObjectItem::driverName()
+QString DBObjectItem::driverName()
 {
   return _driverName;
 }
 
-void QDBObjectItem::deleteChildren()
+void DBObjectItem::deleteChildren()
 {
-  foreach(QDBObjectItem* childItem, findChildren<QDBObjectItem*>(QString(), Qt::FindDirectChildrenOnly)){
+  foreach(DBObjectItem* childItem, findChildren<DBObjectItem*>(QString(), Qt::FindDirectChildrenOnly)){
     childItem->setParent(nullptr);
     delete childItem;
   }
 }
 
-QUrl QDBObjectItem::objectUrl()
+QUrl DBObjectItem::objectUrl()
 {
   QUrl url = _parentUrl;
   QString path = url.path() + "/" + fieldValue(F_CAPTION).toString().toLower().replace(" ", "_");
@@ -51,7 +51,7 @@ QUrl QDBObjectItem::objectUrl()
   return url;
 }
 
-QStringList QDBObjectItem::propertyList()
+QStringList DBObjectItem::propertyList()
 {
   QStringList resList = QStringList();
   for(int i=LAbstractTreeItem::staticMetaObject.propertyOffset(); i<metaObject()->propertyCount(); i++){
@@ -60,7 +60,7 @@ QStringList QDBObjectItem::propertyList()
   return resList;
 }
 
-int QDBObjectItem::fieldIndex(QString fieldName)
+int DBObjectItem::fieldIndex(QString fieldName)
 {
   for(int i=0; i<fields.count(); i++){
     if (fields.at(i).name == fieldName)
@@ -69,25 +69,25 @@ int QDBObjectItem::fieldIndex(QString fieldName)
   return -1;
 }
 
-QString QDBObjectItem::databaseName()
+QString DBObjectItem::databaseName()
 {
   return QSqlQueryHelper::databaseName(connectionName());
 }
 
-QDBObjectField QDBObjectItem::field(QString fieldName)
+DBObjectField DBObjectItem::field(QString fieldName)
 {
   return fields.at(fieldIndex(fieldName));
 }
 
-QString QDBObjectItem::fillSqlPattern(QString pattern)
+QString DBObjectItem::fillSqlPattern(QString pattern)
 {
-  foreach(QDBObjectField field, fields) {
+  foreach(DBObjectField field, fields) {
     this->setProperty(qPrintable(field.name), field.value());
   }
   return QSqlQueryHelper::fillSqlPattern(pattern, this);
 }
 
-QString QDBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> valueMap)
+QString DBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> valueMap)
 {
   QString result = pattern;
   foreach(QString key, valueMap.keys()) {
@@ -96,10 +96,10 @@ QString QDBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> va
   return result;
 }
 
-QString QDBObjectItem::fillPatternWithFields(QString pattern)
+QString DBObjectItem::fillPatternWithFields(QString pattern)
 {
   QString result = pattern;
-  foreach(QDBObjectField field, fields) {
+  foreach(DBObjectField field, fields) {
     result = result.replace("#" + field.name + ".new#", field.value().toString());
     result = result.replace("#" + field.name + ".old#", field.oldValue().toString());
     result = result.replace("#" + field.name + "#", field.value().toString());
@@ -108,13 +108,13 @@ QString QDBObjectItem::fillPatternWithFields(QString pattern)
   return result;
 }
 
-QString QDBObjectItem::fillWithModifiedFields(QString pattern)
+QString DBObjectItem::fillWithModifiedFields(QString pattern)
 {
   pattern = filterUnmodifiedFields(pattern);
   return fillPatternWithFields(pattern);
 }
 
-QString QDBObjectItem::filterUnmodifiedFields(QString pattern)
+QString DBObjectItem::filterUnmodifiedFields(QString pattern)
 {
   QString resSql;
   QStringList parts = pattern.split(QRegExp("[\\{\\}]"), QString::SkipEmptyParts);
@@ -136,7 +136,7 @@ QString QDBObjectItem::filterUnmodifiedFields(QString pattern)
   return resSql;
 }
 
-ActionResult QDBObjectItem::execSql(QString sql, QString connectionName)
+ActionResult DBObjectItem::execSql(QString sql, QString connectionName)
 {
   QSqlQuery query = QSqlQueryHelper::execSql(sql, connectionName);
   if (query.lastError().isValid()) {
@@ -147,7 +147,7 @@ ActionResult QDBObjectItem::execSql(QString sql, QString connectionName)
   }
 }
 
-QVariant QDBObjectItem::fieldValue(QString fieldName)
+QVariant DBObjectItem::fieldValue(QString fieldName)
 {
   int index = fieldIndex(fieldName);
   if (index >= 0)
@@ -155,14 +155,14 @@ QVariant QDBObjectItem::fieldValue(QString fieldName)
   return QVariant();
 }
 
-QVariant QDBObjectItem::fieldValue(int colNumber)
+QVariant DBObjectItem::fieldValue(int colNumber)
 {
   if (colNumber >= fields.count())
     return QVariant();
   return fields.at(colNumber).value();
 }
 
-QVariant QDBObjectItem::fieldOldValue(QString fieldName)
+QVariant DBObjectItem::fieldOldValue(QString fieldName)
 {
   int index = fieldIndex(fieldName);
   if (index >= 0)
@@ -170,14 +170,14 @@ QVariant QDBObjectItem::fieldOldValue(QString fieldName)
   return QVariant();
 }
 
-QVariant QDBObjectItem::fieldOldValue(int colIdx)
+QVariant DBObjectItem::fieldOldValue(int colIdx)
 {
   if (colIdx >= fields.count())
     return QVariant();
   return fields.at(colIdx).oldValue();
 }
 
-bool QDBObjectItem::fieldModified(QString fieldName)
+bool DBObjectItem::fieldModified(QString fieldName)
 {
   int index = fieldIndex(fieldName);
   if (index >= 0)
@@ -185,7 +185,7 @@ bool QDBObjectItem::fieldModified(QString fieldName)
   return false;
 }
 
-void QDBObjectItem::setFieldValue(QString fieldName, QVariant value)
+void DBObjectItem::setFieldValue(QString fieldName, QVariant value)
 {
   int index = fieldIndex(fieldName);
   if (index < 0)
@@ -193,14 +193,14 @@ void QDBObjectItem::setFieldValue(QString fieldName, QVariant value)
   fields[index].setValue(value);
 }
 
-void QDBObjectItem::setFieldValue(int colNumber, QVariant value)
+void DBObjectItem::setFieldValue(int colNumber, QVariant value)
 {
   if (colNumber >= fields.count())
     return;
   fields[colNumber].setValue(value);
 }
 
-bool QDBObjectItem::setData(int column, QVariant value, int role)
+bool DBObjectItem::setData(int column, QVariant value, int role)
 {
   if (column >= colCount())
     return false;
@@ -211,17 +211,17 @@ bool QDBObjectItem::setData(int column, QVariant value, int role)
   return true;
 }
 
-bool QDBObjectItem::refresh()
+bool DBObjectItem::refresh()
 {
   return true;
 }
 
-int QDBObjectItem::colCount()
+int DBObjectItem::colCount()
 {
   return fields.count();
 }
 
-QVariant QDBObjectItem::colData(int column, int role)
+QVariant DBObjectItem::colData(int column, int role)
 {
   if (column >= colCount())
     return QVariant();
@@ -231,35 +231,35 @@ QVariant QDBObjectItem::colData(int column, int role)
   return QVariant();
 }
 
-ActionResult QDBObjectItem::insertMe(){
+ActionResult DBObjectItem::insertMe(){
   return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-ActionResult QDBObjectItem::updateMe()
+ActionResult DBObjectItem::updateMe()
 {
   return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-ActionResult QDBObjectItem::deleteMe()
+ActionResult DBObjectItem::deleteMe()
 {    
   return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-bool QDBObjectItem::isEditable()
+bool DBObjectItem::isEditable()
 {
   return _editable;
 }
 
-bool QDBObjectItem::isModified()
+bool DBObjectItem::isModified()
 {
-  foreach (QDBObjectField field, fields) {
+  foreach (DBObjectField field, fields) {
     if (field.isModified())
       return true;
   }
   return false;
 }
 
-bool QDBObjectItem::submit()
+bool DBObjectItem::submit()
 {
   for(int i=0; i<fields.count(); i++) {
     fields[i].submit();
@@ -267,54 +267,54 @@ bool QDBObjectItem::submit()
   return true;
 }
 
-bool QDBObjectItem::hasField(QString fieldName)
+bool DBObjectItem::hasField(QString fieldName)
 {
-  foreach(QDBObjectField field, fields) {
+  foreach(DBObjectField field, fields) {
     if (field.name == fieldName)
       return true;
   }
   return false;
 }
 
-QDBObjectField::QDBObjectField(QString fieldName)
+DBObjectField::DBObjectField(QString fieldName)
 {
   name = fieldName;
 }
 
-void QDBObjectItem::registerField(QString fieldName)
+void DBObjectItem::registerField(QString fieldName)
 {
   Q_ASSERT(!hasField(fieldName)); //Doubles are forbidden
-  fields.append(QDBObjectField(fieldName));
+  fields.append(DBObjectField(fieldName));
 }
 
-QVariant QDBObjectField::value() const
+QVariant DBObjectField::value() const
 {
   return _value;
 }
 
-void QDBObjectField::setValue(const QVariant &value)
+void DBObjectField::setValue(const QVariant &value)
 {
   if (!_oldValue.isValid())
     _oldValue = _value;
   _value = value;
 }
 
-QVariant QDBObjectField::oldValue() const
+QVariant DBObjectField::oldValue() const
 {
   return _oldValue;
 }
 
-bool QDBObjectField::isModified()
+bool DBObjectField::isModified()
 {
   return _oldValue != _value;
 }
 
-void QDBObjectField::submit()
+void DBObjectField::submit()
 {
   _oldValue = _value;
 }
 
-void QDBObjectField::revert()
+void DBObjectField::revert()
 {
   _value = _oldValue;
 }

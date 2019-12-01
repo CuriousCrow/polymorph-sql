@@ -4,8 +4,8 @@
 #include <QIcon>
 
 
-QDBSequenceItem::QDBSequenceItem(QString caption, QObject *parent):
-  QDBObjectItem(caption, parent)
+DBSequenceItem::DBSequenceItem(QString caption, QObject *parent):
+  DBObjectItem(caption, parent)
 {
   registerField(F_CURRENT_VALUE);
   registerField(F_MIN_VALUE);
@@ -14,16 +14,16 @@ QDBSequenceItem::QDBSequenceItem(QString caption, QObject *parent):
   registerField(F_START_VALUE);
 }
 
-QDBSequenceItem::~QDBSequenceItem()
+DBSequenceItem::~DBSequenceItem()
 {
 }
 
-int QDBSequenceItem::colCount()
+int DBSequenceItem::colCount()
 {
   return 1;
 }
 
-QVariant QDBSequenceItem::colData(int column, int role)
+QVariant DBSequenceItem::colData(int column, int role)
 {
   Q_UNUSED(column)
 
@@ -37,17 +37,17 @@ QVariant QDBSequenceItem::colData(int column, int role)
   }
 }
 
-bool QDBSequenceItem::reloadChildren()
+bool DBSequenceItem::reloadChildren()
 {
   return true;
 }
 
-int QDBSequenceItem::type()
+int DBSequenceItem::type()
 {
   return Sequence;
 }
 
-ActionResult QDBSequenceItem::insertMe()
+ActionResult DBSequenceItem::insertMe()
 {
   QString sql = "CREATE SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" {INCREMENT #step# }"
       "{MINVALUE #minValue# }{MAXVALUE #maxValue# }{START WITH #startValue#}";
@@ -55,7 +55,7 @@ ActionResult QDBSequenceItem::insertMe()
   return execSql(preparedSql, connectionName());
 }
 
-ActionResult QDBSequenceItem::updateMe()
+ActionResult DBSequenceItem::updateMe()
 {
   QString sql = "ALTER SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" {INCREMENT BY #step# }{MINVALUE #minValue# }"
       "{MAXVALUE #maxValue# }{START WITH #startValue# }{RESTART WITH #currentValue#}";
@@ -63,7 +63,7 @@ ActionResult QDBSequenceItem::updateMe()
   return execSql(preparedSql, connectionName());
 }
 
-ActionResult QDBSequenceItem::deleteMe()
+ActionResult DBSequenceItem::deleteMe()
 {
   QString sql = "DROP SEQUENCE \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);

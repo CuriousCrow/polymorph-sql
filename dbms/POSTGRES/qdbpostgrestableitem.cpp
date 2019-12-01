@@ -5,8 +5,8 @@
 #include "../../models/sqlcolumnmodel.h"
 #include "../appconst.h"
 
-QDBPostgresTableItem::QDBPostgresTableItem(QString caption, QObject *parent)
-  : QDBTableItem(caption, parent)
+DBPostgresTableItem::DBPostgresTableItem(QString caption, QObject *parent)
+  : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
 
@@ -15,18 +15,18 @@ QDBPostgresTableItem::QDBPostgresTableItem(QString caption, QObject *parent)
   _constraintsModel->registerColumn(F_NAME, tr("Name"));
 }
 
-QDBPostgresTableItem::~QDBPostgresTableItem()
+DBPostgresTableItem::~DBPostgresTableItem()
 {
   delete _columnsModel;
   delete _constraintsModel;
 }
 
-ActionResult QDBPostgresTableItem::insertMe()
+ActionResult DBPostgresTableItem::insertMe()
 {
   return execSql(createTableQuery(caption()), connectionName());
 }
 
-ActionResult QDBPostgresTableItem::updateMe()
+ActionResult DBPostgresTableItem::updateMe()
 {
   qDebug() << "QDBPostgreqlTableItem::updateMe()";
   ActionResult res;
@@ -42,7 +42,7 @@ ActionResult QDBPostgresTableItem::updateMe()
       return res;
   }
 
-  res = QDBTableItem::updateMe();
+  res = DBTableItem::updateMe();
   if (res.isSuccess())
     return ActionResult();
 
@@ -111,7 +111,7 @@ ActionResult QDBPostgresTableItem::updateMe()
   return res;
 }
 
-void QDBPostgresTableItem::reloadColumnsModel()
+void DBPostgresTableItem::reloadColumnsModel()
 {
   //Новая, еще не вставленная таблица
   if (connectionName().isEmpty())
@@ -135,7 +135,7 @@ void QDBPostgresTableItem::reloadColumnsModel()
 }
 
 
-void QDBPostgresTableItem::reloadConstraintsModel()
+void DBPostgresTableItem::reloadConstraintsModel()
 {
   //Новая, еще не вставленная таблица
   if (connectionName().isEmpty())
@@ -159,12 +159,12 @@ void QDBPostgresTableItem::reloadConstraintsModel()
 
 }
 
-QString QDBPostgresTableItem::caption()
+QString DBPostgresTableItem::caption()
 {
   return "\"" + fieldValue("caption").toString() + "\"";
 }
 
-QString QDBPostgresTableItem::createTableQuery(QString table)
+QString DBPostgresTableItem::createTableQuery(QString table)
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;
@@ -184,7 +184,7 @@ QString QDBPostgresTableItem::createTableQuery(QString table)
   return preparedSql;
 }
 
-QString QDBPostgresTableItem::columnDef(const SqlColumn &col)
+QString DBPostgresTableItem::columnDef(const SqlColumn &col)
 {
   QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
   if (col.length() > 0)
@@ -196,12 +196,12 @@ QString QDBPostgresTableItem::columnDef(const SqlColumn &col)
   return colDef;
 }
 
-QString QDBPostgresTableItem::typeDef(const SqlColumn &col)
+QString DBPostgresTableItem::typeDef(const SqlColumn &col)
 {
   return _columnsModel->columnTypeCaption(col.type());
 }
 
-QString QDBPostgresTableItem::defaultDef(const SqlColumn &col)
+QString DBPostgresTableItem::defaultDef(const SqlColumn &col)
 {
   if (col.defaultValue().isNull())
     return "";

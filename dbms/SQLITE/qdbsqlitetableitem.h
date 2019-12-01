@@ -3,10 +3,10 @@
 
 #include "../qdbtableitem.h"
 
-class QDBSqliteTableItem : public QDBTableItem
+class DBSqliteTableItem : public DBTableItem
 {
 public:
-    QDBSqliteTableItem(QString caption, QObject* parent = nullptr);
+    DBSqliteTableItem(QString caption, QObject* parent = nullptr);
     virtual void reloadColumnsModel() override;
     // QDBObjectItem interface
 public:

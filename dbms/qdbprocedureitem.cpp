@@ -2,25 +2,25 @@
 #include "dbms/appconst.h"
 #include <QIcon>
 
-QDBProcedureItem::QDBProcedureItem(QString caption, QObject *parent):
-  QDBObjectItem(caption, parent)
+DBProcedureItem::DBProcedureItem(QString caption, QObject *parent):
+  DBObjectItem(caption, parent)
 {
   registerField(F_SOURCE_CODE);
   registerField(F_LANGUAGE);
   registerField(F_RETURN_TYPE);
 }
 
-QDBProcedureItem::~QDBProcedureItem()
+DBProcedureItem::~DBProcedureItem()
 {
 }
 
 
-int QDBProcedureItem::colCount()
+int DBProcedureItem::colCount()
 {
   return 1;
 }
 
-QVariant QDBProcedureItem::colData(int column, int role)
+QVariant DBProcedureItem::colData(int column, int role)
 {
   Q_UNUSED(column)
 
@@ -34,12 +34,12 @@ QVariant QDBProcedureItem::colData(int column, int role)
   }
 }
 
-bool QDBProcedureItem::reloadChildren()
+bool DBProcedureItem::reloadChildren()
 {
   return true;
 }
 
-int QDBProcedureItem::type()
+int DBProcedureItem::type()
 {
   return Procedure;
 }

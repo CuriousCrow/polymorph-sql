@@ -82,8 +82,8 @@ private:
   QAction* _dropAction;
   QAction* _reloadAction;
   void addDatabase();
-  QDBObjectItem* itemByIndex(QModelIndex index);
-  QDBObjectItem* itemByName(QString name);
+  DBObjectItem* itemByIndex(QModelIndex index);
+  DBObjectItem* itemByName(QString name);
 protected:
   //Dummy source change
 
@@ -92,8 +92,8 @@ protected:
   //Update object list for completer
   void refreshQueryEditorAssistance();
 
-  void showItemInfoWidget(QDBObjectItem* dbItem);
-  void openTableEditor(QDBTableItem* tableItem);
+  void showItemInfoWidget(DBObjectItem* dbItem);
+  void openTableEditor(DBTableItem* tableItem);
 
   // NotifiableWindow interface
 protected:

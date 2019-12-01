@@ -7,7 +7,7 @@ TableRowModel::TableRowModel(QObject *parent) : QAbstractTableModel(parent)
 {
 }
 
-void TableRowModel::setTableItem(QDBObjectItem *item)
+void TableRowModel::setTableItem(DBObjectItem *item)
 {
   _tableItem = item;
   beginResetModel();
@@ -84,7 +84,7 @@ QVariant TableRowModel::headerData(int section, Qt::Orientation orientation, int
 }
 
 QDBFieldItem::QDBFieldItem(QString caption, QObject *parent)
-  : QDBObjectItem(caption, parent)
+  : DBObjectItem(caption, parent)
 {
   registerField(F_SIZE);
   registerField(F_NULL);

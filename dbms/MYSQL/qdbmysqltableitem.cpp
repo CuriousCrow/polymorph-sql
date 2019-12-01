@@ -3,27 +3,27 @@
 #include <QDebug>
 #include <QUrl>
 
-QDBMysqlTableItem::QDBMysqlTableItem(QString caption, QObject *parent)
-  : QDBTableItem(caption, parent)
+DBMysqlTableItem::DBMysqlTableItem(QString caption, QObject *parent)
+  : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
 }
 
-QDBMysqlTableItem::~QDBMysqlTableItem()
+DBMysqlTableItem::~DBMysqlTableItem()
 {
   delete _columnsModel;
 }
 
-ActionResult QDBMysqlTableItem::insertMe()
+ActionResult DBMysqlTableItem::insertMe()
 {
   QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName());
   return submit();
 }
 
-ActionResult QDBMysqlTableItem::updateMe()
+ActionResult DBMysqlTableItem::updateMe()
 {
   qDebug() << "QDBMysqlTableItem::updateMe()";
-  if (QDBTableItem::updateMe().isSuccess())
+  if (DBTableItem::updateMe().isSuccess())
     return true;
 
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
@@ -63,7 +63,7 @@ ActionResult QDBMysqlTableItem::updateMe()
   return true;
 }
 
-void QDBMysqlTableItem::reloadColumnsModel()
+void DBMysqlTableItem::reloadColumnsModel()
 {
   //Новая, еще не вставленная таблица
   if (connectionName().isEmpty())
@@ -84,7 +84,7 @@ void QDBMysqlTableItem::reloadColumnsModel()
   }
 }
 
-QString QDBMysqlTableItem::createTableQuery(QString table)
+QString DBMysqlTableItem::createTableQuery(QString table)
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;
@@ -104,7 +104,7 @@ QString QDBMysqlTableItem::createTableQuery(QString table)
   return preparedSql;
 }
 
-QString QDBMysqlTableItem::columnDef(const SqlColumn &col)
+QString DBMysqlTableItem::columnDef(const SqlColumn &col)
 {
   QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
   if (col.length() > 0)

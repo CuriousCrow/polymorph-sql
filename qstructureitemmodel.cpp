@@ -23,7 +23,7 @@ QStructureItemModel::~QStructureItemModel()
 {
 }
 
-void QStructureItemModel::appendItem(QDBObjectItem *item, QDBObjectItem *parent)
+void QStructureItemModel::appendItem(DBObjectItem *item, DBObjectItem *parent)
 {
   addItem(item, parent);
   if (parent)
@@ -32,11 +32,11 @@ void QStructureItemModel::appendItem(QDBObjectItem *item, QDBObjectItem *parent)
     item->setParentUrl(QUrl());
 }
 
-void QStructureItemModel::appendItem(QDBObjectItem *item, QModelIndex parent)
+void QStructureItemModel::appendItem(DBObjectItem *item, QModelIndex parent)
 {
   addItem(item, parent);
   if (parent.isValid()) {
-    QDBObjectItem* parentItem = qobject_cast<QDBObjectItem*>(itemByIndex(parent));
+    DBObjectItem* parentItem = qobject_cast<DBObjectItem*>(itemByIndex(parent));
     Q_ASSERT(parentItem);
     item->setParentUrl(parentItem->objectUrl());
   }
@@ -56,7 +56,7 @@ bool QStructureItemModel::loadRegisteredDatabases()
     QSqlRecord rec = sqlResult.record();
     QString caption = rec.value(F_CAPTION).toString();
     QString driverName = rec.value(F_DRIVER_NAME).toString();
-    QDBDatabaseItem* item = dbItemByDriver(caption, driverName);
+    DBDatabaseItem* item = dbItemByDriver(caption, driverName);
     for (int i=0; i<rec.count(); i++) {
       item->setFieldValue(rec.fieldName(i), rec.value(i));
     }
@@ -65,23 +65,23 @@ bool QStructureItemModel::loadRegisteredDatabases()
   return true;
 }
 
-QDBDatabaseItem *QStructureItemModel::dbItemByDriver(QString caption, QString driverName)
+DBDatabaseItem *QStructureItemModel::dbItemByDriver(QString caption, QString driverName)
 {
-  QDBDatabaseItem* item;
+  DBDatabaseItem* item;
   if (driverName == DRIVER_FIREBIRD) {
-    item = new QDBFirebirdItem(caption);
+    item = new DBFirebirdItem(caption);
   }
   else if (driverName == DRIVER_SQLITE) {
-    item = new QDBSqliteItem(caption);
+    item = new DBSqliteItem(caption);
   }
   else if (driverName == DRIVER_MYSQL) {
-    item = new QDBMysqlItem(caption);
+    item = new DBMysqlItem(caption);
   }
   else if (driverName == DRIVER_POSTGRES) {
-    item = new QDBPostgresItem(caption);
+    item = new DBPostgresItem(caption);
   }
   else {
-    item = new QDBDatabaseItem(caption);
+    item = new DBDatabaseItem(caption);
   }
   return item;
 }
@@ -89,7 +89,7 @@ QDBDatabaseItem *QStructureItemModel::dbItemByDriver(QString caption, QString dr
 void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)
 {
   for (int row=first; row<last; row++){
-    QDBObjectItem* item = qobject_cast<QDBObjectItem*>(itemByIndex(index(row, 0, parent)));
+    DBObjectItem* item = qobject_cast<DBObjectItem*>(itemByIndex(index(row, 0, parent)));
     emit itemAboutToBeRemoved(item->objectUrl().url());
   }
 }
@@ -97,8 +97,8 @@ void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int firs
 
 Qt::ItemFlags QStructureItemModel::flags(const QModelIndex &index) const
 {
-  QDBObjectItem* item = qobject_cast<QDBObjectItem*>(itemByIndex(index));
-  if ((item->type() == QDBObjectItem::Database)
+  DBObjectItem* item = qobject_cast<DBObjectItem*>(itemByIndex(index));
+  if ((item->type() == DBObjectItem::Database)
       && item->children().count() > 0){
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
   }

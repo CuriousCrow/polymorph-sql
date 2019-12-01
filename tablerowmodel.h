@@ -6,7 +6,7 @@
 #include <QSqlRecord>
 
 
-class QDBFieldItem : public QDBObjectItem
+class QDBFieldItem : public DBObjectItem
 {
   Q_OBJECT
 public:
@@ -18,7 +18,7 @@ class TableRowModel : public QAbstractTableModel
   Q_OBJECT
 public:
   TableRowModel(QObject *parent = Q_NULLPTR);
-  void setTableItem(QDBObjectItem* item);
+  void setTableItem(DBObjectItem* item);
   // QAbstractItemModel interface
 public:
   virtual int rowCount(const QModelIndex &parent) const;
@@ -26,7 +26,7 @@ public:
   virtual QVariant data(const QModelIndex &index, int role) const;
   virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 private:
-  QDBObjectItem* _tableItem;
+  DBObjectItem* _tableItem;
   QSqlRecord _infoRec;
 
   // QAbstractItemModel interface

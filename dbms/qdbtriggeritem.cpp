@@ -4,8 +4,8 @@
 #include <QIcon>
 
 
-QDBTriggerItem::QDBTriggerItem(QString caption, QObject *parent):
-  QDBObjectItem(caption, parent)
+DBTriggerItem::DBTriggerItem(QString caption, QObject *parent):
+  DBObjectItem(caption, parent)
 {
   registerField(F_EVENT_INSERT);
   registerField(F_EVENT_UPDATE);
@@ -22,17 +22,17 @@ QDBTriggerItem::QDBTriggerItem(QString caption, QObject *parent):
   setFieldValue(F_EVENT_TRUNCATE, false);
 }
 
-QDBTriggerItem::~QDBTriggerItem()
+DBTriggerItem::~DBTriggerItem()
 {
 }
 
 
-int QDBTriggerItem::colCount()
+int DBTriggerItem::colCount()
 {
   return 1;
 }
 
-QVariant QDBTriggerItem::colData(int column, int role)
+QVariant DBTriggerItem::colData(int column, int role)
 {
   Q_UNUSED(column)
 
@@ -46,27 +46,27 @@ QVariant QDBTriggerItem::colData(int column, int role)
   }
 }
 
-bool QDBTriggerItem::reloadChildren()
+bool DBTriggerItem::reloadChildren()
 {
   return true;
 }
 
-int QDBTriggerItem::type()
+int DBTriggerItem::type()
 {
   return Trigger;
 }
 
-ActionResult QDBTriggerItem::insertMe()
+ActionResult DBTriggerItem::insertMe()
 {
   return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-ActionResult QDBTriggerItem::updateMe()
+ActionResult DBTriggerItem::updateMe()
 {
   return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-ActionResult QDBTriggerItem::deleteMe()
+ActionResult DBTriggerItem::deleteMe()
 {
   QString sql = "drop trigger #caption#";
   QString preparedSql = fillSqlPattern(sql);

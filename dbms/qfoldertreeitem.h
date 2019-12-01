@@ -3,15 +3,15 @@
 
 #include "qdbobjectitem.h"
 
-class QFolderTreeItem : public QDBObjectItem
+class FolderTreeItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  QFolderTreeItem(QString caption, QObject* parent = nullptr);
-  virtual ~QFolderTreeItem() override;
+  FolderTreeItem(QString caption, QObject* parent = nullptr);
+  virtual ~FolderTreeItem() override;
 
-  QDBObjectItem::ItemType childrenType() const;
-  void setChildrenType(QDBObjectItem::ItemType childrenType);
+  DBObjectItem::ItemType childrenType() const;
+  void setChildrenType(DBObjectItem::ItemType childrenType);
 signals:
   void reloadMe();
   // LAbstractTreeItem interface
@@ -25,7 +25,7 @@ public:
   virtual int type() override;
 
 private:
-  QDBObjectItem::ItemType _childrenType = UnknownType;
+  DBObjectItem::ItemType _childrenType = UnknownType;
 
 };
 

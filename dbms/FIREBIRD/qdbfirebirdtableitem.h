@@ -3,12 +3,12 @@
 
 #include "../qdbtableitem.h"  
 
-class QDBFirebirdTableItem : public QDBTableItem
+class DBFirebirdTableItem : public DBTableItem
 {
   Q_OBJECT
 public:
-  QDBFirebirdTableItem(QString caption, QObject* parent = nullptr);
-  virtual ~QDBFirebirdTableItem() override;
+  DBFirebirdTableItem(QString caption, QObject* parent = nullptr);
+  virtual ~DBFirebirdTableItem() override;
   // QDBTableItem interface
 public:
   virtual void reloadColumnsModel() override;

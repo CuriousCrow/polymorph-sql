@@ -22,10 +22,10 @@ private:
   QString _description;
 };
 
-class QDBObjectField
+class DBObjectField
 {
 public:
-  QDBObjectField(QString fieldName);
+  DBObjectField(QString fieldName);
   QString name;
 
   QVariant value() const;
@@ -41,7 +41,7 @@ private:
   QVariant _oldValue;
 };
 
-class QDBObjectItem : public LAbstractTreeItem
+class DBObjectItem : public LAbstractTreeItem
 {
   Q_OBJECT
 public:
@@ -62,8 +62,8 @@ public:
     CheckConstraint
   };
 
-  QDBObjectItem(QString caption, QObject* parent = nullptr);
-  ~QDBObjectItem();
+  DBObjectItem(QString caption, QObject* parent = nullptr);
+  ~DBObjectItem();
   QString connectionName(){ return _connectionName; }
   void setParentUrl(const QUrl &url);
   QString driverName();
@@ -99,10 +99,10 @@ protected:
   bool _editable = true;
   QUrl _parentUrl;
   QString _driverName;
-  QList<QDBObjectField> fields;
+  QList<DBObjectField> fields;
   int fieldIndex(QString fieldName);
   QString databaseName();
-  QDBObjectField field(QString fieldName);
+  DBObjectField field(QString fieldName);
   QString fillSqlPattern(QString pattern);
   QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap);
   QString fillPatternWithFields(QString pattern);

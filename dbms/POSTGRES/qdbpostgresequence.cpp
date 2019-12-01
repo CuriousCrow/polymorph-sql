@@ -3,13 +3,13 @@
 #include "../appconst.h"
 
 
-QDBPostgreSequence::QDBPostgreSequence(QString caption, QObject* parent)
-  : QDBSequenceItem(caption, parent)
+DBPostgreSequence::DBPostgreSequence(QString caption, QObject* parent)
+  : DBSequenceItem(caption, parent)
 {
 
 }
 
-bool QDBPostgreSequence::refresh()
+bool DBPostgreSequence::refresh()
 {
   QString sql = "SELECT sequence_name \"caption\", start_value \"startValue\", minimum_value \"minValue\", maximum_value \"maxValue\", increment \"step\" "
                 "FROM information_schema.sequences where sequence_name='#caption#'";

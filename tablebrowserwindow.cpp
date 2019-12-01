@@ -4,7 +4,7 @@
 #include <QUrl>
 #include "dbms/appconst.h"
 
-TableBrowserWindow::TableBrowserWindow(QWidget *parent, QDBTableItem* tableItem) :
+TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) :
   QMainWindow(parent),
   ui(new Ui::TableBrowserWindow)
 {

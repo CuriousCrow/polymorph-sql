@@ -46,7 +46,7 @@ private:
   QSimpleTooltip* _helpTooltip;
   QString connectionName();
   QString dbUrl();
-  QDBObjectItem* dbObject();
+  DBObjectItem* dbObject();
 };
 
 #endif // QUERYEDITORWINDOW_H

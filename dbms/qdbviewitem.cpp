@@ -4,23 +4,23 @@
 #include "dbms/appconst.h"
 
 
-QDBViewItem::QDBViewItem(QString caption, QObject *parent):
-  QDBTableItem(caption, parent)
+DBViewItem::DBViewItem(QString caption, QObject *parent):
+  DBTableItem(caption, parent)
 {
   _editable = false;
   registerField(F_QUERY_TEXT);
 }
 
-QDBViewItem::~QDBViewItem()
+DBViewItem::~DBViewItem()
 {
 }
 
-int QDBViewItem::colCount()
+int DBViewItem::colCount()
 {
   return 2;
 }
 
-QVariant QDBViewItem::colData(int column, int role)
+QVariant DBViewItem::colData(int column, int role)
 {
 
   switch (role) {
@@ -41,12 +41,12 @@ QVariant QDBViewItem::colData(int column, int role)
   }
 }
 
-int QDBViewItem::type()
+int DBViewItem::type()
 {
   return View;
 }
 
-ActionResult QDBViewItem::insertMe()
+ActionResult DBViewItem::insertMe()
 {
   qDebug() << "Connection name" << connectionName();
   QString sql = "create view \"#caption#\" as #queryText#";
@@ -55,7 +55,7 @@ ActionResult QDBViewItem::insertMe()
 }
 
 
-bool QDBViewItem::setData(int column, QVariant value, int role)
+bool DBViewItem::setData(int column, QVariant value, int role)
 {
   if (role == Qt::EditRole){
     switch (column) {
@@ -73,7 +73,7 @@ bool QDBViewItem::setData(int column, QVariant value, int role)
 }
 
 
-ActionResult QDBViewItem::deleteMe()
+ActionResult DBViewItem::deleteMe()
 {
   QString sql = "drop view \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);

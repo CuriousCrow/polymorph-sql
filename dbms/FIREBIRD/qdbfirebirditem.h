@@ -4,11 +4,11 @@
 #include <QObject>
 #include "../qdbdatabaseitem.h"
 
-class QDBFirebirdItem : public QDBDatabaseItem
+class DBFirebirdItem : public DBDatabaseItem
 {
   Q_OBJECT
 public:
-  QDBFirebirdItem(QString caption);
+  DBFirebirdItem(QString caption);
 
   // QDBDatabaseItem interface
 protected:
@@ -19,11 +19,11 @@ protected:
 
   // QDBDatabaseItem interface
 public:
-  virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent) override;
+  virtual DBTableItem *createNewTableItem(QString caption, QObject *parent) override;
 
   // QDBDatabaseItem interface
 protected:
-  virtual void loadSequenceItems(QDBObjectItem *parentItem) override;
+  virtual void loadSequenceItems(DBObjectItem *parentItem) override;
 };
 
 #endif // QDBFIREBIRDITEM_H

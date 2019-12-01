@@ -3,14 +3,14 @@
 
 #include "../qdbdatabaseitem.h"
 
-class QDBMysqlItem : public QDBDatabaseItem
+class DBMysqlItem : public DBDatabaseItem
 {
   Q_OBJECT
 public:
-  QDBMysqlItem(QString caption);
-  ~QDBMysqlItem();
+  DBMysqlItem(QString caption);
+  ~DBMysqlItem();
 
-  virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
+  virtual DBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
   // QDBObjectItem interface
 public:
   virtual bool reloadChildren();

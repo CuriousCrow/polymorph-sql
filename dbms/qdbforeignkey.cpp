@@ -2,8 +2,8 @@
 #include "appconst.h"
 
 
-QDBForeignKey::QDBForeignKey(QString caption, QObject *parent)
-  : QDBConstraintItem(caption, parent)
+DBForeignKey::DBForeignKey(QString caption, QObject *parent)
+  : DBConstraintItem(caption, parent)
 {
   registerField(F_REFTABLE);
   registerField(F_REFCOLUMN);
@@ -11,12 +11,12 @@ QDBForeignKey::QDBForeignKey(QString caption, QObject *parent)
   registerField(F_ON_DELETE);
 }
 
-int QDBForeignKey::type()
+int DBForeignKey::type()
 {
-  return QDBObjectItem::ForeignKey;
+  return DBObjectItem::ForeignKey;
 }
 
-ActionResult QDBForeignKey::insertMe()
+ActionResult DBForeignKey::insertMe()
 {
   QString sql = "alter table #table# add constraint #caption# "
                 "foreign key (#column#) references #reftable#(#refcolumn#) "

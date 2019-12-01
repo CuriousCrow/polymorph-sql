@@ -3,12 +3,12 @@
 
 #include "qdbobjectitem.h"
 
-class QDBSequenceItem : public QDBObjectItem
+class DBSequenceItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  QDBSequenceItem(QString caption, QObject* parent = nullptr);
-  ~QDBSequenceItem();
+  DBSequenceItem(QString caption, QObject* parent = nullptr);
+  ~DBSequenceItem();
 
   // LAbstractTreeItem interface
 public:

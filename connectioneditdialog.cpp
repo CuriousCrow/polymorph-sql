@@ -56,7 +56,7 @@ void ConnectionEditDialog::removeUnavailableDriversFromCombobox()
 void ConnectionEditDialog::on_btnOk_clicked()
 {  
   _mapper->submit();
-  QDBObjectItem* item = qobject_cast<QDBObjectItem*>(_model->itemByIndex(_model->index(_mapper->currentIndex(),0, _mapper->rootIndex())));
+  DBObjectItem* item = qobject_cast<DBObjectItem*>(_model->itemByIndex(_model->index(_mapper->currentIndex(),0, _mapper->rootIndex())));
   ActionResult res = item->updateMe();
   if (res.isSuccess()) {
     accept();

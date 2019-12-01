@@ -4,11 +4,11 @@
 #include <QObject>
 #include "../qdbsequenceitem.h"
 
-class QDBPostgreSequence : public QDBSequenceItem
+class DBPostgreSequence : public DBSequenceItem
 {
   Q_OBJECT
 public:
-  QDBPostgreSequence(QString caption, QObject* parent = nullptr);
+  DBPostgreSequence(QString caption, QObject* parent = nullptr);
 
   // QDBObjectItem interface
 public:

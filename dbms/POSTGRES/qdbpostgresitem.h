@@ -3,12 +3,12 @@
 
 #include "../qdbdatabaseitem.h"
 
-class QDBPostgresItem : public QDBDatabaseItem
+class DBPostgresItem : public DBDatabaseItem
 {
   Q_OBJECT
 public:
-  QDBPostgresItem(QString caption);
-  ~QDBPostgresItem();
+  DBPostgresItem(QString caption);
+  ~DBPostgresItem();
 
   // QDBDatabaseItem interface
 protected:
@@ -19,16 +19,16 @@ protected:
 
   // QDBDatabaseItem interface
 public:
-  virtual QDBTableItem *createNewTableItem(QString caption, QObject *parent);
-  virtual QDBSequenceItem *createNewSequenceItem(QString caption, QObject *parent);
-  virtual QDBProcedureItem *createNewProcedureItem(QString caption, QObject *parent);
-  virtual QDBTriggerItem *createNewTriggerItem(QString caption, QObject *parent);
+  virtual DBTableItem *createNewTableItem(QString caption, QObject *parent);
+  virtual DBSequenceItem *createNewSequenceItem(QString caption, QObject *parent);
+  virtual DBProcedureItem *createNewProcedureItem(QString caption, QObject *parent);
+  virtual DBTriggerItem *createNewTriggerItem(QString caption, QObject *parent);
 
   // QDBDatabaseItem interface
 protected:
-  void loadSequenceItems(QDBObjectItem *parentItem);
-  void loadTriggerItems(QDBObjectItem *parentItem);
-  void loadProcedureItems(QDBObjectItem *parentItem);
+  void loadSequenceItems(DBObjectItem *parentItem);
+  void loadTriggerItems(DBObjectItem *parentItem);
+  void loadProcedureItems(DBObjectItem *parentItem);
 };
 
 #endif // QDBPOSTGRESITEM_H

@@ -4,45 +4,45 @@
 
 #define SQL_VIEWS "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations where rdb$relation_type=1"
 
-QDBFirebirdItem::QDBFirebirdItem(QString caption)
-  : QDBDatabaseItem(caption)
+DBFirebirdItem::DBFirebirdItem(QString caption)
+  : DBDatabaseItem(caption)
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_FIREBIRD);
 }
 
-QString QDBFirebirdItem::getViewListSql()
+QString DBFirebirdItem::getViewListSql()
 {
   return "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations "
          "where rdb$relation_type=1";
 }
 
-QString QDBFirebirdItem::getSequenceListSql()
+QString DBFirebirdItem::getSequenceListSql()
 {
   return "select rdb$generator_id id, trim(rdb$generator_name) name from rdb$generators where rdb$system_flag = 0";
 }
 
-QString QDBFirebirdItem::getTriggerListSql()
+QString DBFirebirdItem::getTriggerListSql()
 {
   return "select trim(rdb$trigger_name) name from rdb$triggers where rdb$system_flag = 0";
 }
 
-QString QDBFirebirdItem::getProcedureListSql()
+QString DBFirebirdItem::getProcedureListSql()
 {
   return "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
 }
 
-QDBTableItem *QDBFirebirdItem::createNewTableItem(QString caption, QObject *parent)
+DBTableItem *DBFirebirdItem::createNewTableItem(QString caption, QObject *parent)
 {
-  return new QDBFirebirdTableItem(caption, parent);
+  return new DBFirebirdTableItem(caption, parent);
 }
 
 
-void QDBFirebirdItem::loadSequenceItems(QDBObjectItem *parentItem)
+void DBFirebirdItem::loadSequenceItems(DBObjectItem *parentItem)
 {
   QString sql = getSequenceListSql();
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
   while (resultSet.next()){
-    QDBSequenceItem* sequenceItem = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
+    DBSequenceItem* sequenceItem = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
     sequenceItem->setParentUrl(parentItem->objectUrl());
   }
 }

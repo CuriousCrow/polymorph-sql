@@ -4,28 +4,28 @@
 #include "../appconst.h"
 
 
-QDBMysqlItem::QDBMysqlItem(QString caption)
-  : QDBDatabaseItem(caption)
+DBMysqlItem::DBMysqlItem(QString caption)
+  : DBDatabaseItem(caption)
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_MYSQL);
 }
 
-QDBMysqlItem::~QDBMysqlItem()
+DBMysqlItem::~DBMysqlItem()
 {
 }
 
-QDBTableItem *QDBMysqlItem::createNewTableItem(QString caption, QObject *parent)
+DBTableItem *DBMysqlItem::createNewTableItem(QString caption, QObject *parent)
 {
-  return new QDBMysqlTableItem(caption, parent);
+  return new DBMysqlTableItem(caption, parent);
 }
 
-bool QDBMysqlItem::reloadChildren()
+bool DBMysqlItem::reloadChildren()
 {
   if (!children().isEmpty())
     return false;
 
   //Creating table items
-  QFolderTreeItem* tableFolderItem = new QFolderTreeItem(tr("Tables"), this);
+  FolderTreeItem* tableFolderItem = new FolderTreeItem(tr("Tables"), this);
   tableFolderItem->setChildrenType(Table);
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
@@ -33,16 +33,16 @@ bool QDBMysqlItem::reloadChildren()
   }
 
   //Creating views items
-  QFolderTreeItem* viewFolderItem = new QFolderTreeItem(tr("Views"), this);
+  FolderTreeItem* viewFolderItem = new FolderTreeItem(tr("Views"), this);
   viewFolderItem->setChildrenType(View);
   loadViewItems(viewFolderItem);
 
   //Creating system table items
-  QFolderTreeItem* systemFolderItem = new QFolderTreeItem(tr("System tables"), this);
+  FolderTreeItem* systemFolderItem = new FolderTreeItem(tr("System tables"), this);
   systemFolderItem->setChildrenType(Table);
   QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
   foreach (QString name, sysTableNames){
-    new QDBMysqlTableItem(name, systemFolderItem);
+    new DBMysqlTableItem(name, systemFolderItem);
   }
 
   //  //Creating trigger items
@@ -53,22 +53,22 @@ bool QDBMysqlItem::reloadChildren()
   return true;
 }
 
-QString QDBMysqlItem::getViewListSql()
+QString DBMysqlItem::getViewListSql()
 {
   return "select table_name \"name\" from INFORMATION_SCHEMA.views";
 }
 
-QString QDBMysqlItem::getSequenceListSql()
+QString DBMysqlItem::getSequenceListSql()
 {
   return "";
 }
 
-QString QDBMysqlItem::getTriggerListSql()
+QString DBMysqlItem::getTriggerListSql()
 {
   return "";
 }
 
-QString QDBMysqlItem::getProcedureListSql()
+QString DBMysqlItem::getProcedureListSql()
 {
   return "";
 }

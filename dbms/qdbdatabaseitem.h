@@ -14,24 +14,24 @@
 #define DRIVER_POSTGRES "QPSQL"
 #define DRIVER_MYSQL "QMYSQL"
 
-class QDBDatabaseItem : public QDBObjectItem
+class DBDatabaseItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  QDBDatabaseItem(QString caption);
-  ~QDBDatabaseItem();
+  DBDatabaseItem(QString caption);
+  ~DBDatabaseItem();
 
   bool createDbConnection();
-  virtual QDBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
-  virtual QDBViewItem* createNewViewItem(QString caption, QObject* parent = nullptr);
-  virtual QDBProcedureItem* createNewProcedureItem(QString caption, QObject* parent = nullptr);
-  virtual QDBSequenceItem* createNewSequenceItem(QString caption, QObject* parent = nullptr);
-  virtual QDBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = nullptr);
+  virtual DBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
+  virtual DBViewItem* createNewViewItem(QString caption, QObject* parent = nullptr);
+  virtual DBProcedureItem* createNewProcedureItem(QString caption, QObject* parent = nullptr);
+  virtual DBSequenceItem* createNewSequenceItem(QString caption, QObject* parent = nullptr);
+  virtual DBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = nullptr);
 protected:
-  virtual void loadViewItems(QDBObjectItem* parentItem);
-  virtual void loadSequenceItems(QDBObjectItem* parentItem);
-  virtual void loadTriggerItems(QDBObjectItem* parentItem);
-  virtual void loadProcedureItems(QDBObjectItem* parentItem);
+  virtual void loadViewItems(DBObjectItem* parentItem);
+  virtual void loadSequenceItems(DBObjectItem* parentItem);
+  virtual void loadTriggerItems(DBObjectItem* parentItem);
+  virtual void loadProcedureItems(DBObjectItem* parentItem);
   
   virtual QString getViewListSql();
   virtual QString getSequenceListSql();
@@ -40,7 +40,7 @@ protected:
 
   QString driver();
   bool isDriver(QString name);
-  // QDBObjectItem interface
+  // DBObjectItem interface
 public:
   virtual bool reloadChildren();
   virtual QUrl objectUrl();

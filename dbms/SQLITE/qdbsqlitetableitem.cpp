@@ -5,13 +5,13 @@
 #include <QSqlRecord>
 #include <QSqlField>
 
-QDBSqliteTableItem::QDBSqliteTableItem(QString caption, QObject *parent)
-  : QDBTableItem(caption, parent)
+DBSqliteTableItem::DBSqliteTableItem(QString caption, QObject *parent)
+  : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
 }
 
-void QDBSqliteTableItem::reloadColumnsModel()
+void DBSqliteTableItem::reloadColumnsModel()
 {
   _columnsModel->clear();
   QSqlRecord sqlColumns = QSqlQueryHelper::tableRowInfo(
@@ -44,15 +44,15 @@ void QDBSqliteTableItem::reloadColumnsModel()
   }
 }
 
-ActionResult QDBSqliteTableItem::insertMe()
+ActionResult DBSqliteTableItem::insertMe()
 {
   return !QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName()).lastError().isValid();
 }
 
-ActionResult QDBSqliteTableItem::updateMe()
+ActionResult DBSqliteTableItem::updateMe()
 {
   qDebug() << "QDBSqliteTableItem::updateMe()";
-  ActionResult res = QDBTableItem::updateMe();
+  ActionResult res = DBTableItem::updateMe();
   if (res.isSuccess())
     return res;
 
@@ -90,7 +90,7 @@ ActionResult QDBSqliteTableItem::updateMe()
   return ActionResult();
 }
 
-QString QDBSqliteTableItem::createTableQuery(QString table)
+QString DBSqliteTableItem::createTableQuery(QString table)
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;

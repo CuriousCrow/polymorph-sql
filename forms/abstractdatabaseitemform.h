@@ -19,15 +19,15 @@ public:
   UserAction userAction() const;
   void setUserAction(const UserAction &userAction);
 
-  QDBObjectItem *objItem() const;
-  void setObjItem(QDBObjectItem *objItem);
+  DBObjectItem *objItem() const;
+  void setObjItem(DBObjectItem *objItem);
 
   virtual void objectToForm() = 0;
   virtual void formToObject() = 0;
 signals:
   void userActionChanged();
 protected:
-  QDBObjectItem* _objItem;
+  DBObjectItem* _objItem;
   virtual void tryUserAction();
 private:
   UserAction _userAction;

@@ -6,19 +6,19 @@
 #include "models/variantmaptablemodel.h"
 #include "qdbforeignkey.h"
 
-class QDBTableItem : public QDBObjectItem
+class DBTableItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  QDBTableItem(QString caption, QObject* parent = nullptr);
-  virtual ~QDBTableItem() override;
+  DBTableItem(QString caption, QObject* parent = nullptr);
+  virtual ~DBTableItem() override;
   virtual void reloadColumnsModel();
   virtual void reloadConstraintsModel();
 
   QAbstractTableModel* columnsModel();
   QAbstractTableModel* constraintsModel();
 
-  virtual QDBForeignKey* newForeignKey();
+  virtual DBForeignKey* newForeignKey();
 
   int colTypeFromString(QString name);
   void addDefaultColumn();

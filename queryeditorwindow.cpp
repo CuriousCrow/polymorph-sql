@@ -81,7 +81,7 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
 
 QString QueryEditorWindow::connectionName()
 {
-  QDBObjectItem* databaseItem = dbObject();
+  DBObjectItem* databaseItem = dbObject();
   return (databaseItem) ? databaseItem->connectionName() : "";
 }
 
@@ -90,12 +90,12 @@ QString QueryEditorWindow::dbUrl()
   return dbObject()->objectUrl().toString();
 }
 
-QDBObjectItem *QueryEditorWindow::dbObject()
+DBObjectItem *QueryEditorWindow::dbObject()
 {
   QModelIndex proxyIndex = _activeConnectionModel->index(ui->cmbDatabase->currentIndex(), 0);
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
-  return qobject_cast<QDBObjectItem*>(DataStore::structureModel()->itemByIndex(sourceIndex));
+  return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(sourceIndex));
 }
 
 void QueryEditorWindow::on_aCommit_triggered()

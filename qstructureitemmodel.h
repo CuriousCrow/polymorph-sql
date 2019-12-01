@@ -13,8 +13,8 @@ public:
   explicit QStructureItemModel(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
   ~QStructureItemModel();
 
-  void appendItem(QDBObjectItem* item, QDBObjectItem* parent = nullptr);
-  void appendItem(QDBObjectItem* item, QModelIndex parent);
+  void appendItem(DBObjectItem* item, DBObjectItem* parent = nullptr);
+  void appendItem(DBObjectItem* item, QModelIndex parent);
 
   bool deleteChildren(QModelIndex parent);
 signals:
@@ -23,7 +23,7 @@ private:
   QSqlDatabase _db;
   bool loadRegisteredDatabases();
   //Fabric method
-  QDBDatabaseItem* dbItemByDriver(QString caption, QString driverName);
+  DBDatabaseItem* dbItemByDriver(QString caption, QString driverName);
 private slots:
   void onAboutToBeRemoved(const QModelIndex & parent, int first, int last);
 

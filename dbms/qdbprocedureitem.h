@@ -3,12 +3,12 @@
 
 #include "qdbobjectitem.h"
 
-class QDBProcedureItem : public QDBObjectItem
+class DBProcedureItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  QDBProcedureItem(QString caption, QObject* parent = nullptr);
-  ~QDBProcedureItem();
+  DBProcedureItem(QString caption, QObject* parent = nullptr);
+  ~DBProcedureItem();
 
   // LAbstractTreeItem interface
 public:

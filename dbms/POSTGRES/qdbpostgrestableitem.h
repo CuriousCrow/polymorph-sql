@@ -4,12 +4,12 @@
 #include "../qdbtableitem.h"
 #include <QSqlField>
 
-class QDBPostgresTableItem : public QDBTableItem
+class DBPostgresTableItem : public DBTableItem
 {
   Q_OBJECT
 public:
-  QDBPostgresTableItem(QString caption, QObject* parent = nullptr);
-  virtual ~QDBPostgresTableItem() override;
+  DBPostgresTableItem(QString caption, QObject* parent = nullptr);
+  virtual ~DBPostgresTableItem() override;
   // QDBObjectItem interface
 public:
   virtual ActionResult insertMe() override;
