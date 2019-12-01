@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QUrl>
+#include "appurl.h"
 #include <QIcon>
 #include "dbtableitem.h"
 #include "dbviewitem.h"
@@ -63,7 +63,7 @@ bool DBDatabaseItem::reloadChildren()
   tableFolderItem->setChildrenType(Table);
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
-    QUrl folderUrl = tableFolderItem->objectUrl();
+    AppUrl folderUrl = tableFolderItem->objectUrl();
     DBTableItem* tableItem = createNewTableItem(name, tableFolderItem);
     tableItem->setParentUrl(tableFolderItem->objectUrl());
   }
@@ -115,11 +115,11 @@ bool DBDatabaseItem::reloadChildren()
 }
 
 
-QUrl DBDatabaseItem::objectUrl()
+AppUrl DBDatabaseItem::objectUrl()
 {
-  QUrl url;
-  url.setScheme(driver());
-  url.setHost(fieldValue(F_CAPTION).toString().replace(' ', '_'), QUrl::TolerantMode);
+  AppUrl url;
+  url.setDriver(driver());
+  url.setDatabase(fieldValue(F_CAPTION).toString().replace(' ', '_'));
   return url;
 }
 

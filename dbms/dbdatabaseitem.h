@@ -43,7 +43,7 @@ protected:
   // DBObjectItem interface
 public:
   virtual bool reloadChildren();
-  virtual QUrl objectUrl();
+  virtual AppUrl objectUrl();
   virtual ActionResult insertMe();
   virtual ActionResult updateMe();
   virtual ActionResult deleteMe();

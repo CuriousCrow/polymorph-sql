@@ -5,7 +5,7 @@
 #include <QSqlError>
 #include <QSqlField>
 #include <QMessageBox>
-#include <QUrl>
+#include "dbms/appurl.h"
 #include "tablebrowserwindow.h"
 #include "dbms/dbdatabaseitem.h"
 #include "dbms/dbobjectitem.h"
@@ -122,7 +122,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     //Database disconnection (clear all database items)
     else {
       DataStore::structureModel()->deleteChildren(index);
-      removeTabsByItemUrl(dbItem->objectUrl().url());
+      removeTabsByItemUrl(dbItem->objectUrl().toString());
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
     refreshConnectionList();
@@ -176,7 +176,7 @@ void MainWindow::on_aRemoveDatabase_triggered()
   //TODO: Here should be existance check
   DBObjectItem* itemToRemove = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   if (itemToRemove->type() == DBObjectItem::Database){
-    removeTabsByItemUrl(itemToRemove->objectUrl().url());
+    removeTabsByItemUrl(itemToRemove->objectUrl().toString());
     ActionResult res = itemToRemove->deleteMe();
     if (res.isSuccess()) {
       DataStore::instance()->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(), QModelIndex());
@@ -261,7 +261,7 @@ void MainWindow::dropCurrentDatabaseObject()
   case DBObjectItem::Trigger:
   case DBObjectItem::Sequence:
   case DBObjectItem::Procedure: {
-    removeTabsByItemUrl(itemToRemove->objectUrl().url());
+    removeTabsByItemUrl(itemToRemove->objectUrl().toString());
     ActionResult res = itemToRemove->deleteMe();
     if (res.isSuccess()) {
       DataStore::structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
@@ -476,7 +476,7 @@ void MainWindow::showItemInfoWidget(DBObjectItem *dbItem)
 
 void MainWindow::openTableEditor(DBTableItem *tableItem)
 {
-  QString itemUrl = tableItem->objectUrl().url();
+  QString itemUrl = tableItem->objectUrl().toString();
   QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
   if (!tableWidget){
     tableWidget = new TableBrowserWindow(this, tableItem);

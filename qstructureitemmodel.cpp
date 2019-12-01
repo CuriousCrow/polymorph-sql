@@ -7,7 +7,7 @@
 #include "dbms/POSTGRES/dbpostgresitem.h"
 #include "dbms/appconst.h"
 #include <QDebug>
-#include <QUrl>
+#include "dbms/appurl.h"
 #include "qsqlqueryhelper.h"
 
 QStructureItemModel::QStructureItemModel(QObject *parent, QSqlDatabase db):
@@ -29,7 +29,7 @@ void QStructureItemModel::appendItem(DBObjectItem *item, DBObjectItem *parent)
   if (parent)
     item->setParentUrl(parent->objectUrl());
   else
-    item->setParentUrl(QUrl());
+    item->setParentUrl(AppUrl());
 }
 
 void QStructureItemModel::appendItem(DBObjectItem *item, QModelIndex parent)
@@ -90,7 +90,7 @@ void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int firs
 {
   for (int row=first; row<last; row++){
     DBObjectItem* item = qobject_cast<DBObjectItem*>(itemByIndex(index(row, 0, parent)));
-    emit itemAboutToBeRemoved(item->objectUrl().url());
+    emit itemAboutToBeRemoved(item->objectUrl().toString());
   }
 }
 

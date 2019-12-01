@@ -1,7 +1,7 @@
 #include "dbmysqltableitem.h"
 #include "qsqlqueryhelper.h"
 #include <QDebug>
-#include <QUrl>
+#include "../appurl.h"
 
 DBMysqlTableItem::DBMysqlTableItem(QString caption, QObject *parent)
   : DBTableItem(caption, parent)

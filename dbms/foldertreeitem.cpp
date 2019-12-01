@@ -1,6 +1,6 @@
 #include "foldertreeitem.h"
 #include "dbms/appconst.h"
-#include <QUrl>
+#include "appurl.h"
 #include <QDebug>
 
 FolderTreeItem::FolderTreeItem(QString caption, QObject* parent):

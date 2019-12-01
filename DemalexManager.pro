@@ -19,6 +19,7 @@ SOURCES += main.cpp\
   dbms/POSTGRES/postgrestriggeritem.cpp \
   dbms/POSTGRES/dbpostgreqfunctionitem.cpp \
   dbms/POSTGRES/dbpostgresequence.cpp \
+  dbms/appurl.cpp \
   dbms/dbconstraintitem.cpp \
   dbms/dbforeignkey.cpp \
   forms/addforeignkeyform.cpp \
@@ -79,6 +80,7 @@ HEADERS  += mainwindow.h \
     dbms/POSTGRES/dbpostgreqfunctionitem.h \
     dbms/POSTGRES/dbpostgresequence.h \
     dbms/appconst.h \
+    dbms/appurl.h \
     dbms/dbconstraintitem.h \
     dbms/dbforeignkey.h \
     forms/addforeignkeyform.h \

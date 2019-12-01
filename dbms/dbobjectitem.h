@@ -3,7 +3,7 @@
 
 #include "lstandardtreemodel.h"
 #include <QSqlDatabase>
-#include <QUrl>
+#include "appurl.h"
 
 #define RES_OK_CODE 0
 #define RES_BASE_ERROR 100
@@ -65,12 +65,12 @@ public:
   DBObjectItem(QString caption, QObject* parent = nullptr);
   ~DBObjectItem();
   QString connectionName(){ return _connectionName; }
-  void setParentUrl(const QUrl &url);
+  void setParentUrl(const AppUrl &url);
   QString driverName();
   void deleteChildren();
 
   virtual bool reloadChildren() = 0;
-  virtual QUrl objectUrl();
+  virtual AppUrl objectUrl();
   virtual int type() = 0;
   virtual bool setData(int column, QVariant value, int role);
   virtual bool refresh();
@@ -97,7 +97,7 @@ public:
 protected:
   QString _connectionName;
   bool _editable = true;
-  QUrl _parentUrl;
+  AppUrl _parentUrl;
   QString _driverName;
   QList<DBObjectField> fields;
   int fieldIndex(QString fieldName);

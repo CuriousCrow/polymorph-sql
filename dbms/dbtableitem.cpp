@@ -1,5 +1,5 @@
 #include "dbtableitem.h"
-#include <QUrl>
+#include "appurl.h"
 #include <QIcon>
 #include "qsqlqueryhelper.h"
 #include <QSqlField>

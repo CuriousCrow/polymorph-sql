@@ -1,5 +1,4 @@
 #include "dbobjectitem.h"
-#include <QUrl>
 #include <QDebug>
 
 #include <QMetaProperty>
@@ -18,13 +17,13 @@ DBObjectItem::~DBObjectItem()
 {
 }
 
-void DBObjectItem::setParentUrl(const QUrl &url)
+void DBObjectItem::setParentUrl(const AppUrl &url)
 {
   _parentUrl = url;
-  QUrl newUrl = objectUrl();
-  _connectionName = newUrl.host();
-  _driverName = newUrl.scheme();
-  setObjectName(newUrl.url());
+  AppUrl newUrl = objectUrl();
+  _connectionName = newUrl.connection();
+  _driverName = newUrl.driver();
+  setObjectName(newUrl.toString());
   for (int i=0; i<children().count(); i++){
     qobject_cast<DBObjectItem*>(children().at(i))->setParentUrl(newUrl);
   }
@@ -43,11 +42,11 @@ void DBObjectItem::deleteChildren()
   }
 }
 
-QUrl DBObjectItem::objectUrl()
+AppUrl DBObjectItem::objectUrl()
 {
-  QUrl url = _parentUrl;
-  QString path = url.path() + "/" + fieldValue(F_CAPTION).toString().toLower().replace(" ", "_");
-  url.setPath(path);
+  AppUrl url = _parentUrl;
+  QString caption = fieldValue(F_CAPTION).toString().toLower().replace(" ", "_");
+  url.cd(caption);
   return url;
 }
 

@@ -1,7 +1,7 @@
 #include "tablebrowserwindow.h"
 #include "ui_tablebrowserwindow.h"
 #include <QDebug>
-#include <QUrl>
+#include "dbms/appurl.h"
 #include "dbms/appconst.h"
 
 TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) :
@@ -10,9 +10,9 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
 {
   qDebug() << "Connections:" << QSqlDatabase::connectionNames();
   ui->setupUi(this);
-  QUrl url = tableItem->objectUrl();
-  setObjectName(url.url());
-  _connectionName = url.host();
+  AppUrl url = tableItem->objectUrl();
+  setObjectName(url.toString());
+  _connectionName = url.connection();
   _tableName = tableItem->fieldValue(F_CAPTION).toString();
   _sourceModel = new LSqlTableModel(this, QSqlDatabase::database(_connectionName));
   _sourceModel->setTable(_tableName);
