@@ -20,7 +20,7 @@ AddForeignKeyForm::~AddForeignKeyForm()
 
 void AddForeignKeyForm::objectToForm()
 {
-  QStructureItemModel* structModel = DataStore::instance()->structureModel();
+  QStructureItemModel* structModel = DataStore::structureModel();
   QModelIndex idx = structModel->indexByName("qpsql://ughistory/tables");
   ui->cmbReferenceTable->setModel(structModel);
   ui->cmbReferenceTable->setRootModelIndex(idx);
@@ -58,7 +58,7 @@ void AddForeignKeyForm::on_btnCancel_clicked()
 void AddForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &refTable)
 {
   qDebug() << "Reference table selected:" << refTable;
-  QStructureItemModel* structModel = DataStore::instance()->structureModel();
+  QStructureItemModel* structModel = DataStore::structureModel();
   QString refName = "qpsql://ughistory/tables/" + refTable;
   qDebug() << "Reference name:" << refName;
   QDBTableItem* refObj =

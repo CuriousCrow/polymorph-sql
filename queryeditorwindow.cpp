@@ -22,7 +22,7 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   ui->tvResultSet->setModel(_resultModel);
 
   _activeConnectionModel = new QActiveConnectionModel(this);
-  _activeConnectionModel->setSourceModel(DataStore::instance()->structureModel());
+  _activeConnectionModel->setSourceModel(DataStore::structureModel());
   ui->cmbDatabase->setModel(_activeConnectionModel);
   ui->cmbDatabase->setModelColumn(0);
 
@@ -95,7 +95,7 @@ QDBObjectItem *QueryEditorWindow::dbObject()
   QModelIndex proxyIndex = _activeConnectionModel->index(ui->cmbDatabase->currentIndex(), 0);
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
-  return qobject_cast<QDBObjectItem*>(DataStore::instance()->structureModel()->itemByIndex(sourceIndex));
+  return qobject_cast<QDBObjectItem*>(DataStore::structureModel()->itemByIndex(sourceIndex));
 }
 
 void QueryEditorWindow::on_aCommit_triggered()

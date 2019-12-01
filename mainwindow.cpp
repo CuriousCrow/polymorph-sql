@@ -89,7 +89,7 @@ void MainWindow::on_aAddDatabase_triggered()
   QDBDatabaseItem* newItem = new QDBDatabaseItem(DEF_DATABASE_NAME);
   ActionResult res = newItem->insertMe();
   if (res.isSuccess()){
-    DataStore::instance()->structureModel()->appendItem(newItem);
+    DataStore::structureModel()->appendItem(newItem);
     _connectionEditDialog->mapper()->toLast();
     _connectionEditDialog->show();
   }
@@ -121,7 +121,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     }
     //Database disconnection (clear all database items)
     else {
-      DataStore::instance()->structureModel()->deleteChildren(index);
+      DataStore::structureModel()->deleteChildren(index);
       removeTabsByItemUrl(dbItem->objectUrl().url());
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
@@ -150,7 +150,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
 void MainWindow::on_tvDatabaseStructure_clicked(const QModelIndex &index)
 {
   _connectionEditDialog->onDatabaseIndexChanged(index);
-  qDebug() << "Obj url:" << DataStore::instance()->structureModel()->itemByIndex(index)->objectName();
+  qDebug() << "Obj url:" << DataStore::structureModel()->itemByIndex(index)->objectName();
 }
 
 void MainWindow::removeTabByIndex(int index)
@@ -264,7 +264,7 @@ void MainWindow::dropCurrentDatabaseObject()
     removeTabsByItemUrl(itemToRemove->objectUrl().url());
     ActionResult res = itemToRemove->deleteMe();
     if (res.isSuccess()) {
-      DataStore::instance()->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
+      DataStore::structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                                  ui->tvDatabaseStructure->currentIndex().parent());
       refreshQueryEditorAssistance();
     }
@@ -282,17 +282,16 @@ void MainWindow::dropCurrentDatabaseObject()
 void MainWindow::reloadItemChildren()
 {
   QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
-  DataStore::instance()->structureModel()->deleteChildren(curIdx);
+  DataStore::structureModel()->deleteChildren(curIdx);
   QFolderTreeItem* folderItem = qobject_cast<QFolderTreeItem*>(itemByIndex(curIdx));
   folderItem->reloadChildren();
-  DataStore::instance()->structureModel()->dataChanged(curIdx, curIdx);
+  DataStore::structureModel()->dataChanged(curIdx, curIdx);
 }
 
 void MainWindow::updateStructureContextMenu()
 {
   QDBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   _editAction->setText(item->isEditable() ? tr("Edit object") : tr("View object"));
-  _reloadAction->setVisible(item->type() == QDBObjectItem::Folder);
 }
 
 void MainWindow::showCreateItemEditor()
@@ -364,7 +363,7 @@ void MainWindow::saveTableChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     QDBObjectItem* newItem = editForm->objItem();
-    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
+    DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
   else if (action == AbstractDatabaseEditForm::Edit) {
@@ -382,7 +381,7 @@ void MainWindow::saveViewChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     QDBObjectItem* newItem = editForm->objItem();
-    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
+    DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
   else {
@@ -397,7 +396,7 @@ void MainWindow::saveSequenceChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     QDBObjectItem* newItem = editForm->objItem();
-    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
+    DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
   else if (action == AbstractDatabaseEditForm::Edit) {
@@ -412,7 +411,7 @@ void MainWindow::saveProcedureChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     QDBObjectItem* newItem = editForm->objItem();
-    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
+    DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
   else if (action == AbstractDatabaseEditForm::Edit) {
@@ -427,7 +426,7 @@ void MainWindow::saveTriggerChanges()
   if (action == AbstractDatabaseEditForm::Create) {
     QDBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
     QDBObjectItem* newItem = editForm->objItem();
-    DataStore::instance()->structureModel()->appendItem(newItem, folderItem);
+    DataStore::structureModel()->appendItem(newItem, folderItem);
     refreshQueryEditorAssistance();
   }
   else if (action == AbstractDatabaseEditForm::Edit) {
@@ -437,12 +436,12 @@ void MainWindow::saveTriggerChanges()
 
 QDBObjectItem *MainWindow::itemByIndex(QModelIndex index)
 {
-  return qobject_cast<QDBObjectItem*>(DataStore::instance()->structureModel()->itemByIndex(index));
+  return qobject_cast<QDBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
 }
 
 QDBObjectItem *MainWindow::itemByName(QString name)
 {
-  return qobject_cast<QDBObjectItem*>(DataStore::instance()->structureModel()->itemByName(name));
+  return qobject_cast<QDBObjectItem*>(DataStore::structureModel()->itemByName(name));
 }
 
 void MainWindow::refreshConnectionList()

@@ -36,5 +36,5 @@ DataStore *DataStore::instance(QObject* parent)
 
 QStructureItemModel *DataStore::structureModel()
 {
-  return _structureModel;
+  return instance()->_structureModel;
 }

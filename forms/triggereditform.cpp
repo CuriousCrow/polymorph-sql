@@ -20,7 +20,7 @@ TriggerEditForm::~TriggerEditForm()
 
 void TriggerEditForm::objectToForm()
 {
-  QStructureItemModel* structModel = DataStore::instance()->structureModel();
+  QStructureItemModel* structModel = DataStore::structureModel();
   QModelIndex idx = structModel->indexByName("qpsql://schoolug/tables");
   ui->cmbTargetTable->setModel(structModel);
   ui->cmbTargetTable->setRootModelIndex(idx);

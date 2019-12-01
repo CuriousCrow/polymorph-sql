@@ -10,7 +10,7 @@ class DataStore : public QObject
   Q_OBJECT
 public:
   static DataStore* instance(QObject* parent = nullptr);
-  QStructureItemModel* structureModel();
+  static QStructureItemModel* structureModel();
 signals:
 
 public slots:
