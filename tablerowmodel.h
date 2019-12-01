@@ -2,15 +2,15 @@
 #define TABLEROWMODEL_H
 
 #include <QAbstractTableModel>
-#include "dbms/qdbobjectitem.h"
+#include "dbms/dbobjectitem.h"
 #include <QSqlRecord>
 
 
-class QDBFieldItem : public DBObjectItem
+class DBFieldItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  QDBFieldItem(QString caption, QObject* parent = nullptr);
+  DBFieldItem(QString caption, QObject* parent = nullptr);
 };
 
 class TableRowModel : public QAbstractTableModel

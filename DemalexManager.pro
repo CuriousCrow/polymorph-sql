@@ -17,10 +17,10 @@ SOURCES += main.cpp\
   core/datastore.cpp \
   core/localeventnotifier.cpp \
   dbms/POSTGRES/postgrestriggeritem.cpp \
-  dbms/POSTGRES/qdbpostgreqfunctionitem.cpp \
-  dbms/POSTGRES/qdbpostgresequence.cpp \
-  dbms/qdbconstraintitem.cpp \
-  dbms/qdbforeignkey.cpp \
+  dbms/POSTGRES/dbpostgreqfunctionitem.cpp \
+  dbms/POSTGRES/dbpostgresequence.cpp \
+  dbms/dbconstraintitem.cpp \
+  dbms/dbforeignkey.cpp \
   forms/addforeignkeyform.cpp \
   forms/procedureeditform.cpp \
   forms/sequenceeditform.cpp \
@@ -31,14 +31,14 @@ SOURCES += main.cpp\
     tablebrowserwindow.cpp \
     lsqltablemodel.cpp \
     qstructureitemmodel.cpp \
-    dbms/qdbobjectitem.cpp \
-    dbms/qdbdatabaseitem.cpp \
-    dbms/qdbtableitem.cpp \
-    dbms/qdbsequenceitem.cpp \
-    dbms/qdbtriggeritem.cpp \
-    dbms/qdbprocedureitem.cpp \
-    dbms/qdbviewitem.cpp \
-    dbms/qfoldertreeitem.cpp \
+    dbms/dbobjectitem.cpp \
+    dbms/dbdatabaseitem.cpp \
+    dbms/dbtableitem.cpp \
+    dbms/dbsequenceitem.cpp \
+    dbms/dbtriggeritem.cpp \
+    dbms/dbprocedureitem.cpp \
+    dbms/dbviewitem.cpp \
+    dbms/foldertreeitem.cpp \
     queryeditorwindow.cpp \
     lstandardtreemodel.cpp \
     ldatawidgetmapper.cpp \
@@ -48,7 +48,7 @@ SOURCES += main.cpp\
     ltextcompleter.cpp \
     forms/vieweditdialog.cpp \
     qknowledgebase.cpp \
-    dbms/FIREBIRD/qdbfirebirditem.cpp \
+    dbms/FIREBIRD/dbfirebirditem.cpp \
     ldbobjectmodel.cpp \
     lqueryeditor.cpp \
     core/maphelplookupprovider.cpp \
@@ -61,26 +61,26 @@ SOURCES += main.cpp\
     models/comboboxitemdelegate.cpp \
     models/lcachedtablemodel.cpp \
     core/appsettings.cpp \
-    dbms\SQLITE\qdbsqliteitem.cpp \
-    dbms\SQLITE\qdbsqlitetableitem.cpp \
+    dbms\SQLITE\dbsqliteitem.cpp \
+    dbms\SQLITE\dbsqlitetableitem.cpp \
     models/sqlcolumnmodel.cpp \
     comboboxhashdelegate.cpp \
-    dbms\MYSQL\qdbmysqltableitem.cpp \
-    dbms\MYSQL\qdbmysqlitem.cpp \
-    dbms/POSTGRES/qdbpostgresitem.cpp \
-    dbms/POSTGRES/qdbpostgrestableitem.cpp \
-    dbms/FIREBIRD/qdbfirebirdtableitem.cpp
+    dbms\MYSQL\dbmysqltableitem.cpp \
+    dbms\MYSQL\dbmysqlitem.cpp \
+    dbms/POSTGRES/dbpostgresitem.cpp \
+    dbms/POSTGRES/dbpostgrestableitem.cpp \
+    dbms/FIREBIRD/dbfirebirdtableitem.cpp
 
 HEADERS  += mainwindow.h \
     connectioneditdialog.h \
     core/datastore.h \
     core/localeventnotifier.h \
     dbms/POSTGRES/postgrestriggeritem.h \
-    dbms/POSTGRES/qdbpostgreqfunctionitem.h \
-    dbms/POSTGRES/qdbpostgresequence.h \
+    dbms/POSTGRES/dbpostgreqfunctionitem.h \
+    dbms/POSTGRES/dbpostgresequence.h \
     dbms/appconst.h \
-    dbms/qdbconstraintitem.h \
-    dbms/qdbforeignkey.h \
+    dbms/dbconstraintitem.h \
+    dbms/dbforeignkey.h \
     forms/addforeignkeyform.h \
     forms/procedureeditform.h \
     forms/sequenceeditform.h \
@@ -89,14 +89,14 @@ HEADERS  += mainwindow.h \
     tablebrowserwindow.h \
     lsqltablemodel.h \
     qstructureitemmodel.h \
-    dbms/qdbobjectitem.h \
-    dbms/qdbdatabaseitem.h \
-    dbms/qdbtableitem.h \
-    dbms/qdbsequenceitem.h \
-    dbms/qdbtriggeritem.h \
-    dbms/qdbprocedureitem.h \
-    dbms/qdbviewitem.h \
-    dbms/qfoldertreeitem.h \
+    dbms/dbobjectitem.h \
+    dbms/dbdatabaseitem.h \
+    dbms/dbtableitem.h \
+    dbms/dbsequenceitem.h \
+    dbms/dbtriggeritem.h \
+    dbms/dbprocedureitem.h \
+    dbms/dbviewitem.h \
+    dbms/foldertreeitem.h \
     queryeditorwindow.h \
     lstandardtreemodel.h \
     ldatawidgetmapper.h \
@@ -106,7 +106,7 @@ HEADERS  += mainwindow.h \
     ltextcompleter.h \
     forms/vieweditdialog.h \
     qknowledgebase.h \
-    dbms/FIREBIRD/qdbfirebirditem.h \
+    dbms/FIREBIRD/dbfirebirditem.h \
     ldbobjectmodel.h \
     lqueryeditor.h \
     core/maphelplookupprovider.h \
@@ -119,15 +119,15 @@ HEADERS  += mainwindow.h \
     models/comboboxitemdelegate.h \
     models/lcachedtablemodel.h \
     core/appsettings.h \
-    dbms\SQLITE\qdbsqliteitem.h \
-    dbms\SQLITE\qdbsqlitetableitem.h \
+    dbms\SQLITE\dbsqliteitem.h \
+    dbms\SQLITE\dbsqlitetableitem.h \
     models/sqlcolumnmodel.h \
     comboboxhashdelegate.h \
-    dbms\MYSQL\qdbmysqltableitem.h \
-    dbms\MYSQL\qdbmysqlitem.h \
-    dbms/POSTGRES/qdbpostgresitem.h \
-    dbms/POSTGRES/qdbpostgrestableitem.h \
-    dbms/FIREBIRD/qdbfirebirdtableitem.h
+    dbms\MYSQL\dbmysqltableitem.h \
+    dbms\MYSQL\dbmysqlitem.h \
+    dbms/POSTGRES/dbpostgresitem.h \
+    dbms/POSTGRES/dbpostgrestableitem.h \
+    dbms/FIREBIRD/dbfirebirdtableitem.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

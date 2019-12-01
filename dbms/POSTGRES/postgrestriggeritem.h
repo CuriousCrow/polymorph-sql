@@ -2,7 +2,7 @@
 #define POSTGRESTRIGGERITEM_H
 
 #include <QObject>
-#include "../qdbtriggeritem.h"
+#include "../dbtriggeritem.h"
 
 class PostgresTriggerItem : public DBTriggerItem
 {
@@ -10,7 +10,7 @@ class PostgresTriggerItem : public DBTriggerItem
 public:
   PostgresTriggerItem(QString caption, QObject* parent = nullptr);
 
-  // QDBObjectItem interface
+  // DBObjectItem interface
 public:
   virtual bool refresh() override;
   virtual ActionResult insertMe() override;

@@ -1,10 +1,10 @@
 #include "qstructureitemmodel.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "dbms/FIREBIRD/qdbfirebirditem.h"
-#include "dbms/SQLITE/qdbsqliteitem.h"
-#include "dbms/MYSQL/qdbmysqlitem.h"
-#include "dbms/POSTGRES/qdbpostgresitem.h"
+#include "dbms/FIREBIRD/dbfirebirditem.h"
+#include "dbms/SQLITE/dbsqliteitem.h"
+#include "dbms/MYSQL/dbmysqlitem.h"
+#include "dbms/POSTGRES/dbpostgresitem.h"
 #include "dbms/appconst.h"
 #include <QDebug>
 #include <QUrl>

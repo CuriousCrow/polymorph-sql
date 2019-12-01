@@ -7,9 +7,9 @@
 #include <QMessageBox>
 #include <QUrl>
 #include "tablebrowserwindow.h"
-#include "dbms/qdbdatabaseitem.h"
-#include "dbms/qdbobjectitem.h"
-#include "dbms/qfoldertreeitem.h"
+#include "dbms/dbdatabaseitem.h"
+#include "dbms/dbobjectitem.h"
+#include "dbms/foldertreeitem.h"
 #include "qknowledgebase.h"
 #include "core/appsettings.h"
 #include "core/datastore.h"

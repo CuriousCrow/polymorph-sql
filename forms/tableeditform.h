@@ -5,7 +5,7 @@
 #include <QMenu>
 #include "abstractdatabaseitemform.h"
 #include "../tablerowmodel.h"
-#include "../dbms/qdbtableitem.h"
+#include "../dbms/dbtableitem.h"
 #include "comboboxhashdelegate.h"
 #include "addforeignkeyform.h"
 

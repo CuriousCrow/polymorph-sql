@@ -14,7 +14,7 @@
 #include "forms/procedureeditform.h"
 #include "forms/vieweditdialog.h"
 #include "forms/triggereditform.h"
-#include "dbms/qdbtableitem.h"
+#include "dbms/dbtableitem.h"
 #include "core/localeventnotifier.h"
 
 namespace Ui {
