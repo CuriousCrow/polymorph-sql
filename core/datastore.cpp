@@ -38,3 +38,19 @@ QStructureItemModel *DataStore::structureModel()
 {
   return instance()->_structureModel;
 }
+
+QModelIndex DataStore::itemIdx(DBObjectItem *fromItem, QString folder, QString name)
+{
+  AppUrl folderUrl = fromItem->objectUrl().folderUrl(folder);
+  if (!name.isEmpty())
+    folderUrl.cd(name);
+  return structureModel()->indexByUrl(folderUrl);
+}
+
+DBObjectItem *DataStore::itemByFolderAndName(DBObjectItem *fromItem, QString folder, QString name)
+{
+  AppUrl folderUrl = fromItem->objectUrl().folderUrl(folder);
+  if (!name.isEmpty())
+    folderUrl.cd(name);
+  return structureModel()->itemByUrl(folderUrl);
+}

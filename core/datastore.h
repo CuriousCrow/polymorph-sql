@@ -11,6 +11,8 @@ class DataStore : public QObject
 public:
   static DataStore* instance(QObject* parent = nullptr);
   static QStructureItemModel* structureModel();
+  static QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
+  static DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
 signals:
 
 public slots:

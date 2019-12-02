@@ -20,16 +20,11 @@ TriggerEditForm::~TriggerEditForm()
 
 void TriggerEditForm::objectToForm()
 {
-  QStructureItemModel* structModel = DataStore::structureModel();
-  AppUrl tablesUrl = _objItem->objectUrl().folderUrl(FOLDER_TABLES);
-  QModelIndex idx = structModel->indexByUrl(tablesUrl);
-  ui->cmbTargetTable->setModel(structModel);
-  ui->cmbTargetTable->setRootModelIndex(idx);
+  ui->cmbTargetTable->setModel(DataStore::structureModel());
+  ui->cmbTargetTable->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_TABLES));
 
-  AppUrl proceduresUrl = _objItem->objectUrl().folderUrl(FOLDER_PROCEDURES);
-  idx = structModel->indexByUrl(proceduresUrl);
-  ui->cmbFunction->setModel(structModel);
-  ui->cmbFunction->setRootModelIndex(idx);
+  ui->cmbFunction->setModel(DataStore::structureModel());
+  ui->cmbFunction->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_PROCEDURES));
 
   ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
   ui->cmbBeforeAfter->setCurrentText(_objItem->fieldValue(F_TIMING).toString());

@@ -20,16 +20,11 @@ AddForeignKeyForm::~AddForeignKeyForm()
 
 void AddForeignKeyForm::objectToForm()
 {
-  QStructureItemModel* structModel = DataStore::structureModel();
-  AppUrl tablesUrl = _objItem->objectUrl().folderUrl(FOLDER_TABLES);
-  qDebug() << "Tables url:" << tablesUrl.toString();
-  QModelIndex idx = structModel->indexByUrl(tablesUrl);
-  ui->cmbReferenceTable->setModel(structModel);
-  ui->cmbReferenceTable->setRootModelIndex(idx);
+  ui->cmbReferenceTable->setModel(DataStore::structureModel());
+  ui->cmbReferenceTable->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_TABLES));
 
-  AppUrl targetTableUrl = AppUrl(tablesUrl).cd(_objItem->fieldValue(F_TABLE).toString());
-  qDebug() << "Target table url:" << targetTableUrl.toString();
-  DBTableItem* targetObj = qobject_cast<DBTableItem*>(structModel->itemByUrl(targetTableUrl));
+  DBTableItem* targetObj =
+      qobject_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));
   ui->cmbTargetColumn->setModel(targetObj->columnsModel());
   ui->cmbTargetColumn->setModelColumn(1);
 
@@ -61,14 +56,10 @@ void AddForeignKeyForm::on_btnCancel_clicked()
 
 void AddForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &refTable)
 {
-  qDebug() << "Reference table selected:" << refTable;
-  QStructureItemModel* structModel = DataStore::structureModel();
-  AppUrl refTableUrl = _objItem->objectUrl().folderUrl(FOLDER_TABLES).cd(refTable);
-  qDebug() << "Reference table url:" << refTableUrl.toString();
   DBTableItem* refObj =
-      qobject_cast<DBTableItem*>(structModel->itemByUrl(refTableUrl));
+      qobject_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, refTable));
   if (refObj) {
-    qDebug() << "Reference table found:" << refTableUrl.toString();
+    qDebug() << "Reference table found";
     refObj->reloadColumnsModel();
     ui->cmbReferenceColumn->setModel(refObj->columnsModel());
     ui->cmbReferenceColumn->setModelColumn(1);
