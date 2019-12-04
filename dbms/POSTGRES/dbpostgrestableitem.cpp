@@ -143,9 +143,9 @@ void DBPostgresTableItem::reloadConstraintsModel()
   _constraintsModel->clear();
   QString sql =
       "select c2.constraint_name \"name\", c2.constraint_type \"type\"\n"
-      "from information_schema.key_column_usage c1\n"
-      "left join INFORMATION_SCHEMA.table_constraints c2 on c1.constraint_name=c2.constraint_name\n"
-      "where c1.table_name='#caption#'";
+      "from INFORMATION_SCHEMA.table_constraints c2\n"
+      "left join information_schema.key_column_usage c1 on c2.constraint_name=c1.constraint_name\n"
+      "where c2.table_name='#caption#' and c2.constraint_name not like '%_not_null'\n";
   QString preparedSql = fillPatternWithFields(sql);
   QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
   int fakeId = 1;

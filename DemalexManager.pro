@@ -20,12 +20,16 @@ SOURCES += main.cpp\
   dbms/POSTGRES/dbpostgreqfunctionitem.cpp \
   dbms/POSTGRES/dbpostgresequence.cpp \
   dbms/appurl.cpp \
+  dbms/dbcheckconstraint.cpp \
   dbms/dbconstraintitem.cpp \
   dbms/dbforeignkey.cpp \
+  dbms/dbuniqueconstraint.cpp \
   forms/addforeignkeyform.cpp \
+  forms/checkconstrainteditform.cpp \
   forms/procedureeditform.cpp \
   forms/sequenceeditform.cpp \
   forms/triggereditform.cpp \
+  forms/uniqueconstrainteditform.cpp \
         mainwindow.cpp \
     connectioneditdialog.cpp \
   models/variantmaptablemodel.cpp \
@@ -81,12 +85,16 @@ HEADERS  += mainwindow.h \
     dbms/POSTGRES/dbpostgresequence.h \
     dbms/appconst.h \
     dbms/appurl.h \
+    dbms/dbcheckconstraint.h \
     dbms/dbconstraintitem.h \
     dbms/dbforeignkey.h \
+    dbms/dbuniqueconstraint.h \
     forms/addforeignkeyform.h \
+    forms/checkconstrainteditform.h \
     forms/procedureeditform.h \
     forms/sequenceeditform.h \
     forms/triggereditform.h \
+    forms/uniqueconstrainteditform.h \
     models/variantmaptablemodel.h \
     tablebrowserwindow.h \
     lsqltablemodel.h \
@@ -134,9 +142,11 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \
     forms/addforeignkeyform.ui \
+    forms/checkconstrainteditform.ui \
     forms/procedureeditform.ui \
     forms/sequenceeditform.ui \
     forms/triggereditform.ui \
+    forms/uniqueconstrainteditform.ui \
     tablebrowserwindow.ui \
     queryeditorwindow.ui \
     forms/vieweditdialog.ui \

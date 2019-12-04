@@ -20,6 +20,7 @@
 #define F_LANGUAGE "language"
 #define F_RETURN_TYPE "returnType"
 #define F_DBMS "dbms"
+#define F_EXPRESSION "expression"
 
 #define F_EVENT_INSERT "eventInsert"
 #define F_EVENT_UPDATE "eventUpdate"

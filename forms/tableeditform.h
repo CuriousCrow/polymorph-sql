@@ -7,7 +7,6 @@
 #include "../tablerowmodel.h"
 #include "../dbms/dbtableitem.h"
 #include "comboboxhashdelegate.h"
-#include "addforeignkeyform.h"
 
 namespace Ui {
 class TableEditForm;
@@ -38,8 +37,10 @@ private slots:
   void onShowUniqueConstraintEditor();
   void onShowCheckConstraintEditor();
 
-  void onNewForeignKeySuccess();
-  void onNewForeignKeyCanceled();
+  void onNewConstraintApply();
+  void onNewConstraintCancel();
+  void on_tvConstraints_doubleClicked(const QModelIndex &index);
+
 private:
   ComboboxHashDelegate* _colTypeDelegate;
   QMenu* _menuAddConstraint;

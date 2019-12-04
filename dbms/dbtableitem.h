@@ -5,6 +5,8 @@
 #include "models/sqlcolumnmodel.h"
 #include "models/variantmaptablemodel.h"
 #include "dbforeignkey.h"
+#include "dbuniqueconstraint.h"
+#include "dbcheckconstraint.h"
 
 class DBTableItem : public DBObjectItem
 {
@@ -19,6 +21,8 @@ public:
   QAbstractTableModel* constraintsModel();
 
   virtual DBForeignKey* newForeignKey();
+  virtual DBUniqueConstraint* newUniqueConstraint();
+  virtual DBCheckConstraint* newCheckConstraint();
 
   int colTypeFromString(QString name);
   void addDefaultColumn();

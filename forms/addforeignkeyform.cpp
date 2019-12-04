@@ -46,7 +46,6 @@ void AddForeignKeyForm::formToObject()
 void AddForeignKeyForm::on_btnApply_clicked()
 {
   tryUserAction();
-  accept();
 }
 
 void AddForeignKeyForm::on_btnCancel_clicked()

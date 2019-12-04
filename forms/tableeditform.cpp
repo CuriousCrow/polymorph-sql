@@ -3,7 +3,11 @@
 #include <QMessageBox>
 #include <QDebug>
 #include "../dbms/appconst.h"
+#include "../dbms/dbuniqueconstraint.h"
 #include "../qknowledgebase.h"
+#include "addforeignkeyform.h"
+#include "uniqueconstrainteditform.h"
+#include "checkconstrainteditform.h"
 
 
 TableEditForm::TableEditForm(QWidget *parent) :
@@ -108,30 +112,76 @@ void TableEditForm::onShowForeignKeyEditor()
   foreignKeyForm->setObjItem(newFkObj);
   foreignKeyForm->objectToForm();
   connect(foreignKeyForm, &AddForeignKeyForm::accepted,
-          this, &TableEditForm::onNewForeignKeySuccess);
+          this, &TableEditForm::onNewConstraintApply);
   connect(foreignKeyForm, &AddForeignKeyForm::rejected,
-          this, &TableEditForm::onNewForeignKeyCanceled);
+          this, &TableEditForm::onNewConstraintCancel);
   foreignKeyForm->show();
 }
 
 void TableEditForm::onShowUniqueConstraintEditor()
 {
   qDebug() << "Show unique constraint editor";
+  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  UniqueConstraintEditForm* uniqueKeyForm = new UniqueConstraintEditForm(this);
+  uniqueKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
+  DBUniqueConstraint* newFkObj = tableItem->newUniqueConstraint();
+  newFkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  newFkObj->setParentUrl(tableItem->objectUrl());
+  uniqueKeyForm->setObjItem(newFkObj);
+  uniqueKeyForm->objectToForm();
+  connect(uniqueKeyForm, &AddForeignKeyForm::accepted,
+          this, &TableEditForm::onNewConstraintApply);
+  connect(uniqueKeyForm, &AddForeignKeyForm::rejected,
+          this, &TableEditForm::onNewConstraintCancel);
+  uniqueKeyForm->show();
 }
 
 void TableEditForm::onShowCheckConstraintEditor()
 {
   qDebug() << "Show check constraint editor";
+  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  CheckConstraintEditForm* checkConstraintForm = new CheckConstraintEditForm(this);
+  checkConstraintForm->setUserAction(AbstractDatabaseEditForm::Create);
+  DBCheckConstraint* newCheckObj = tableItem->newCheckConstraint();
+  newCheckObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  newCheckObj->setParentUrl(tableItem->objectUrl());
+  checkConstraintForm->setObjItem(newCheckObj);
+  checkConstraintForm->objectToForm();
+  connect(checkConstraintForm, &AddForeignKeyForm::accepted,
+          this, &TableEditForm::onNewConstraintApply);
+  connect(checkConstraintForm, &AddForeignKeyForm::rejected,
+          this, &TableEditForm::onNewConstraintCancel);
+  checkConstraintForm->show();
 }
 
-void TableEditForm::onNewForeignKeySuccess()
+void TableEditForm::onNewConstraintApply()
 {
   DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
   sender()->deleteLater();
   tableItem->reloadConstraintsModel();
 }
 
-void TableEditForm::onNewForeignKeyCanceled()
+void TableEditForm::onNewConstraintCancel()
 {
   sender()->deleteLater();
+}
+
+void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
+{
+  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  CheckConstraintEditForm* checkConstraintForm = new CheckConstraintEditForm(this);
+  checkConstraintForm->setUserAction(AbstractDatabaseEditForm::Edit);
+  DBCheckConstraint* checkObj = tableItem->newCheckConstraint();
+  checkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  checkObj->setFieldValue(F_CAPTION, index.data().toString());
+  checkObj->setParentUrl(tableItem->objectUrl());
+  checkObj->refresh();
+
+  checkConstraintForm->setObjItem(checkObj);
+  checkConstraintForm->objectToForm();
+  connect(checkConstraintForm, &AddForeignKeyForm::accepted,
+          this, &TableEditForm::onNewConstraintApply);
+  connect(checkConstraintForm, &AddForeignKeyForm::rejected,
+          this, &TableEditForm::onNewConstraintCancel);
+  checkConstraintForm->show();
 }

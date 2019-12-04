@@ -42,6 +42,16 @@ DBForeignKey *DBTableItem::newForeignKey()
   return new DBForeignKey("fk_" + fieldValue(F_CAPTION).toString());
 }
 
+DBUniqueConstraint *DBTableItem::newUniqueConstraint()
+{
+  return new DBUniqueConstraint("uq_" + fieldValue(F_CAPTION).toString());
+}
+
+DBCheckConstraint *DBTableItem::newCheckConstraint()
+{
+  return new DBCheckConstraint("chk_" + fieldValue(F_CAPTION).toString());
+}
+
 int DBTableItem::colTypeFromString(QString name)
 {
 //  qDebug() << "ColTypeFromString:" << name.toUpper();
