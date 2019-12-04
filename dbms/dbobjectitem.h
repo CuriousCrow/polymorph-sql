@@ -108,7 +108,7 @@ protected:
   QString fillPatternWithFields(QString pattern);
   QString fillWithModifiedFields(QString pattern);
   QString filterUnmodifiedFields(QString pattern);
-  ActionResult execSql(QString sql, QString connectionName = "");
+  ActionResult execSql(QString sql, QString connectionName = QSqlDatabase::defaultConnection);
 
   // LAbstractTreeItem interface
 public:
