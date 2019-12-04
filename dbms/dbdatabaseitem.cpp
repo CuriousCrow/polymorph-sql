@@ -61,12 +61,9 @@ bool DBDatabaseItem::reloadChildren()
   tableFolderItem->setParentUrl(this->objectUrl());
 
   tableFolderItem->setChildrenType(Table);
-  QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
-  foreach (QString name, tableNames){
-    AppUrl folderUrl = tableFolderItem->objectUrl();
-    DBTableItem* tableItem = createNewTableItem(name, tableFolderItem);
-    tableItem->setParentUrl(tableFolderItem->objectUrl());
-  }
+  connect(tableFolderItem, SIGNAL(reloadMe()),
+          this, SLOT(onFolderRequestReload()));
+  loadTableItems(tableFolderItem);
 
   //Creating views items
   FolderTreeItem* viewFolderItem = new FolderTreeItem(tr("Views"), this);
@@ -148,6 +145,7 @@ ActionResult DBDatabaseItem::updateMe()
 
 ActionResult DBDatabaseItem::deleteMe()
 {
+  qDebug() << "Connections:" << QSqlDatabase::connectionNames();
   QString sql = "delete from t_database where id=#id#";
   return execSql(fillSqlPattern(sql));
 }
@@ -172,6 +170,9 @@ void DBDatabaseItem::onFolderRequestReload()
   FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(sender());
   qDebug() << "Folder" << folderItem->fieldValue(F_CAPTION).toString() << "reload request";
   switch (folderItem->childrenType()) {
+  case DBObjectItem::Table:
+    loadTableItems(folderItem);
+    break;
   case DBObjectItem::View:
     loadViewItems(folderItem);
     break;
@@ -186,6 +187,16 @@ void DBDatabaseItem::onFolderRequestReload()
     break;
   default:
     break;
+  }
+}
+
+void DBDatabaseItem::loadTableItems(DBObjectItem *parentItem)
+{
+  QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
+  foreach (QString name, tableNames){
+    AppUrl folderUrl = parentItem->objectUrl();
+    DBTableItem* tableItem = createNewTableItem(name, parentItem);
+    tableItem->setParentUrl(parentItem->objectUrl());
   }
 }
 

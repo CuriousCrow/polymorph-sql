@@ -28,6 +28,7 @@ public:
   virtual DBSequenceItem* createNewSequenceItem(QString caption, QObject* parent = nullptr);
   virtual DBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = nullptr);
 protected:
+  virtual void loadTableItems(DBObjectItem* parentItem);
   virtual void loadViewItems(DBObjectItem* parentItem);
   virtual void loadSequenceItems(DBObjectItem* parentItem);
   virtual void loadTriggerItems(DBObjectItem* parentItem);
