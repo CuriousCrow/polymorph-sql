@@ -17,7 +17,7 @@ public:
   virtual void reloadColumnsModel();
   virtual void reloadConstraintsModel();
 
-  QAbstractTableModel* columnsModel();
+  SqlColumnModel* columnsModel();
   QAbstractTableModel* constraintsModel();
 
   virtual DBForeignKey* newForeignKey();

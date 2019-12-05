@@ -8,6 +8,8 @@ UniqueConstraintEditForm::UniqueConstraintEditForm(QWidget *parent) :
   ui(new Ui::UniqueConstraintEditForm)
 {
   ui->setupUi(this);
+  connect(this, &UniqueConstraintEditForm::userActionChanged,
+          this, &UniqueConstraintEditForm::onUserActionChanged);
 }
 
 UniqueConstraintEditForm::~UniqueConstraintEditForm()
@@ -22,8 +24,16 @@ void UniqueConstraintEditForm::objectToForm()
 
   DBTableItem* targetObj =
       qobject_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));
-  ui->lvColumns->setModel(targetObj->columnsModel());
+  SqlColumnModel* colModel = targetObj->columnsModel();
+  ui->lvColumns->setModel(colModel);
   ui->lvColumns->setModelColumn(1);
+
+
+  QStringList columns = _objItem->fieldValue(F_COLUMN).toString().split(",");
+  foreach(QString colName, columns) {
+    int row = colModel->rowByName(colName);
+    ui->lvColumns->selectionModel()->select(colModel->index(row, 1), QItemSelectionModel::Select);
+  }
 }
 
 void UniqueConstraintEditForm::formToObject()
@@ -44,4 +54,12 @@ void UniqueConstraintEditForm::on_btnApply_clicked()
 void UniqueConstraintEditForm::on_btnCancel_clicked()
 {
   reject();
+}
+
+void UniqueConstraintEditForm::onUserActionChanged()
+{
+  ui->edtName->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+  ui->lvColumns->setSelectionMode(userAction() == AbstractDatabaseEditForm::Create ?
+                                    QAbstractItemView::MultiSelection : QAbstractItemView::NoSelection);
+  ui->btnApply->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
 }

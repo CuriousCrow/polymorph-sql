@@ -14,6 +14,7 @@ public:
 public:
   virtual int type() override;
   virtual ActionResult insertMe() override;
+  virtual bool refresh() override;
 };
 
 #endif // DBUNIQUECONSTRAINT_H

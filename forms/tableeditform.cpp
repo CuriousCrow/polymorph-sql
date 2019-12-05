@@ -169,19 +169,38 @@ void TableEditForm::onNewConstraintCancel()
 void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
 {
   DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
-  CheckConstraintEditForm* checkConstraintForm = new CheckConstraintEditForm(this);
-  checkConstraintForm->setUserAction(AbstractDatabaseEditForm::Edit);
-  DBCheckConstraint* checkObj = tableItem->newCheckConstraint();
-  checkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
-  checkObj->setFieldValue(F_CAPTION, index.data().toString());
-  checkObj->setParentUrl(tableItem->objectUrl());
-  checkObj->refresh();
 
-  checkConstraintForm->setObjItem(checkObj);
-  checkConstraintForm->objectToForm();
-  connect(checkConstraintForm, &AddForeignKeyForm::accepted,
+  QAbstractTableModel* model = tableItem->constraintsModel();
+  QString constType = model->index(index.row(), 0).data().toString();
+  AbstractDatabaseEditForm* form;
+  DBObjectItem* obj;
+  if (constType == "FOREIGN KEY") {
+    form = new AddForeignKeyForm(this);
+    obj = tableItem->newForeignKey();
+  }
+  else if (constType == "UNIQUE") {
+    form = new UniqueConstraintEditForm(this);
+    obj = tableItem->newUniqueConstraint();
+  }
+  else if (constType == "CHECK") {
+    form = new CheckConstraintEditForm(this);
+    obj = tableItem->newCheckConstraint();
+  }
+  else {
+    return;
+  }
+  QString constName = model->index(index.row(), 1).data().toString();
+  form->setUserAction(AbstractDatabaseEditForm::Edit);
+  obj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  obj->setFieldValue(F_CAPTION, constName);
+  obj->setParentUrl(tableItem->objectUrl());
+  obj->refresh();
+
+  form->setObjItem(obj);
+  form->objectToForm();
+  connect(form, &AddForeignKeyForm::accepted,
           this, &TableEditForm::onNewConstraintApply);
-  connect(checkConstraintForm, &AddForeignKeyForm::rejected,
+  connect(form, &AddForeignKeyForm::rejected,
           this, &TableEditForm::onNewConstraintCancel);
-  checkConstraintForm->show();
+  form->show();
 }

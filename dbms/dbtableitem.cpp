@@ -27,7 +27,7 @@ void DBTableItem::reloadConstraintsModel()
   //Необходимо переопределить для каждой отдельной СУБД
 }
 
-QAbstractTableModel *DBTableItem::columnsModel()
+SqlColumnModel *DBTableItem::columnsModel()
 {
   return _columnsModel;
 }

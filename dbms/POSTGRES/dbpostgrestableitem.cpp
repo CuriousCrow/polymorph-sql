@@ -117,16 +117,22 @@ void DBPostgresTableItem::reloadColumnsModel()
   if (connectionName().isEmpty())
     return;
   _columnsModel->clear();
-  QString sql = "select t.column_name, t.data_type, t.is_nullable, t.column_default, t.character_maximum_length, t.numeric_precision, t.numeric_scale, c.constraint_type from INFORMATION_SCHEMA.columns t "
-                "LEFT JOIN information_schema.key_column_usage u ON t.table_name = u.table_name AND t.column_name = u.column_name AND t.table_catalog = u.table_catalog "
-                "LEFT JOIN INFORMATION_SCHEMA.table_constraints c ON c.constraint_name = u.constraint_name AND u.table_catalog = c.table_catalog "
-                "WHERE t.table_catalog='#databaseName#' AND t.table_name='#caption#'";
+  QString sql =
+      "select t.column_name, t.data_type, t.is_nullable, t.column_default, t.character_maximum_length, "
+      "t.numeric_precision, t.numeric_scale, (pk.constraint_name is not null) primary_key "
+      "from INFORMATION_SCHEMA.columns t "
+      "left join "
+      "(select tc.constraint_name, cu.column_name "
+      "from INFORMATION_SCHEMA.table_constraints tc "
+      "left join information_schema.key_column_usage cu on tc.constraint_name=cu.constraint_name "
+      "where tc.table_name='person' and tc.constraint_type='PRIMARY KEY') as pk on t.column_name=pk.column_name "
+      "WHERE t.table_catalog='#databaseName#' AND t.table_name='#caption#'";
   QString preparedSql = fillPatternWithFields(sql);
   QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
     SqlColumn col(query.value("column_name").toString(), colTypeFromString(query.value("data_type").toString()));
     col.setDefaultValue(query.value("column_default"));
-    col.setIsPrimary(query.value("constraint_type").toString() == "PRIMARY KEY");
+    col.setIsPrimary(query.value("primary_key").toBool());
     col.setLength(query.value("character_maximum_length").toInt());
     col.setPrecision(query.value("numeric_precision").toInt());
     col.setNotNull(query.value("is_nullable").toString() == "NO");
@@ -142,7 +148,7 @@ void DBPostgresTableItem::reloadConstraintsModel()
     return;
   _constraintsModel->clear();
   QString sql =
-      "select c2.constraint_name \"name\", c2.constraint_type \"type\"\n"
+      "select distinct c2.constraint_name \"name\", c2.constraint_type \"type\"\n"
       "from INFORMATION_SCHEMA.table_constraints c2\n"
       "left join information_schema.key_column_usage c1 on c2.constraint_name=c1.constraint_name\n"
       "where c2.table_name='#caption#' and c2.constraint_name not like '%_not_null'\n";
