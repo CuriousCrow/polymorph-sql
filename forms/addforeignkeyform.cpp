@@ -10,6 +10,8 @@ AddForeignKeyForm::AddForeignKeyForm(QWidget *parent) :
   ui(new Ui::AddForeignKeyForm)
 {
   ui->setupUi(this);
+  connect(this, &AddForeignKeyForm::userActionChanged,
+          this, &AddForeignKeyForm::onUserActionChanged);
 }
 
 AddForeignKeyForm::~AddForeignKeyForm()
@@ -29,6 +31,11 @@ void AddForeignKeyForm::objectToForm()
   ui->cmbTargetColumn->setModelColumn(1);
 
   ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->cmbTargetColumn->setCurrentText(_objItem->fieldValue(F_COLUMN).toString());
+  ui->cmbReferenceTable->setCurrentText(_objItem->fieldValue(F_REFTABLE).toString());
+  ui->cmbReferenceColumn->setCurrentText(_objItem->fieldValue(F_REFCOLUMN).toString());
+  ui->cmbOnUpdateAction->setCurrentText(_objItem->fieldValue(F_ON_UPDATE).toString());
+  ui->cmbOnDeleteAction->setCurrentText(_objItem->fieldValue(F_ON_DELETE).toString());
 
   _objItem->submit();
 }
@@ -63,4 +70,15 @@ void AddForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &r
     ui->cmbReferenceColumn->setModel(refObj->columnsModel());
     ui->cmbReferenceColumn->setModelColumn(1);
   }
+}
+
+void AddForeignKeyForm::onUserActionChanged()
+{
+  ui->edtName->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+  ui->cmbTargetColumn->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+  ui->cmbReferenceTable->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+  ui->cmbReferenceColumn->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+  ui->cmbOnUpdateAction->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+  ui->cmbOnDeleteAction->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
+  ui->btnApply->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
 }

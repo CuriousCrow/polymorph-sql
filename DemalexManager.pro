@@ -23,6 +23,7 @@ SOURCES += main.cpp\
   dbms/dbcheckconstraint.cpp \
   dbms/dbconstraintitem.cpp \
   dbms/dbforeignkey.cpp \
+  dbms/dbprimarykey.cpp \
   dbms/dbuniqueconstraint.cpp \
   forms/addforeignkeyform.cpp \
   forms/checkconstrainteditform.cpp \
@@ -88,6 +89,7 @@ HEADERS  += mainwindow.h \
     dbms/dbcheckconstraint.h \
     dbms/dbconstraintitem.h \
     dbms/dbforeignkey.h \
+    dbms/dbprimarykey.h \
     dbms/dbuniqueconstraint.h \
     forms/addforeignkeyform.h \
     forms/checkconstrainteditform.h \

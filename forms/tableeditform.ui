@@ -39,21 +39,33 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableView" name="tableView"/>
+        <widget class="QTableView" name="tableView">
+         <property name="editTriggers">
+          <set>QAbstractItemView::AllEditTriggers</set>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QPushButton" name="btnAdd">
            <property name="text">
-            <string>Add column</string>
+            <string>Add</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icons.qrc">
+             <normaloff>:/icons/column_add.png</normaloff>:/icons/column_add.png</iconset>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="btnDelete">
            <property name="text">
-            <string>Drop column</string>
+            <string>Drop</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icons.qrc">
+             <normaloff>:/icons/column_delete.png</normaloff>:/icons/column_delete.png</iconset>
            </property>
           </widget>
          </item>
@@ -102,15 +114,35 @@
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QPushButton" name="btnAddConstraint">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
-            <string>Add constraint</string>
+            <string>Add</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icons.qrc">
+             <normaloff>:/icons/constraint_add.png</normaloff>:/icons/constraint_add.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="btnDropConstraint">
            <property name="text">
-            <string>Drop constraint</string>
+            <string>Drop</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icons.qrc">
+             <normaloff>:/icons/constraint_drop.png</normaloff>:/icons/constraint_drop.png</iconset>
            </property>
           </widget>
          </item>
@@ -166,6 +198,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

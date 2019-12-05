@@ -27,6 +27,7 @@ private slots:
   void on_btnApply_clicked();
   void on_btnCancel_clicked();
   void on_cmbReferenceTable_currentTextChanged(const QString &refTable);
+  void onUserActionChanged();
 };
 
 #endif // ADDFOREIGNKEYFORM_H

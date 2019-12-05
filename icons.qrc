@@ -23,5 +23,7 @@
         <file>icons/function.png</file>
         <file>icons/sequence.png</file>
         <file>icons/trigger.png</file>
+        <file>icons/constraint_add.png</file>
+        <file>icons/constraint_drop.png</file>
     </qresource>
 </RCC>

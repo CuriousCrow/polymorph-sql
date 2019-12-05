@@ -622,7 +622,9 @@ bool LSqlTableModel::execQuery(const QString &sql)
 #ifdef DEBUG_SQL
   qDebug() << "Execute query: " << sql;
   if (!result){
-    qDebug() << "Error: " << _query.lastError().databaseText();
+    QString desc = "Error: " + _query.lastError().databaseText();
+    qDebug() << desc;
+    emit error(desc);
   }
 #endif
   return result;

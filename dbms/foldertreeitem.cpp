@@ -3,8 +3,8 @@
 #include "appurl.h"
 #include <QDebug>
 
-FolderTreeItem::FolderTreeItem(QString caption, QObject* parent):
-  DBObjectItem(caption, parent)
+FolderTreeItem::FolderTreeItem(QString urlName, QString caption, QObject* parent):
+  DBObjectItem(caption, parent), _urlName(urlName)
 {
 }
 
@@ -49,4 +49,11 @@ DBObjectItem::ItemType FolderTreeItem::childrenType() const
 void FolderTreeItem::setChildrenType(DBObjectItem::ItemType childrenType)
 {
   _childrenType = childrenType;
+}
+
+AppUrl FolderTreeItem::objectUrl()
+{
+  AppUrl url = _parentUrl;
+  url.cd(_urlName);
+  return url;
 }

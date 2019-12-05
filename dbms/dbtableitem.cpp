@@ -42,6 +42,11 @@ DBForeignKey *DBTableItem::newForeignKey()
   return new DBForeignKey("fk_" + fieldValue(F_CAPTION).toString());
 }
 
+DBPrimaryKey *DBTableItem::newPrimaryKey()
+{
+  return new DBPrimaryKey("pk_" + fieldValue(F_CAPTION).toString());
+}
+
 DBUniqueConstraint *DBTableItem::newUniqueConstraint()
 {
   return new DBUniqueConstraint("uq_" + fieldValue(F_CAPTION).toString());

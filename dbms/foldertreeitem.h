@@ -7,7 +7,7 @@ class FolderTreeItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  FolderTreeItem(QString caption, QObject* parent = nullptr);
+  FolderTreeItem(QString urlName, QString caption, QObject* parent = nullptr);
   virtual ~FolderTreeItem() override;
 
   DBObjectItem::ItemType childrenType() const;
@@ -18,6 +18,7 @@ signals:
 public:
   virtual int colCount() override;
   virtual QVariant colData(int column, int role) override;
+  virtual AppUrl objectUrl() override;
 
   // DBObjectItem interface
 public:
@@ -25,8 +26,8 @@ public:
   virtual int type() override;
 
 private:
+  QString _urlName;
   DBObjectItem::ItemType _childrenType = UnknownType;
-
 };
 
 #endif // FOLDERTREEITEM_H

@@ -7,6 +7,7 @@
 #include "dbforeignkey.h"
 #include "dbuniqueconstraint.h"
 #include "dbcheckconstraint.h"
+#include "dbprimarykey.h"
 
 class DBTableItem : public DBObjectItem
 {
@@ -21,6 +22,7 @@ public:
   QAbstractTableModel* constraintsModel();
 
   virtual DBForeignKey* newForeignKey();
+  virtual DBPrimaryKey* newPrimaryKey();
   virtual DBUniqueConstraint* newUniqueConstraint();
   virtual DBCheckConstraint* newCheckConstraint();
 

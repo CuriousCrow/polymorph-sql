@@ -1,6 +1,7 @@
 #include "tablebrowserwindow.h"
 #include "ui_tablebrowserwindow.h"
 #include <QDebug>
+#include <QMessageBox>
 #include "dbms/appurl.h"
 #include "dbms/appconst.h"
 
@@ -15,6 +16,8 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
   _connectionName = url.connection();
   _tableName = tableItem->fieldValue(F_CAPTION).toString();
   _sourceModel = new LSqlTableModel(this, QSqlDatabase::database(_connectionName));
+  connect(_sourceModel, &LSqlTableModel::error,
+          this, &TableBrowserWindow::onError);
   _sourceModel->setTable(_tableName);
   _sourceModel->select();
   _proxyModel = new QSortFilterProxyModel(this);
@@ -76,4 +79,9 @@ void TableBrowserWindow::on_tableView_pressed(const QModelIndex &index)
 void TableBrowserWindow::on_aSetNull_triggered()
 {
   _sourceModel->setData(ui->tableView->currentIndex(), QVariant());
+}
+
+void TableBrowserWindow::onError(QString message)
+{
+  QMessageBox::warning(this, tr("Warning"), message);
 }

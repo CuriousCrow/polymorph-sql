@@ -130,6 +130,7 @@ public:
   //Wrapper for all sql-queries (for debugging)
   bool execQuery(const QString &sql);
 signals:
+  void error(QString message);
   void beforeInsert(QSqlRecord &rec);
   void beforeUpdate(QSqlRecord &rec);
 private:

@@ -25,7 +25,7 @@ bool DBMysqlItem::reloadChildren()
     return false;
 
   //Creating table items
-  FolderTreeItem* tableFolderItem = new FolderTreeItem(tr("Tables"), this);
+  FolderTreeItem* tableFolderItem = new FolderTreeItem(FOLDER_TABLES, tr("Tables"), this);
   tableFolderItem->setChildrenType(Table);
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
@@ -33,12 +33,12 @@ bool DBMysqlItem::reloadChildren()
   }
 
   //Creating views items
-  FolderTreeItem* viewFolderItem = new FolderTreeItem(tr("Views"), this);
+  FolderTreeItem* viewFolderItem = new FolderTreeItem(FOLDER_VIEWS, tr("Views"), this);
   viewFolderItem->setChildrenType(View);
   loadViewItems(viewFolderItem);
 
   //Creating system table items
-  FolderTreeItem* systemFolderItem = new FolderTreeItem(tr("System tables"), this);
+  FolderTreeItem* systemFolderItem = new FolderTreeItem(FOLDER_SYSTABLES, tr("System tables"), this);
   systemFolderItem->setChildrenType(Table);
   QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
   foreach (QString name, sysTableNames){

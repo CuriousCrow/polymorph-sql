@@ -22,6 +22,7 @@ void ProcedureEditForm::reloadTypes()
   QHash<int, QString> types = QKnowledgeBase::kb()->typesHash(_objItem->driverName());
   ui->cmbResultType->clear();
   ui->cmbResultType->addItem("void");
+  ui->cmbResultType->addItem("trigger");
   foreach (QString type, types.values()) {
     ui->cmbResultType->addItem(type.toLower());
   }

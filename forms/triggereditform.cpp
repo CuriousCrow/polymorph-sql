@@ -27,14 +27,16 @@ void TriggerEditForm::objectToForm()
   ui->cmbFunction->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_PROCEDURES));
 
   ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
-  ui->cmbBeforeAfter->setCurrentText(_objItem->fieldValue(F_TIMING).toString());
-  ui->cmbFunction->setCurrentText(_objItem->fieldValue(F_FUNCTION).toString());
-  ui->cmbTargetTable->setCurrentText(_objItem->fieldValue(F_TABLE).toString());
-  ui->chkEnabled->setChecked(_objItem->fieldValue(F_ENABLED).toBool());
-  ui->chkInsertEvent->setChecked(_objItem->fieldValue(F_EVENT_INSERT).toBool());
-  ui->chkUpdateEvent->setChecked(_objItem->fieldValue(F_EVENT_UPDATE).toBool());
-  ui->chkDeleteEvent->setChecked(_objItem->fieldValue(F_EVENT_DELETE).toBool());
-  ui->chkTruncateEvent->setChecked(_objItem->fieldValue(F_EVENT_TRUNCATE).toBool());
+  if (userAction() == AbstractDatabaseEditForm::Edit) {
+    ui->cmbBeforeAfter->setCurrentText(_objItem->fieldValue(F_TIMING).toString());
+    ui->cmbFunction->setCurrentText(_objItem->fieldValue(F_FUNCTION).toString());
+    ui->cmbTargetTable->setCurrentText(_objItem->fieldValue(F_TABLE).toString());
+    ui->chkEnabled->setChecked(_objItem->fieldValue(F_ENABLED).toBool());
+    ui->chkInsertEvent->setChecked(_objItem->fieldValue(F_EVENT_INSERT).toBool());
+    ui->chkUpdateEvent->setChecked(_objItem->fieldValue(F_EVENT_UPDATE).toBool());
+    ui->chkDeleteEvent->setChecked(_objItem->fieldValue(F_EVENT_DELETE).toBool());
+    ui->chkTruncateEvent->setChecked(_objItem->fieldValue(F_EVENT_TRUNCATE).toBool());
+  }
 
   if (userAction() == AbstractDatabaseEditForm::Create) {
     ui->cmbFunction->setCurrentIndex(0);

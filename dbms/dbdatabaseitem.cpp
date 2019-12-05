@@ -57,7 +57,7 @@ bool DBDatabaseItem::reloadChildren()
     return false;
 
   //Creating table items
-  FolderTreeItem* tableFolderItem = new FolderTreeItem(tr("Tables"), this);
+  FolderTreeItem* tableFolderItem = new FolderTreeItem(FOLDER_TABLES, tr("Tables"), this);
   tableFolderItem->setParentUrl(this->objectUrl());
 
   tableFolderItem->setChildrenType(Table);
@@ -66,7 +66,7 @@ bool DBDatabaseItem::reloadChildren()
   loadTableItems(tableFolderItem);
 
   //Creating views items
-  FolderTreeItem* viewFolderItem = new FolderTreeItem(tr("Views"), this);
+  FolderTreeItem* viewFolderItem = new FolderTreeItem(FOLDER_VIEWS, tr("Views"), this);
   viewFolderItem->setChildrenType(View);
   viewFolderItem->setParentUrl(this->objectUrl());
   connect(viewFolderItem, SIGNAL(reloadMe()),
@@ -74,7 +74,7 @@ bool DBDatabaseItem::reloadChildren()
   loadViewItems(viewFolderItem);
 
   //  //Creating system table items
-  FolderTreeItem* systemFolderItem = new FolderTreeItem(tr("System tables"), this);
+  FolderTreeItem* systemFolderItem = new FolderTreeItem(FOLDER_SYSTABLES, tr("System tables"), this);
   systemFolderItem->setChildrenType(Table);
   systemFolderItem->setParentUrl(this->objectUrl());
 
@@ -85,7 +85,7 @@ bool DBDatabaseItem::reloadChildren()
   }
 
   //Creating sequence items
-  FolderTreeItem* sequenceFolderItem = new FolderTreeItem(tr("Sequences"), this);
+  FolderTreeItem* sequenceFolderItem = new FolderTreeItem(FOLDER_SEQUENCES, tr("Sequences"), this);
   sequenceFolderItem->setChildrenType(Sequence);
   sequenceFolderItem->setParentUrl(this->objectUrl());
   connect(sequenceFolderItem, SIGNAL(reloadMe()),
@@ -93,7 +93,7 @@ bool DBDatabaseItem::reloadChildren()
   loadSequenceItems(sequenceFolderItem);
 
   //Creating trigger items
-  FolderTreeItem* triggerFolderItem = new FolderTreeItem(tr("Triggers"), this);
+  FolderTreeItem* triggerFolderItem = new FolderTreeItem(FOLDER_TRIGGERS, tr("Triggers"), this);
   triggerFolderItem->setChildrenType(Trigger);
   triggerFolderItem->setParentUrl(this->objectUrl());
   connect(triggerFolderItem, SIGNAL(reloadMe()),
@@ -101,7 +101,7 @@ bool DBDatabaseItem::reloadChildren()
   loadTriggerItems(triggerFolderItem);
 
   //Creating procedure items
-  FolderTreeItem* procedureFolderItem = new FolderTreeItem(tr("Procedures"), this);
+  FolderTreeItem* procedureFolderItem = new FolderTreeItem(FOLDER_PROCEDURES, tr("Procedures"), this);
   procedureFolderItem->setChildrenType(Procedure);
   procedureFolderItem->setParentUrl(this->objectUrl());
   connect(procedureFolderItem, SIGNAL(reloadMe()),

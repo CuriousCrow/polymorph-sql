@@ -36,6 +36,7 @@ private slots:
 
   void on_aSetNull_triggered();
 
+  void onError(QString message);
 private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;

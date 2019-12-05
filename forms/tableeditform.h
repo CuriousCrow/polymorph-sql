@@ -33,6 +33,7 @@ private slots:
   void on_btnDelete_clicked();
   void on_btnDropConstraint_clicked();
 
+  void onShowPrimaryKeyEditor();
   void onShowForeignKeyEditor();
   void onShowUniqueConstraintEditor();
   void onShowCheckConstraintEditor();

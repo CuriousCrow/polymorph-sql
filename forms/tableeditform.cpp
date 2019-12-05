@@ -19,9 +19,10 @@ TableEditForm::TableEditForm(QWidget *parent) :
   ui->tableView->setItemDelegateForColumn(COL_IDX_TYPE, _colTypeDelegate);
 
   _menuAddConstraint = new QMenu(this);
-  _menuAddConstraint->addAction(trUtf8("Add Foreign Key"), this, &TableEditForm::onShowForeignKeyEditor);
-  _menuAddConstraint->addAction(trUtf8("Add Unique Constraint"), this, &TableEditForm::onShowUniqueConstraintEditor);
-  _menuAddConstraint->addAction(trUtf8("Add Check Constraint"), this, &TableEditForm::onShowCheckConstraintEditor);
+  _menuAddConstraint->addAction(trUtf8("Primary Key"), this, &TableEditForm::onShowPrimaryKeyEditor);
+  _menuAddConstraint->addAction(trUtf8("Foreign Key"), this, &TableEditForm::onShowForeignKeyEditor);
+  _menuAddConstraint->addAction(trUtf8("Unique Constraint"), this, &TableEditForm::onShowUniqueConstraintEditor);
+  _menuAddConstraint->addAction(trUtf8("Check Constraint"), this, &TableEditForm::onShowCheckConstraintEditor);
   ui->btnAddConstraint->setMenu(_menuAddConstraint);
 }
 
@@ -33,7 +34,7 @@ TableEditForm::~TableEditForm()
 void TableEditForm::objectToForm()
 {
   QString tableName = _objItem->fieldValue(F_CAPTION).toString();
-  setWindowTitle("Редактор таблицы " + tableName);
+  setWindowTitle("Table editor: " + tableName);
   ui->lineEdit->setText(tableName);
   DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
   tableItem->reloadColumnsModel();
@@ -100,6 +101,25 @@ void TableEditForm::on_btnDropConstraint_clicked()
   }
 }
 
+void TableEditForm::onShowPrimaryKeyEditor()
+{
+  qDebug() << "Show unique constraint editor";
+  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  UniqueConstraintEditForm* primaryKeyForm = new UniqueConstraintEditForm(this);
+  primaryKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
+  DBConstraintItem* newPkObj = tableItem->newPrimaryKey();
+  newPkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  newPkObj->setParentUrl(tableItem->objectUrl());
+  primaryKeyForm->setObjItem(newPkObj);
+  primaryKeyForm->objectToForm();
+  primaryKeyForm->setWindowTitle("New primary key");
+  connect(primaryKeyForm, &AddForeignKeyForm::accepted,
+          this, &TableEditForm::onNewConstraintApply);
+  connect(primaryKeyForm, &AddForeignKeyForm::rejected,
+          this, &TableEditForm::onNewConstraintCancel);
+  primaryKeyForm->show();
+}
+
 void TableEditForm::onShowForeignKeyEditor()
 {
   qDebug() << "Show foreign key editor";
@@ -129,6 +149,7 @@ void TableEditForm::onShowUniqueConstraintEditor()
   newFkObj->setParentUrl(tableItem->objectUrl());
   uniqueKeyForm->setObjItem(newFkObj);
   uniqueKeyForm->objectToForm();
+  uniqueKeyForm->setWindowTitle("New unique constraint");
   connect(uniqueKeyForm, &AddForeignKeyForm::accepted,
           this, &TableEditForm::onNewConstraintApply);
   connect(uniqueKeyForm, &AddForeignKeyForm::rejected,
@@ -147,6 +168,7 @@ void TableEditForm::onShowCheckConstraintEditor()
   newCheckObj->setParentUrl(tableItem->objectUrl());
   checkConstraintForm->setObjItem(newCheckObj);
   checkConstraintForm->objectToForm();
+  checkConstraintForm->setWindowTitle("New check constraint");
   connect(checkConstraintForm, &AddForeignKeyForm::accepted,
           this, &TableEditForm::onNewConstraintApply);
   connect(checkConstraintForm, &AddForeignKeyForm::rejected,
@@ -172,24 +194,32 @@ void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
 
   QAbstractTableModel* model = tableItem->constraintsModel();
   QString constType = model->index(index.row(), 0).data().toString();
+  QString constName = model->index(index.row(), 1).data().toString();
   AbstractDatabaseEditForm* form;
   DBObjectItem* obj;
   if (constType == "FOREIGN KEY") {
     form = new AddForeignKeyForm(this);
+    form->setWindowTitle("Foreign key editor: " + constName);
     obj = tableItem->newForeignKey();
+  }
+  else if (constType == "PRIMARY KEY") {
+    form = new UniqueConstraintEditForm(this);
+    form->setWindowTitle("Primary key editor: " + constName);
+    obj = tableItem->newPrimaryKey();
   }
   else if (constType == "UNIQUE") {
     form = new UniqueConstraintEditForm(this);
+    form->setWindowTitle("Unique constraint editor: " + constName);
     obj = tableItem->newUniqueConstraint();
   }
   else if (constType == "CHECK") {
     form = new CheckConstraintEditForm(this);
+    form->setWindowTitle("Check constraint editor: " + constName);
     obj = tableItem->newCheckConstraint();
   }
   else {
     return;
   }
-  QString constName = model->index(index.row(), 1).data().toString();
   form->setUserAction(AbstractDatabaseEditForm::Edit);
   obj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
   obj->setFieldValue(F_CAPTION, constName);
