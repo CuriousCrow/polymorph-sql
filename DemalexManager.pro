@@ -20,6 +20,12 @@ SOURCES += main.cpp\
     core/maphelplookupprovider.cpp \
     core/sqlhelplookupprovider.cpp \
     core/appsettings.cpp \
+  dbms/FIREBIRD/firebirddatabase.cpp \
+  dbms/FIREBIRD/firebirdtable.cpp \
+  dbms/MYSQL/mysqldatabase.cpp \
+  dbms/MYSQL/mysqltable.cpp \
+  dbms/SQLITE/sqlitedatabase.cpp \
+  dbms/SQLITE/sqlitetable.cpp \
     ltextcompleter.cpp \
     qknowledgebase.cpp \
 #Forms
@@ -71,11 +77,7 @@ SOURCES += main.cpp\
     dbms/dbprimarykey.cpp \
     dbms/dbuniqueconstraint.cpp \
 #SQLite
-    dbms/SQLITE/dbsqliteitem.cpp \
-    dbms/SQLITE/dbsqlitetableitem.cpp \
 #MySQL
-    dbms/MYSQL/dbmysqltableitem.cpp \
-    dbms/MYSQL/dbmysqlitem.cpp \
 #Postgres
     dbms/POSTGRES/postgrestriggeritem.cpp \
     dbms/POSTGRES/postgrescheckconstraint.cpp \
@@ -85,10 +87,8 @@ SOURCES += main.cpp\
     dbms/POSTGRES/postgresprimarykey.cpp \
     dbms/POSTGRES/postgressequence.cpp \
     dbms/POSTGRES/postgrestable.cpp \
-    dbms/POSTGRES/postgresuniqueconstraint.cpp \
+    dbms/POSTGRES/postgresuniqueconstraint.cpp
 #Firebird
-    dbms/FIREBIRD/dbfirebirditem.cpp \
-    dbms/FIREBIRD/dbfirebirdtableitem.cpp
 
 HEADERS  += \
 #Core
@@ -97,6 +97,12 @@ HEADERS  += \
     core/maphelplookupprovider.h \
     core/sqlhelplookupprovider.h \
     core/appsettings.h \
+  dbms/FIREBIRD/firebirddatabase.h \
+  dbms/FIREBIRD/firebirdtable.h \
+  dbms/MYSQL/mysqldatabase.h \
+  dbms/MYSQL/mysqltable.h \
+  dbms/SQLITE/sqlitedatabase.h \
+  dbms/SQLITE/sqlitetable.h \
     ltextcompleter.h \
     qknowledgebase.h \
 #Forms
@@ -149,11 +155,7 @@ HEADERS  += \
     dbms/dbprimarykey.h \
     dbms/dbuniqueconstraint.h \
 #SQLite
-    dbms/SQLITE/dbsqliteitem.h \
-    dbms/SQLITE/dbsqlitetableitem.h \
 #MySQL
-    dbms/MYSQL/dbmysqltableitem.h \
-    dbms/MYSQL/dbmysqlitem.h \
 #Postgres
     dbms/POSTGRES/postgrestriggeritem.h \
     dbms/POSTGRES/postgrescheckconstraint.h \
@@ -163,10 +165,8 @@ HEADERS  += \
     dbms/POSTGRES/postgresprimarykey.h \
     dbms/POSTGRES/postgressequence.h \
     dbms/POSTGRES/postgrestable.h \
-    dbms/POSTGRES/postgresuniqueconstraint.h \
+    dbms/POSTGRES/postgresuniqueconstraint.h
 #Firebird
-    dbms/FIREBIRD/dbfirebirditem.h \
-    dbms/FIREBIRD/dbfirebirdtableitem.h
 
 FORMS    += mainwindow.ui \
     connectioneditdialog.ui \

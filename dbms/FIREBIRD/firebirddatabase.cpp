@@ -1,43 +1,43 @@
-#include "dbfirebirditem.h"
-#include "dbfirebirdtableitem.h"
+#include "firebirddatabase.h"
+#include "firebirdtable.h"
 #include "../appconst.h"
 
 #define SQL_VIEWS "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations where rdb$relation_type=1"
 
-DBFirebirdItem::DBFirebirdItem(QString caption)
+FirebirdDatabase::FirebirdDatabase(QString caption)
   : DBDatabaseItem(caption)
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_FIREBIRD);
 }
 
-QString DBFirebirdItem::getViewListSql()
+QString FirebirdDatabase::getViewListSql()
 {
   return "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations "
          "where rdb$relation_type=1";
 }
 
-QString DBFirebirdItem::getSequenceListSql()
+QString FirebirdDatabase::getSequenceListSql()
 {
   return "select rdb$generator_id id, trim(rdb$generator_name) name from rdb$generators where rdb$system_flag = 0";
 }
 
-QString DBFirebirdItem::getTriggerListSql()
+QString FirebirdDatabase::getTriggerListSql()
 {
   return "select trim(rdb$trigger_name) name from rdb$triggers where rdb$system_flag = 0";
 }
 
-QString DBFirebirdItem::getProcedureListSql()
+QString FirebirdDatabase::getProcedureListSql()
 {
   return "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
 }
 
-DBTableItem *DBFirebirdItem::createNewTableItem(QString caption, QObject *parent)
+DBTableItem *FirebirdDatabase::createNewTableItem(QString caption, QObject *parent)
 {
-  return new DBFirebirdTableItem(caption, parent);
+  return new FirebirdTable(caption, parent);
 }
 
 
-void DBFirebirdItem::loadSequenceItems(DBObjectItem *parentItem)
+void FirebirdDatabase::loadSequenceItems(DBObjectItem *parentItem)
 {
   QString sql = getSequenceListSql();
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());

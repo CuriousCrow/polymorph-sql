@@ -1,14 +1,14 @@
-#ifndef DBFIREBIRDITEM_H
-#define DBFIREBIRDITEM_H
+#ifndef FIREBIRDDATABASE_H
+#define FIREBIRDDATABASE_H
 
 #include <QObject>
 #include "../dbdatabaseitem.h"
 
-class DBFirebirdItem : public DBDatabaseItem
+class FirebirdDatabase : public DBDatabaseItem
 {
   Q_OBJECT
 public:
-  DBFirebirdItem(QString caption);
+  FirebirdDatabase(QString caption);
 
   // DBDatabaseItem interface
 protected:
@@ -26,4 +26,4 @@ protected:
   virtual void loadSequenceItems(DBObjectItem *parentItem) override;
 };
 
-#endif // DBFIREBIRDITEM_H
+#endif // FIREBIRDDATABASE_H

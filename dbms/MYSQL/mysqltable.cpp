@@ -1,4 +1,4 @@
-#include "dbmysqltableitem.h"
+#include "mysqltable.h"
 #include "qsqlqueryhelper.h"
 #include <QDebug>
 #include "../appurl.h"

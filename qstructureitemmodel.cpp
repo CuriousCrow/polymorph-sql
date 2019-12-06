@@ -1,9 +1,9 @@
 #include "qstructureitemmodel.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "dbms/FIREBIRD/dbfirebirditem.h"
-#include "dbms/SQLITE/dbsqliteitem.h"
-#include "dbms/MYSQL/dbmysqlitem.h"
+#include "dbms/FIREBIRD/firebirddatabase.h"
+#include "dbms/SQLITE/sqlitedatabase.h"
+#include "dbms/MYSQL/mysqldatabase.h"
 #include "dbms/POSTGRES/postgresdatabase.h"
 #include "dbms/appconst.h"
 #include <QDebug>
@@ -79,13 +79,13 @@ DBDatabaseItem *QStructureItemModel::dbItemByDriver(QString caption, QString dri
 {
   DBDatabaseItem* item;
   if (driverName == DRIVER_FIREBIRD) {
-    item = new DBFirebirdItem(caption);
+    item = new FirebirdDatabase(caption);
   }
   else if (driverName == DRIVER_SQLITE) {
-    item = new DBSqliteItem(caption);
+    item = new SqliteDatabase(caption);
   }
   else if (driverName == DRIVER_MYSQL) {
-    item = new DBMysqlItem(caption);
+    item = new MysqlDatabase(caption);
   }
   else if (driverName == DRIVER_POSTGRES) {
     item = new PostgresDatabase(caption);

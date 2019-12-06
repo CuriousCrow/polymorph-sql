@@ -1,4 +1,4 @@
-#include "dbsqlitetableitem.h"
+#include "sqlitetable.h"
 #include <QStringList>
 #include "qsqlqueryhelper.h"
 #include <QDebug>

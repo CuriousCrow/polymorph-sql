@@ -1,19 +1,19 @@
-#include "dbsqliteitem.h"
+#include "sqlitedatabase.h"
 #include "../foldertreeitem.h"
 #include "../dbtableitem.h"
 #include "../appconst.h"
-#include "dbsqlitetableitem.h"
+#include "sqlitetable.h"
 
 
 
-DBSqliteItem::DBSqliteItem(QString caption)
+SqliteDatabase::SqliteDatabase(QString caption)
   : DBDatabaseItem(caption)
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_SQLITE);
 }
 
 
-bool DBSqliteItem::reloadChildren()
+bool SqliteDatabase::reloadChildren()
 {
   if (!children().isEmpty())
     return false;
@@ -52,32 +52,32 @@ bool DBSqliteItem::reloadChildren()
   return true;
 }
 
-DBTableItem *DBSqliteItem::createNewTableItem(QString caption, QObject *parent)
+DBTableItem *SqliteDatabase::createNewTableItem(QString caption, QObject *parent)
 {
   return new DBSqliteTableItem(caption, parent);
 }
 
-QString DBSqliteItem::getViewListSql()
+QString SqliteDatabase::getViewListSql()
 {
   return "select trim(name) name, sql queryText from sqlite_master where type='view'";
 }
 
-QString DBSqliteItem::getSequenceListSql()
+QString SqliteDatabase::getSequenceListSql()
 {
   return "";
 }
 
-QString DBSqliteItem::getTriggerListSql()
+QString SqliteDatabase::getTriggerListSql()
 {
   return "select name name from sqlite_master where type = 'trigger'";
 }
 
-QString DBSqliteItem::getProcedureListSql()
+QString SqliteDatabase::getProcedureListSql()
 {
   return "";
 }
 
-void DBSqliteItem::loadSequenceItems(DBObjectItem *parentItem)
+void SqliteDatabase::loadSequenceItems(DBObjectItem *parentItem)
 {
   QString sql = "SELECT name, seq currentValue FROM sqlite_sequence";
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());

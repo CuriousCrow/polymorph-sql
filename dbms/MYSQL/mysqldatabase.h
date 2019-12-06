@@ -1,14 +1,14 @@
-#ifndef DBMYSQLITEM_H
-#define DBMYSQLITEM_H
+#ifndef MYSQLDATABASE_H
+#define MYSQLDATABASE_H
 
 #include "../dbdatabaseitem.h"
 
-class DBMysqlItem : public DBDatabaseItem
+class MysqlDatabase : public DBDatabaseItem
 {
   Q_OBJECT
 public:
-  DBMysqlItem(QString caption);
-  ~DBMysqlItem();
+  MysqlDatabase(QString caption);
+  ~MysqlDatabase();
 
   virtual DBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
   // DBObjectItem interface
@@ -23,4 +23,4 @@ protected:
   virtual QString getProcedureListSql();
 };
 
-#endif // DBMYSQLITEM_H
+#endif // MYSQLDATABASE_H

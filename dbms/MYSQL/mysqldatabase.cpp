@@ -1,25 +1,25 @@
-#include "dbmysqlitem.h"
-#include "dbmysqltableitem.h"
+#include "mysqldatabase.h"
+#include "mysqltable.h"
 #include "../foldertreeitem.h"
 #include "../appconst.h"
 
 
-DBMysqlItem::DBMysqlItem(QString caption)
+MysqlDatabase::MysqlDatabase(QString caption)
   : DBDatabaseItem(caption)
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_MYSQL);
 }
 
-DBMysqlItem::~DBMysqlItem()
+MysqlDatabase::~MysqlDatabase()
 {
 }
 
-DBTableItem *DBMysqlItem::createNewTableItem(QString caption, QObject *parent)
+DBTableItem *MysqlDatabase::createNewTableItem(QString caption, QObject *parent)
 {
   return new DBMysqlTableItem(caption, parent);
 }
 
-bool DBMysqlItem::reloadChildren()
+bool MysqlDatabase::reloadChildren()
 {
   if (!children().isEmpty())
     return false;
@@ -53,22 +53,22 @@ bool DBMysqlItem::reloadChildren()
   return true;
 }
 
-QString DBMysqlItem::getViewListSql()
+QString MysqlDatabase::getViewListSql()
 {
   return "select table_name \"name\" from INFORMATION_SCHEMA.views";
 }
 
-QString DBMysqlItem::getSequenceListSql()
+QString MysqlDatabase::getSequenceListSql()
 {
   return "";
 }
 
-QString DBMysqlItem::getTriggerListSql()
+QString MysqlDatabase::getTriggerListSql()
 {
   return "";
 }
 
-QString DBMysqlItem::getProcedureListSql()
+QString MysqlDatabase::getProcedureListSql()
 {
   return "";
 }

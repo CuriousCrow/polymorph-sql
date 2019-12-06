@@ -1,13 +1,13 @@
-#ifndef DBSQLITEITEM_H
-#define DBSQLITEITEM_H
+#ifndef SQLITEDATABASE_H
+#define SQLITEDATABASE_H
 
 #include "../dbdatabaseitem.h"
 
-class DBSqliteItem : public DBDatabaseItem
+class SqliteDatabase : public DBDatabaseItem
 {
     Q_OBJECT
 public:
-    DBSqliteItem(QString caption);
+    SqliteDatabase(QString caption);
 
 public:
     virtual bool reloadChildren() override;
@@ -24,4 +24,4 @@ protected:
     virtual void loadSequenceItems(DBObjectItem *parentItem) override;
 };
 
-#endif // DBSQLITEITEM_H
+#endif // SQLITEDATABASE_H
