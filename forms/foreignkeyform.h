@@ -1,23 +1,23 @@
-#ifndef ADDFOREIGNKEYFORM_H
-#define ADDFOREIGNKEYFORM_H
+#ifndef FOREIGNKEYFORM_H
+#define FOREIGNKEYFORM_H
 
 #include <QDialog>
 #include "abstractdatabaseitemform.h"
 
 namespace Ui {
-class AddForeignKeyForm;
+  class ForeignKeyForm;
 }
 
-class AddForeignKeyForm : public AbstractDatabaseEditForm
+class ForeignKeyForm : public AbstractDatabaseEditForm
 {
   Q_OBJECT
 
 public:
-  explicit AddForeignKeyForm(QWidget *parent = nullptr);
-  ~AddForeignKeyForm() override;
+  explicit ForeignKeyForm(QWidget *parent = nullptr);
+  ~ForeignKeyForm() override;
 
 private:
-  Ui::AddForeignKeyForm *ui;
+  Ui::ForeignKeyForm *ui;
 
   // AbstractDatabaseEditForm interface
 public:
@@ -30,4 +30,4 @@ private slots:
   void onUserActionChanged();
 };
 
-#endif // ADDFOREIGNKEYFORM_H
+#endif // FOREIGNKEYFORM_H

@@ -5,7 +5,7 @@
 #include "../dbms/appconst.h"
 #include "../dbms/dbuniqueconstraint.h"
 #include "../qknowledgebase.h"
-#include "addforeignkeyform.h"
+#include "foreignkeyform.h"
 #include "uniqueconstrainteditform.h"
 #include "checkconstrainteditform.h"
 
@@ -113,9 +113,9 @@ void TableEditForm::onShowPrimaryKeyEditor()
   primaryKeyForm->setObjItem(newPkObj);
   primaryKeyForm->objectToForm();
   primaryKeyForm->setWindowTitle("New primary key");
-  connect(primaryKeyForm, &AddForeignKeyForm::accepted,
+  connect(primaryKeyForm, &ForeignKeyForm::accepted,
           this, &TableEditForm::onNewConstraintApply);
-  connect(primaryKeyForm, &AddForeignKeyForm::rejected,
+  connect(primaryKeyForm, &ForeignKeyForm::rejected,
           this, &TableEditForm::onNewConstraintCancel);
   primaryKeyForm->show();
 }
@@ -124,16 +124,16 @@ void TableEditForm::onShowForeignKeyEditor()
 {
   qDebug() << "Show foreign key editor";
   DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
-  AddForeignKeyForm* foreignKeyForm = new AddForeignKeyForm(this);
+  ForeignKeyForm* foreignKeyForm = new ForeignKeyForm(this);
   foreignKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBForeignKey* newFkObj = tableItem->newForeignKey();
   newFkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
   newFkObj->setParentUrl(tableItem->objectUrl());
   foreignKeyForm->setObjItem(newFkObj);
   foreignKeyForm->objectToForm();
-  connect(foreignKeyForm, &AddForeignKeyForm::accepted,
+  connect(foreignKeyForm, &ForeignKeyForm::accepted,
           this, &TableEditForm::onNewConstraintApply);
-  connect(foreignKeyForm, &AddForeignKeyForm::rejected,
+  connect(foreignKeyForm, &ForeignKeyForm::rejected,
           this, &TableEditForm::onNewConstraintCancel);
   foreignKeyForm->show();
 }
@@ -150,9 +150,9 @@ void TableEditForm::onShowUniqueConstraintEditor()
   uniqueKeyForm->setObjItem(newFkObj);
   uniqueKeyForm->objectToForm();
   uniqueKeyForm->setWindowTitle("New unique constraint");
-  connect(uniqueKeyForm, &AddForeignKeyForm::accepted,
+  connect(uniqueKeyForm, &ForeignKeyForm::accepted,
           this, &TableEditForm::onNewConstraintApply);
-  connect(uniqueKeyForm, &AddForeignKeyForm::rejected,
+  connect(uniqueKeyForm, &ForeignKeyForm::rejected,
           this, &TableEditForm::onNewConstraintCancel);
   uniqueKeyForm->show();
 }
@@ -169,9 +169,9 @@ void TableEditForm::onShowCheckConstraintEditor()
   checkConstraintForm->setObjItem(newCheckObj);
   checkConstraintForm->objectToForm();
   checkConstraintForm->setWindowTitle("New check constraint");
-  connect(checkConstraintForm, &AddForeignKeyForm::accepted,
+  connect(checkConstraintForm, &ForeignKeyForm::accepted,
           this, &TableEditForm::onNewConstraintApply);
-  connect(checkConstraintForm, &AddForeignKeyForm::rejected,
+  connect(checkConstraintForm, &ForeignKeyForm::rejected,
           this, &TableEditForm::onNewConstraintCancel);
   checkConstraintForm->show();
 }
@@ -198,7 +198,7 @@ void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
   AbstractDatabaseEditForm* form;
   DBObjectItem* obj;
   if (constType == "FOREIGN KEY") {
-    form = new AddForeignKeyForm(this);
+    form = new ForeignKeyForm(this);
     form->setWindowTitle("Foreign key editor: " + constName);
     obj = tableItem->newForeignKey();
   }
@@ -228,9 +228,9 @@ void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
 
   form->setObjItem(obj);
   form->objectToForm();
-  connect(form, &AddForeignKeyForm::accepted,
+  connect(form, &ForeignKeyForm::accepted,
           this, &TableEditForm::onNewConstraintApply);
-  connect(form, &AddForeignKeyForm::rejected,
+  connect(form, &ForeignKeyForm::rejected,
           this, &TableEditForm::onNewConstraintCancel);
   form->show();
 }

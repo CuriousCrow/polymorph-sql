@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AddForeignKeyForm</class>
- <widget class="QDialog" name="AddForeignKeyForm">
+ <class>ForeignKeyForm</class>
+ <widget class="QDialog" name="ForeignKeyForm">
   <property name="geometry">
    <rect>
     <x>0</x>

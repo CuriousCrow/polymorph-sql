@@ -1,26 +1,26 @@
-#include "addforeignkeyform.h"
-#include "ui_addforeignkeyform.h"
+#include "foreignkeyform.h"
+#include "ui_foreignkeyform.h"
 #include <QDebug>
 #include "dbms/appconst.h"
 #include "core/datastore.h"
 #include "dbms/appurl.h"
 
-AddForeignKeyForm::AddForeignKeyForm(QWidget *parent) :
+ForeignKeyForm::ForeignKeyForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),
-  ui(new Ui::AddForeignKeyForm)
+  ui(new Ui::ForeignKeyForm)
 {
   ui->setupUi(this);
-  connect(this, &AddForeignKeyForm::userActionChanged,
-          this, &AddForeignKeyForm::onUserActionChanged);
+  connect(this, &ForeignKeyForm::userActionChanged,
+          this, &ForeignKeyForm::onUserActionChanged);
 }
 
-AddForeignKeyForm::~AddForeignKeyForm()
+ForeignKeyForm::~ForeignKeyForm()
 {
   qDebug() << "Add foreign key destructor";
   delete ui;
 }
 
-void AddForeignKeyForm::objectToForm()
+void ForeignKeyForm::objectToForm()
 {
   ui->cmbReferenceTable->setModel(DataStore::structureModel());
   ui->cmbReferenceTable->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_TABLES));
@@ -40,7 +40,7 @@ void AddForeignKeyForm::objectToForm()
   _objItem->submit();
 }
 
-void AddForeignKeyForm::formToObject()
+void ForeignKeyForm::formToObject()
 {
   _objItem->setFieldValue(F_CAPTION, ui->edtName->text());
   _objItem->setFieldValue(F_COLUMN, ui->cmbTargetColumn->currentText());
@@ -50,17 +50,17 @@ void AddForeignKeyForm::formToObject()
   _objItem->setFieldValue(F_ON_DELETE, ui->cmbOnDeleteAction->currentText());
 }
 
-void AddForeignKeyForm::on_btnApply_clicked()
+void ForeignKeyForm::on_btnApply_clicked()
 {
   tryUserAction();
 }
 
-void AddForeignKeyForm::on_btnCancel_clicked()
+void ForeignKeyForm::on_btnCancel_clicked()
 {
   reject();
 }
 
-void AddForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &refTable)
+void ForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &refTable)
 {
   DBTableItem* refObj =
       qobject_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, refTable));
@@ -72,7 +72,7 @@ void AddForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &r
   }
 }
 
-void AddForeignKeyForm::onUserActionChanged()
+void ForeignKeyForm::onUserActionChanged()
 {
   ui->edtName->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->cmbTargetColumn->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
