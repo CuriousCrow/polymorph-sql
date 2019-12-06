@@ -1,15 +1,15 @@
-#include "dbpostgresequence.h"
+#include "postgressequence.h"
 #include "../../qsqlqueryhelper.h"
 #include "../appconst.h"
 
 
-DBPostgreSequence::DBPostgreSequence(QString caption, QObject* parent)
+PostgresSequence::PostgresSequence(QString caption, QObject* parent)
   : DBSequenceItem(caption, parent)
 {
 
 }
 
-bool DBPostgreSequence::refresh()
+bool PostgresSequence::refresh()
 {
   QString sql = "SELECT sequence_name \"caption\", start_value \"startValue\", minimum_value \"minValue\", maximum_value \"maxValue\", increment \"step\" "
                 "FROM information_schema.sequences where sequence_name='#caption#'";

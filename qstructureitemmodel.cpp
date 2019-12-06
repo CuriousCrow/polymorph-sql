@@ -4,7 +4,7 @@
 #include "dbms/FIREBIRD/dbfirebirditem.h"
 #include "dbms/SQLITE/dbsqliteitem.h"
 #include "dbms/MYSQL/dbmysqlitem.h"
-#include "dbms/POSTGRES/dbpostgresitem.h"
+#include "dbms/POSTGRES/postgresdatabase.h"
 #include "dbms/appconst.h"
 #include <QDebug>
 #include "dbms/appurl.h"
@@ -88,7 +88,7 @@ DBDatabaseItem *QStructureItemModel::dbItemByDriver(QString caption, QString dri
     item = new DBMysqlItem(caption);
   }
   else if (driverName == DRIVER_POSTGRES) {
-    item = new DBPostgresItem(caption);
+    item = new PostgresDatabase(caption);
   }
   else {
     item = new DBDatabaseItem(caption);

@@ -1,55 +1,55 @@
-#include "dbpostgresitem.h"
-#include "dbpostgrestableitem.h"
-#include "dbpostgresequence.h"
+#include "postgresdatabase.h"
+#include "postgrestable.h"
+#include "postgressequence.h"
 #include "../appconst.h"
-#include "dbpostgreqfunctionitem.h"
+#include "postgresfunctionitem.h"
 #include "postgrestriggeritem.h"
 
 
-DBPostgresItem::DBPostgresItem(QString caption) : DBDatabaseItem(caption)
+PostgresDatabase::PostgresDatabase(QString caption) : DBDatabaseItem(caption)
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_POSTGRES);
 }
 
-DBPostgresItem::~DBPostgresItem()
+PostgresDatabase::~PostgresDatabase()
 {
 }
 
-QString DBPostgresItem::getViewListSql()
+QString PostgresDatabase::getViewListSql()
 {
   return "select table_name \"name\", view_definition \"queryText\" "
          "from INFORMATION_SCHEMA.views where table_schema = 'public'";
 }
 
-QString DBPostgresItem::getSequenceListSql()
+QString PostgresDatabase::getSequenceListSql()
 {
   return "SELECT sequence_name \"name\", start_value \"startValue\", minimum_value \"minValue\", maximum_value \"maxValue\", increment \"step\" "
          "FROM information_schema.sequences order by 1";
 }
 
-QString DBPostgresItem::getTriggerListSql()
+QString PostgresDatabase::getTriggerListSql()
 {
   return "SELECT distinct(trigger_name) \"name\" "
          "FROM information_schema.triggers order by 1";
 }
 
-QString DBPostgresItem::getProcedureListSql()
+QString PostgresDatabase::getProcedureListSql()
 {
   return "SELECT distinct(routine_name) \"name\" FROM information_schema.routines "
       "WHERE routine_type='FUNCTION' and specific_schema='public' order by 1";
 }
 
-DBTableItem *DBPostgresItem::createNewTableItem(QString caption, QObject *parent)
+DBTableItem *PostgresDatabase::createNewTableItem(QString caption, QObject *parent)
 {
-  return new DBPostgresTableItem(caption, parent);
+  return new PostgresTable(caption, parent);
 }
 
-DBSequenceItem *DBPostgresItem::createNewSequenceItem(QString caption, QObject *parent)
+DBSequenceItem *PostgresDatabase::createNewSequenceItem(QString caption, QObject *parent)
 {
-  return new DBPostgreSequence(caption, parent);
+  return new PostgresSequence(caption, parent);
 }
 
-void DBPostgresItem::loadSequenceItems(DBObjectItem *parentItem)
+void PostgresDatabase::loadSequenceItems(DBObjectItem *parentItem)
 {
   QString sql = getSequenceListSql();
   QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
@@ -59,23 +59,23 @@ void DBPostgresItem::loadSequenceItems(DBObjectItem *parentItem)
   }
 }
 
-void DBPostgresItem::loadTriggerItems(DBObjectItem *parentItem)
+void PostgresDatabase::loadTriggerItems(DBObjectItem *parentItem)
 {
   DBDatabaseItem::loadTriggerItems(parentItem);
 }
 
-void DBPostgresItem::loadProcedureItems(DBObjectItem *parentItem)
+void PostgresDatabase::loadProcedureItems(DBObjectItem *parentItem)
 {
   DBDatabaseItem::loadProcedureItems(parentItem);
 }
 
 
-DBProcedureItem *DBPostgresItem::createNewProcedureItem(QString caption, QObject *parent)
+DBProcedureItem *PostgresDatabase::createNewProcedureItem(QString caption, QObject *parent)
 {
-  return new DBPostgreqFunctionItem(caption, parent);
+  return new PostgresFunctionItem(caption, parent);
 }
 
-DBTriggerItem *DBPostgresItem::createNewTriggerItem(QString caption, QObject *parent)
+DBTriggerItem *PostgresDatabase::createNewTriggerItem(QString caption, QObject *parent)
 {
   return new PostgresTriggerItem(caption, parent);
 }

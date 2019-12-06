@@ -71,17 +71,22 @@ SOURCES += main.cpp\
     dbms/dbprimarykey.cpp \
     dbms/dbuniqueconstraint.cpp \
 #SQLite
-    dbms\SQLITE\dbsqliteitem.cpp \
-    dbms\SQLITE\dbsqlitetableitem.cpp \
+    dbms/SQLITE/dbsqliteitem.cpp \
+    dbms/SQLITE/dbsqlitetableitem.cpp \
 #MySQL
-    dbms\MYSQL\dbmysqltableitem.cpp \
-    dbms\MYSQL\dbmysqlitem.cpp \
+    dbms/MYSQL/dbmysqltableitem.cpp \
+    dbms/MYSQL/dbmysqlitem.cpp \
 #Postgres
     dbms/POSTGRES/postgrestriggeritem.cpp \
-    dbms/POSTGRES/dbpostgreqfunctionitem.cpp \
-    dbms/POSTGRES/dbpostgresequence.cpp \
-    dbms/POSTGRES/dbpostgresitem.cpp \
-    dbms/POSTGRES/dbpostgrestableitem.cpp \
+    dbms/POSTGRES/postgrescheckconstraint.cpp \
+    dbms/POSTGRES/postgresdatabase.cpp \
+    dbms/POSTGRES/postgresforeignkey.cpp \
+    dbms/POSTGRES/postgresfunction.cpp \
+    dbms/POSTGRES/postgresprimarykey.cpp \
+    dbms/POSTGRES/postgresprocedure.cpp \
+    dbms/POSTGRES/postgressequence.cpp \
+    dbms/POSTGRES/postgrestable.cpp \
+    dbms/POSTGRES/postgresuniqueconstraint.cpp \
 #Firebird
     dbms/FIREBIRD/dbfirebirditem.cpp \
     dbms/FIREBIRD/dbfirebirdtableitem.cpp
@@ -145,17 +150,22 @@ HEADERS  += \
     dbms/dbprimarykey.h \
     dbms/dbuniqueconstraint.h \
 #SQLite
-    dbms\SQLITE\dbsqliteitem.h \
-    dbms\SQLITE\dbsqlitetableitem.h \
+    dbms/SQLITE/dbsqliteitem.h \
+    dbms/SQLITE/dbsqlitetableitem.h \
 #MySQL
-    dbms\MYSQL\dbmysqltableitem.h \
-    dbms\MYSQL\dbmysqlitem.h \
+    dbms/MYSQL/dbmysqltableitem.h \
+    dbms/MYSQL/dbmysqlitem.h \
 #Postgres
     dbms/POSTGRES/postgrestriggeritem.h \
-    dbms/POSTGRES/dbpostgreqfunctionitem.h \
-    dbms/POSTGRES/dbpostgresequence.h \
-    dbms/POSTGRES/dbpostgresitem.h \
-    dbms/POSTGRES/dbpostgrestableitem.h \
+    dbms/POSTGRES/postgrescheckconstraint.h \
+    dbms/POSTGRES/postgresdatabase.h \
+    dbms/POSTGRES/postgresforeignkey.h \
+    dbms/POSTGRES/postgresfunctionitem.h \
+    dbms/POSTGRES/postgresprimarykey.h \
+    dbms/POSTGRES/postgresprocedure.h \
+    dbms/POSTGRES/postgressequence.h \
+    dbms/POSTGRES/postgrestable.h \
+    dbms/POSTGRES/postgresuniqueconstraint.h \
 #Firebird
     dbms/FIREBIRD/dbfirebirditem.h \
     dbms/FIREBIRD/dbfirebirdtableitem.h

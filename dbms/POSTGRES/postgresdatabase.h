@@ -1,14 +1,14 @@
-#ifndef DBPOSTGRESITEM_H
-#define DBPOSTGRESITEM_H
+#ifndef POSTGRESDATABASE_H
+#define POSTGRESDATABASE_H
 
 #include "../dbdatabaseitem.h"
 
-class DBPostgresItem : public DBDatabaseItem
+class PostgresDatabase : public DBDatabaseItem
 {
   Q_OBJECT
 public:
-  DBPostgresItem(QString caption);
-  ~DBPostgresItem();
+  PostgresDatabase(QString caption);
+  ~PostgresDatabase();
 
   // DBDatabaseItem interface
 protected:
@@ -31,4 +31,4 @@ protected:
   void loadProcedureItems(DBObjectItem *parentItem);
 };
 
-#endif // DBPOSTGRESITEM_H
+#endif // POSTGRESDATABASE_H

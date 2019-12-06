@@ -1,14 +1,14 @@
-#ifndef DBPOSTGREQFUNCTIONITEM_H
-#define DBPOSTGREQFUNCTIONITEM_H
+#ifndef POSTGRESFUNCTIONITEM_H
+#define POSTGRESFUNCTIONITEM_H
 
 #include <QObject>
 #include "../dbprocedureitem.h"
 
-class DBPostgreqFunctionItem : public DBProcedureItem
+class PostgresFunctionItem : public DBProcedureItem
 {
   Q_OBJECT
 public:
-  DBPostgreqFunctionItem(QString caption, QObject* parent = nullptr);
+  PostgresFunctionItem(QString caption, QObject* parent = nullptr);
 
   // DBObjectItem interface
 public:
@@ -18,4 +18,4 @@ public:
   virtual ActionResult deleteMe() override;
 };
 
-#endif // DBPOSTGREQFUNCTIONITEM_H
+#endif // POSTGRESFUNCTIONITEM_H

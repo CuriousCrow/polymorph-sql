@@ -1,15 +1,15 @@
-#include "dbpostgreqfunctionitem.h"
+#include "postgresfunctionitem.h"
 #include "../appconst.h"
 #include "../../qsqlqueryhelper.h"
 
 
-DBPostgreqFunctionItem::DBPostgreqFunctionItem(QString caption, QObject *parent)
+PostgresFunctionItem::PostgresFunctionItem(QString caption, QObject *parent)
   : DBProcedureItem(caption, parent)
 {
 }
 
 
-bool DBPostgreqFunctionItem::refresh()
+bool PostgresFunctionItem::refresh()
 {
   QString sql = "SELECT data_type \"returnType\", external_language \"language\", routine_definition \"sourceCode\" FROM information_schema.routines "
                 "WHERE routine_type='FUNCTION' and specific_schema='public' "
@@ -28,7 +28,7 @@ bool DBPostgreqFunctionItem::refresh()
   }
 }
 
-ActionResult DBPostgreqFunctionItem::insertMe()
+ActionResult PostgresFunctionItem::insertMe()
 {
   QString sql =
       "CREATE OR REPLACE FUNCTION #caption#() "
@@ -39,12 +39,12 @@ ActionResult DBPostgreqFunctionItem::insertMe()
   return execSql(preparedSql, connectionName());
 }
 
-ActionResult DBPostgreqFunctionItem::updateMe()
+ActionResult PostgresFunctionItem::updateMe()
 {
   return insertMe();
 }
 
-ActionResult DBPostgreqFunctionItem::deleteMe()
+ActionResult PostgresFunctionItem::deleteMe()
 {
   QString sql = "DROP FUNCTION \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);

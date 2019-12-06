@@ -1,15 +1,20 @@
-#ifndef DBPOSTGRESTABLEITEM_H
-#define DBPOSTGRESTABLEITEM_H
+#ifndef POSTGRESTABLE_H
+#define POSTGRESTABLE_H
 
 #include "../dbtableitem.h"
 #include <QSqlField>
 
-class DBPostgresTableItem : public DBTableItem
+class PostgresTable : public DBTableItem
 {
   Q_OBJECT
 public:
-  DBPostgresTableItem(QString caption, QObject* parent = nullptr);
-  virtual ~DBPostgresTableItem() override;
+  PostgresTable(QString caption, QObject* parent = nullptr);
+  virtual ~PostgresTable() override;
+
+  virtual DBForeignKey* newForeignKey() override;
+  virtual DBPrimaryKey* newPrimaryKey() override;
+  virtual DBUniqueConstraint* newUniqueConstraint() override;
+  virtual DBCheckConstraint* newCheckConstraint() override;
   // DBObjectItem interface
 public:
   virtual ActionResult insertMe() override;
@@ -30,4 +35,4 @@ public:
   virtual void reloadConstraintsModel() override;
 };
 
-#endif // DBPOSTGRESTABLEITEM_H
+#endif // POSTGRESTABLE_H

@@ -1,11 +1,15 @@
-#include "dbpostgrestableitem.h"
+#include "postgrestable.h"
 #include <QSqlQuery>
 #include <QDebug>
 #include "qsqlqueryhelper.h"
 #include "../../models/sqlcolumnmodel.h"
 #include "../appconst.h"
+#include "postgresprimarykey.h"
+#include "postgresforeignkey.h"
+#include "postgresuniqueconstraint.h"
+#include "postgrescheckconstraint.h"
 
-DBPostgresTableItem::DBPostgresTableItem(QString caption, QObject *parent)
+PostgresTable::PostgresTable(QString caption, QObject *parent)
   : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
@@ -15,18 +19,38 @@ DBPostgresTableItem::DBPostgresTableItem(QString caption, QObject *parent)
   _constraintsModel->registerColumn(F_NAME, tr("Name"));
 }
 
-DBPostgresTableItem::~DBPostgresTableItem()
+PostgresTable::~PostgresTable()
 {
   delete _columnsModel;
   delete _constraintsModel;
 }
 
-ActionResult DBPostgresTableItem::insertMe()
+DBForeignKey *PostgresTable::newForeignKey()
+{
+  return new PostgresForeignKey("fk_" + fieldValue(F_CAPTION).toString());
+}
+
+DBPrimaryKey *PostgresTable::newPrimaryKey()
+{
+  return new PostgresPrimaryKey("pk_" + fieldValue(F_CAPTION).toString());
+}
+
+DBUniqueConstraint *PostgresTable::newUniqueConstraint()
+{
+  return new PostgresUniqueConstraint("uq_" + fieldValue(F_CAPTION).toString());
+}
+
+DBCheckConstraint *PostgresTable::newCheckConstraint()
+{
+  return new PostgresCheckConstraint("chk_" + fieldValue(F_CAPTION).toString());
+}
+
+ActionResult PostgresTable::insertMe()
 {
   return execSql(createTableQuery(caption()), connectionName());
 }
 
-ActionResult DBPostgresTableItem::updateMe()
+ActionResult PostgresTable::updateMe()
 {
   qDebug() << "QDBPostgreqlTableItem::updateMe()";
   ActionResult res;
@@ -111,7 +135,7 @@ ActionResult DBPostgresTableItem::updateMe()
   return res;
 }
 
-void DBPostgresTableItem::reloadColumnsModel()
+void PostgresTable::reloadColumnsModel()
 {
   //Новая, еще не вставленная таблица
   if (connectionName().isEmpty())
@@ -141,7 +165,7 @@ void DBPostgresTableItem::reloadColumnsModel()
 }
 
 
-void DBPostgresTableItem::reloadConstraintsModel()
+void PostgresTable::reloadConstraintsModel()
 {
   //Новая, еще не вставленная таблица
   if (connectionName().isEmpty())
@@ -165,12 +189,12 @@ void DBPostgresTableItem::reloadConstraintsModel()
 
 }
 
-QString DBPostgresTableItem::caption()
+QString PostgresTable::caption()
 {
   return "\"" + fieldValue("caption").toString() + "\"";
 }
 
-QString DBPostgresTableItem::createTableQuery(QString table)
+QString PostgresTable::createTableQuery(QString table)
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;
@@ -190,7 +214,7 @@ QString DBPostgresTableItem::createTableQuery(QString table)
   return preparedSql;
 }
 
-QString DBPostgresTableItem::columnDef(const SqlColumn &col)
+QString PostgresTable::columnDef(const SqlColumn &col)
 {
   QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
   if (col.length() > 0)
@@ -202,12 +226,12 @@ QString DBPostgresTableItem::columnDef(const SqlColumn &col)
   return colDef;
 }
 
-QString DBPostgresTableItem::typeDef(const SqlColumn &col)
+QString PostgresTable::typeDef(const SqlColumn &col)
 {
   return _columnsModel->columnTypeCaption(col.type());
 }
 
-QString DBPostgresTableItem::defaultDef(const SqlColumn &col)
+QString PostgresTable::defaultDef(const SqlColumn &col)
 {
   if (col.defaultValue().isNull())
     return "";
