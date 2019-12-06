@@ -63,7 +63,7 @@ QueryEditorWindow::~QueryEditorWindow()
 void QueryEditorWindow::on_aExecuteQuery_triggered()
 {
   QSqlQuery query =
-      QSqlDatabase::database(connectionName()).exec(ui->teQueryEditor->toPlainText());
+      QSqlDatabase::database(connectionName()).exec(getActiveText());
   if (!query.lastError().isValid()){
     _resultModel->setQuery(query);
     ui->tabWidget->setCurrentWidget(ui->tabResult);
@@ -96,6 +96,14 @@ DBObjectItem *QueryEditorWindow::dbObject()
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
   return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(sourceIndex));
+}
+
+QString QueryEditorWindow::getActiveText()
+{
+  QString activeText = ui->teQueryEditor->textCursor().selectedText();
+  if (activeText.isEmpty())
+    activeText = ui->teQueryEditor->toPlainText();
+  return activeText;
 }
 
 void QueryEditorWindow::on_aCommit_triggered()
@@ -135,7 +143,7 @@ void QueryEditorWindow::on_aExecScript_triggered()
 {
   int success = 0;
   int failed = 0;
-  QStringList queries = ui->teQueryEditor->toPlainText().split(";");
+  QStringList queries = getActiveText().split(";");
   foreach(QString sql, queries) {
     QSqlQuery query =
         QSqlDatabase::database(connectionName()).exec(sql.trimmed());

@@ -47,6 +47,7 @@ private:
   QString connectionName();
   QString dbUrl();
   DBObjectItem* dbObject();
+  QString getActiveText();
 };
 
 #endif // QUERYEDITORWINDOW_H
