@@ -6,3 +6,8 @@ PostgresUniqueConstraint::PostgresUniqueConstraint(QString caption, QObject *par
 {
 
 }
+
+
+bool PostgresUniqueConstraint::refresh()
+{
+}

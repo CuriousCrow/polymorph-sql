@@ -83,7 +83,6 @@ SOURCES += main.cpp\
     dbms/POSTGRES/postgresforeignkey.cpp \
     dbms/POSTGRES/postgresfunction.cpp \
     dbms/POSTGRES/postgresprimarykey.cpp \
-    dbms/POSTGRES/postgresprocedure.cpp \
     dbms/POSTGRES/postgressequence.cpp \
     dbms/POSTGRES/postgrestable.cpp \
     dbms/POSTGRES/postgresuniqueconstraint.cpp \
@@ -162,7 +161,6 @@ HEADERS  += \
     dbms/POSTGRES/postgresforeignkey.h \
     dbms/POSTGRES/postgresfunctionitem.h \
     dbms/POSTGRES/postgresprimarykey.h \
-    dbms/POSTGRES/postgresprocedure.h \
     dbms/POSTGRES/postgressequence.h \
     dbms/POSTGRES/postgrestable.h \
     dbms/POSTGRES/postgresuniqueconstraint.h \
