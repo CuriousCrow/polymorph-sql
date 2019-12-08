@@ -3,24 +3,24 @@
 #include <QDebug>
 #include "../appurl.h"
 
-DBMysqlTableItem::DBMysqlTableItem(QString caption, QObject *parent)
+MysqlTableItem::MysqlTableItem(QString caption, QObject *parent)
   : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
 }
 
-DBMysqlTableItem::~DBMysqlTableItem()
+MysqlTableItem::~MysqlTableItem()
 {
   delete _columnsModel;
 }
 
-ActionResult DBMysqlTableItem::insertMe()
+ActionResult MysqlTableItem::insertMe()
 {
   QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName());
   return submit();
 }
 
-ActionResult DBMysqlTableItem::updateMe()
+ActionResult MysqlTableItem::updateMe()
 {
   qDebug() << "QDBMysqlTableItem::updateMe()";
   if (DBTableItem::updateMe().isSuccess())
@@ -63,7 +63,7 @@ ActionResult DBMysqlTableItem::updateMe()
   return true;
 }
 
-void DBMysqlTableItem::reloadColumnsModel()
+void MysqlTableItem::reloadColumnsModel()
 {
   //Новая, еще не вставленная таблица
   if (connectionName().isEmpty())
@@ -84,7 +84,7 @@ void DBMysqlTableItem::reloadColumnsModel()
   }
 }
 
-QString DBMysqlTableItem::createTableQuery(QString table)
+QString MysqlTableItem::createTableQuery(QString table)
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;
@@ -104,7 +104,7 @@ QString DBMysqlTableItem::createTableQuery(QString table)
   return preparedSql;
 }
 
-QString DBMysqlTableItem::columnDef(const SqlColumn &col)
+QString MysqlTableItem::columnDef(const SqlColumn &col)
 {
   QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
   if (col.length() > 0)

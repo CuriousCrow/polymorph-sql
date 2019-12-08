@@ -13,7 +13,10 @@
 #include "qknowledgebase.h"
 #include "core/appsettings.h"
 #include "core/datastore.h"
+#include "core/core.h"
 #include "dbms/appconst.h"
+#include "dbms/POSTGRES/postgresplugin.h"
+#include "dbms/SQLITE/sqliteplugin.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   NotifiableWindow(parent),
@@ -21,6 +24,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  //Loading DBMS plugins
+  Core::instance(this);
+  Core::registerModule(new PostgresPlugin());
+  Core::registerModule(new SqlitePlugin());
+
+  //
   DataStore* ds = DataStore::instance(this);
   QStructureItemModel* structureModel = ds->structureModel();
 

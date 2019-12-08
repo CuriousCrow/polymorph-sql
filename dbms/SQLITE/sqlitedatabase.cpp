@@ -23,7 +23,7 @@ bool SqliteDatabase::reloadChildren()
   tableFolderItem->setChildrenType(Table);
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
-    new DBSqliteTableItem(name, tableFolderItem);
+    new SqliteTableItem(name, tableFolderItem);
   }
 
   //Creating views items
@@ -36,7 +36,7 @@ bool SqliteDatabase::reloadChildren()
   systemFolderItem->setChildrenType(Table);
   QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
   foreach (QString name, sysTableNames){
-    new DBSqliteTableItem(name, systemFolderItem);
+    new SqliteTableItem(name, systemFolderItem);
   }
 
   //Creating sequence items
@@ -54,7 +54,7 @@ bool SqliteDatabase::reloadChildren()
 
 DBTableItem *SqliteDatabase::createNewTableItem(QString caption, QObject *parent)
 {
-  return new DBSqliteTableItem(caption, parent);
+  return new SqliteTableItem(caption, parent);
 }
 
 QString SqliteDatabase::getViewListSql()

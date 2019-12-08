@@ -3,10 +3,10 @@
 
 #include "../dbtableitem.h"
 
-class DBSqliteTableItem : public DBTableItem
+class SqliteTableItem : public DBTableItem
 {
 public:
-    DBSqliteTableItem(QString caption, QObject* parent = nullptr);
+    SqliteTableItem(QString caption, QObject* parent = nullptr);
     virtual void reloadColumnsModel() override;
     // DBObjectItem interface
 public:

@@ -30,28 +30,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cmbDriverName">
-       <item>
-        <property name="text">
-         <string>QSQLITE</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>QMYSQL</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>QIBASE</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>QPSQL</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="cmbDriverName"/>
      </item>
     </layout>
    </item>

@@ -21,6 +21,8 @@ private:
   explicit DataStore(QObject *parent = nullptr);
   static DataStore* _singleton;
 
+  void initRegisteredDatabases();
+
   QStructureItemModel* _structureModel;
   QSqlDatabase appDB;
 };

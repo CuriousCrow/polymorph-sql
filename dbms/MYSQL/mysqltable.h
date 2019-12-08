@@ -3,12 +3,12 @@
 
 #include "../dbtableitem.h"
 
-class DBMysqlTableItem : public DBTableItem
+class MysqlTableItem : public DBTableItem
 {
   Q_OBJECT
 public:
-  DBMysqlTableItem(QString caption, QObject* parent = nullptr);
-  virtual ~DBMysqlTableItem() override;
+  MysqlTableItem(QString caption, QObject* parent = nullptr);
+  virtual ~MysqlTableItem() override;
 
   // DBObjectItem interface
 public:

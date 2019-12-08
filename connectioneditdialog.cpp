@@ -4,6 +4,8 @@
 #include <QFileDialog>
 #include <QSqlDatabase>
 #include <QMessageBox>
+#include <QStringListModel>
+#include "core/core.h"
 
 ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
   QDialog(parent),
@@ -13,7 +15,9 @@ ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
   _mapper = new LDataWidgetMapper(this);
   _mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 
-  removeUnavailableDriversFromCombobox();
+  QStringListModel* mModules = new QStringListModel(this);
+  mModules->setStringList(Core::instance()->moduleNames());
+  ui->cmbDriverName->setModel(mModules);
 }
 
 ConnectionEditDialog::~ConnectionEditDialog()
@@ -42,15 +46,6 @@ LDataWidgetMapper *ConnectionEditDialog::mapper()
 void ConnectionEditDialog::onDatabaseIndexChanged(QModelIndex idx)
 {
   _mapper->setCurrentModelIndex(idx);
-}
-
-void ConnectionEditDialog::removeUnavailableDriversFromCombobox()
-{
-  QStringList availableDrivers = QSqlDatabase::drivers();
-  for (int i = ui->cmbDriverName->count() - 1; i >= 0; i--){
-    if (!availableDrivers.contains(ui->cmbDriverName->itemText(i)))
-      ui->cmbDriverName->removeItem(i);
-  }
 }
 
 void ConnectionEditDialog::on_btnOk_clicked()

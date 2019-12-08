@@ -3,7 +3,10 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QApplication>
+#include <QSqlRecord>
 #include "../dbms/appconst.h"
+#include "../qsqlqueryhelper.h"
+#include "core.h"
 
 
 DataStore* DataStore::_singleton = nullptr;
@@ -24,7 +27,31 @@ DataStore::DataStore(QObject *parent) : QObject(parent)
   }
   qDebug() << "Success!";
 
-  _structureModel = new QStructureItemModel(this, appDB);
+  _structureModel = new QStructureItemModel(this);
+  initRegisteredDatabases();
+}
+
+void DataStore::initRegisteredDatabases()
+{
+  QString sql = "select id id, name caption, driver driverName, local_path databaseName, "
+                "host_address hostName, username userName, password password from t_database";
+  QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);
+  while (sqlResult.next()) {
+    QSqlRecord rec = sqlResult.record();
+    QString caption = rec.value(F_CAPTION).toString();
+    QString driverName = rec.value(F_DRIVER_NAME).toString();
+    DbmsPlugin* plugin = Core::module(driverName);
+    if (!plugin) {
+      qWarning() << "Can't load dbms plugin:" << driverName;
+      continue;
+    }
+    DBDatabaseItem* item = plugin->newDatabaseItem(caption);
+    for (int i=0; i<rec.count(); i++) {
+      item->setFieldValue(rec.fieldName(i), rec.value(i));
+    }
+    _structureModel->appendItem(item);
+  }
+  return;
 }
 
 DataStore *DataStore::instance(QObject* parent)

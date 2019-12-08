@@ -5,13 +5,13 @@
 #include <QSqlRecord>
 #include <QSqlField>
 
-DBSqliteTableItem::DBSqliteTableItem(QString caption, QObject *parent)
+SqliteTableItem::SqliteTableItem(QString caption, QObject *parent)
   : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
 }
 
-void DBSqliteTableItem::reloadColumnsModel()
+void SqliteTableItem::reloadColumnsModel()
 {
   _columnsModel->clear();
   QSqlRecord sqlColumns = QSqlQueryHelper::tableRowInfo(
@@ -44,12 +44,12 @@ void DBSqliteTableItem::reloadColumnsModel()
   }
 }
 
-ActionResult DBSqliteTableItem::insertMe()
+ActionResult SqliteTableItem::insertMe()
 {
   return !QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName()).lastError().isValid();
 }
 
-ActionResult DBSqliteTableItem::updateMe()
+ActionResult SqliteTableItem::updateMe()
 {
   qDebug() << "QDBSqliteTableItem::updateMe()";
   ActionResult res = DBTableItem::updateMe();
@@ -90,7 +90,7 @@ ActionResult DBSqliteTableItem::updateMe()
   return ActionResult();
 }
 
-QString DBSqliteTableItem::createTableQuery(QString table)
+QString SqliteTableItem::createTableQuery(QString table)
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;

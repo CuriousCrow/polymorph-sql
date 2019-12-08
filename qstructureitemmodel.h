@@ -10,7 +10,7 @@ class QStructureItemModel : public LStandardTreeModel
 {
   Q_OBJECT
 public:
-  explicit QStructureItemModel(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
+  explicit QStructureItemModel(QObject *parent = nullptr);
   ~QStructureItemModel();
 
   void appendItem(DBObjectItem* item, DBObjectItem* parent = nullptr);
@@ -23,8 +23,6 @@ public:
 signals:
   void itemAboutToBeRemoved(QString itemUrl);
 private:
-  QSqlDatabase _db;
-  bool loadRegisteredDatabases();
   //Fabric method
   DBDatabaseItem* dbItemByDriver(QString caption, QString driverName);
 private slots:

@@ -15,16 +15,21 @@ RC_ICONS = icons/cc_16.ico
 
 SOURCES += main.cpp\
 #Core
+  core/core.cpp \
   core/datastore.cpp \
   core/localeventnotifier.cpp \
     core/maphelplookupprovider.cpp \
     core/sqlhelplookupprovider.cpp \
     core/appsettings.cpp \
   dbms/FIREBIRD/firebirddatabase.cpp \
+  dbms/FIREBIRD/firebirdplugin.cpp \
   dbms/FIREBIRD/firebirdtable.cpp \
   dbms/MYSQL/mysqldatabase.cpp \
+  dbms/MYSQL/mysqlplugin.cpp \
   dbms/MYSQL/mysqltable.cpp \
+  dbms/POSTGRES/postgresplugin.cpp \
   dbms/SQLITE/sqlitedatabase.cpp \
+  dbms/SQLITE/sqliteplugin.cpp \
   dbms/SQLITE/sqlitetable.cpp \
     ltextcompleter.cpp \
     qknowledgebase.cpp \
@@ -92,17 +97,23 @@ SOURCES += main.cpp\
 
 HEADERS  += \
 #Core
+  core/core.h \
     core/datastore.h \
     core/localeventnotifier.h \
     core/maphelplookupprovider.h \
     core/sqlhelplookupprovider.h \
     core/appsettings.h \
   dbms/FIREBIRD/firebirddatabase.h \
+  dbms/FIREBIRD/firebirdplugin.h \
   dbms/FIREBIRD/firebirdtable.h \
   dbms/MYSQL/mysqldatabase.h \
+  dbms/MYSQL/mysqlplugin.h \
   dbms/MYSQL/mysqltable.h \
+  dbms/POSTGRES/postgresplugin.h \
   dbms/SQLITE/sqlitedatabase.h \
+  dbms/SQLITE/sqliteplugin.h \
   dbms/SQLITE/sqlitetable.h \
+  dbms/dbmsplugin.h \
     ltextcompleter.h \
     qknowledgebase.h \
 #Forms

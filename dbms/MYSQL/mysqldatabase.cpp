@@ -16,7 +16,7 @@ MysqlDatabase::~MysqlDatabase()
 
 DBTableItem *MysqlDatabase::createNewTableItem(QString caption, QObject *parent)
 {
-  return new DBMysqlTableItem(caption, parent);
+  return new MysqlTableItem(caption, parent);
 }
 
 bool MysqlDatabase::reloadChildren()
@@ -42,7 +42,7 @@ bool MysqlDatabase::reloadChildren()
   systemFolderItem->setChildrenType(Table);
   QStringList sysTableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
   foreach (QString name, sysTableNames){
-    new DBMysqlTableItem(name, systemFolderItem);
+    new MysqlTableItem(name, systemFolderItem);
   }
 
   //  //Creating trigger items
