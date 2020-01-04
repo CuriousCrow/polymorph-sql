@@ -9,6 +9,7 @@
 #include <QObject>
 #include "dbdatabaseitem.h"
 #include "../forms/abstractdatabaseitemform.h"
+#include "foldertreeitem.h"
 
 class DbmsPlugin : public QObject
 {
@@ -22,7 +23,12 @@ public:
   virtual DBSequenceItem* newSequenceItem(QString caption, QObject* parent = nullptr) = 0;
   virtual DBTriggerItem* newTriggerItem(QString caption, QObject* parent = nullptr) = 0;
 
+  virtual FolderTreeItem* loadFolder(FolderTreeItem* folderItem, DBObjectItem::ItemType childrenType) = 0;
+  virtual QList<DBObjectItem::ItemType> supportedTypes() = 0;
+
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) = 0;
+
+  virtual QString folderName(DBObjectItem::ItemType type) = 0;
 };
 
 //Объявление идентификатора интерфейса

@@ -17,6 +17,8 @@
 #include "dbms/appconst.h"
 #include "dbms/POSTGRES/postgresplugin.h"
 #include "dbms/SQLITE/sqliteplugin.h"
+#include "dbms/FIREBIRD/firebirdplugin.h"
+#include "dbms/MYSQL/mysqlplugin.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   NotifiableWindow(parent),
@@ -28,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::instance(this);
   Core::registerModule(new PostgresPlugin());
   Core::registerModule(new SqlitePlugin());
+  Core::registerModule(new FirebirdPlugin());
+  Core::registerModule(new MysqlPlugin());
 
   //
   DataStore* ds = DataStore::instance(this);
@@ -84,8 +88,6 @@ MainWindow::MainWindow(QWidget *parent) :
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(removeTabByIndex(int)));
-
-
 }
 
 MainWindow::~MainWindow()
@@ -124,7 +126,13 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     if (dbItem->children().isEmpty()){
       if (!dbItem->createDbConnection())
         break;
-      dbItem->reloadChildren();
+      DbmsPlugin* dbms = Core::module(dbItem->driverName());
+      foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
+        FolderTreeItem* folder = new FolderTreeItem(typeName(type), dbms->folderName(type), dbItem);
+        folder->setParentUrl(dbItem->objectUrl());
+        folder->setChildrenType(type);
+        dbms->loadFolder(folder, type);
+      }
       ui->tvDatabaseStructure->reset();
       ui->tvDatabaseStructure->expand(index);
     }
@@ -293,7 +301,12 @@ void MainWindow::reloadItemChildren()
   QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
   DataStore::structureModel()->deleteChildren(curIdx);
   FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(itemByIndex(curIdx));
-  folderItem->reloadChildren();
+
+  qDebug() << "Folder" << folderItem->fieldValue(F_CAPTION).toString() << "reload request";
+
+  DbmsPlugin* dbms = Core::module(folderItem->driverName());
+  dbms->loadFolder(folderItem, folderItem->childrenType());
+
   DataStore::structureModel()->dataChanged(curIdx, curIdx);
 }
 
@@ -307,16 +320,17 @@ void MainWindow::showCreateItemEditor()
 {
   qDebug() << "Create window";
   DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(currentItem);
-  DBDatabaseItem* databaseItem = qobject_cast<DBDatabaseItem*>(folderItem->parent());
-  if (!folderItem) {
+
+  if (currentItem->type() != DBObjectItem::Folder) {
     qWarning() << "Create item action: Not folder item";
     return;
   }
+  FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(currentItem);
+  DbmsPlugin* dbms = Core::module(folderItem->driverName());
 
   switch (folderItem->childrenType()) {
   case DBObjectItem::Table: {
-    DBTableItem* newTableItem = databaseItem->createNewTableItem(DEF_TABLE_NAME);
+    DBTableItem* newTableItem = dbms->newTableItem(DEF_TABLE_NAME);
     newTableItem->setParentUrl(folderItem->objectUrl());
     _tableEditForm->setObjItem(newTableItem);
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -325,7 +339,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::View: {
-    DBTableItem* newViewItem = databaseItem->createNewViewItem(DEF_VIEW_NAME);
+    DBTableItem* newViewItem = dbms->newViewItem(DEF_VIEW_NAME);
     newViewItem->setParentUrl(folderItem->objectUrl());
     _viewEditorWindow->setObjItem(newViewItem);
     _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Create);
@@ -334,7 +348,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::Sequence: {
-    DBSequenceItem* newSequenceItem = databaseItem->createNewSequenceItem(DEF_SEQUENCE_NAME);
+    DBSequenceItem* newSequenceItem = dbms->newSequenceItem(DEF_SEQUENCE_NAME);
     newSequenceItem->setParentUrl(folderItem->objectUrl());
     _sequenceEditForm->setObjItem(newSequenceItem);
     _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -343,7 +357,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::Procedure: {
-    DBProcedureItem* newProcedureItem = databaseItem->createNewProcedureItem(DEF_PROCEDURE_NAME);
+    DBProcedureItem* newProcedureItem = dbms->newProcedureItem(DEF_PROCEDURE_NAME);
     newProcedureItem->setParentUrl(folderItem->objectUrl());
     _procedureEditForm->setObjItem(newProcedureItem);
     _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -352,7 +366,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::Trigger: {
-    DBTriggerItem* newTriggerItem = databaseItem->createNewTriggerItem(DEF_TRIGGER_NAME);
+    DBTriggerItem* newTriggerItem = dbms->newTriggerItem(DEF_TRIGGER_NAME);
     newTriggerItem->setParentUrl(folderItem->objectUrl());
     _triggerEditForm->setObjItem(newTriggerItem);
     _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -451,6 +465,26 @@ DBObjectItem *MainWindow::itemByIndex(QModelIndex index)
 DBObjectItem *MainWindow::itemByName(QString name)
 {
   return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByName(name));
+}
+
+QString MainWindow::typeName(DBObjectItem::ItemType type)
+{
+  switch (type) {
+  case DBObjectItem::Table:
+    return FOLDER_TABLES;
+  case DBObjectItem::SystemTable:
+    return FOLDER_SYSTABLES;
+  case DBObjectItem::View:
+    return FOLDER_VIEWS;
+  case DBObjectItem::Trigger:
+    return FOLDER_TRIGGERS;
+  case DBObjectItem::Sequence:
+    return FOLDER_SEQUENCES;
+  case DBObjectItem::Procedure:
+    return FOLDER_PROCEDURES;
+  default:
+    return "unknown";
+  }
 }
 
 void MainWindow::refreshConnectionList()

@@ -20,6 +20,13 @@ public:
   virtual DBSequenceItem *newSequenceItem(QString caption, QObject *parent) override;
   virtual DBTriggerItem *newTriggerItem(QString caption, QObject *parent) override;
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) override;
+
+  virtual FolderTreeItem *loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType) override;
+  virtual QList<DBObjectItem::ItemType> supportedTypes() override;
+  virtual QString folderName(DBObjectItem::ItemType type) override;
+
+  void loadTables(FolderTreeItem* folderItem);
+  void loadViews(FolderTreeItem* folderItem);
 };
 
 #endif // FIREBIRDPLUGIN_H

@@ -50,6 +50,7 @@ public:
     Database,
     Table,
     View,
+    SystemTable,
     Sequence,
     Trigger,
     Procedure,

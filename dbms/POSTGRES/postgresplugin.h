@@ -8,8 +8,6 @@ class PostgresPlugin : public DbmsPlugin
 {
   Q_OBJECT
 public:
-
-
   // DbmsPlugin interface
 public:
   virtual QString driver() override;
@@ -20,6 +18,16 @@ public:
   virtual DBSequenceItem *newSequenceItem(QString caption, QObject *parent) override;
   virtual DBTriggerItem *newTriggerItem(QString caption, QObject *parent) override;
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) override;
+  virtual FolderTreeItem *loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType) override;
+
+  void loadSequences(FolderTreeItem* folderItem);
+  void loadTables(FolderTreeItem* folderItem);
+  void loadViews(FolderTreeItem* folderItem);
+  void loadTriggers(FolderTreeItem* folderItem);
+  void loadProcedures(FolderTreeItem* folderItem);
+
+  virtual QList<DBObjectItem::ItemType> supportedTypes() override;
+  virtual QString folderName(DBObjectItem::ItemType type) override;
 };
 
 #endif // POSTGRESPLUGIN_H

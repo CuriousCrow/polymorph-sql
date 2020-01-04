@@ -84,6 +84,8 @@ private:
   void addDatabase();
   DBObjectItem* itemByIndex(QModelIndex index);
   DBObjectItem* itemByName(QString name);
+
+  QString typeName(DBObjectItem::ItemType type);
 protected:
   //Dummy source change
 

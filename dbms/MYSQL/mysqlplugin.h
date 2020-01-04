@@ -19,6 +19,12 @@ public:
   virtual DBSequenceItem *newSequenceItem(QString caption, QObject *parent) override;
   virtual DBTriggerItem *newTriggerItem(QString caption, QObject *parent) override;
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) override;
+
+  // DbmsPlugin interface
+public:
+  virtual FolderTreeItem *loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType) override;
+  virtual QList<DBObjectItem::ItemType> supportedTypes() override;
+  virtual QString folderName(DBObjectItem::ItemType type) override;
 };
 
 #endif // MYSQLPLUGIN_H
