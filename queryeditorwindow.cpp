@@ -11,6 +11,7 @@
 #include "core/sqlhelplookupprovider.h"
 #include "core/localeventnotifier.h"
 #include "dbms/appconst.h"
+#include <QComboBox>
 
 QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -21,20 +22,23 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   _resultModel = new QSqlQueryModel(this);
   ui->tvResultSet->setModel(_resultModel);
 
-  _activeConnectionModel = new QActiveConnectionModel(this);
-  _activeConnectionModel->setSourceModel(DataStore::structureModel());
-  ui->cmbDatabase->setModel(_activeConnectionModel);
-  ui->cmbDatabase->setModelColumn(0);
-
-  _highlighter = new QSqlSyntaxHighlighter(this);
-  _highlighter->setDocument(ui->teQueryEditor->document());
-
   //Simple keywords autocompleter
   //TODO: Dynamic autocomplete depending on syntax and database objects
   _compModel = new LDBObjectModel(this);
   LTextCompleter* completer = new LTextCompleter(_compModel, this);
   completer->setCaseSensitivity(Qt::CaseInsensitive);
   completer->setWidget(ui->teQueryEditor);
+
+  _highlighter = new QSqlSyntaxHighlighter(this);
+  _highlighter->setDocument(ui->teQueryEditor->document());
+
+  connect(ui->cmbDatabase, SIGNAL(currentIndexChanged(int)),
+          this, SLOT(refreshCompleterData()));
+
+  _activeConnectionModel = new QActiveConnectionModel(this);
+  _activeConnectionModel->setSourceModel(DataStore::structureModel());
+  ui->cmbDatabase->setModel(_activeConnectionModel);
+  ui->cmbDatabase->setModelColumn(0);
 
   //  MapHelpLookupProvider* helpProvider = new MapHelpLookupProvider(this);
   //  helpProvider->addItem("SELECT", "<b>SELECT</b> is the most common keyword");
@@ -125,12 +129,6 @@ void QueryEditorWindow::refreshConnectionList()
 void QueryEditorWindow::refreshCompleterData()
 {
   _compModel->reload(_highlighter->keyWords(), connectionName());
-}
-
-void QueryEditorWindow::on_cmbDatabase_activated(const QString &arg1)
-{
-  Q_UNUSED(arg1)
-  refreshCompleterData();
 }
 
 void QueryEditorWindow::onHelpKey()

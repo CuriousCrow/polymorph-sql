@@ -22,7 +22,7 @@ class QueryEditorWindow : public QMainWindow
 public:
   explicit QueryEditorWindow(QWidget *parent = nullptr);
   ~QueryEditorWindow();
-
+public slots:
   void refreshConnectionList();
   void refreshCompleterData();
 private slots:
@@ -31,8 +31,6 @@ private slots:
   void on_aCommit_triggered();
 
   void on_aRollback_triggered();
-
-  void on_cmbDatabase_activated(const QString &arg1);
 
   void onHelpKey();
   void on_aExecScript_triggered();
