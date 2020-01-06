@@ -27,6 +27,7 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
 
   _mnuContext = new QMenu(this);
   _mnuContext->addAction(ui->aSetNull);
+  _mnuContext->addAction(ui->aAddValueFilter);
 
   qDebug() << "TableBrowserWindow" << objectName() << "created";
 }
@@ -84,4 +85,19 @@ void TableBrowserWindow::on_aSetNull_triggered()
 void TableBrowserWindow::onError(QString message)
 {
   QMessageBox::warning(this, tr("Warning"), message);
+}
+
+void TableBrowserWindow::on_aAddValueFilter_triggered()
+{
+  QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
+  QVariant value = ui->tableView->currentIndex().data();
+  QString filter = "%1=%2";
+  _sourceModel->filter()->addEqualFilter(field, value, false, WhereJoint::And);
+  _sourceModel->select();
+}
+
+void TableBrowserWindow::on_aResetFilters_triggered()
+{
+  _sourceModel->filter()->clear();
+  _sourceModel->select();
 }

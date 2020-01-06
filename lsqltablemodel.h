@@ -9,6 +9,7 @@
 #include <QSqlResult>
 #include <QSqlField>
 #include <QSqlIndex>
+#include "utils/sqlfiltermanager.h"
 
 #define DEBUG_SQL //All queries are shown by qDebug()
 
@@ -84,8 +85,9 @@ public:
 
   bool setTable(QString tableName);
   QString tableName();
-  void setFilter(QString sqlFilter){ _sqlFilter = sqlFilter; }
-  QString filter(){ return _sqlFilter; }
+  SqlFilterManager* filter();
+
+
   void setSort(int colIndex, Qt::SortOrder sortOrder);
   void setSort(QString colName, Qt::SortOrder sortOrder);
 
@@ -94,6 +96,8 @@ public:
   void addLookupField(LSqlTableModel* lookupModel, QString keyField, QString lookupField);
 
   int fieldIndex(QString fieldName) const;
+  QString fieldName(int col) const;
+  QVariant::Type fieldType(int col) const;
   bool isDirty(const QModelIndex & index) const;
   bool isDirty() const;
   void setCacheAction(qlonglong recId, LSqlRecord::CacheAction action);
@@ -135,7 +139,8 @@ signals:
   void beforeUpdate(QSqlRecord &rec);
 private:
   QString _tableName;
-  QString _sqlFilter;
+  SqlFilterManager* _filterManager;
+
   QString _orderByClause;
   QString _sequenceName;
   QStringList _headers;

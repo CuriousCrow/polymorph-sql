@@ -43,6 +43,8 @@
    <addaction name="aRevert"/>
    <addaction name="separator"/>
    <addaction name="aRefresh"/>
+   <addaction name="aResetFilters"/>
+   <addaction name="separator"/>
   </widget>
   <action name="aAddRow">
    <property name="icon">
@@ -104,6 +106,16 @@
   <action name="aSetNull">
    <property name="text">
     <string>Set NULL</string>
+   </property>
+  </action>
+  <action name="aAddValueFilter">
+   <property name="text">
+    <string>Add value filter</string>
+   </property>
+  </action>
+  <action name="aResetFilters">
+   <property name="text">
+    <string>Reset</string>
    </property>
   </action>
  </widget>

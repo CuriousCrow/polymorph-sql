@@ -36,6 +36,7 @@ class LQueryEditor : public QPlainTextEdit
 public:
   LQueryEditor(QWidget *parent = Q_NULLPTR);
   QString currentWord();
+  QString previousWord();
   QPoint cursorGlobalPos();
 signals:
   void wordClicked(QString word, Qt::KeyboardModifiers modifiers);

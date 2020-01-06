@@ -92,7 +92,8 @@ SOURCES += main.cpp\
     dbms/POSTGRES/postgresprimarykey.cpp \
     dbms/POSTGRES/postgressequence.cpp \
     dbms/POSTGRES/postgrestable.cpp \
-    dbms/POSTGRES/postgresuniqueconstraint.cpp
+    dbms/POSTGRES/postgresuniqueconstraint.cpp \
+  utils/sqlfiltermanager.cpp
 #Firebird
 
 HEADERS  += \
@@ -176,7 +177,8 @@ HEADERS  += \
     dbms/POSTGRES/postgresprimarykey.h \
     dbms/POSTGRES/postgressequence.h \
     dbms/POSTGRES/postgrestable.h \
-    dbms/POSTGRES/postgresuniqueconstraint.h
+    dbms/POSTGRES/postgresuniqueconstraint.h \
+  utils/sqlfiltermanager.h
 #Firebird
 
 FORMS    += mainwindow.ui \

@@ -33,6 +33,7 @@ private slots:
   void on_aRollback_triggered();
 
   void onHelpKey();
+  void onAddAlias();
   void on_aExecScript_triggered();
   void onFindObject(QString word, Qt::KeyboardModifiers modifiers);
 private:
@@ -46,6 +47,7 @@ private:
   QString dbUrl();
   DBObjectItem* dbObject();
   QString getActiveText();
+  QString generateAlias(QString tableName);
 };
 
 #endif // QUERYEDITORWINDOW_H

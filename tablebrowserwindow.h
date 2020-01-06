@@ -37,6 +37,10 @@ private slots:
   void on_aSetNull_triggered();
 
   void onError(QString message);
+  void on_aAddValueFilter_triggered();
+
+  void on_aResetFilters_triggered();
+
 private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;

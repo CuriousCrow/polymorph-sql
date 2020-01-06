@@ -16,6 +16,14 @@ QString LQueryEditor::currentWord()
   return cursor.selectedText();
 }
 
+QString LQueryEditor::previousWord()
+{
+  QTextCursor cursor = this->textCursor();
+  cursor.movePosition(QTextCursor::PreviousWord);
+  cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+  return cursor.selectedText();
+}
+
 QPoint LQueryEditor::cursorGlobalPos()
 {
   return this->mapToGlobal(this->cursorRect().bottomRight());

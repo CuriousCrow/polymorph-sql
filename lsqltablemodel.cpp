@@ -20,6 +20,8 @@ LSqlTableModel::LSqlTableModel(QObject *parent, QSqlDatabase db) :
   _db = db.isValid() ? db : QSqlDatabase::database();
   _query = QSqlQuery(_db);
   _autoIncrementID = db.driver()->hasFeature(QSqlDriver::LastInsertId);
+
+  _filterManager = new SqlFilterManager(this);
 }
 
 /*!
@@ -49,6 +51,11 @@ void LSqlTableModel::setSort(QString colName, Qt::SortOrder sortOrder)
 QString LSqlTableModel::tableName()
 {
   return _db.driver()->escapeIdentifier(_tableName, QSqlDriver::TableName);
+}
+
+SqlFilterManager *LSqlTableModel::filter()
+{
+  return _filterManager;
 }
 
 void LSqlTableModel::setHeaders(QStringList strList)
@@ -83,6 +90,20 @@ int LSqlTableModel::fieldIndex(QString fieldName) const
   if (index < 0)
     qDebug() << "Model" << objectName() << "contains no field named" << fieldName;
   return index;
+}
+
+QString LSqlTableModel::fieldName(int col) const
+{
+  if (col < 0 || col >= _patternRec.count())
+    return "";
+  return _patternRec.fieldName(col);
+}
+
+QVariant::Type LSqlTableModel::fieldType(int col) const
+{
+  if (col < 0 || col >= _patternRec.count())
+    return QVariant::Invalid;
+  return _patternRec.field(col).type();
 }
 
 bool LSqlTableModel::isDirty(const QModelIndex &index) const
@@ -582,7 +603,7 @@ QString LSqlTableModel::selectAllSql()
 {
   QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
                                             _patternRec, false);
-  QString where = _sqlFilter.isEmpty() ? "" : " where " + _sqlFilter;
+  QString where = _filterManager->whereClause();
   return Sql::concat(Sql::concat(stmt, where), _orderByClause);
 }
 

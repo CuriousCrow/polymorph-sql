@@ -1,6 +1,8 @@
 #ifndef APPCONST_H
 #define APPCONST_H
 
+#define DELIMITER "/"
+
 #define F_NAME "name"
 #define F_CAPTION "caption"
 #define F_QUERY_TEXT "queryText"

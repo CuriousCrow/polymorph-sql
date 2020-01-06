@@ -26,6 +26,11 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   //TODO: Dynamic autocomplete depending on syntax and database objects
   _compModel = new LDBObjectModel(this);
   LTextCompleter* completer = new LTextCompleter(_compModel, this);
+  QTableView* completerView = new QTableView(this);
+  completerView->horizontalHeader()->hide();
+  completerView->verticalHeader()->hide();
+  completerView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  completer->setPopup(completerView);
   completer->setCaseSensitivity(Qt::CaseInsensitive);
   completer->setWidget(ui->teQueryEditor);
 
@@ -53,6 +58,13 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   keyInterceptor->applyToWidget(ui->teQueryEditor);
   connect(keyInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
           this, SLOT(onHelpKey()));
+
+  LKeySequenceInterceptor* aliasInterceptor = new LKeySequenceInterceptor(this);
+  aliasInterceptor->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_T));
+  aliasInterceptor->applyToWidget(ui->teQueryEditor);
+  connect(aliasInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
+          this, SLOT(onAddAlias()));
+
 
   connect(ui->teQueryEditor, SIGNAL(wordClicked(QString, Qt::KeyboardModifiers)),
           this, SLOT(onFindObject(QString, Qt::KeyboardModifiers)));
@@ -110,6 +122,17 @@ QString QueryEditorWindow::getActiveText()
   return activeText;
 }
 
+QString QueryEditorWindow::generateAlias(QString tableName)
+{
+//  qDebug() << "Table name: " << tableName;
+  QStringList sl = tableName.split("_", QString::SkipEmptyParts);
+  QString alias;
+  foreach(QString word, sl) {
+    alias += word.at(0).toLower();
+  }
+  return alias;
+}
+
 void QueryEditorWindow::on_aCommit_triggered()
 {
   QSqlDatabase::database(connectionName()).commit();
@@ -137,6 +160,17 @@ void QueryEditorWindow::onHelpKey()
                       ui->teQueryEditor->cursorGlobalPos());
 }
 
+void QueryEditorWindow::onAddAlias()
+{
+  QString curWord = ui->teQueryEditor->currentWord();
+  QString prevWord = ui->teQueryEditor->previousWord();
+
+  QString tableAlias = generateAlias(curWord.isEmpty() ? prevWord : curWord);
+  if (!curWord.isEmpty())
+    ui->teQueryEditor->textCursor().insertText(" ");
+  ui->teQueryEditor->textCursor().insertText(tableAlias);
+}
+
 void QueryEditorWindow::on_aExecScript_triggered()
 {
   int success = 0;
@@ -162,7 +196,14 @@ void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifie
     return;
   DbObj dbObj = _compModel->findByName(word);
   //If current word is a table/view name then open table browser
-  if (dbObj.isValid() && (dbObj.type == OBJTYPE_TABLE || dbObj.type == OBJTYPE_VIEW)) {
-    LocalEventNotifier::postLocalEvent(ShowObjectEvent, dbUrl() + "/" + dbObj.name);
+  if (dbObj.isValid()) {
+    if (dbObj.type == OBJTYPE_TABLE) {
+      QString url = dbUrl() + DELIMITER + FOLDER_TABLES + DELIMITER + dbObj.name;
+      LocalEventNotifier::postLocalEvent(ShowObjectEvent, url);
+    }
+    else if (dbObj.type == OBJTYPE_VIEW) {
+      QString url = dbUrl() + DELIMITER + FOLDER_VIEWS + DELIMITER + dbObj.name;
+      LocalEventNotifier::postLocalEvent(ShowObjectEvent, url);
+    }
   }
 }
