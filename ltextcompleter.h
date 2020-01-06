@@ -10,6 +10,7 @@
 */
 class LTextCompleter : public QCompleter
 {
+  Q_OBJECT
 public:
   LTextCompleter(QObject *parent = nullptr);
   LTextCompleter(QAbstractItemModel *model, QObject *parent = nullptr);
@@ -19,6 +20,8 @@ public:
 
   int minCompletionPrefixLength() const;
   void setMinCompletionPrefixLength(int minCompletionPrefixLength);
+signals:
+  void completerRequested(const QString &contextWord);
 private:
   int _minCompletionPrefixLength = 1;
   int _popupWidth = 200;
@@ -28,6 +31,7 @@ private:
   void setTextCursor(QTextCursor cursor);
   bool tryToComplete(QString prefix, bool replaceIfOneOption = false);
   QString getCompletionPrefix();
+  QString getCompletionContext();
 };
 
 #endif // QTEXTCOMPLETER_H

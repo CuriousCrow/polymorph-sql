@@ -13,6 +13,8 @@
 #include "dbms/appconst.h"
 #include <QComboBox>
 
+#include <QStringListModel>
+
 QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::QueryEditorWindow)
@@ -25,14 +27,16 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   //Simple keywords autocompleter
   //TODO: Dynamic autocomplete depending on syntax and database objects
   _compModel = new LDBObjectModel(this);
-  LTextCompleter* completer = new LTextCompleter(_compModel, this);
+  _completer = new LTextCompleter(_compModel, this);
   QTableView* completerView = new QTableView(this);
   completerView->horizontalHeader()->hide();
   completerView->verticalHeader()->hide();
   completerView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  completer->setPopup(completerView);
-  completer->setCaseSensitivity(Qt::CaseInsensitive);
-  completer->setWidget(ui->teQueryEditor);
+  _completer->setPopup(completerView);
+  _completer->setCaseSensitivity(Qt::CaseInsensitive);
+  _completer->setWidget(ui->teQueryEditor);
+  connect(_completer, SIGNAL(completerRequested(QString)),
+          this, SLOT(onCompleterRequested(QString)));
 
   _highlighter = new QSqlSyntaxHighlighter(this);
   _highlighter->setDocument(ui->teQueryEditor->document());
@@ -205,5 +209,32 @@ void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifie
       QString url = dbUrl() + DELIMITER + FOLDER_VIEWS + DELIMITER + dbObj.name;
       LocalEventNotifier::postLocalEvent(ShowObjectEvent, url);
     }
+  }
+}
+
+void QueryEditorWindow::onCompleterRequested(const QString &contextText)
+{
+  qDebug() << "Completer requested:" << contextText;
+  if (contextText.contains(".")) {
+    QString objName = contextText;
+    objName.remove(".");
+    DbObj dbObj = _compModel->findByName(objName);
+    if (dbObj.isValid() && dbObj.type == OBJTYPE_TABLE) {
+      qDebug() << "Searching table:" << dbObj.name;
+      DBObjectItem* item = DataStore::itemByFolderAndName(dbObject(), FOLDER_TABLES, objName.toLower());
+      if (item && item->type() == DBObjectItem::Table) {
+        qDebug() << "Table object found";
+        DBTableItem* tableItem = qobject_cast<DBTableItem*>(item);
+        tableItem->reloadColumnsModel();
+        _completer->setModel(tableItem->columnsModel());
+        _completer->setMinCompletionPrefixLength(0);
+        _completer->setCompletionColumn(1);
+      }
+    }
+  }
+  else {
+    _completer->setModel(_compModel);
+    _completer->setMinCompletionPrefixLength(1);
+    _completer->setCompletionColumn(0);
   }
 }

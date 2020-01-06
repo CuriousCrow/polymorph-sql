@@ -57,6 +57,17 @@ QString LTextCompleter::getCompletionPrefix()
   return cursor.selectedText();
 }
 
+QString LTextCompleter::getCompletionContext()
+{
+  QTextCursor cursor = textCursor();
+  while(!cursor.atStart()) {
+    cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor);
+    if (cursor.selectedText().startsWith(" "))
+      break;
+  }
+  return cursor.selectedText().trimmed();
+}
+
 bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
 {
   if ((e->type() == QEvent::KeyPress) && isMultilineEditor()){
@@ -82,6 +93,7 @@ bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
       return false;
     case Qt::Key_Space:
       if (ke->modifiers().testFlag(Qt::ControlModifier)){
+        emit completerRequested(getCompletionContext());
         tryToComplete(getCompletionPrefix(), true);
         return true;
       }

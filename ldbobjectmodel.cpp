@@ -58,7 +58,7 @@ void LDBObjectModel::reload(QStringList keywords, QString connName)
     QSqlQuery query(db);
     query.exec(sql);
     while (query.next()) {
-      _dataList.append(DbObj(query.value(0).toString(), query.value(1).toString()));
+      _dataList.append(DbObj(query.value(0).toString(), query.value(1).toString().trimmed()));
     }
   }
   emit endResetModel();

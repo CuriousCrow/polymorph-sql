@@ -36,12 +36,14 @@ private slots:
   void onAddAlias();
   void on_aExecScript_triggered();
   void onFindObject(QString word, Qt::KeyboardModifiers modifiers);
+  void onCompleterRequested(const QString &contextText);
 private:
   Ui::QueryEditorWindow *ui;
   QActiveConnectionModel* _activeConnectionModel;
   QSqlQueryModel* _resultModel;
   LDBObjectModel* _compModel;
   QSqlSyntaxHighlighter* _highlighter;
+  LTextCompleter* _completer;
   QSimpleTooltip* _helpTooltip;
   QString connectionName();
   QString dbUrl();
