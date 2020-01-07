@@ -44,7 +44,7 @@ SOURCES += main.cpp\
   forms/uniqueconstrainteditform.cpp \
   forms/vieweditdialog.cpp \
   mainwindow.cpp \
-  connectioneditdialog.cpp \
+  forms/connectioneditdialog.cpp \
   tablebrowserwindow.cpp \
   queryeditorwindow.cpp \
   lqueryeditor.cpp \
@@ -128,7 +128,7 @@ HEADERS  += \
   forms/uniqueconstrainteditform.h \
   forms/vieweditdialog.h \
   mainwindow.h \
-  connectioneditdialog.h \
+  forms/connectioneditdialog.h \
   tablebrowserwindow.h \
   queryeditorwindow.h \
   lqueryeditor.h \
@@ -182,7 +182,7 @@ HEADERS  += \
 #Firebird
 
 FORMS    += mainwindow.ui \
-    connectioneditdialog.ui \
+    forms/connectioneditdialog.ui \
     forms/checkconstrainteditform.ui \
     forms/foreignkeyform.ui \
     forms/procedureeditform.ui \

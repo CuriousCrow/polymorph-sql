@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <lsqltablemodel.h>
-#include "connectioneditdialog.h"
+#include "forms/connectioneditdialog.h"
 #include <QMenu>
 #include "qstructureitemmodel.h"
 #include "queryeditorwindow.h"
