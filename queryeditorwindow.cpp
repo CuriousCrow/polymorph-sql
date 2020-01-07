@@ -118,6 +118,19 @@ DBObjectItem *QueryEditorWindow::dbObject()
   return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(sourceIndex));
 }
 
+QString QueryEditorWindow::aliasSource(QString alias)
+{
+  QString aliasPattern = "(?:from|join)\\s+([A-Za-z_]+)\\s+%1\\b";
+  QRegExp rx(aliasPattern.arg(alias));
+  rx.setCaseSensitivity(Qt::CaseInsensitive);
+  qDebug() << rx.pattern() << ui->teQueryEditor->toPlainText();
+  if (rx.indexIn(ui->teQueryEditor->toPlainText()) >= 0) {
+    qDebug() << rx.cap() << rx.cap(1) << rx.cap(2);
+    return rx.cap(1);
+  }
+  return alias;
+}
+
 QString QueryEditorWindow::getActiveText()
 {
   QString activeText = ui->teQueryEditor->textCursor().selectedText();
@@ -217,7 +230,9 @@ void QueryEditorWindow::onCompleterRequested(const QString &contextText)
   qDebug() << "Completer requested:" << contextText;
   if (contextText.contains(".")) {
     QString objName = contextText;
-    objName.remove(".");
+    objName = objName.section(".", 0, 0);
+    objName = aliasSource(objName);
+
     DbObj dbObj = _compModel->findByName(objName);
     if (dbObj.isValid() && dbObj.type == OBJTYPE_TABLE) {
       qDebug() << "Searching table:" << dbObj.name;

@@ -48,6 +48,7 @@ private:
   QString connectionName();
   QString dbUrl();
   DBObjectItem* dbObject();
+  QString aliasSource(QString alias);
   QString getActiveText();
   QString generateAlias(QString tableName);
 };

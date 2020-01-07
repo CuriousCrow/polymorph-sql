@@ -27,13 +27,13 @@ LTextCompleter::~LTextCompleter()
 
 bool LTextCompleter::tryToComplete(QString prefix, bool replaceIfOneOption)
 {
-  QTextCursor cursor = textCursor();
-  cursor.movePosition(QTextCursor::StartOfWord);
-  cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
   if (prefix.length() >= _minCompletionPrefixLength){
     setCompletionPrefix(prefix);
     //Если есть только один вариант, то сразу его подставляем
     if (replaceIfOneOption && completionCount() == 1) {
+      QTextCursor cursor = textCursor();
+      cursor.movePosition(QTextCursor::StartOfWord);
+      cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
       cursor.removeSelectedText();
       QAbstractItemModel* popupModel = popup()->model();
       cursor.insertText(popupModel->data(popupModel->index(0, completionColumn())).toString());
@@ -54,18 +54,21 @@ QString LTextCompleter::getCompletionPrefix()
 {
   QTextCursor cursor = textCursor();
   cursor.movePosition(QTextCursor::StartOfWord, QTextCursor::KeepAnchor);
-  return cursor.selectedText();
+  return cursor.selectedText().remove(".");
 }
 
 QString LTextCompleter::getCompletionContext()
 {
+  QString context;
+  QRegExp rx("[A-Za-z_\\.\\-0-9]+");
   QTextCursor cursor = textCursor();
   while(!cursor.atStart()) {
     cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor);
-    if (cursor.selectedText().startsWith(" "))
+    if (!rx.exactMatch(cursor.selectedText()))
       break;
+    context = cursor.selectedText();
   }
-  return cursor.selectedText().trimmed();
+  return context;
 }
 
 bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
@@ -82,7 +85,11 @@ bool LTextCompleter::eventFilter(QObject *o, QEvent *e)
         if (popup()->currentIndex().isValid()){
           QTextCursor cursor = textCursor();
           cursor.movePosition(QTextCursor::StartOfWord);
-          cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+          cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+          qDebug() << "Text to replace:" << cursor.selectedText();
+
+          if (cursor.selectedText() == ".")
+            cursor.clearSelection();
           cursor.removeSelectedText();
           cursor.insertText(popup()->currentIndex().data().toString());
           setTextCursor(cursor);
