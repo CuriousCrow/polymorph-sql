@@ -101,17 +101,37 @@ void TableBrowserWindow::on_aResetFilters_triggered()
 
 void TableBrowserWindow::on_aEqualFilter_triggered()
 {
-  QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
-  QVariant value = ui->tableView->currentIndex().data();
-  _sourceModel->filter()->addEqualFilter(field, value, false, WhereJoint::And);
+  if (ui->tableView->selectionModel()->selection().isEmpty())
+    return;
+
+  int curCol = ui->tableView->currentIndex().column();
+  QString field = _sourceModel->fieldName(curCol);
+
+  QVariantList values;
+  foreach (QModelIndex idx, ui->tableView->selectionModel()->selectedIndexes()) {
+    if (idx.column() != curCol)
+      continue;
+    values.append(idx.data());
+  }
+  _sourceModel->filter()->addEqualFilter(field, values, false, WhereJoint::And);
   _sourceModel->select();
 }
 
 void TableBrowserWindow::on_aNotEqualFilter_triggered()
 {
-  QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
-  QVariant value = ui->tableView->currentIndex().data();
-  _sourceModel->filter()->addEqualFilter(field, value, true, WhereJoint::And);
+  if (ui->tableView->selectionModel()->selection().isEmpty())
+    return;
+
+  int curCol = ui->tableView->currentIndex().column();
+  QString field = _sourceModel->fieldName(curCol);
+
+  QVariantList values;
+  foreach (QModelIndex idx, ui->tableView->selectionModel()->selectedIndexes()) {
+    if (idx.column() != curCol)
+      continue;
+    values.append(idx.data());
+  }
+  _sourceModel->filter()->addEqualFilter(field, values, true, WhereJoint::And);
   _sourceModel->select();
 }
 
