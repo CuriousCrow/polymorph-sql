@@ -108,14 +108,39 @@
     <string>Set NULL</string>
    </property>
   </action>
-  <action name="aAddValueFilter">
+  <action name="aEqualFilter">
    <property name="text">
-    <string>Add value filter</string>
+    <string>EQUAL (=)</string>
    </property>
   </action>
   <action name="aResetFilters">
    <property name="text">
     <string>Reset</string>
+   </property>
+  </action>
+  <action name="aNotEqualFilter">
+   <property name="text">
+    <string>NOT EQUAL (&lt;&gt;)</string>
+   </property>
+  </action>
+  <action name="aGreaterThanFilter">
+   <property name="text">
+    <string>GREATER THAN (&gt;)</string>
+   </property>
+  </action>
+  <action name="aLessThanFilter">
+   <property name="text">
+    <string>LESS THAN (&lt;)</string>
+   </property>
+  </action>
+  <action name="aFilterIsNull">
+   <property name="text">
+    <string>IS NULL</string>
+   </property>
+  </action>
+  <action name="aFilterIsNotNull">
+   <property name="text">
+    <string>IS NOT NULL</string>
    </property>
   </action>
  </widget>

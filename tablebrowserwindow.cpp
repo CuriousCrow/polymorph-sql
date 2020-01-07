@@ -27,7 +27,13 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
 
   _mnuContext = new QMenu(this);
   _mnuContext->addAction(ui->aSetNull);
-  _mnuContext->addAction(ui->aAddValueFilter);
+  _mnuContext->addSeparator();
+  _mnuContext->addAction(ui->aEqualFilter);
+  _mnuContext->addAction(ui->aNotEqualFilter);
+  _mnuContext->addAction(ui->aGreaterThanFilter);
+  _mnuContext->addAction(ui->aLessThanFilter);
+  _mnuContext->addAction(ui->aFilterIsNull);
+  _mnuContext->addAction(ui->aFilterIsNotNull);
 
   qDebug() << "TableBrowserWindow" << objectName() << "created";
 }
@@ -87,17 +93,54 @@ void TableBrowserWindow::onError(QString message)
   QMessageBox::warning(this, tr("Warning"), message);
 }
 
-void TableBrowserWindow::on_aAddValueFilter_triggered()
+void TableBrowserWindow::on_aResetFilters_triggered()
+{
+  _sourceModel->filter()->clear();
+  _sourceModel->select();
+}
+
+void TableBrowserWindow::on_aEqualFilter_triggered()
 {
   QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
   QVariant value = ui->tableView->currentIndex().data();
-  QString filter = "%1=%2";
   _sourceModel->filter()->addEqualFilter(field, value, false, WhereJoint::And);
   _sourceModel->select();
 }
 
-void TableBrowserWindow::on_aResetFilters_triggered()
+void TableBrowserWindow::on_aNotEqualFilter_triggered()
 {
-  _sourceModel->filter()->clear();
+  QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
+  QVariant value = ui->tableView->currentIndex().data();
+  _sourceModel->filter()->addEqualFilter(field, value, true, WhereJoint::And);
+  _sourceModel->select();
+}
+
+void TableBrowserWindow::on_aGreaterThanFilter_triggered()
+{
+  QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
+  QVariant value = ui->tableView->currentIndex().data();
+  _sourceModel->filter()->addMoreThanFilter(field, value, WhereJoint::And);
+  _sourceModel->select();
+}
+
+void TableBrowserWindow::on_aLessThanFilter_triggered()
+{
+  QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
+  QVariant value = ui->tableView->currentIndex().data();
+  _sourceModel->filter()->addLessThanFilter(field, value, WhereJoint::And);
+  _sourceModel->select();
+}
+
+void TableBrowserWindow::on_aFilterIsNull_triggered()
+{
+  QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
+  _sourceModel->filter()->addNullFilter(field, false, WhereJoint::And);
+  _sourceModel->select();
+}
+
+void TableBrowserWindow::on_aFilterIsNotNull_triggered()
+{
+  QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
+  _sourceModel->filter()->addNullFilter(field, true, WhereJoint::And);
   _sourceModel->select();
 }

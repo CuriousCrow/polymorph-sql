@@ -37,9 +37,20 @@ private slots:
   void on_aSetNull_triggered();
 
   void onError(QString message);
-  void on_aAddValueFilter_triggered();
 
   void on_aResetFilters_triggered();
+
+  void on_aEqualFilter_triggered();
+
+  void on_aNotEqualFilter_triggered();
+
+  void on_aGreaterThanFilter_triggered();
+
+  void on_aLessThanFilter_triggered();
+
+  void on_aFilterIsNull_triggered();
+
+  void on_aFilterIsNotNull_triggered();
 
 private:
   Ui::TableBrowserWindow *ui;
