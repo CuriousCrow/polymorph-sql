@@ -56,6 +56,8 @@ private slots:
 
   void showCreateItemEditor();
 
+  void saveDatabaseChanges();
+
   void saveTableChanges();
 
   void saveViewChanges();

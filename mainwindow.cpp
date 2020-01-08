@@ -58,7 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //Создаем окно редактирования соединений с БД
   _connectionEditDialog = new ConnectionEditDialog(this);
-  _connectionEditDialog->setModel(structureModel);
+  connect(_connectionEditDialog, SIGNAL(accepted()),
+          this, SLOT(saveDatabaseChanges()));
 
   //View editor window
   _viewEditorWindow = new ViewEditDialog(this);
@@ -97,19 +98,20 @@ MainWindow::~MainWindow()
 void MainWindow::on_aAddDatabase_triggered()
 {
   DBDatabaseItem* newItem = new DBDatabaseItem(DEF_DATABASE_NAME);
-  ActionResult res = newItem->insertMe();
-  if (res.isSuccess()){
-    DataStore::structureModel()->appendItem(newItem);
-    _connectionEditDialog->mapper()->toLast();
-    _connectionEditDialog->show();
-  }
-  else {
-    qWarning() << "Error:" << res.description();
-  }
+  _connectionEditDialog->setUserAction(AbstractDatabaseEditForm::Create);
+  _connectionEditDialog->setObjItem(newItem);
+  _connectionEditDialog->objectToForm();
+  _connectionEditDialog->show();
 }
 
 void MainWindow::on_aEditDatabase_triggered()
 {
+  if (!ui->tvDatabaseStructure->currentIndex().isValid())
+    return;
+  DBObjectItem* curItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+  _connectionEditDialog->setUserAction(AbstractDatabaseEditForm::Edit);
+  _connectionEditDialog->setObjItem(curItem);
+  _connectionEditDialog->objectToForm();
   _connectionEditDialog->show();
 }
 
@@ -165,8 +167,11 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_tvDatabaseStructure_clicked(const QModelIndex &index)
 {
-  _connectionEditDialog->onDatabaseIndexChanged(index);
-  qDebug() << "Obj url:" << DataStore::structureModel()->itemByIndex(index)->objectName();
+  DBObjectItem* curItem = qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
+  qDebug() << "Obj url:" << curItem->objectName();
+
+  ui->aEditDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
+  ui->aRemoveDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
 }
 
 void MainWindow::removeTabByIndex(int index)
@@ -375,6 +380,20 @@ void MainWindow::showCreateItemEditor()
   }
   default:
     break;
+  }
+}
+
+void MainWindow::saveDatabaseChanges()
+{
+  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
+  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
+  if (action == AbstractDatabaseEditForm::Create) {
+    DBObjectItem* newItem = editForm->objItem();
+    DataStore::structureModel()->appendItem(newItem);
+    refreshQueryEditorAssistance();
+  }
+  else {
+    qWarning() << "Connection delete action is not possible from edit form";
   }
 }
 

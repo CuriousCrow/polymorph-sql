@@ -6,14 +6,13 @@
 #include <QMessageBox>
 #include <QStringListModel>
 #include "core/core.h"
+#include "../dbms/appconst.h"
 
 ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
-  QDialog(parent),
+  AbstractDatabaseEditForm(parent),
   ui(new Ui::ConnectionEditDialog)
 {
   ui->setupUi(this);
-  _mapper = new LDataWidgetMapper(this);
-  _mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 
   QStringListModel* mModules = new QStringListModel(this);
   mModules->setStringList(Core::instance()->moduleNames());
@@ -25,40 +24,9 @@ ConnectionEditDialog::~ConnectionEditDialog()
   delete ui;
 }
 
-void ConnectionEditDialog::setModel(QStructureItemModel *model)
-{
-  _model = model;
-  _mapper->setModel(_model);
-  _mapper->setRootIndex(QModelIndex());
-  _mapper->addMapping(ui->edtConnectionName, 0);
-  _mapper->addMapping(ui->edtHostAddress, 2);
-  _mapper->addMapping(ui->edtUserName, 3);
-  _mapper->addMapping(ui->edtPassword, 4);
-  _mapper->addMapping(ui->cmbDriverName, 5);
-  _mapper->addMapping(ui->edtDatabaseName, 6);
-}
-
-LDataWidgetMapper *ConnectionEditDialog::mapper()
-{
-  return _mapper;
-}
-
-void ConnectionEditDialog::onDatabaseIndexChanged(QModelIndex idx)
-{
-  _mapper->setCurrentModelIndex(idx);
-}
-
 void ConnectionEditDialog::on_btnOk_clicked()
 {  
-  _mapper->submit();
-  DBObjectItem* item = qobject_cast<DBObjectItem*>(_model->itemByIndex(_model->index(_mapper->currentIndex(),0, _mapper->rootIndex())));
-  ActionResult res = item->updateMe();
-  if (res.isSuccess()) {
-    accept();
-  }
-  else {
-    QMessageBox::warning(this, "Warning", "Error connecting database: " + res.description());
-  }
+  tryUserAction();
 }
 
 void ConnectionEditDialog::on_btnBrowseLocalAddress_clicked()
@@ -76,6 +44,26 @@ void ConnectionEditDialog::on_btnTryToConnect_clicked()
 
 void ConnectionEditDialog::on_btnCancel_clicked()
 {
-  _mapper->revert();
   reject();
+}
+
+
+void ConnectionEditDialog::objectToForm()
+{
+  ui->edtConnectionName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtUserName->setText(_objItem->fieldValue(F_USERNAME).toString());
+  ui->edtPassword->setText(_objItem->fieldValue(F_PASSWORD).toString());
+  ui->edtHostAddress->setText(_objItem->fieldValue(F_HOSTNAME).toString());
+  ui->cmbDriverName->setCurrentText(_objItem->fieldValue(F_DRIVER_NAME).toString());
+  ui->edtDatabaseName->setText(_objItem->fieldValue(F_DATABASE_NAME).toString());
+}
+
+void ConnectionEditDialog::formToObject()
+{
+  _objItem->setFieldValue(F_CAPTION, ui->edtConnectionName->text());
+  _objItem->setFieldValue(F_USERNAME, ui->edtUserName->text());
+  _objItem->setFieldValue(F_PASSWORD, ui->edtPassword->text());
+  _objItem->setFieldValue(F_HOSTNAME, ui->edtHostAddress->text());
+  _objItem->setFieldValue(F_DRIVER_NAME, ui->cmbDriverName->currentText());
+  _objItem->setFieldValue(F_DATABASE_NAME, ui->edtDatabaseName->text());
 }
