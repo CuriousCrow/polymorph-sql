@@ -67,3 +67,14 @@ void ConnectionEditDialog::formToObject()
   _objItem->setFieldValue(F_DRIVER_NAME, ui->cmbDriverName->currentText());
   _objItem->setFieldValue(F_DATABASE_NAME, ui->edtDatabaseName->text());
 }
+
+void ConnectionEditDialog::on_btnCreate_clicked()
+{
+  formToObject();
+  DBDatabaseItem* dbItem = qobject_cast<DBDatabaseItem*>(_objItem);
+  bool res = dbItem->createDatabase();
+  if (res)
+    QMessageBox::information(this, "Information", "Database successfully created");
+  else
+    QMessageBox::critical(this, "Error", "Database creation failed");
+}

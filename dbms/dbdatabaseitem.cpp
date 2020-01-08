@@ -150,6 +150,38 @@ ActionResult DBDatabaseItem::deleteMe()
   return execSql(fillSqlPattern(sql));
 }
 
+bool DBDatabaseItem::createDatabase()
+{
+  bool resOk = false;
+  qDebug() << "Create database:" << fieldValue(F_DATABASE_NAME);
+  {
+    QSqlDatabase con = QSqlDatabase::addDatabase(fieldValue(F_DRIVER_NAME).toString(), fieldValue(F_CAPTION).toString());
+    con.setHostName(fieldValue(F_HOSTNAME).toString());
+    con.setUserName(fieldValue(F_USERNAME).toString());
+    con.setPassword(fieldValue(F_PASSWORD).toString());
+    resOk = con.open();
+    if (resOk) {
+      QString sql = "CREATE DATABASE \"%1\"";
+      QSqlQuery query = con.exec(sql.arg(fieldValue(F_DATABASE_NAME).toString()));
+      resOk = !query.lastError().isValid();
+      if (!resOk) {
+        qDebug() << "Cannot create database:" << query.lastError().databaseText();
+      }
+    }
+    else {
+      qDebug() << "Cannot connect DBMS server:" << con.lastError();
+    }
+  }
+  QSqlDatabase::removeDatabase(fieldValue(F_CAPTION).toString());
+  return resOk;
+}
+
+bool DBDatabaseItem::dropDatabase()
+{
+  qDebug() << "Drop database:" << fieldValue(F_DATABASE_NAME);
+  return true;
+}
+
 QVariant DBDatabaseItem::colData(int column, int role)
 {
   switch (role) {

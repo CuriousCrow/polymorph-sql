@@ -49,6 +49,9 @@ public:
   virtual ActionResult updateMe();
   virtual ActionResult deleteMe();
 
+  virtual bool createDatabase();
+  virtual bool dropDatabase();
+
   // LAbstractTreeItem interface
 public:  
   virtual QVariant colData(int column, int role);

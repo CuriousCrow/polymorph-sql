@@ -24,6 +24,8 @@ private slots:
 
   void on_btnTryToConnect_clicked();
   void on_btnCancel_clicked();
+  void on_btnCreate_clicked();
+
 private:
   Ui::ConnectionEditDialog *ui;
   void removeUnavailableDriversFromCombobox();
