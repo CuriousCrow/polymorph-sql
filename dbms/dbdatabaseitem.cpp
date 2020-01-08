@@ -150,36 +150,57 @@ ActionResult DBDatabaseItem::deleteMe()
   return execSql(fillSqlPattern(sql));
 }
 
-bool DBDatabaseItem::createDatabase()
+ActionResult DBDatabaseItem::createDatabase()
 {
-  bool resOk = false;
-  qDebug() << "Create database:" << fieldValue(F_DATABASE_NAME);
+  ActionResult res;
+  qDebug() << "Create database:" << fieldValue(F_DATABASE_NAME).toString();
+  QString conName = "Create_" + fieldValue(F_DATABASE_NAME).toString();
   {
-    QSqlDatabase con = QSqlDatabase::addDatabase(fieldValue(F_DRIVER_NAME).toString(), fieldValue(F_CAPTION).toString());
+    QSqlDatabase con = QSqlDatabase::addDatabase(fieldValue(F_DRIVER_NAME).toString(), conName);
     con.setHostName(fieldValue(F_HOSTNAME).toString());
     con.setUserName(fieldValue(F_USERNAME).toString());
     con.setPassword(fieldValue(F_PASSWORD).toString());
-    resOk = con.open();
-    if (resOk) {
+
+    if (con.open()) {
       QString sql = "CREATE DATABASE \"%1\"";
       QSqlQuery query = con.exec(sql.arg(fieldValue(F_DATABASE_NAME).toString()));
-      resOk = !query.lastError().isValid();
-      if (!resOk) {
-        qDebug() << "Cannot create database:" << query.lastError().databaseText();
+
+      if (query.lastError().isValid()) {
+        res = ActionResult(ERR_QUERY_ERROR, "Cannot create database " + query.lastError().databaseText());
       }
     }
     else {
-      qDebug() << "Cannot connect DBMS server:" << con.lastError();
+      res = ActionResult(ERR_QUERY_ERROR, "Cannot connect DBMS server: " + con.lastError().databaseText());
     }
   }
-  QSqlDatabase::removeDatabase(fieldValue(F_CAPTION).toString());
-  return resOk;
+  QSqlDatabase::removeDatabase(conName);
+  return res;
 }
 
-bool DBDatabaseItem::dropDatabase()
+ActionResult DBDatabaseItem::dropDatabase()
 {
-  qDebug() << "Drop database:" << fieldValue(F_DATABASE_NAME);
-  return true;
+  ActionResult res;
+  qDebug() << "Drop database:" << fieldValue(F_DATABASE_NAME).toString();
+  QString conName = "Drop_" + fieldValue(F_DATABASE_NAME).toString();
+  {
+    QSqlDatabase con = QSqlDatabase::addDatabase(fieldValue(F_DRIVER_NAME).toString(), conName);
+    con.setHostName(fieldValue(F_HOSTNAME).toString());
+    con.setUserName(fieldValue(F_USERNAME).toString());
+    con.setPassword(fieldValue(F_PASSWORD).toString());
+
+    if (con.open()) {
+      QString sql = "DROP DATABASE \"%1\"";
+      QSqlQuery query = con.exec(sql.arg(fieldValue(F_DATABASE_NAME).toString()));
+      if (query.lastError().isValid()) {
+        res = ActionResult(ERR_QUERY_ERROR, "Cannot create database: " + query.lastError().databaseText());
+      }
+    }
+    else {
+      res = ActionResult(ERR_QUERY_ERROR, "Cannot connect DBMS server: " + con.lastError().databaseText());
+    }
+  }
+  QSqlDatabase::removeDatabase(conName);
+  return res;
 }
 
 QVariant DBDatabaseItem::colData(int column, int role)

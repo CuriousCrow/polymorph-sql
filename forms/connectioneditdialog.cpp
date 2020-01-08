@@ -17,6 +17,9 @@ ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
   QStringListModel* mModules = new QStringListModel(this);
   mModules->setStringList(Core::instance()->moduleNames());
   ui->cmbDriverName->setModel(mModules);
+
+  connect(this, SIGNAL(userActionChanged()),
+          SLOT(onUserActionChanged()));
 }
 
 ConnectionEditDialog::~ConnectionEditDialog()
@@ -72,9 +75,25 @@ void ConnectionEditDialog::on_btnCreate_clicked()
 {
   formToObject();
   DBDatabaseItem* dbItem = qobject_cast<DBDatabaseItem*>(_objItem);
-  bool res = dbItem->createDatabase();
-  if (res)
+  ActionResult res = dbItem->createDatabase();
+  if (res.isSuccess())
     QMessageBox::information(this, "Information", "Database successfully created");
   else
-    QMessageBox::critical(this, "Error", "Database creation failed");
+    QMessageBox::critical(this, "Error", res.description());
+}
+
+void ConnectionEditDialog::on_btnDrop_clicked()
+{
+  formToObject();
+  DBDatabaseItem* dbItem = qobject_cast<DBDatabaseItem*>(_objItem);
+  ActionResult res = dbItem->dropDatabase();
+  if (res.isSuccess())
+    QMessageBox::information(this, "Information", "Database successfully dropped");
+  else
+    QMessageBox::critical(this, "Error", res.description());
+}
+
+void ConnectionEditDialog::onUserActionChanged()
+{
+  ui->btnDrop->setEnabled(userAction() != AbstractDatabaseEditForm::Create);
 }

@@ -49,8 +49,8 @@ public:
   virtual ActionResult updateMe();
   virtual ActionResult deleteMe();
 
-  virtual bool createDatabase();
-  virtual bool dropDatabase();
+  virtual ActionResult createDatabase();
+  virtual ActionResult dropDatabase();
 
   // LAbstractTreeItem interface
 public:  
