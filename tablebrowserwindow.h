@@ -52,6 +52,10 @@ private slots:
 
   void on_aFilterIsNotNull_triggered();
 
+  void on_aRemoveFilter_triggered();
+
+  void on_lvFilters_pressed(const QModelIndex &index);
+
 private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;
@@ -59,6 +63,7 @@ private:
   LSqlTableModel* _sourceModel;
   QSortFilterProxyModel* _proxyModel;
   QMenu* _mnuContext;
+  QMenu* _mnuFilterList;
 };
 
 #endif // TABLEBROWSERWINDOW_H

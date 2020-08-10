@@ -35,7 +35,14 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
   _mnuContext->addAction(ui->aFilterIsNull);
   _mnuContext->addAction(ui->aFilterIsNotNull);
 
+  _mnuFilterList = new QMenu(this);
+  _mnuFilterList->addAction(ui->aRemoveFilter);
+
   qDebug() << "TableBrowserWindow" << objectName() << "created";
+
+  ui->tableView->horizontalHeader()->setSectionsMovable(true);
+
+  ui->lvFilters->setModel(_sourceModel->filter());
 }
 
 TableBrowserWindow::~TableBrowserWindow()
@@ -163,4 +170,19 @@ void TableBrowserWindow::on_aFilterIsNotNull_triggered()
   QString field = _sourceModel->fieldName(ui->tableView->currentIndex().column());
   _sourceModel->filter()->addNullFilter(field, true, WhereJoint::And);
   _sourceModel->select();
+}
+
+void TableBrowserWindow::on_aRemoveFilter_triggered()
+{
+  int row = ui->lvFilters->currentIndex().row();
+  _sourceModel->filter()->removeFilter(row);
+  _sourceModel->select();
+}
+
+void TableBrowserWindow::on_lvFilters_pressed(const QModelIndex &index)
+{
+  Q_UNUSED(index)
+  if (QApplication::mouseButtons().testFlag(Qt::RightButton)) {
+    _mnuFilterList->popup(QCursor::pos());
+  }
 }

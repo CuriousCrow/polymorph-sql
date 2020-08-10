@@ -1,6 +1,7 @@
 #include "sqlfiltermanager.h"
+#include <QDebug>
 
-SqlFilterManager::SqlFilterManager(QObject* parent) : QObject(parent)
+SqlFilterManager::SqlFilterManager(QObject* parent) : QAbstractListModel(parent)
 {
 }
 
@@ -8,31 +9,36 @@ void SqlFilterManager::addEqualFilter(QString field, QVariant value, bool exclud
 {
   QVariantList values;
   values.append(value);
-  _filters.append(SqlFilter(joint, field, exclude ? WhereOperator::NotEquals : WhereOperator::Equals, values));
+  SqlFilter filter(joint, field, exclude ? WhereOperator::NotEquals : WhereOperator::Equals, values);
+  addFilter(filter);
 }
 
 void SqlFilterManager::addEqualFilter(QString field, QVariantList values, bool exclude, WhereJoint joint)
 {
-  _filters.append(SqlFilter(joint, field, exclude ? WhereOperator::NotEquals : WhereOperator::Equals, values));
+  SqlFilter filter(joint, field, exclude ? WhereOperator::NotEquals : WhereOperator::Equals, values);
+  addFilter(filter);
 }
 
 void SqlFilterManager::addNullFilter(QString field, bool exclude, WhereJoint joint)
 {
-  _filters.append(SqlFilter(joint, field, exclude ? WhereOperator::IsNotNull : WhereOperator::IsNull, QVariantList()));
+  SqlFilter filter(joint, field, exclude ? WhereOperator::IsNotNull : WhereOperator::IsNull, QVariantList());
+  addFilter(filter);
 }
 
 void SqlFilterManager::addMoreThanFilter(QString field, QVariant value, WhereJoint joint)
 {
   QVariantList values;
   values.append(value);
-  _filters.append(SqlFilter(joint, field, WhereOperator::MoreThan, values));
+  SqlFilter filter(joint, field, WhereOperator::MoreThan, values);
+  addFilter(filter);
 }
 
 void SqlFilterManager::addLessThanFilter(QString field, QVariant value, WhereJoint joint)
 {
   QVariantList values;
   values.append(value);
-  _filters.append(SqlFilter(joint, field, WhereOperator::LessThan, values));
+  SqlFilter filter(joint, field, WhereOperator::LessThan, values);
+  addFilter(filter);
 }
 
 void SqlFilterManager::addBetweenFilter(QString field, QVariant fromValue, QVariant toValue, WhereJoint joint)
@@ -40,12 +46,22 @@ void SqlFilterManager::addBetweenFilter(QString field, QVariant fromValue, QVari
   QVariantList values;
   values.append(fromValue);
   values.append(toValue);
-  _filters.append(SqlFilter(joint, field, WhereOperator::Between, values));
+  SqlFilter filter(joint, field, WhereOperator::Between, values);
+  addFilter(filter);
+}
+
+void SqlFilterManager::removeFilter(int idx)
+{
+  beginRemoveRows(QModelIndex(), idx, idx);
+  _filters.removeAt(idx);
+  endRemoveRows();
 }
 
 void SqlFilterManager::clear()
 {
+  beginResetModel();
   _filters.clear();
+  endResetModel();
 }
 
 QString SqlFilterManager::whereClause()
@@ -71,6 +87,14 @@ QString SqlFilterManager::whereClause()
   return result.prepend(" where ");
 }
 
+void SqlFilterManager::addFilter(SqlFilter &filter)
+{
+  beginInsertRows(QModelIndex(), _filters.count(), _filters.count());
+  qDebug() << "Add filter:" << _filters.count();
+  _filters.append(filter);
+  endInsertRows();
+}
+
 SqlFilter::SqlFilter(WhereJoint joint, QString field, WhereOperator oper, QVariantList values) :
   _field(field), _values(values), _oper(oper), _joint(joint)
 {
@@ -82,7 +106,7 @@ WhereJoint SqlFilter::joint()
   return _joint;
 }
 
-QString SqlFilter::toString()
+QString SqlFilter::toString() const
 {
   QString filterStr;
   QString pattern = "%1 %2 %3 ";
@@ -127,7 +151,7 @@ QString SqlFilter::toString()
   return filterStr;
 }
 
-QString SqlFilter::strVal(QVariant value)
+QString SqlFilter::strVal(QVariant value) const
 {
   switch (value.type()) {
   case QVariant::Int:
@@ -136,4 +160,20 @@ QString SqlFilter::strVal(QVariant value)
   default:
     return "'" + value.toString() + "'";
   }
+}
+
+int SqlFilterManager::rowCount(const QModelIndex &parent) const
+{
+  Q_UNUSED(parent)
+  return _filters.count();
+}
+
+QVariant SqlFilterManager::data(const QModelIndex &index, int role) const
+{
+  if (!index.isValid())
+    return QVariant();
+  if (role == Qt::DisplayRole) {
+    return _filters.at(index.row()).toString();
+  }
+  return QVariant();
 }
