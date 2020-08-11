@@ -50,6 +50,8 @@ private slots:
 
   void dropCurrentDatabaseObject();
 
+  void exportCurrrentDatabaseObject();
+
   void reloadItemChildren();
 
   void updateStructureContextMenu();
@@ -82,6 +84,7 @@ private:
   QMenu* _folderContextMenu;
   QAction* _editAction;
   QAction* _dropAction;
+  QAction* _exportAction;
   QAction* _reloadAction;
   void addDatabase();
   DBObjectItem* itemByIndex(QModelIndex index);

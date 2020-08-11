@@ -17,6 +17,11 @@ DBObjectItem::~DBObjectItem()
 {
 }
 
+QString DBObjectItem::connectionName() const
+{
+  return _connectionName;
+}
+
 void DBObjectItem::setParentUrl(const AppUrl &url)
 {
   _parentUrl = url;
@@ -59,7 +64,7 @@ QStringList DBObjectItem::propertyList()
   return resList;
 }
 
-int DBObjectItem::fieldIndex(QString fieldName)
+int DBObjectItem::fieldIndex(QString fieldName) const
 {
   for(int i=0; i<fields.count(); i++){
     if (fields.at(i).name == fieldName)
@@ -68,7 +73,7 @@ int DBObjectItem::fieldIndex(QString fieldName)
   return -1;
 }
 
-QString DBObjectItem::databaseName()
+QString DBObjectItem::databaseName() const
 {
   return QSqlQueryHelper::databaseName(connectionName());
 }
@@ -86,7 +91,7 @@ QString DBObjectItem::fillSqlPattern(QString pattern)
   return QSqlQueryHelper::fillSqlPattern(pattern, this);
 }
 
-QString DBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> valueMap)
+QString DBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> valueMap) const
 {
   QString result = pattern;
   foreach(QString key, valueMap.keys()) {
@@ -95,7 +100,7 @@ QString DBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> val
   return result;
 }
 
-QString DBObjectItem::fillPatternWithFields(QString pattern)
+QString DBObjectItem::fillPatternWithFields(QString pattern) const
 {
   QString result = pattern;
   foreach(DBObjectField field, fields) {
@@ -107,13 +112,13 @@ QString DBObjectItem::fillPatternWithFields(QString pattern)
   return result;
 }
 
-QString DBObjectItem::fillWithModifiedFields(QString pattern)
+QString DBObjectItem::fillWithModifiedFields(QString pattern) const
 {
   pattern = filterUnmodifiedFields(pattern);
   return fillPatternWithFields(pattern);
 }
 
-QString DBObjectItem::filterUnmodifiedFields(QString pattern)
+QString DBObjectItem::filterUnmodifiedFields(QString pattern) const
 {
   QString resSql;
   QStringList parts = pattern.split(QRegExp("[\\{\\}]"), QString::SkipEmptyParts);
@@ -146,7 +151,7 @@ ActionResult DBObjectItem::execSql(QString sql, QString connectionName)
   }
 }
 
-QVariant DBObjectItem::fieldValue(QString fieldName)
+QVariant DBObjectItem::fieldValue(QString fieldName) const
 {
   int index = fieldIndex(fieldName);
   if (index >= 0)
@@ -154,14 +159,14 @@ QVariant DBObjectItem::fieldValue(QString fieldName)
   return QVariant();
 }
 
-QVariant DBObjectItem::fieldValue(int colNumber)
+QVariant DBObjectItem::fieldValue(int colNumber) const
 {
   if (colNumber >= fields.count())
     return QVariant();
   return fields.at(colNumber).value();
 }
 
-QVariant DBObjectItem::fieldOldValue(QString fieldName)
+QVariant DBObjectItem::fieldOldValue(QString fieldName) const
 {
   int index = fieldIndex(fieldName);
   if (index >= 0)
@@ -169,14 +174,14 @@ QVariant DBObjectItem::fieldOldValue(QString fieldName)
   return QVariant();
 }
 
-QVariant DBObjectItem::fieldOldValue(int colIdx)
+QVariant DBObjectItem::fieldOldValue(int colIdx) const
 {
   if (colIdx >= fields.count())
     return QVariant();
   return fields.at(colIdx).oldValue();
 }
 
-bool DBObjectItem::fieldModified(QString fieldName)
+bool DBObjectItem::fieldModified(QString fieldName) const
 {
   int index = fieldIndex(fieldName);
   if (index >= 0)
@@ -215,6 +220,16 @@ bool DBObjectItem::refresh()
   return true;
 }
 
+QString DBObjectItem::toDDL() const
+{
+  return "";
+}
+
+QString DBObjectItem::toDML() const
+{
+  return "";
+}
+
 int DBObjectItem::colCount()
 {
   return fields.count();
@@ -244,12 +259,12 @@ ActionResult DBObjectItem::deleteMe()
   return ActionResult(ERR_NOT_IMPLEMENTED);
 }
 
-bool DBObjectItem::isEditable()
+bool DBObjectItem::isEditable() const
 {
   return _editable;
 }
 
-bool DBObjectItem::isModified()
+bool DBObjectItem::isModified() const
 {
   foreach (DBObjectField field, fields) {
     if (field.isModified())
@@ -266,7 +281,7 @@ bool DBObjectItem::submit()
   return true;
 }
 
-bool DBObjectItem::hasField(QString fieldName)
+bool DBObjectItem::hasField(QString fieldName) const
 {
   foreach(DBObjectField field, fields) {
     if (field.name == fieldName)
@@ -303,7 +318,7 @@ QVariant DBObjectField::oldValue() const
   return _oldValue;
 }
 
-bool DBObjectField::isModified()
+bool DBObjectField::isModified() const
 {
   return _oldValue != _value;
 }
@@ -324,17 +339,17 @@ ActionResult::ActionResult(int code, QString description)
   _description = description;
 }
 
-bool ActionResult::isSuccess()
+bool ActionResult::isSuccess() const
 {
   return _resultCode == RES_OK_CODE;
 }
 
-int ActionResult::resCode()
+int ActionResult::resCode() const
 {
   return _resultCode;
 }
 
-QString ActionResult::description()
+QString ActionResult::description() const
 {
   return _description;
 }

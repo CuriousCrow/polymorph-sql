@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
           this, SLOT(updateStructureContextMenu()));
   _editAction = _itemContextMenu->addAction("Edit object", this, SLOT(showEditorForCurrentItem()));
   _dropAction = _itemContextMenu->addAction("Drop object", this, SLOT(dropCurrentDatabaseObject()));
+  _exportAction = _itemContextMenu->addAction("Export DDL", this, SLOT(exportCurrrentDatabaseObject()));
 
   _folderContextMenu = new QMenu(ui->tvDatabaseStructure);
   _folderContextMenu->addAction("Create object", this, SLOT(showCreateItemEditor()));
@@ -234,6 +235,7 @@ void MainWindow::showEditorForCurrentItem()
   DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
   switch (currentItem->type()) {
   case DBObjectItem::View:
+    currentItem->refresh();
     _viewEditorWindow->setObjItem(currentItem);
     _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Edit);
     _viewEditorWindow->objectToForm();
@@ -300,13 +302,22 @@ void MainWindow::dropCurrentDatabaseObject()
   //TODO: Implementation for other DB objects
 }
 
+void MainWindow::exportCurrrentDatabaseObject()
+{
+  //TODO: Test implementation
+  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
+  DBObjectItem* curObj = itemByIndex(curIdx);
+  curObj->refresh();
+  qDebug() << "DDL:" << curObj->toDDL();
+}
+
 void MainWindow::reloadItemChildren()
 {
   QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
   DataStore::structureModel()->deleteChildren(curIdx);
   FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(itemByIndex(curIdx));
 
-  qDebug() << "Folder" << folderItem->fieldValue(F_CAPTION).toString() << "reload request";
+  qDebug() << "Folder" << folderItem->fieldValue(F_CAPTION).toString() << "refresh request";
 
   DbmsPlugin* dbms = Core::module(folderItem->driverName());
   dbms->loadFolder(folderItem, folderItem->childrenType());

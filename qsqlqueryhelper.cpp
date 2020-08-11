@@ -59,7 +59,7 @@ QStringList QSqlQueryHelper::propertyList(const QMetaObject *metaObj)
   return resList;
 }
 
-QString QSqlQueryHelper::fillSqlPattern(QString pattern, QObject *object)
+QString QSqlQueryHelper::fillSqlPattern(QString pattern, const QObject *object)
 {
   QString resSql;
   QStringList parts = pattern.split(QRegExp("[\\{\\}]"), QString::SkipEmptyParts);

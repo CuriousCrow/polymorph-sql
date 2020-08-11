@@ -14,9 +14,9 @@ class ActionResult
 {
 public:
   ActionResult(int code = RES_OK_CODE, QString description = "");
-  bool isSuccess();
-  int resCode();
-  QString description();
+  bool isSuccess() const;
+  int resCode() const;
+  QString description() const;
 private:
   int _resultCode;
   QString _description;
@@ -33,7 +33,7 @@ public:
 
   QVariant oldValue() const;
 
-  bool isModified();
+  bool isModified() const;
   void submit();
   void revert();
 private:
@@ -64,8 +64,8 @@ public:
   };
 
   DBObjectItem(QString caption, QObject* parent = nullptr);
-  ~DBObjectItem();
-  QString connectionName(){ return _connectionName; }
+  virtual ~DBObjectItem();
+  QString connectionName() const;
   void setParentUrl(const AppUrl &url);
   QString driverName();
   void deleteChildren();
@@ -75,22 +75,25 @@ public:
   virtual int type() = 0;
   virtual bool setData(int column, QVariant value, int role);
   virtual bool refresh();
+  //SQL export
+  virtual QString toDDL() const;
+  virtual QString toDML() const;
 
   virtual ActionResult insertMe();
   virtual ActionResult updateMe();
   virtual ActionResult deleteMe();
 
-  bool isEditable();
-  virtual bool isModified();
+  bool isEditable() const;
+  virtual bool isModified() const;
   virtual bool submit();
 
-  bool hasField(QString fieldName);
+  bool hasField(QString fieldName) const;
   void registerField(QString fieldName);
-  QVariant fieldValue(QString fieldName);
-  QVariant fieldValue(int colNumber);
-  QVariant fieldOldValue(QString fieldName);
-  QVariant fieldOldValue(int colIdx);
-  bool fieldModified(QString fieldName);
+  QVariant fieldValue(QString fieldName) const;
+  QVariant fieldValue(int colNumber) const;
+  QVariant fieldOldValue(QString fieldName) const;
+  QVariant fieldOldValue(int colIdx) const;
+  bool fieldModified(QString fieldName) const;
   void setFieldValue(QString fieldName, QVariant value);
   void setFieldValue(int colNumber, QVariant value);
 
@@ -101,14 +104,14 @@ protected:
   AppUrl _parentUrl;
   QString _driverName;
   QList<DBObjectField> fields;
-  int fieldIndex(QString fieldName);
-  QString databaseName();
+  int fieldIndex(QString fieldName) const;
+  QString databaseName() const;
   DBObjectField& field(QString fieldName);
   QString fillSqlPattern(QString pattern);
-  QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap);
-  QString fillPatternWithFields(QString pattern);
-  QString fillWithModifiedFields(QString pattern);
-  QString filterUnmodifiedFields(QString pattern);
+  QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap) const;
+  QString fillPatternWithFields(QString pattern) const;
+  QString fillWithModifiedFields(QString pattern) const;
+  QString filterUnmodifiedFields(QString pattern) const;
   ActionResult execSql(QString sql, QString connectionName = QSqlDatabase::defaultConnection);
 
   // LAbstractTreeItem interface

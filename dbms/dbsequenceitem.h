@@ -8,23 +8,25 @@ class DBSequenceItem : public DBObjectItem
   Q_OBJECT
 public:
   DBSequenceItem(QString caption, QObject* parent = nullptr);
-  ~DBSequenceItem();
+  virtual ~DBSequenceItem() Q_DECL_OVERRIDE;
 
   // LAbstractTreeItem interface
 public:
-  virtual int colCount();
-  virtual QVariant colData(int column, int role);
+  virtual int colCount() Q_DECL_OVERRIDE;
+  virtual QVariant colData(int column, int role) Q_DECL_OVERRIDE;
 
   // DBObjectItem interface
 public:
-  virtual bool reloadChildren();
-  virtual int type();
+  virtual bool reloadChildren() Q_DECL_OVERRIDE;
+  virtual int type() Q_DECL_OVERRIDE;
 
   // DBObjectItem interface
 public:
-  ActionResult insertMe();
-  ActionResult updateMe();
-  ActionResult deleteMe();
+  ActionResult insertMe() Q_DECL_OVERRIDE;
+  ActionResult updateMe() Q_DECL_OVERRIDE;
+  ActionResult deleteMe() Q_DECL_OVERRIDE;
+
+  virtual QString toDDL() const Q_DECL_OVERRIDE;
 };
 
 #endif // DBSEQUENCEITEM_H

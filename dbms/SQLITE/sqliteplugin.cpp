@@ -2,7 +2,7 @@
 #include "../appconst.h"
 #include "sqlitedatabase.h"
 #include "sqlitetable.h"
-#include "../dbviewitem.h"
+#include "sqliteviewitem.h"
 #include "../dbsequenceitem.h"
 
 SqlitePlugin::SqlitePlugin() : DbmsPlugin()
@@ -29,7 +29,7 @@ DBViewItem *SqlitePlugin::newViewItem(QString caption, QObject *parent)
 {
   Q_UNUSED(caption)
   Q_UNUSED(parent)
-  return new DBViewItem(caption, parent);
+  return new SqliteViewItem(caption, parent);
 }
 
 DBProcedureItem *SqlitePlugin::newProcedureItem(QString caption, QObject *parent)
@@ -71,6 +71,9 @@ FolderTreeItem *SqlitePlugin::loadFolder(FolderTreeItem *folderItem, DBObjectIte
   case DBObjectItem::View:
     loadViews(folderItem);
     break;
+  case DBObjectItem::SystemTable:
+    loadSysTables(folderItem);
+    break;
   default:
     folderItem = nullptr;
     break;
@@ -93,6 +96,15 @@ void SqlitePlugin::loadSequences(FolderTreeItem *folderItem)
 void SqlitePlugin::loadTables(FolderTreeItem *folderItem)
 {
   QStringList tableNames = QSqlDatabase::database(folderItem->connectionName()).tables();
+  foreach (QString name, tableNames){
+    DBTableItem* tableItem = newTableItem(name, folderItem);
+    tableItem->setParentUrl(folderItem->objectUrl());
+  }
+}
+
+void SqlitePlugin::loadSysTables(FolderTreeItem *folderItem)
+{
+  QStringList tableNames = QSqlDatabase::database(folderItem->connectionName()).tables(QSql::SystemTables);
   foreach (QString name, tableNames){
     DBTableItem* tableItem = newTableItem(name, folderItem);
     tableItem->setParentUrl(folderItem->objectUrl());

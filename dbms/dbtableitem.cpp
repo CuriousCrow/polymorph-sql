@@ -108,7 +108,7 @@ ActionResult DBTableItem::deleteMe()
   return execSql(preparedSql, connectionName());
 }
 
-bool DBTableItem::isModified()
+bool DBTableItem::isModified() const
 {
   if (DBObjectItem::isModified())
     return true;

@@ -23,6 +23,7 @@ public:
 
   void loadSequences(FolderTreeItem* folderItem);
   void loadTables(FolderTreeItem* folderItem);
+  void loadSysTables(FolderTreeItem* folderItem);
   void loadViews(FolderTreeItem* folderItem);
   void loadTriggers(FolderTreeItem* folderItem);
   void loadProcedures(FolderTreeItem* folderItem);

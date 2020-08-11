@@ -49,10 +49,8 @@ int DBSequenceItem::type()
 
 ActionResult DBSequenceItem::insertMe()
 {
-  QString sql = "CREATE SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" {INCREMENT #step# }"
-      "{MINVALUE #minValue# }{MAXVALUE #maxValue# }{START WITH #startValue#}";
-  QString preparedSql = fillWithModifiedFields(sql);
-  return execSql(preparedSql, connectionName());
+  QString sql = toDDL();
+  return execSql(sql, connectionName());
 }
 
 ActionResult DBSequenceItem::updateMe()
@@ -81,4 +79,12 @@ ActionResult DBSequenceItem::deleteMe()
   QString sql = "DROP SEQUENCE \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);
   return execSql(preparedSql, connectionName());
+}
+
+QString DBSequenceItem::toDDL() const
+{
+  QString sql = "CREATE SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" INCREMENT #step# "
+      "MINVALUE #minValue# MAXVALUE #maxValue# START WITH #startValue#";
+  QString preparedSql = fillPatternWithFields(sql);
+  return preparedSql;
 }

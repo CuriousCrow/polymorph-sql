@@ -28,9 +28,11 @@ SOURCES += main.cpp\
   dbms/MYSQL/mysqlplugin.cpp \
   dbms/MYSQL/mysqltable.cpp \
   dbms/POSTGRES/postgresplugin.cpp \
+  dbms/POSTGRES/postgresviewitem.cpp \
   dbms/SQLITE/sqlitedatabase.cpp \
   dbms/SQLITE/sqliteplugin.cpp \
   dbms/SQLITE/sqlitetable.cpp \
+  dbms/SQLITE/sqliteviewitem.cpp \
     ltextcompleter.cpp \
     qknowledgebase.cpp \
 #Forms
@@ -111,9 +113,11 @@ HEADERS  += \
   dbms/MYSQL/mysqlplugin.h \
   dbms/MYSQL/mysqltable.h \
   dbms/POSTGRES/postgresplugin.h \
+  dbms/POSTGRES/postgresviewitem.h \
   dbms/SQLITE/sqlitedatabase.h \
   dbms/SQLITE/sqliteplugin.h \
   dbms/SQLITE/sqlitetable.h \
+  dbms/SQLITE/sqliteviewitem.h \
   dbms/dbmsplugin.h \
     ltextcompleter.h \
     qknowledgebase.h \

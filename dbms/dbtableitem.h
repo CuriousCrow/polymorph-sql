@@ -14,7 +14,7 @@ class DBTableItem : public DBObjectItem
   Q_OBJECT
 public:
   DBTableItem(QString caption, QObject* parent = nullptr);
-  virtual ~DBTableItem() override;
+  virtual ~DBTableItem() Q_DECL_OVERRIDE;
   virtual void reloadColumnsModel();
   virtual void reloadConstraintsModel();
 
@@ -32,18 +32,18 @@ public:
 
   // LAbstractTreeItem interface
 public:
-  virtual int colCount() override;
-  virtual QVariant colData(int column, int role) override;
+  virtual int colCount() Q_DECL_OVERRIDE;
+  virtual QVariant colData(int column, int role) Q_DECL_OVERRIDE;
 
   // DBObjectItem interface
 public:
-  virtual bool reloadChildren() override;
-  virtual int type() override;
+  virtual bool reloadChildren() Q_DECL_OVERRIDE;
+  virtual int type() Q_DECL_OVERRIDE;
 
-  virtual ActionResult updateMe() override;
-  virtual ActionResult deleteMe() override;
+  virtual ActionResult updateMe() Q_DECL_OVERRIDE;
+  virtual ActionResult deleteMe() Q_DECL_OVERRIDE;
 
-  virtual bool isModified() override;
+  virtual bool isModified() const Q_DECL_OVERRIDE;
 protected:
   SqlColumnModel* _columnsModel;
   VariantMapTableModel* _constraintsModel;
