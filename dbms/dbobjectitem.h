@@ -103,7 +103,7 @@ protected:
   QList<DBObjectField> fields;
   int fieldIndex(QString fieldName);
   QString databaseName();
-  DBObjectField field(QString fieldName);
+  DBObjectField& field(QString fieldName);
   QString fillSqlPattern(QString pattern);
   QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap);
   QString fillPatternWithFields(QString pattern);

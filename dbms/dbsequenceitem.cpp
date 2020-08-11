@@ -57,6 +57,19 @@ ActionResult DBSequenceItem::insertMe()
 
 ActionResult DBSequenceItem::updateMe()
 {
+  if (!isModified())
+    return ActionResult(RES_OK_CODE, "Sequence is not modified");
+
+  if (fieldModified(F_CAPTION)) {
+    QString sql = "ALTER SEQUENCE \"#caption.old#\" RENAME TO \"#caption.new#\"";
+    QString preparedSql = fillWithModifiedFields(sql);
+    ActionResult actRes = execSql(preparedSql, connectionName());
+    if (!actRes.isSuccess())
+      return actRes;
+    field(F_CAPTION).submit();
+  }
+  if (!isModified())
+    return ActionResult(RES_OK_CODE, "Sequence is not modified");
   QString sql = "ALTER SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" {INCREMENT BY #step# }{MINVALUE #minValue# }"
       "{MAXVALUE #maxValue# }{START WITH #startValue# }{RESTART WITH #currentValue#}";
   QString preparedSql = fillWithModifiedFields(sql);

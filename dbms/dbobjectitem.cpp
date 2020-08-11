@@ -73,9 +73,9 @@ QString DBObjectItem::databaseName()
   return QSqlQueryHelper::databaseName(connectionName());
 }
 
-DBObjectField DBObjectItem::field(QString fieldName)
+DBObjectField& DBObjectItem::field(QString fieldName)
 {
-  return fields.at(fieldIndex(fieldName));
+  return fields[fieldIndex(fieldName)];
 }
 
 QString DBObjectItem::fillSqlPattern(QString pattern)
