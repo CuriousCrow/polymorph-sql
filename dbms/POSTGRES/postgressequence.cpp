@@ -22,7 +22,7 @@ bool PostgresSequence::refresh()
     setFieldValue(F_STEP, resultSet.value(F_STEP).toInt());
     setFieldValue(F_START_VALUE, resultSet.value(F_START_VALUE).toInt());
 
-    sql = "SELECT currval('\"#caption#\"')";
+    sql = "select * FROM \"#caption#\"";
     preparedSql = fillSqlPattern(sql);
     resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
     if (resultSet.next()) {

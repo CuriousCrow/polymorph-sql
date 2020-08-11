@@ -78,6 +78,13 @@ FolderTreeItem *PostgresPlugin::loadFolder(FolderTreeItem *folderItem, DBObjectI
 void PostgresPlugin::loadSequences(FolderTreeItem *folderItem)
 {
   Q_UNUSED(folderItem)
+  QString sql = "select sequence_name \"name\" from information_schema.sequences";
+  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, folderItem->connectionName());
+  while (resultSet.next()) {
+    DBSequenceItem* sequenceItem
+        = newSequenceItem(resultSet.value(F_NAME).toString(), folderItem);
+    sequenceItem->setParentUrl(folderItem->objectUrl());
+  }
 }
 
 void PostgresPlugin::loadTables(FolderTreeItem *folderItem)
