@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "qknowledgebase.h"
 #include <QSqlTableModel>
-#include "lsqltablemodel.h"
+#include "models/lsqltablemodel.h"
 
 QSqlSyntaxHighlighter::QSqlSyntaxHighlighter(QObject *parent):
   QSyntaxHighlighter(parent)

@@ -4,7 +4,7 @@
 #include "../qknowledgebase.h"
 #include "../utils/qsimpletooltip.h"
 #include "../qknowledgebase.h"
-#include "../lsqltablemodel.h"
+#include "../models/lsqltablemodel.h"
 
 class SqlHelpLookupProvider : public QObject, public HelpLookupProvider
 {

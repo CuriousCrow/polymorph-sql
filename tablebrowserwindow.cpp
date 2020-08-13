@@ -15,8 +15,8 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
   setObjectName(url.toString());
   _connectionName = url.connection();
   _tableName = tableItem->fieldValue(F_CAPTION).toString();
-  _sourceModel = new LSqlTableModel(this, QSqlDatabase::database(_connectionName));
-  connect(_sourceModel, &LSqlTableModel::error,
+  _sourceModel = new UniSqlTableModel(this, QSqlDatabase::database(_connectionName));
+  connect(_sourceModel, &UniSqlTableModel::error,
           this, &TableBrowserWindow::onError);
   _sourceModel->setTable(_tableName);
   _sourceModel->select();

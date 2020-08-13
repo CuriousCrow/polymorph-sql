@@ -18,9 +18,9 @@ SOURCES += main.cpp\
   core/core.cpp \
   core/datastore.cpp \
   core/localeventnotifier.cpp \
-    core/maphelplookupprovider.cpp \
-    core/sqlhelplookupprovider.cpp \
-    core/appsettings.cpp \
+  core/maphelplookupprovider.cpp \
+  core/sqlhelplookupprovider.cpp \
+  core/appsettings.cpp \
   dbms/FIREBIRD/firebirddatabase.cpp \
   dbms/FIREBIRD/firebirdplugin.cpp \
   dbms/FIREBIRD/firebirdtable.cpp \
@@ -33,8 +33,9 @@ SOURCES += main.cpp\
   dbms/SQLITE/sqliteplugin.cpp \
   dbms/SQLITE/sqlitetable.cpp \
   dbms/SQLITE/sqliteviewitem.cpp \
-    ltextcompleter.cpp \
-    qknowledgebase.cpp \
+  ltextcompleter.cpp \
+  models/unisqltablemodel.cpp \
+  qknowledgebase.cpp \
 #Forms
   forms/abstractdatabaseitemform.cpp \
   forms/tableeditform.cpp \
@@ -58,7 +59,7 @@ SOURCES += main.cpp\
     models/simplecachedtablemodel.cpp \
     models/comboboxitemdelegate.cpp \
     models/lcachedtablemodel.cpp \
-    lsqltablemodel.cpp \
+    models/lsqltablemodel.cpp \
     qstructureitemmodel.cpp \
     tablerowmodel.cpp \
     models/variantmaptablemodel.cpp \
@@ -95,17 +96,18 @@ SOURCES += main.cpp\
     dbms/POSTGRES/postgressequence.cpp \
     dbms/POSTGRES/postgrestable.cpp \
     dbms/POSTGRES/postgresuniqueconstraint.cpp \
-  utils/sqlfiltermanager.cpp
+    utils/sqlfiltermanager.cpp \
+  utils/sqlutils.cpp
 #Firebird
 
 HEADERS  += \
 #Core
   core/core.h \
-    core/datastore.h \
-    core/localeventnotifier.h \
-    core/maphelplookupprovider.h \
-    core/sqlhelplookupprovider.h \
-    core/appsettings.h \
+  core/datastore.h \
+  core/localeventnotifier.h \
+  core/maphelplookupprovider.h \
+  core/sqlhelplookupprovider.h \
+  core/appsettings.h \
   dbms/FIREBIRD/firebirddatabase.h \
   dbms/FIREBIRD/firebirdplugin.h \
   dbms/FIREBIRD/firebirdtable.h \
@@ -119,8 +121,9 @@ HEADERS  += \
   dbms/SQLITE/sqlitetable.h \
   dbms/SQLITE/sqliteviewitem.h \
   dbms/dbmsplugin.h \
-    ltextcompleter.h \
-    qknowledgebase.h \
+  ltextcompleter.h \
+  models/unisqltablemodel.h \
+  qknowledgebase.h \
 #Forms
   forms/abstractdatabaseitemform.h \
   forms/tableeditform.h \
@@ -144,7 +147,7 @@ HEADERS  += \
     models/simplecachedtablemodel.h \
     models/comboboxitemdelegate.h \
     models/lcachedtablemodel.h \
-    lsqltablemodel.h \
+    models/lsqltablemodel.h \
     qstructureitemmodel.h \
     tablerowmodel.h \
     models/variantmaptablemodel.h \
@@ -182,7 +185,8 @@ HEADERS  += \
     dbms/POSTGRES/postgressequence.h \
     dbms/POSTGRES/postgrestable.h \
     dbms/POSTGRES/postgresuniqueconstraint.h \
-  utils/sqlfiltermanager.h
+  utils/sqlfiltermanager.h \
+  utils/sqlutils.h
 #Firebird
 
 FORMS    += mainwindow.ui \

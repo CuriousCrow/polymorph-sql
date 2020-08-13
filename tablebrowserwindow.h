@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QMenu>
-#include "lsqltablemodel.h"
+#include "models/unisqltablemodel.h"
 #include <QSortFilterProxyModel>
 #include "dbms/dbtableitem.h"
 
@@ -60,7 +60,7 @@ private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;
   QString _connectionName;
-  LSqlTableModel* _sourceModel;
+  UniSqlTableModel* _sourceModel;
   QSortFilterProxyModel* _proxyModel;
   QMenu* _mnuContext;
   QMenu* _mnuFilterList;
