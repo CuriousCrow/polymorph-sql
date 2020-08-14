@@ -115,6 +115,15 @@ qlonglong UniSqlTableModel::idByRow(int row) const
   return _rowIndex.at(row);
 }
 
+QString UniSqlTableModel::fields()
+{
+  QStringList fields;
+  for(int idx=0; idx<_patternRec.count(); idx++) {
+    fields << _patternRec.fieldName(idx);
+  }
+  return fields.join(", ");
+}
+
 QString UniSqlTableModel::selectAllSql()
 {
   QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
@@ -251,7 +260,7 @@ bool UniSqlTableModel::insertRowInTable(const QSqlRecord &values)
   QString stmt = _db.driver()->sqlStatement(QSqlDriver::InsertStatement, tableName(),
                                                    vals, false);
   if (supportsReturning()) {
-    stmt.append(Sql::sp() + "RETURNING *");
+    stmt.append(Sql::sp()).append("RETURNING").append(Sql::sp()).append(fields());
   }
   return execQuery(stmt);
 }

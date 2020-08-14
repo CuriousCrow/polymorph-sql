@@ -45,6 +45,7 @@ protected:
   qlonglong genTempId();
   QSqlRecord recByRow(int row) const;
   qlonglong idByRow(int row) const;
+  QString fields();
 
   virtual QString selectAllSql();
   virtual bool selectRowInTable(QSqlRecord &values);
