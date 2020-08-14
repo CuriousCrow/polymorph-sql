@@ -6,11 +6,13 @@ FirebirdTable::FirebirdTable(QString caption, QObject *parent)
   : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
+  _constraintsModel = new VariantMapTableModel();
 }
 
 FirebirdTable::~FirebirdTable()
 {
   delete _columnsModel;
+  delete _constraintsModel;
 }
 
 void FirebirdTable::reloadColumnsModel()
