@@ -2,6 +2,7 @@
 #include "ui_tablebrowserwindow.h"
 #include <QDebug>
 #include <QMessageBox>
+#include "dbms/appconst.h"
 #include "dbms/appurl.h"
 #include "dbms/appconst.h"
 
@@ -53,7 +54,10 @@ TableBrowserWindow::~TableBrowserWindow()
 
 void TableBrowserWindow::on_aSubmit_triggered()
 {
-  _sourceModel->submitAll();
+  bool resOk = _sourceModel->submitAll();
+  if (!resOk) {
+    QMessageBox::warning(this, TITLE_ERROR, _sourceModel->sqlError().join("\n"));
+  }
 }
 
 void TableBrowserWindow::on_aRevert_triggered()

@@ -34,7 +34,8 @@ bool UniSqlTableModel::execQuery(const QString &sql)
   qDebug() << "Execute query: " << sql;
   if (!result){
     QString errorMessage = _query.lastError().databaseText();
-    _sqlErrors.append(sql + ": " + errorMessage);
+    _sqlErrors.append(errorMessage);
+    qDebug() << "Sql:" << sql;
     qDebug() << "Error: " << errorMessage;
   }
   return result;
@@ -304,6 +305,13 @@ QString UniSqlTableModel::tableName()
 QString UniSqlTableModel::fieldName(int idx)
 {
   return _patternRec.fieldName(idx);
+}
+
+QStringList UniSqlTableModel::sqlError()
+{
+  QStringList res = _sqlErrors;
+  _sqlErrors.clear();
+  return res;
 }
 
 int UniSqlTableModel::rowCount(const QModelIndex &parent) const

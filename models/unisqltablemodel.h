@@ -26,6 +26,7 @@ public:
   SqlFilterManager* filter();
   QString tableName();
   QString fieldName(int idx);
+  QStringList sqlError();
 signals:
   void error(QString message);
 
