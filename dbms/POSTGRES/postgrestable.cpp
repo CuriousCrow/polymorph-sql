@@ -62,7 +62,9 @@ ActionResult PostgresTable::updateMe()
     QString sql = "ALTER TABLE \"#caption.old#\" RENAME TO \"#caption.new#\"";
     QString preparedSql = fillPatternWithFields(sql);
     res = execSql(preparedSql, connectionName());
-    if (!res.isSuccess())
+    if (res.isSuccess())
+      field("caption").submit();
+    else
       return res;
   }
 
