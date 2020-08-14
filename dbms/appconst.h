@@ -70,6 +70,11 @@
 #define DEF_PROCEDURE_NAME "NewProcedure"
 #define DEF_COLUMN_NAME "NewColumn"
 
+#define DEF_PK_PREFIX "pk_"
+#define DEF_FK_PREFIX "fk_"
+#define DEF_UQ_PREFIX "uq_"
+#define DEF_CHK_PREFIX "chk_"
+
 #define TITLE_ERROR "Error"
 #define TITLE_WARNING "Warning"
 #define TITLE_INFO "Information"

@@ -26,7 +26,7 @@ void SqliteTableItem::reloadColumnsModel()
 {
   _columnsModel->clear();
   QSqlRecord sqlColumns = QSqlQueryHelper::tableRowInfo(
-        this->fieldValue("caption").toString(),
+        this->fieldValue(F_CAPTION).toString(),
         connectionName());
   for (int i=0; i<sqlColumns.count(); i++) {
     QSqlField field = sqlColumns.field(i);
@@ -57,7 +57,7 @@ void SqliteTableItem::reloadColumnsModel()
 
 ActionResult SqliteTableItem::insertMe()
 {
-  return execSql(createTableQuery(fieldValue("caption").toString()), connectionName());
+  return execSql(createTableQuery(fieldValue(F_CAPTION).toString()), connectionName());
 }
 
 ActionResult SqliteTableItem::updateMe()

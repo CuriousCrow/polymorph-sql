@@ -27,22 +27,22 @@ PostgresTable::~PostgresTable()
 
 DBForeignKey *PostgresTable::newForeignKey()
 {
-  return new PostgresForeignKey("fk_" + fieldValue(F_CAPTION).toString());
+  return new PostgresForeignKey(DEF_FK_PREFIX + fieldValue(F_CAPTION).toString());
 }
 
 DBPrimaryKey *PostgresTable::newPrimaryKey()
 {
-  return new PostgresPrimaryKey("pk_" + fieldValue(F_CAPTION).toString());
+  return new PostgresPrimaryKey(DEF_PK_PREFIX + fieldValue(F_CAPTION).toString());
 }
 
 DBUniqueConstraint *PostgresTable::newUniqueConstraint()
 {
-  return new PostgresUniqueConstraint("uq_" + fieldValue(F_CAPTION).toString());
+  return new PostgresUniqueConstraint(DEF_UQ_PREFIX + fieldValue(F_CAPTION).toString());
 }
 
 DBCheckConstraint *PostgresTable::newCheckConstraint()
 {
-  return new PostgresCheckConstraint("chk_" + fieldValue(F_CAPTION).toString());
+  return new PostgresCheckConstraint(DEF_CHK_PREFIX + fieldValue(F_CAPTION).toString());
 }
 
 ActionResult PostgresTable::insertMe()
@@ -57,13 +57,13 @@ ActionResult PostgresTable::updateMe()
 
   //Переименование таблицы
   //TODO: Сделать отдельный виртуальный метод renameMe для всех объектов
-  if (fieldModified("caption")) {
+  if (fieldModified(F_CAPTION)) {
     qDebug() << "Rename table";
     QString sql = "ALTER TABLE \"#caption.old#\" RENAME TO \"#caption.new#\"";
     QString preparedSql = fillPatternWithFields(sql);
     res = execSql(preparedSql, connectionName());
     if (res.isSuccess())
-      field("caption").submit();
+      field(F_CAPTION).submit();
     else
       return res;
   }
@@ -193,7 +193,7 @@ void PostgresTable::reloadConstraintsModel()
 
 QString PostgresTable::caption()
 {
-  return "\"" + fieldValue("caption").toString() + "\"";
+  return "\"" + fieldValue(F_CAPTION).toString() + "\"";
 }
 
 QString PostgresTable::createTableQuery(QString table)

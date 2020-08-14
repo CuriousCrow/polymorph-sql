@@ -151,13 +151,13 @@ QString SqlitePlugin::folderName(DBObjectItem::ItemType type)
 {
   switch (type) {
   case DBObjectItem::Table:
-    return "Tables";
+    return tr("Tables");
   case DBObjectItem::SystemTable:
-    return "System tables";
+    return tr("System tables");
   case DBObjectItem::View:
-    return "Views";
+    return tr("Views");
   case DBObjectItem::Sequence:
-    return "Sequence";
+    return tr("Sequence");
   default:
     return "";
   }
