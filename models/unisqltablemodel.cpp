@@ -149,7 +149,7 @@ bool UniSqlTableModel::isDirty()
 bool UniSqlTableModel::submitAll(bool stopOnError)
 {
   foreach(qlonglong id, _changesHash.keys()) {
-    if (!submitById(id) || stopOnError)
+    if (!submitById(id) && stopOnError)
       return false;
   }
   return true;
@@ -173,7 +173,7 @@ bool UniSqlTableModel::submitById(qlonglong id)
       }
       else {
         newId = genId();
-        _dataHash.insert(id, _changesHash.value(id));
+        _dataHash.insert(newId, _changesHash.value(id));
       }
       _dataHash.remove(id);
       _changesHash.remove(id);
