@@ -4,11 +4,22 @@
 #include <QDebug>
 #include <QSqlRecord>
 #include <QSqlField>
+#include "../appconst.h"
 
 SqliteTableItem::SqliteTableItem(QString caption, QObject *parent)
   : DBTableItem(caption, parent)
 {
   _columnsModel = new SqlColumnModel();
+
+  _constraintsModel = new VariantMapTableModel();
+  _constraintsModel->registerColumn(F_TYPE, tr("Type"));
+  _constraintsModel->registerColumn(F_NAME, tr("Name"));
+}
+
+SqliteTableItem::~SqliteTableItem()
+{
+  delete _columnsModel;
+  delete _constraintsModel;
 }
 
 void SqliteTableItem::reloadColumnsModel()
@@ -46,7 +57,7 @@ void SqliteTableItem::reloadColumnsModel()
 
 ActionResult SqliteTableItem::insertMe()
 {
-  return !QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName()).lastError().isValid();
+  return execSql(createTableQuery(fieldValue("caption").toString()), connectionName());
 }
 
 ActionResult SqliteTableItem::updateMe()

@@ -7,6 +7,7 @@ class SqliteTableItem : public DBTableItem
 {
 public:
     SqliteTableItem(QString caption, QObject* parent = nullptr);
+    virtual ~SqliteTableItem() override;
     virtual void reloadColumnsModel() override;
     // DBObjectItem interface
 public:
