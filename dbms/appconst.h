@@ -4,6 +4,8 @@
 #define DELIMITER "/"
 
 #define F_NAME "name"
+#define F_DESCRIPTION "description"
+#define F_DOC_LINK "doclink"
 #define F_CAPTION "caption"
 #define F_QUERY_TEXT "queryText"
 #define F_ID "id"
@@ -60,6 +62,7 @@
 
 #define T_KEYWORDS "t_keywords"
 #define T_DATABASE "t_database"
+#define T_FUNCTIONS "t_functions"
 #define T_TYPES "t_types"
 
 #define DEF_DATABASE_NAME "New database"

@@ -10,13 +10,16 @@ LDBObjectModel::LDBObjectModel(QObject *parent) : QAbstractTableModel(parent)
 {
 }
 
-void LDBObjectModel::reload(QStringList keywords, QString connName)
+void LDBObjectModel::reload(QStringList keywords, QStringList functions, QString connName)
 {
   qDebug() << connName;
   emit beginResetModel();
   _dataList.clear();
   foreach (QString keyword, keywords) {
     _dataList.append(DbObj(keyword, F_KEYWORD));
+  }
+  foreach (QString function, functions) {
+    _dataList.append(DbObj(function, F_FUNCTION));
   }
   QSqlDatabase db = QSqlDatabase::database(connName);
   QString sql;

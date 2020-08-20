@@ -12,7 +12,7 @@ public:
     SqlHelpLookupProvider(QObject* parent = nullptr);
     virtual QString lookup(QString keyword);
 private:
-    LSqlTableModel* _model;
+    QList<LSqlTableModel*> _helpModels;
 };
 
 #endif // SQLHELPLOOKUPPROVIDER_H

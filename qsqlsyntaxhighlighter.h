@@ -12,12 +12,16 @@ public:
   ~QSqlSyntaxHighlighter();
 
   QStringList keyWords();
+  QStringList functions();
 
   // QSyntaxHighlighter interface
 protected:
   virtual void highlightBlock(const QString &text);
 private:
+  void highlightKeywords(const QString &text);
+  void highlightFunctions(const QString &text);
   QStringList _sqlKeyWords;
+  QStringList _sqlFunctions;
 };
 
 #endif // QSQLSYNTAXHIGHLIGHTER_H

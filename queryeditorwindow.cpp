@@ -54,6 +54,7 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   //  helpProvider->addItem("FROM", "FROM - is keyword used with SELECT clause");
 
   _helpTooltip = new QSimpleTooltip(this);
+  _helpTooltip->setOpenExternalLinks(true);
   _helpTooltip->setWidget(ui->teQueryEditor);
   _helpTooltip->setLookupProvider(new SqlHelpLookupProvider(this));
 
@@ -168,7 +169,9 @@ void QueryEditorWindow::refreshConnectionList()
 
 void QueryEditorWindow::refreshCompleterData()
 {
-  _compModel->reload(_highlighter->keyWords(), connectionName());
+  _compModel->reload(_highlighter->keyWords(),
+                     _highlighter->functions(),
+                     connectionName());
 }
 
 void QueryEditorWindow::onHelpKey()

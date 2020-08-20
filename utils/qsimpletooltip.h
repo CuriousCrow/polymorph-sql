@@ -32,7 +32,7 @@ public:
   virtual bool eventFilter(QObject *watched, QEvent *event);
   virtual bool event(QEvent *event);
 public slots:
-  void popup(QString toolTip, QPoint globalPos);
+  void popup(QString keyword, QPoint globalPos);
 };
 
 #endif // QSIMPLETOOLTIP_H

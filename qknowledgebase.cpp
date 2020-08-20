@@ -53,6 +53,11 @@ QKnowledgeBase::QKnowledgeBase(QObject *parent) : QObject(parent)
   mKeywords->select();
   qDebug() << mKeywords->rowCount() << "keywords loaded";
 
+  mFunctions = new LSqlTableModel(this);
+  mFunctions->setTable(T_FUNCTIONS);
+  mFunctions->select();
+  qDebug() << mFunctions->rowCount() << "functions loaded";
+
   mTypes = new LSqlTableModel(this);
   mTypes->setTable(T_TYPES);
   mTypes->select();

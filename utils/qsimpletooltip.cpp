@@ -14,15 +14,15 @@ QSimpleTooltip::QSimpleTooltip(QWidget *parent) : QLabel(parent, Qt::Popup)
   hide();
 }
 
-void QSimpleTooltip::popup(QString toolTip, QPoint globalPos)
+void QSimpleTooltip::popup(QString keyword, QPoint globalPos)
 {
   if (_secDuration > 0)
     _showTimer->start(_secDuration * 1000);
   QPoint relPos = mapToParent(mapFromGlobal(globalPos));
   if (_lookupProvider)
-    setText(_lookupProvider->lookup(toolTip));
+    setText(_lookupProvider->lookup(keyword));
   else
-    setText(toolTip);
+    setText(keyword);
   setMargin(_margin);
   setGeometry(relPos.x(), relPos.y(), sizeHint().width(), sizeHint().height());
   show();
@@ -58,14 +58,14 @@ bool QSimpleTooltip::eventFilter(QObject *watched, QEvent *event)
 {
   Q_UNUSED(watched)
   Q_UNUSED(event)
-  //    qDebug() << "event" << event->type();
+//  qDebug() << "Intercepted event:" << event->type();
   return false;
 }
 
 bool QSimpleTooltip::event(QEvent *event)
 {
-  //    qDebug() << "event" << event->type();
-  if (event->type() == QEvent::MouseButtonPress) {
+//  qDebug() << "Tooltip event:" << event->type();
+  if (event->type() == QEvent::MouseButtonRelease) {
     if (isVisible()) {
       _showTimer->stop();
       hide();
