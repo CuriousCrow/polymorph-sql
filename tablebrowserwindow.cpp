@@ -5,26 +5,31 @@
 #include "dbms/appconst.h"
 #include "dbms/appurl.h"
 #include "dbms/appconst.h"
+#include "tablebrowserdelegate.h"
 
 TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) :
   QMainWindow(parent),
-  ui(new Ui::TableBrowserWindow)
+  ui(new Ui::TableBrowserWindow),
+  _tableItem(tableItem)
 {
   qDebug() << "Connections:" << QSqlDatabase::connectionNames();
   ui->setupUi(this);
-  AppUrl url = tableItem->objectUrl();
+
+  _tableItem->reloadColumnsModel();
+  _tableItem->reloadConstraintsModel();
+
+  AppUrl url = _tableItem->objectUrl();
   setObjectName(url.toString());
   _connectionName = url.connection();
-  _tableName = tableItem->fieldValue(F_CAPTION).toString();
+  _tableName = _tableItem->fieldValue(F_CAPTION).toString();
   _sourceModel = new UniSqlTableModel(this, QSqlDatabase::database(_connectionName));
-  connect(_sourceModel, &UniSqlTableModel::error,
-          this, &TableBrowserWindow::onError);
+  connect(_sourceModel, &UniSqlTableModel::error, this, &TableBrowserWindow::onError);
   _sourceModel->setTable(_tableName);
   _sourceModel->select();
   _proxyModel = new QSortFilterProxyModel(this);
   _proxyModel->setSourceModel(_sourceModel);
   ui->tableView->setModel(_proxyModel);
-
+  ui->tableView->setItemDelegate(new TableBrowserDelegate(_tableItem, this));
 
   _mnuContext = new QMenu(this);
   _mnuContext->addAction(ui->aSetNull);
@@ -190,3 +195,4 @@ void TableBrowserWindow::on_lvFilters_pressed(const QModelIndex &index)
     _mnuFilterList->popup(QCursor::pos());
   }
 }
+

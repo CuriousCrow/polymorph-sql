@@ -26,7 +26,7 @@ DbmsPlugin *Core::module(QString name)
   return _singleton->_modules.value(name);
 }
 
-QStringList Core::moduleNames()
+QStringList Core::moduleNames() const
 {
   return _modules.keys();
 }

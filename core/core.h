@@ -11,7 +11,7 @@ public:
   static Core* instance(QObject* parent = nullptr);
   static void registerModule(DbmsPlugin* module);
   static DbmsPlugin* module(QString name);
-  QStringList moduleNames();
+  QStringList moduleNames() const;
 signals:
 
 public slots:

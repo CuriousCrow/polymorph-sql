@@ -36,7 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
   DataStore* ds = DataStore::instance(this);
   QStructureItemModel* structureModel = ds->structureModel();
 
-  QKnowledgeBase::kb(this);
+  QStringList modules = Core::instance()->moduleNames();
+  QKnowledgeBase::kb(this)->loadModels(modules);
 
   //Showing first column only
   //TODO: create utility methods for hiding columns
@@ -530,7 +531,7 @@ void MainWindow::refreshQueryEditorAssistance()
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
     QueryEditorWindow* editor = qobject_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)
-      editor->refreshCompleterData();
+      editor->reloadKnowledgeModel();
   }
 }
 

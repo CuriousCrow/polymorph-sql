@@ -22,6 +22,7 @@ public:
   // DBTableItem interface
 public:
   virtual void reloadColumnsModel() override;
+  virtual void reloadConstraintsModel() override;
 protected:
   QString caption();
 private:
@@ -29,10 +30,6 @@ private:
   QString columnDef(const SqlColumn &col);
   QString typeDef(const SqlColumn &col);
   QString defaultDef(const SqlColumn &col);
-
-  // DBTableItem interface
-public:
-  virtual void reloadConstraintsModel() override;
 };
 
 #endif // POSTGRESTABLE_H

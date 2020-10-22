@@ -52,6 +52,8 @@ public:
   virtual ActionResult createDatabase();
   virtual ActionResult dropDatabase();
 
+  virtual QString getAllObjectListSql();
+
   // LAbstractTreeItem interface
 public:  
   virtual QVariant colData(int column, int role);

@@ -26,6 +26,8 @@ public:
   virtual DBUniqueConstraint* newUniqueConstraint();
   virtual DBCheckConstraint* newCheckConstraint();
 
+  DBForeignKey* loadForeignKey(QString name);
+
   int colTypeFromString(QString name);
   void addDefaultColumn();
 //  QHash<int, QString> getColumnTypesHash();

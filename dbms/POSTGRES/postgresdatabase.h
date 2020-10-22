@@ -23,6 +23,7 @@ public:
   virtual DBSequenceItem *createNewSequenceItem(QString caption, QObject *parent);
   virtual DBProcedureItem *createNewProcedureItem(QString caption, QObject *parent);
   virtual DBTriggerItem *createNewTriggerItem(QString caption, QObject *parent);
+  virtual QString getAllObjectListSql();
 
   // DBDatabaseItem interface
 protected:

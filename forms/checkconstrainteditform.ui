@@ -62,6 +62,10 @@
        <property name="text">
         <string>Apply</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/disk.png</normaloff>:/icons/disk.png</iconset>
+       </property>
       </widget>
      </item>
      <item>
@@ -69,12 +73,18 @@
        <property name="text">
         <string>Cancel</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

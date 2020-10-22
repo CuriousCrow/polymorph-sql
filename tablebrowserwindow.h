@@ -62,6 +62,7 @@ private:
   QString _connectionName;
   UniSqlTableModel* _sourceModel;
   QSortFilterProxyModel* _proxyModel;
+  DBTableItem* _tableItem;
   QMenu* _mnuContext;
   QMenu* _mnuFilterList;
 };

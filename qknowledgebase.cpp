@@ -12,6 +12,46 @@ QKnowledgeBase *QKnowledgeBase::kb(QObject *parent)
   return _kb;
 }
 
+void QKnowledgeBase::loadModels(const QStringList &drivers)
+{
+  foreach(QString driver, drivers) {
+    qDebug() << "Load module base:" << driver;
+    loadModelByType(T_KEYWORDS, OBJTYPE_KEYWORD, driver);
+    loadModelByType(T_FUNCTIONS, OBJTYPE_FUNCTION, driver);
+  }
+  loadModelByType(T_KEYWORDS, OBJTYPE_KEYWORD);
+  loadModelByType(T_FUNCTIONS, OBJTYPE_FUNCTION);
+}
+
+LDBObjectTableModel *QKnowledgeBase::modelByType(QString type, QString driver)
+{
+  QString name = type + driver;
+  return _modelHash.value(name);
+}
+
+void QKnowledgeBase::loadModelByType(QString table, QString type, QString driver)
+{
+  QString name = type + driver;
+  QString sqlPattern = "select * from %1 where %2";
+  QString preparedSql = sqlPattern.arg(table).arg(driver.isEmpty() ? "driver is null" : "driver='" + driver + "'");
+
+  LDBObjectTableModel* model = new LDBObjectTableModel(this);
+  model->registerColumn(F_NAME);
+  model->registerColumn(F_TYPE);
+  model->registerColumn(F_DESCRIPTION);
+  model->registerColumn(F_DOC_LINK);
+  model->registerColumn(F_DRIVER_NAME);
+
+  model->setFixedValue(F_TYPE, type);
+  model->setFixedValue(F_DRIVER_NAME, driver);
+
+  model->setQuery(preparedSql);
+  _modelHash.insert(name, model);
+
+  model->reload();
+  qDebug() << name << ":" << model->rowCount();
+}
+
 QHash<int, QString> QKnowledgeBase::typesHash(QString dbms)
 {
   QHash<int, QString> resHash;

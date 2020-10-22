@@ -21,49 +21,6 @@ void LDBObjectModel::reload(QStringList keywords, QStringList functions, QString
   foreach (QString function, functions) {
     _dataList.append(DbObj(function, F_FUNCTION));
   }
-  QSqlDatabase db = QSqlDatabase::database(connName);
-  QString sql;
-  if (db.driverName() == DRIVER_PSQL) {
-    sql = "select table_name, 'table' FROM information_schema.tables "
-          "WHERE table_schema = 'public' AND table_type = 'BASE TABLE' "
-          "UNION ALL "
-          "SELECT table_name, 'view' FROM information_schema.views "
-          "WHERE table_schema = 'public' "
-          "UNION ALL "
-          "SELECT sequence_name, 'sequence' FROM information_schema.sequences "
-          "UNION ALL "
-          "SELECT routine_name, 'procedure' FROM information_schema.routines "
-          "WHERE specific_schema NOT IN ('pg_catalog', 'information_schema') "
-          "AND type_udt_name != 'trigger'";
-  }
-  else if (db.driverName() == DRIVER_MYSQL) {
-    sql = "SELECT table_name, 'table' FROM information_schema.tables "
-          "WHERE table_schema = 'test' AND table_type = 'BASE TABLE' "
-          "UNION ALL "
-          "SELECT table_name, 'view' FROM information_schema.views "
-          "UNION ALL "
-          "SELECT routine_name, 'procedure' FROM information_schema.routines "
-          "WHERE ROUTINE_TYPE='PROCEDURE' ";
-  }
-  else if (db.driverName() == DRIVER_FIREBIRD) {
-    sql = "select trim(rdb$relation_name), 'table' from rdb$relations where rdb$relation_type=0 and (rdb$system_flag is null or rdb$system_flag = 0) "
-          "union all "
-          "select trim(rdb$relation_name) name, 'view' from rdb$relations where rdb$relation_type=1 "
-          "union all "
-          "select trim(rdb$generator_name) name, 'sequence' from rdb$generators where rdb$system_flag = 0 "
-          "union all "
-          "select trim(rdb$procedure_name) name, 'procedure' from rdb$procedures";
-  }
-  else if (db.driverName() == DRIVER_SQLITE) {
-    sql = "SELECT name, type FROM sqlite_master";
-  }
-  if (!sql.isEmpty()) {
-    QSqlQuery query(db);
-    query.exec(sql);
-    while (query.next()) {
-      _dataList.append(DbObj(query.value(0).toString(), query.value(1).toString().trimmed()));
-    }
-  }
   emit endResetModel();
 }
 

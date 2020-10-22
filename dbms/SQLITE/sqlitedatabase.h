@@ -9,7 +9,8 @@ class SqliteDatabase : public DBDatabaseItem
 public:
     SqliteDatabase(QString caption);
 public:
-    virtual bool reloadChildren() override;
+    virtual bool reloadChildren() Q_DECL_OVERRIDE;
+    virtual QString getAllObjectListSql() Q_DECL_OVERRIDE;
 };
 
 #endif // SQLITEDATABASE_H

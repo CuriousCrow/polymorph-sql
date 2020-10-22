@@ -9,6 +9,8 @@
 #include "qactiveconnectionmodel.h"
 #include "ldbobjectmodel.h"
 #include "utils/qsimpletooltip.h"
+#include "models/ldbobjecttablemodel.h"
+#include "models/jointdbojbectmodel.h"
 #include "core/datastore.h"
 
 namespace Ui {
@@ -24,7 +26,7 @@ public:
   ~QueryEditorWindow();
 public slots:
   void refreshConnectionList();
-  void refreshCompleterData();
+  void reloadKnowledgeModel();
 private slots:
   void on_aExecuteQuery_triggered();
 
@@ -41,7 +43,9 @@ private:
   Ui::QueryEditorWindow *ui;
   QActiveConnectionModel* _activeConnectionModel;
   QSqlQueryModel* _resultModel;
-  LDBObjectModel* _compModel;
+//  LDBObjectModel* _compModel;
+  JointDBOjbectModel* _knowledgeModel;
+  LDBObjectTableModel* _objectsModel;
   QSqlSyntaxHighlighter* _highlighter;
   LTextCompleter* _completer;
   QSimpleTooltip* _helpTooltip;

@@ -13,6 +13,7 @@ public:
   // DBObjectItem interface
 public:
   virtual bool reloadChildren();
+  virtual QString getAllObjectListSql();
 };
 
 #endif // MYSQLDATABASE_H

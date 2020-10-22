@@ -115,6 +115,16 @@ bool DBTableItem::isModified() const
   return _columnsModel->isModified();
 }
 
+DBForeignKey *DBTableItem::loadForeignKey(QString name)
+{
+  DBForeignKey* foreignKey = newForeignKey();
+  foreignKey->setFieldValue(F_CAPTION, name);
+  foreignKey->setFieldValue(F_TABLE, this->fieldValue(F_CAPTION));
+  foreignKey->setParentUrl(this->objectUrl());
+  foreignKey->refresh();
+  return foreignKey;
+}
+
 ActionResult DBTableItem::updateMe()
 {
   SqlColumnModel::EditType editType = _columnsModel->editType();

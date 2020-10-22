@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>358</width>
+    <width>489</width>
     <height>379</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Connection editor</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../icons.qrc">
+    <normaloff>:/icons/database.png</normaloff>:/icons/database.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_7">
    <item>
@@ -174,6 +178,10 @@
        <property name="text">
         <string>Test connection</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/commit.png</normaloff>:/icons/commit.png</iconset>
+       </property>
       </widget>
      </item>
      <item>
@@ -181,12 +189,20 @@
        <property name="text">
         <string>Create</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/bullet_add.png</normaloff>:/icons/bullet_add.png</iconset>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnDrop">
        <property name="text">
         <string>Drop</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/bullet_delete.png</normaloff>:/icons/bullet_delete.png</iconset>
        </property>
       </widget>
      </item>
@@ -208,6 +224,10 @@
        <property name="text">
         <string>OK</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/tick.png</normaloff>:/icons/tick.png</iconset>
+       </property>
       </widget>
      </item>
      <item>
@@ -215,13 +235,19 @@
        <property name="text">
         <string>Cancel</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btnCancel</sender>

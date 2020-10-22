@@ -51,6 +51,8 @@
 #define OBJTYPE_SEQUENCE "sequence"
 #define OBJTYPE_TRIGGER "trigger"
 #define OBJTYPE_PROCEDURE "procedure"
+#define OBJTYPE_KEYWORD "keyword"
+#define OBJTYPE_FUNCTION "function"
 
 #define FOLDER_TABLES "tables"
 #define FOLDER_PROCEDURES "procedures"
@@ -58,6 +60,10 @@
 #define FOLDER_SEQUENCES "sequences"
 #define FOLDER_TRIGGERS "triggers"
 #define FOLDER_SYSTABLES "systables"
+#define FOLDER_KEYWORDS "keywords"
+#define FOLDER_FUNCTIONS "functions"
+#define FOLDER_OBJECTS "objects"
+
 //#define OBJTYPE_
 
 #define T_KEYWORDS "t_keywords"

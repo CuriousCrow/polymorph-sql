@@ -11,6 +11,8 @@
 #include "core/sqlhelplookupprovider.h"
 #include "core/localeventnotifier.h"
 #include "dbms/appconst.h"
+#include "qknowledgebase.h"
+
 #include <QComboBox>
 
 #include <QStringListModel>
@@ -24,10 +26,21 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   _resultModel = new QSqlQueryModel(this);
   ui->tvResultSet->setModel(_resultModel);
 
-  //Simple keywords autocompleter
-  //TODO: Dynamic autocomplete depending on syntax and database objects
-  _compModel = new LDBObjectModel(this);
-  _completer = new LTextCompleter(_compModel, this);
+  _knowledgeModel = new JointDBOjbectModel(this);
+  _knowledgeModel->registerColumn(F_NAME);
+  _knowledgeModel->registerColumn(F_TYPE);
+  _knowledgeModel->registerColumn(F_DESCRIPTION);
+  _knowledgeModel->registerColumn(F_DOC_LINK);
+
+  _objectsModel = new LDBObjectTableModel(this);
+  _objectsModel->registerColumn(F_NAME);
+  _objectsModel->registerColumn(F_TYPE);
+  _objectsModel->registerColumn(F_DESCRIPTION);
+  _objectsModel->registerColumn(F_DOC_LINK);
+  _objectsModel->setFixedValue(F_DESCRIPTION, "");
+  _objectsModel->setFixedValue(F_DOC_LINK, "");
+
+  _completer = new LTextCompleter(_knowledgeModel, this);
   QTableView* completerView = new QTableView(this);
   completerView->horizontalHeader()->hide();
   completerView->verticalHeader()->hide();
@@ -42,16 +55,13 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   _highlighter->setDocument(ui->teQueryEditor->document());
 
   connect(ui->cmbDatabase, SIGNAL(currentIndexChanged(int)),
-          this, SLOT(refreshCompleterData()));
+          this, SLOT(reloadKnowledgeModel()));
 
   _activeConnectionModel = new QActiveConnectionModel(this);
   _activeConnectionModel->setSourceModel(DataStore::structureModel());
   ui->cmbDatabase->setModel(_activeConnectionModel);
   ui->cmbDatabase->setModelColumn(0);
 
-  //  MapHelpLookupProvider* helpProvider = new MapHelpLookupProvider(this);
-  //  helpProvider->addItem("SELECT", "<b>SELECT</b> is the most common keyword");
-  //  helpProvider->addItem("FROM", "FROM - is keyword used with SELECT clause");
 
   _helpTooltip = new QSimpleTooltip(this);
   _helpTooltip->setOpenExternalLinks(true);
@@ -151,6 +161,20 @@ QString QueryEditorWindow::generateAlias(QString tableName)
   return alias;
 }
 
+void QueryEditorWindow::reloadKnowledgeModel()
+{
+  DBDatabaseItem* dbObj = qobject_cast<DBDatabaseItem*>(dbObject());
+  _knowledgeModel->clear();
+
+  _objectsModel->setQuery(dbObj->getAllObjectListSql());
+  _objectsModel->reload(dbObj->connectionName());
+
+  QKnowledgeBase* kb = QKnowledgeBase::kb();
+  _knowledgeModel->addModel(FOLDER_OBJECTS, _objectsModel);
+  _knowledgeModel->addModel(FOLDER_KEYWORDS, kb->modelByType(OBJTYPE_KEYWORD, dbObj->driverName()));
+  _knowledgeModel->addModel(FOLDER_FUNCTIONS, kb->modelByType(OBJTYPE_FUNCTION, dbObj->driverName()));
+}
+
 void QueryEditorWindow::on_aCommit_triggered()
 {
   QSqlDatabase::database(connectionName()).commit();
@@ -165,13 +189,6 @@ void QueryEditorWindow::refreshConnectionList()
 {
   qDebug() << "Refilter connection list";
   _activeConnectionModel->invalidate();
-}
-
-void QueryEditorWindow::refreshCompleterData()
-{
-  _compModel->reload(_highlighter->keyWords(),
-                     _highlighter->functions(),
-                     connectionName());
 }
 
 void QueryEditorWindow::onHelpKey()
@@ -214,15 +231,15 @@ void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifie
 {
   if (!modifiers.testFlag(Qt::ControlModifier))
     return;
-  DbObj dbObj = _compModel->findByName(word);
+  QVariantMap dbObj = _objectsModel->rowByName(word);
   //If current word is a table/view name then open table browser
-  if (dbObj.isValid()) {
-    if (dbObj.type == OBJTYPE_TABLE) {
-      QString url = dbUrl() + DELIMITER + FOLDER_TABLES + DELIMITER + dbObj.name;
+  if (!dbObj.isEmpty()) {
+    if (dbObj.value(F_TYPE).toString() == OBJTYPE_TABLE) {
+      QString url = dbUrl() + DELIMITER + FOLDER_TABLES + DELIMITER + word;
       LocalEventNotifier::postLocalEvent(ShowObjectEvent, url);
     }
-    else if (dbObj.type == OBJTYPE_VIEW) {
-      QString url = dbUrl() + DELIMITER + FOLDER_VIEWS + DELIMITER + dbObj.name;
+    else if (dbObj.value(F_TYPE).toString() == OBJTYPE_VIEW) {
+      QString url = dbUrl() + DELIMITER + FOLDER_VIEWS + DELIMITER + word;
       LocalEventNotifier::postLocalEvent(ShowObjectEvent, url);
     }
   }
@@ -236,9 +253,9 @@ void QueryEditorWindow::onCompleterRequested(const QString &contextText)
     objName = objName.section(".", 0, 0);
     objName = aliasSource(objName);
 
-    DbObj dbObj = _compModel->findByName(objName);
-    if (dbObj.isValid() && dbObj.type == OBJTYPE_TABLE) {
-      qDebug() << "Searching table:" << dbObj.name;
+    QVariantMap dbObj = _objectsModel->rowByName(objName);
+    if (!dbObj.isEmpty() && dbObj.value(F_TYPE).toString() == OBJTYPE_TABLE) {
+      qDebug() << "Searching table:" << objName;
       DBObjectItem* item = DataStore::itemByFolderAndName(dbObject(), FOLDER_TABLES, objName.toLower());
       if (item && item->type() == DBObjectItem::Table) {
         qDebug() << "Table object found";
@@ -251,7 +268,7 @@ void QueryEditorWindow::onCompleterRequested(const QString &contextText)
     }
   }
   else {
-    _completer->setModel(_compModel);
+    _completer->setModel(_knowledgeModel);
     _completer->setMinCompletionPrefixLength(1);
     _completer->setCompletionColumn(0);
   }

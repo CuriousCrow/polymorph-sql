@@ -27,6 +27,7 @@ public:
   QString tableName();
   QString fieldName(int idx);
   QStringList sqlError();
+  qlonglong idByRow(int row) const;
 signals:
   void error(QString message);
 
@@ -45,7 +46,6 @@ protected:
   qlonglong genId();
   qlonglong genTempId();
   QSqlRecord recByRow(int row) const;
-  qlonglong idByRow(int row) const;
   QString fields();
 
   virtual QString selectAllSql();

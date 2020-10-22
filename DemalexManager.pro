@@ -34,6 +34,8 @@ SOURCES += main.cpp\
   dbms/SQLITE/sqlitetable.cpp \
   dbms/SQLITE/sqliteviewitem.cpp \
   ltextcompleter.cpp \
+  models/jointdbojbectmodel.cpp \
+  models/ldbobjecttablemodel.cpp \
   models/unisqltablemodel.cpp \
   qknowledgebase.cpp \
 #Forms
@@ -48,6 +50,7 @@ SOURCES += main.cpp\
   forms/vieweditdialog.cpp \
   mainwindow.cpp \
   forms/connectioneditdialog.cpp \
+  tablebrowserdelegate.cpp \
   tablebrowserwindow.cpp \
   queryeditorwindow.cpp \
   lqueryeditor.cpp \
@@ -122,6 +125,8 @@ HEADERS  += \
   dbms/SQLITE/sqliteviewitem.h \
   dbms/dbmsplugin.h \
   ltextcompleter.h \
+  models/jointdbojbectmodel.h \
+  models/ldbobjecttablemodel.h \
   models/unisqltablemodel.h \
   qknowledgebase.h \
 #Forms
@@ -136,6 +141,7 @@ HEADERS  += \
   forms/vieweditdialog.h \
   mainwindow.h \
   forms/connectioneditdialog.h \
+  tablebrowserdelegate.h \
   tablebrowserwindow.h \
   queryeditorwindow.h \
   lqueryeditor.h \

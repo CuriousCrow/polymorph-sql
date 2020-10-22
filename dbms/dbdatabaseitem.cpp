@@ -353,6 +353,11 @@ QString DBDatabaseItem::getProcedureListSql()
   return "";
 }
 
+QString DBDatabaseItem::getAllObjectListSql()
+{
+  return "";
+}
+
 QString DBDatabaseItem::driver()
 {
   return fieldValue(F_DRIVER_NAME).toString();

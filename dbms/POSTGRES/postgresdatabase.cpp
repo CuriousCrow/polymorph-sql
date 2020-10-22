@@ -79,3 +79,18 @@ DBTriggerItem *PostgresDatabase::createNewTriggerItem(QString caption, QObject *
 {
   return new PostgresTriggerItem(caption, parent);
 }
+
+QString PostgresDatabase::getAllObjectListSql()
+{
+  return "select table_name \"name\", 'table' \"type\" FROM information_schema.tables "
+         "WHERE table_schema = 'public' AND table_type = 'BASE TABLE' "
+         "UNION ALL "
+         "SELECT table_name, 'view' FROM information_schema.views "
+         "WHERE table_schema = 'public' "
+         "UNION ALL "
+         "SELECT sequence_name, 'sequence' FROM information_schema.sequences "
+         "UNION ALL "
+         "SELECT routine_name, 'procedure' FROM information_schema.routines "
+         "WHERE specific_schema NOT IN ('pg_catalog', 'information_schema') "
+         "AND type_udt_name != 'trigger'";
+}

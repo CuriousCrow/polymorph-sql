@@ -15,3 +15,8 @@ bool SqliteDatabase::reloadChildren()
 {
   return true;
 }
+
+QString SqliteDatabase::getAllObjectListSql()
+{
+  return "SELECT name, type FROM sqlite_master";
+}

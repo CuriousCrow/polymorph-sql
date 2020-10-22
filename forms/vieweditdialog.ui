@@ -18,6 +18,10 @@
   <property name="windowTitle">
    <string>View editor</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../icons.qrc">
+    <normaloff>:/icons/table.png</normaloff>:/icons/table.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -67,6 +71,10 @@
        <property name="text">
         <string>OK</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/tick.png</normaloff>:/icons/tick.png</iconset>
+       </property>
       </widget>
      </item>
      <item>
@@ -74,12 +82,18 @@
        <property name="text">
         <string>Cancel</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
