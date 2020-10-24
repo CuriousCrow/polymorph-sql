@@ -56,6 +56,9 @@ private slots:
 
   void on_lvFilters_pressed(const QModelIndex &index);
 
+  void onCurrentItemChanged(const QModelIndex &index);
+  void on_aLoadFromFile_triggered();
+
 private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;
@@ -65,6 +68,7 @@ private:
   DBTableItem* _tableItem;
   QMenu* _mnuContext;
   QMenu* _mnuFilterList;
+
 };
 
 #endif // TABLEBROWSERWINDOW_H

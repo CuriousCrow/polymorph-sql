@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -28,13 +28,32 @@
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QListView" name="lvFilters">
-       <property name="maximumSize">
-        <size>
-         <width>200</width>
-         <height>16777215</height>
-        </size>
-       </property>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QListView" name="lvFilters">
+          <property name="maximumSize">
+           <size>
+            <width>16777214</width>
+            <height>16777214</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="ItemViewer" name="itemViewer">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -161,7 +180,20 @@
     <string>Remove filter</string>
    </property>
   </action>
+  <action name="aLoadFromFile">
+   <property name="text">
+    <string>Load from file</string>
+   </property>
+  </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ItemViewer</class>
+   <extends>QStackedWidget</extends>
+   <header>itemviewer.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="icons.qrc"/>
  </resources>

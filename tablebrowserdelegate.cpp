@@ -1,5 +1,6 @@
 #include "tablebrowserdelegate.h"
 #include <QTableView>
+#include "blobeditor.h"
 #include "dbms/appconst.h"
 #include <QDebug>
 
@@ -37,6 +38,11 @@ QWidget *TableBrowserDelegate::createEditor(QWidget *parent, const QStyleOptionV
     editor->setModel(_foreignTable);
     return editor;
   }
+  else if (index.column() == 5) {
+    qDebug() << "Blob delegate";
+    BlobEditor* editor = new BlobEditor();
+    return editor;
+  }
   return QStyledItemDelegate::createEditor(parent, option, index);
 }
 
@@ -45,6 +51,9 @@ void TableBrowserDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
   if (_foreignKeys.contains(index.column())) {
 
   }
+  else if (index.column() == 5) {
+    qobject_cast<BlobEditor*>(editor)->setData(index.data().toByteArray());
+  }
   else {
     return QStyledItemDelegate::setEditorData(editor, index);
   }
@@ -52,9 +61,15 @@ void TableBrowserDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
 
 void TableBrowserDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
+  qDebug() << "setModelData() called";
+
   if (_foreignKeys.contains(index.column())) {
     QTableView* editorView = qobject_cast<QTableView*>(editor);
     model->setData(index, _foreignTable->idByRow(editorView->currentIndex().row()));
+  }
+  else if (index.column() == 5) {
+    BlobEditor* blobEditor = qobject_cast<BlobEditor*>(editor);
+    model->setData(index, blobEditor->data());
   }
   else {
     QStyledItemDelegate::setModelData(editor, model, index);

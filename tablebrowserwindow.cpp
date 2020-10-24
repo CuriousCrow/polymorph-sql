@@ -2,9 +2,11 @@
 #include "ui_tablebrowserwindow.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <QFileDialog>
 #include "dbms/appconst.h"
 #include "dbms/appurl.h"
 #include "dbms/appconst.h"
+#include "utils/qfileutils.h"
 #include "tablebrowserdelegate.h"
 
 TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) :
@@ -33,6 +35,7 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
 
   _mnuContext = new QMenu(this);
   _mnuContext->addAction(ui->aSetNull);
+  _mnuContext->addAction(ui->aLoadFromFile);
   _mnuContext->addSeparator();
   _mnuContext->addAction(ui->aEqualFilter);
   _mnuContext->addAction(ui->aNotEqualFilter);
@@ -49,6 +52,9 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
   ui->tableView->horizontalHeader()->setSectionsMovable(true);
 
   ui->lvFilters->setModel(_sourceModel->filter());
+
+  connect(ui->tableView->selectionModel(), &QItemSelectionModel::currentChanged,
+          this, &TableBrowserWindow::onCurrentItemChanged);
 }
 
 TableBrowserWindow::~TableBrowserWindow()
@@ -196,3 +202,16 @@ void TableBrowserWindow::on_lvFilters_pressed(const QModelIndex &index)
   }
 }
 
+void TableBrowserWindow::onCurrentItemChanged(const QModelIndex &index)
+{
+  ui->itemViewer->setValue(index.data());
+}
+
+void TableBrowserWindow::on_aLoadFromFile_triggered()
+{
+  QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"));
+  if (filepath.isEmpty())
+    return;
+  QByteArray data = QFileUtils::loadFile(filepath);
+  _proxyModel->setData(ui->tableView->currentIndex(), data);
+}

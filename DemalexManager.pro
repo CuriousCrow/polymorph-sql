@@ -15,6 +15,7 @@ RC_ICONS = icons/cc_16.ico
 
 SOURCES += main.cpp\
 #Core
+  blobeditor.cpp \
   core/core.cpp \
   core/datastore.cpp \
   core/localeventnotifier.cpp \
@@ -33,6 +34,7 @@ SOURCES += main.cpp\
   dbms/SQLITE/sqliteplugin.cpp \
   dbms/SQLITE/sqlitetable.cpp \
   dbms/SQLITE/sqliteviewitem.cpp \
+  itemviewer.cpp \
   ltextcompleter.cpp \
   models/jointdbojbectmodel.cpp \
   models/ldbobjecttablemodel.cpp \
@@ -57,6 +59,7 @@ SOURCES += main.cpp\
 #Utils
   qsqlqueryhelper.cpp \
   qsqlsyntaxhighlighter.cpp \
+  utils/qfileutils.cpp \
   utils/qsimpletooltip.cpp \
 #Models
     models/simplecachedtablemodel.cpp \
@@ -100,11 +103,13 @@ SOURCES += main.cpp\
     dbms/POSTGRES/postgrestable.cpp \
     dbms/POSTGRES/postgresuniqueconstraint.cpp \
     utils/sqlfiltermanager.cpp \
-  utils/sqlutils.cpp
+  utils/sqlutils.cpp \
+  utils/strutils.cpp
 #Firebird
 
 HEADERS  += \
 #Core
+  blobeditor.h \
   core/core.h \
   core/datastore.h \
   core/localeventnotifier.h \
@@ -124,6 +129,7 @@ HEADERS  += \
   dbms/SQLITE/sqlitetable.h \
   dbms/SQLITE/sqliteviewitem.h \
   dbms/dbmsplugin.h \
+  itemviewer.h \
   ltextcompleter.h \
   models/jointdbojbectmodel.h \
   models/ldbobjecttablemodel.h \
@@ -148,6 +154,7 @@ HEADERS  += \
 #Utils
   qsqlqueryhelper.h \
   qsqlsyntaxhighlighter.h \
+  utils/qfileutils.h \
   utils/qsimpletooltip.h \
 #Models
     models/simplecachedtablemodel.h \
@@ -192,10 +199,12 @@ HEADERS  += \
     dbms/POSTGRES/postgrestable.h \
     dbms/POSTGRES/postgresuniqueconstraint.h \
   utils/sqlfiltermanager.h \
-  utils/sqlutils.h
+  utils/sqlutils.h \
+  utils/strutils.h
 #Firebird
 
 FORMS    += mainwindow.ui \
+    blobeditor.ui \
     forms/connectioneditdialog.ui \
     forms/checkconstrainteditform.ui \
     forms/foreignkeyform.ui \
@@ -203,6 +212,7 @@ FORMS    += mainwindow.ui \
     forms/sequenceeditform.ui \
     forms/triggereditform.ui \
     forms/uniqueconstrainteditform.ui \
+    itemviewer.ui \
     tablebrowserwindow.ui \
     queryeditorwindow.ui \
     forms/vieweditdialog.ui \
