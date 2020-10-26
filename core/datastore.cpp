@@ -29,6 +29,11 @@ DataStore::DataStore(QObject *parent) : QObject(parent)
 
   _structureModel = new QStructureItemModel(this);
   initRegisteredDatabases();
+
+  //Query history model (one for all databases)
+  _queryHistoryModel = new UniSqlTableModel(this);
+  _queryHistoryModel->setTable("t_query_history");
+  _queryHistoryModel->orderBy(F_ID, Qt::DescendingOrder);
 }
 
 void DataStore::initRegisteredDatabases()
@@ -80,4 +85,23 @@ DBObjectItem *DataStore::itemByFolderAndName(DBObjectItem *fromItem, QString fol
   if (!name.isEmpty())
     folderUrl.cd(name);
   return structureModel()->itemByUrl(folderUrl);
+}
+
+UniSqlTableModel *DataStore::historyModel(int dbId)
+{
+  UniSqlTableModel* mHistory = instance()->_queryHistoryModel;
+  mHistory->filter()->clear();
+  mHistory->filter()->addEqualFilter("database_id", dbId);
+  mHistory->select();
+  return mHistory;
+}
+
+bool DataStore::addQueryHistoryItem(int dbId, QString query)
+{
+  QString sql = "insert into t_query_history(database_id, query) values (:db, :query)";
+  QSqlQuery preparedSql = QSqlQueryHelper::prepareQuery(sql);
+  preparedSql.bindValue(":db", dbId);
+  preparedSql.bindValue(":query", query);
+  bool resultOk = QSqlQueryHelper::execSql(preparedSql);
+  return resultOk;
 }

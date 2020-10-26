@@ -70,6 +70,8 @@
    <addaction name="aRollback"/>
    <addaction name="aExecuteQuery"/>
    <addaction name="aExecScript"/>
+   <addaction name="separator"/>
+   <addaction name="aQueryHistory"/>
   </widget>
   <action name="aCommit">
    <property name="icon">
@@ -120,6 +122,15 @@
    </property>
    <property name="toolTip">
     <string>Run SQL script</string>
+   </property>
+  </action>
+  <action name="aQueryHistory">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/history.png</normaloff>:/icons/history.png</iconset>
+   </property>
+   <property name="text">
+    <string>Query history</string>
    </property>
   </action>
  </widget>

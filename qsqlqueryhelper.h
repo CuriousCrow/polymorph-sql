@@ -15,6 +15,8 @@ public:
   QSqlQueryHelper();
   ~QSqlQueryHelper();
   static QSqlQuery execSql(QString sql, QString connectionName = QSqlDatabase::defaultConnection);
+  static bool execSql(QSqlQuery &query);
+  static QSqlQuery prepareQuery(QString sql, QString connectionName = QSqlDatabase::defaultConnection);
   static QString databaseName(QString connection);
   static QString driverName(QString connection);
   static QSqlRecord tableRowInfo(QString table, QString connectionName);

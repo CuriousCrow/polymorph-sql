@@ -30,5 +30,6 @@
         <file>icons/bullet_add.png</file>
         <file>icons/bullet_delete.png</file>
         <file>icons/disk.png</file>
+        <file>icons/history.png</file>
     </qresource>
 </RCC>

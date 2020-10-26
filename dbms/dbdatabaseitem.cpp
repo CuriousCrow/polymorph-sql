@@ -207,8 +207,9 @@ QVariant DBDatabaseItem::colData(int column, int role)
 {
   switch (role) {
   case Qt::DecorationRole:
-    if (column == 0)
-      return QIcon(":/icons/database.png");
+    return (column == 0) ? QIcon(":/icons/database.png") : QVariant();
+  case Qt::UserRole:
+    return fieldValue(F_ID);
   }
   return DBObjectItem::colData(column, role);
 }

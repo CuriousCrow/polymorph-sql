@@ -24,6 +24,7 @@ public:
   bool submitById(qlonglong id);
   bool revertAll();
   SqlFilterManager* filter();
+  void orderBy(QString field, Qt::SortOrder direction = Qt::AscendingOrder);
   QString tableName();
   QString fieldName(int idx);
   QStringList sqlError();
@@ -61,6 +62,7 @@ private:
   QHash<qlonglong, QSqlRecord> _changesHash;
   QHash<qlonglong, QSqlRecord> _dataHash;
   SqlFilterManager* _filterManager;
+  QString _orderBy;
 
   QSqlDatabase _db;
   QSqlQuery _query;

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include "../qstructureitemmodel.h"
+#include "../models/unisqltablemodel.h"
 
 class DataStore : public QObject
 {
@@ -13,6 +14,8 @@ public:
   static QStructureItemModel* structureModel();
   static QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
   static DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
+  static UniSqlTableModel* historyModel(int dbId);
+  static bool addQueryHistoryItem(int dbId, QString query);
 signals:
 
 public slots:
@@ -25,6 +28,7 @@ private:
 
   QStructureItemModel* _structureModel;
   QSqlDatabase appDB;
+  UniSqlTableModel* _queryHistoryModel;
 };
 
 #endif // DATASTORE_H

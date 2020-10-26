@@ -39,6 +39,9 @@ private slots:
   void on_aExecScript_triggered();
   void onFindObject(QString word, Qt::KeyboardModifiers modifiers);
   void onCompleterRequested(const QString &contextText);
+  void on_aQueryHistory_triggered();
+  void onHistoryClosed();
+
 private:
   Ui::QueryEditorWindow *ui;
   QActiveConnectionModel* _activeConnectionModel;
@@ -55,6 +58,7 @@ private:
   QString aliasSource(QString alias);
   QString getActiveText();
   QString generateAlias(QString tableName);
+  QString _lastExecutedQuery;
 };
 
 #endif // QUERYEDITORWINDOW_H

@@ -130,7 +130,11 @@ QString UniSqlTableModel::selectAllSql()
   QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
                                             _patternRec, false);
   QString where = _filterManager->whereClause();
-  return Sql::concat(stmt, where);
+
+  QString sql = Sql::concat(stmt, where);
+  if (!_orderBy.isEmpty())
+    sql = Sql::concat(sql, _orderBy);
+  return sql;
 }
 
 bool UniSqlTableModel::select()
@@ -295,6 +299,12 @@ bool UniSqlTableModel::revertAll()
 SqlFilterManager *UniSqlTableModel::filter()
 {
   return _filterManager;
+}
+
+void UniSqlTableModel::orderBy(QString field, Qt::SortOrder direction)
+{
+  QString orderByPattern = " ORDER BY %1 %2";
+  _orderBy = orderByPattern.arg(field).arg(direction == Qt::AscendingOrder ? "ASC" : "DESC");
 }
 
 QString UniSqlTableModel::tableName()

@@ -28,6 +28,27 @@ QSqlQuery QSqlQueryHelper::execSql(QString sql, QString connectionName)
   return sqlResult;
 }
 
+bool QSqlQueryHelper::execSql(QSqlQuery &query)
+{
+  bool resOk = query.exec();
+  if (true) {
+    qDebug() << QString("SQL: %1").arg(query.executedQuery());
+    if (!resOk)
+      qWarning() << "Error:" << query.lastError().text();
+  }
+  return resOk;
+}
+
+QSqlQuery QSqlQueryHelper::prepareQuery(QString sql,  QString connectionName)
+{
+  QSqlQuery query(QSqlDatabase::database(connectionName));
+  bool resOk = query.prepare(sql);
+  if (true && !resOk) {
+    qWarning() << "Prepare error:" << query.lastError().text();
+  }
+  return query;
+}
+
 QString QSqlQueryHelper::databaseName(QString connection)
 {
   QSqlDatabase dbCon = QSqlDatabase::database(connection, false);

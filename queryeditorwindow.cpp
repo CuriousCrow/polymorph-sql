@@ -12,6 +12,7 @@
 #include "core/localeventnotifier.h"
 #include "dbms/appconst.h"
 #include "qknowledgebase.h"
+#include "queryhistoryform.h"
 
 #include <QComboBox>
 
@@ -147,6 +148,11 @@ QString QueryEditorWindow::getActiveText()
   QString activeText = ui->teQueryEditor->textCursor().selectedText();
   if (activeText.isEmpty())
     activeText = ui->teQueryEditor->toPlainText();
+  if (_lastExecutedQuery != activeText) {
+    qDebug() << "New query registered in history:" << activeText;
+    DataStore::addQueryHistoryItem(ui->cmbDatabase->currentData().toInt(), activeText);
+    _lastExecutedQuery = activeText;
+  }
   return activeText;
 }
 
@@ -271,5 +277,25 @@ void QueryEditorWindow::onCompleterRequested(const QString &contextText)
     _completer->setModel(_knowledgeModel);
     _completer->setMinCompletionPrefixLength(1);
     _completer->setCompletionColumn(0);
+  }
+}
+
+void QueryEditorWindow::on_aQueryHistory_triggered()
+{
+  DBDatabaseItem* dbObj = qobject_cast<DBDatabaseItem*>(dbObject());
+  if (dbObj) {
+    QueryHistoryForm* historyForm = QueryHistoryForm::instance(dbObj->fieldValue(F_ID).toInt());
+    connect(historyForm, &QueryHistoryForm::accepted,
+            this, &QueryEditorWindow::onHistoryClosed);
+    historyForm->setModal(true);
+    historyForm->show();
+  }
+}
+
+void QueryEditorWindow::onHistoryClosed()
+{
+  QueryHistoryForm* historyForm = qobject_cast<QueryHistoryForm*>(sender());
+  if (historyForm->result()) {
+    ui->teQueryEditor->setPlainText(historyForm->selectedQuery());
   }
 }

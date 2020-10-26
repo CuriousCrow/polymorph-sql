@@ -52,6 +52,7 @@ SOURCES += main.cpp\
   forms/vieweditdialog.cpp \
   mainwindow.cpp \
   forms/connectioneditdialog.cpp \
+  queryhistoryform.cpp \
   tablebrowserdelegate.cpp \
   tablebrowserwindow.cpp \
   queryeditorwindow.cpp \
@@ -147,6 +148,7 @@ HEADERS  += \
   forms/vieweditdialog.h \
   mainwindow.h \
   forms/connectioneditdialog.h \
+  queryhistoryform.h \
   tablebrowserdelegate.h \
   tablebrowserwindow.h \
   queryeditorwindow.h \
@@ -213,6 +215,7 @@ FORMS    += mainwindow.ui \
     forms/triggereditform.ui \
     forms/uniqueconstrainteditform.ui \
     itemviewer.ui \
+    queryhistoryform.ui \
     tablebrowserwindow.ui \
     queryeditorwindow.ui \
     forms/vieweditdialog.ui \
