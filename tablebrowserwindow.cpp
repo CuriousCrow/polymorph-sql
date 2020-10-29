@@ -7,6 +7,7 @@
 #include "dbms/appurl.h"
 #include "dbms/appconst.h"
 #include "utils/qfileutils.h"
+#include "core/datastore.h"
 #include "tablebrowserdelegate.h"
 
 TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) :
@@ -55,10 +56,17 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
 
   connect(ui->tableView->selectionModel(), &QItemSelectionModel::currentChanged,
           this, &TableBrowserWindow::onCurrentItemChanged);
+
+  int dbId = DataStore::databaseIdFromItem(_tableItem);
+  QByteArray tableStateData = DataStore::loadTableState(dbId, _tableName);
+  if (!tableStateData.isEmpty())
+    ui->tableView->horizontalHeader()->restoreState(tableStateData);
 }
 
 TableBrowserWindow::~TableBrowserWindow()
 {
+  int dbId = DataStore::databaseIdFromItem(_tableItem);
+  DataStore::saveTableState(dbId, _tableName, ui->tableView->horizontalHeader()->saveState());
   qDebug() << "TableBrowserWindow" << objectName() << "destroyed";
   delete ui;
 }

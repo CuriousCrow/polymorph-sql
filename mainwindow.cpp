@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include "dbms/appurl.h"
 #include "tablebrowserwindow.h"
+#include "settingsform.h"
 #include "dbms/dbdatabaseitem.h"
 #include "dbms/dbobjectitem.h"
 #include "dbms/foldertreeitem.h"
@@ -574,4 +575,9 @@ void MainWindow::on_aOpenSqlEditor_triggered()
   //Создаем вкладку с редактором SQL-запросов
   QueryEditorWindow* newQueryEditor = new QueryEditorWindow(this);
   ui->tabWidget->addTab(newQueryEditor, tr("Query"));
+}
+
+void MainWindow::on_aSettings_triggered()
+{
+  SettingsForm::instance()->show();
 }

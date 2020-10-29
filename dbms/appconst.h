@@ -25,6 +25,9 @@
 #define F_RETURN_TYPE "returnType"
 #define F_DBMS "dbms"
 #define F_EXPRESSION "expression"
+#define F_DATABASE_ID "database_id"
+#define F_TABLENAME "tablename"
+#define F_STATE "state"
 
 #define F_EVENT_INSERT "eventInsert"
 #define F_EVENT_UPDATE "eventUpdate"

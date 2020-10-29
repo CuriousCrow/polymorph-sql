@@ -87,13 +87,45 @@ DBObjectItem *DataStore::itemByFolderAndName(DBObjectItem *fromItem, QString fol
   return structureModel()->itemByUrl(folderUrl);
 }
 
+int DataStore::databaseIdFromItem(DBObjectItem *item)
+{
+  DBObjectItem* curItem = item;
+  while(curItem && curItem->type() != DBObjectItem::Database) {
+      curItem = qobject_cast<DBObjectItem*>(curItem->parent());
+  }
+  return curItem->fieldValue(F_ID).toInt();
+}
+
 UniSqlTableModel *DataStore::historyModel(int dbId)
 {
   UniSqlTableModel* mHistory = instance()->_queryHistoryModel;
   mHistory->filter()->clear();
-  mHistory->filter()->addEqualFilter("database_id", dbId);
+  mHistory->filter()->addEqualFilter(F_DATABASE_ID, dbId);
   mHistory->select();
   return mHistory;
+}
+
+QByteArray DataStore::loadTableState(int dbId, QString name)
+{
+  qDebug() << "Loading table state:" << dbId << name;
+  QString sql = "select state from t_table_columns where database_id=%1 and tablename='%2'";
+  QString preparedSql = sql.arg(dbId).arg(name);
+
+  QSqlQuery result = QSqlQueryHelper::execSql(preparedSql);
+  return result.next() ? result.value(F_STATE).toByteArray() : QByteArray();
+}
+
+void DataStore::saveTableState(int dbId, QString name, QByteArray data)
+{
+  qDebug() << "Saving table state:" << dbId << name;
+  QString sql = "insert into t_table_columns(database_id, tablename, state) "
+                "values (:db, :tablename, :data) "
+                "on conflict (database_id, tablename) do update set state=excluded.state";
+  QSqlQuery query = QSqlQueryHelper::prepareQuery(sql);
+  query.bindValue(":db", dbId);
+  query.bindValue(":tablename", name);
+  query.bindValue(":data", data);
+  QSqlQueryHelper::execSql(query);
 }
 
 bool DataStore::addQueryHistoryItem(int dbId, QString query)

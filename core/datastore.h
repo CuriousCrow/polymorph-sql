@@ -14,7 +14,10 @@ public:
   static QStructureItemModel* structureModel();
   static QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
   static DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
+  static int databaseIdFromItem(DBObjectItem* item);
   static UniSqlTableModel* historyModel(int dbId);
+  static QByteArray loadTableState(int dbId, QString name);
+  static void saveTableState(int dbId, QString name, QByteArray data);
   static bool addQueryHistoryItem(int dbId, QString query);
 signals:
 

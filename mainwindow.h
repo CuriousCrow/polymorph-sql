@@ -72,6 +72,8 @@ private slots:
 
   void on_aOpenSqlEditor_triggered();
 
+  void on_aSettings_triggered();
+
 private:
   Ui::MainWindow *ui;
   ConnectionEditDialog* _connectionEditDialog;
