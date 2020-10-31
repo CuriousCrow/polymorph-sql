@@ -317,6 +317,11 @@ QString UniSqlTableModel::fieldName(int idx)
   return _patternRec.fieldName(idx);
 }
 
+int UniSqlTableModel::fieldIndex(QString name)
+{
+  return _patternRec.indexOf(name);
+}
+
 QStringList UniSqlTableModel::sqlError()
 {
   QStringList res = _sqlErrors;

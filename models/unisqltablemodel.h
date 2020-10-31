@@ -27,6 +27,7 @@ public:
   void orderBy(QString field, Qt::SortOrder direction = Qt::AscendingOrder);
   QString tableName();
   QString fieldName(int idx);
+  int fieldIndex(QString name);
   QStringList sqlError();
   qlonglong idByRow(int row) const;
 signals:

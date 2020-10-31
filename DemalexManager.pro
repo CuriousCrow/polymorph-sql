@@ -61,6 +61,7 @@ SOURCES += main.cpp\
 #Utils
   qsqlqueryhelper.cpp \
   qsqlsyntaxhighlighter.cpp \
+  utils/eventinterceptors.cpp \
   utils/qfileutils.cpp \
   utils/qsimpletooltip.cpp \
 #Models
@@ -158,6 +159,7 @@ HEADERS  += \
 #Utils
   qsqlqueryhelper.h \
   qsqlsyntaxhighlighter.h \
+  utils/eventinterceptors.h \
   utils/qfileutils.h \
   utils/qsimpletooltip.h \
 #Models

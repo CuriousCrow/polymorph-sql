@@ -57,8 +57,14 @@ private slots:
   void on_lvFilters_pressed(const QModelIndex &index);
 
   void onCurrentItemChanged(const QModelIndex &index);
+
   void on_aLoadFromFile_triggered();
 
+  void on_aTest_triggered();
+
+  void onColumnVisibilityActionToggled(bool checked);
+
+  void onHeaderPressed();
 private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;
@@ -68,7 +74,10 @@ private:
   DBTableItem* _tableItem;
   QMenu* _mnuContext;
   QMenu* _mnuFilterList;
-
+  QMenu* _mnuColumns;
+  void refreshColumnsMenu();
+  void refreshTable();
+  void loadColumnsState();
 };
 
 #endif // TABLEBROWSERWINDOW_H

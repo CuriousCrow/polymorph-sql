@@ -7,6 +7,7 @@
 #include "dbms/appurl.h"
 #include "dbms/appconst.h"
 #include "utils/qfileutils.h"
+#include "utils/eventinterceptors.h"
 #include "core/datastore.h"
 #include "tablebrowserdelegate.h"
 
@@ -27,12 +28,6 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
   _tableName = _tableItem->fieldValue(F_CAPTION).toString();
   _sourceModel = new UniSqlTableModel(this, QSqlDatabase::database(_connectionName));
   connect(_sourceModel, &UniSqlTableModel::error, this, &TableBrowserWindow::onError);
-  _sourceModel->setTable(_tableName);
-  _sourceModel->select();
-  _proxyModel = new QSortFilterProxyModel(this);
-  _proxyModel->setSourceModel(_sourceModel);
-  ui->tableView->setModel(_proxyModel);
-  ui->tableView->setItemDelegate(new TableBrowserDelegate(_tableItem, this));
 
   _mnuContext = new QMenu(this);
   _mnuContext->addAction(ui->aSetNull);
@@ -48,6 +43,18 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
   _mnuFilterList = new QMenu(this);
   _mnuFilterList->addAction(ui->aRemoveFilter);
 
+  _mnuColumns = new QMenu(this);
+
+  loadColumnsState();
+
+  refreshTable();
+
+  _proxyModel = new QSortFilterProxyModel(this);
+  _proxyModel->setSourceModel(_sourceModel);
+  ui->tableView->setModel(_proxyModel);
+  ui->tableView->setItemDelegate(new TableBrowserDelegate(_tableItem, this));
+  ui->tableView->horizontalHeader()->setSortIndicatorShown(true);
+
   qDebug() << "TableBrowserWindow" << objectName() << "created";
 
   ui->tableView->horizontalHeader()->setSectionsMovable(true);
@@ -57,10 +64,11 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
   connect(ui->tableView->selectionModel(), &QItemSelectionModel::currentChanged,
           this, &TableBrowserWindow::onCurrentItemChanged);
 
-  int dbId = DataStore::databaseIdFromItem(_tableItem);
-  QByteArray tableStateData = DataStore::loadTableState(dbId, _tableName);
-  if (!tableStateData.isEmpty())
-    ui->tableView->horizontalHeader()->restoreState(tableStateData);
+  SimpleEventInterceptor* columnMenuInterceptor = new SimpleEventInterceptor(this);
+  columnMenuInterceptor->addEventType(QEvent::ContextMenu);
+  ui->tableView->horizontalHeader()->installEventFilter(columnMenuInterceptor);
+  connect(columnMenuInterceptor, &SimpleEventInterceptor::onEvent,
+          this, &TableBrowserWindow::onHeaderPressed);
 }
 
 TableBrowserWindow::~TableBrowserWindow()
@@ -99,10 +107,7 @@ void TableBrowserWindow::on_aDeleteRow_triggered()
 
 void TableBrowserWindow::on_aRefresh_triggered()
 {
-  //in case the table structure has changed
-  _sourceModel->setTable(_sourceModel->tableName());
-  //get actual table data
-  _sourceModel->select();
+  refreshTable();
 }
 
 void TableBrowserWindow::on_tableView_pressed(const QModelIndex &index)
@@ -222,4 +227,57 @@ void TableBrowserWindow::on_aLoadFromFile_triggered()
     return;
   QByteArray data = QFileUtils::loadFile(filepath);
   _proxyModel->setData(ui->tableView->currentIndex(), data);
+}
+
+void TableBrowserWindow::on_aTest_triggered()
+{
+  onHeaderPressed();
+}
+
+void TableBrowserWindow::onColumnVisibilityActionToggled(bool checked)
+{
+  QAction* action = qobject_cast<QAction*>(sender());
+  int index = _sourceModel->fieldIndex(action->text());
+  checked ? ui->tableView->showColumn(index) : ui->tableView->hideColumn(index);
+}
+
+void TableBrowserWindow::onHeaderPressed()
+{
+  qDebug() << "Header pressed";
+//  if (QApplication::mouseButtons().testFlag(Qt::RightButton)) {
+    _mnuColumns->popup(QCursor::pos());
+//  }
+}
+
+void TableBrowserWindow::refreshColumnsMenu()
+{
+  _mnuColumns->clear();
+  qDebug() << "Refresh columns menu";
+  _mnuColumns->addSection("Columns");
+  for(int col=0; col<_sourceModel->columnCount(); col++) {
+    QString title = _sourceModel->headerData(col, Qt::Horizontal).toString();
+    QAction* colAct = _mnuColumns->addAction(title);
+    colAct->setCheckable(true);
+    int index = _sourceModel->fieldIndex(title);
+    colAct->setChecked(!ui->tableView->isColumnHidden(index));
+    connect(colAct, &QAction::toggled, this, &TableBrowserWindow::onColumnVisibilityActionToggled);
+  }
+}
+
+void TableBrowserWindow::refreshTable()
+{
+  //in case the table structure has changed
+  _sourceModel->setTable(_tableName);
+  //get actual table data
+  _sourceModel->select();
+
+  refreshColumnsMenu();
+}
+
+void TableBrowserWindow::loadColumnsState()
+{
+  int dbId = DataStore::databaseIdFromItem(_tableItem);
+  QByteArray tableStateData = DataStore::loadTableState(dbId, _tableName);
+  if (!tableStateData.isEmpty())
+    ui->tableView->horizontalHeader()->restoreState(tableStateData);
 }
