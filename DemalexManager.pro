@@ -22,6 +22,7 @@ SOURCES += main.cpp\
   core/maphelplookupprovider.cpp \
   core/sqlhelplookupprovider.cpp \
   core/appsettings.cpp \
+  databaseexportform.cpp \
   dbms/FIREBIRD/firebirddatabase.cpp \
   dbms/FIREBIRD/firebirdplugin.cpp \
   dbms/FIREBIRD/firebirdtable.cpp \
@@ -119,6 +120,7 @@ HEADERS  += \
   core/maphelplookupprovider.h \
   core/sqlhelplookupprovider.h \
   core/appsettings.h \
+  databaseexportform.h \
   dbms/FIREBIRD/firebirddatabase.h \
   dbms/FIREBIRD/firebirdplugin.h \
   dbms/FIREBIRD/firebirdtable.h \
@@ -211,6 +213,7 @@ HEADERS  += \
 
 FORMS    += mainwindow.ui \
     blobeditor.ui \
+    databaseexportform.ui \
     forms/connectioneditdialog.ui \
     forms/checkconstrainteditform.ui \
     forms/foreignkeyform.ui \

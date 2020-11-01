@@ -145,8 +145,21 @@ ActionResult DBTableItem::updateMe()
   }
 }
 
-
 int DBTableItem::type()
 {
   return Table;
+}
+
+QString DBTableItem::toDML() const
+{
+  QString tablename = fieldValue(F_CAPTION).toString();
+  QString sql = "select * from %1";
+  QString preparedSql = sql.arg(tablename);
+  QSqlQuery result = QSqlQueryHelper::execSql(preparedSql, _connectionName);
+  QStringList dmlList;
+  while(result.next()) {
+    QString insertSql = result.driver()->sqlStatement(QSqlDriver::InsertStatement, tablename, result.record(), false);
+    dmlList.append(insertSql + SQL_DELIMITER);
+  }
+  return dmlList.join("\r\n");
 }

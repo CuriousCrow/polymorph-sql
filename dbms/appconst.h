@@ -2,6 +2,7 @@
 #define APPCONST_H
 
 #define DELIMITER "/"
+#define SQL_DELIMITER ";"
 
 #define F_NAME "name"
 #define F_DESCRIPTION "description"

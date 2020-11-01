@@ -4,6 +4,7 @@
 #include <QSqlError>
 #include <QSqlField>
 #include <QMessageBox>
+#include <QClipboard>
 #include "dbms/appurl.h"
 #include "tablebrowserwindow.h"
 #include "settingsform.h"
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
   _editAction = _itemContextMenu->addAction("Edit object", this, SLOT(showEditorForCurrentItem()));
   _dropAction = _itemContextMenu->addAction("Drop object", this, SLOT(dropCurrentDatabaseObject()));
   _exportAction = _itemContextMenu->addAction("Export DDL", this, SLOT(exportCurrrentDatabaseObject()));
+  _exportDataAction = _itemContextMenu->addAction("Export data", this, SLOT(exportCurrentDatabaseObjectData()));
 
   _folderContextMenu = new QMenu(ui->tvDatabaseStructure);
   _folderContextMenu->addAction("Create object", this, SLOT(showCreateItemEditor()));
@@ -215,7 +217,11 @@ void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
 {
   //Show context menu by right mouse click
   if (QApplication::mouseButtons().testFlag(Qt::RightButton)){
-    switch (itemByIndex(index)->type()) {
+    DBObjectItem::ItemType type = static_cast<DBObjectItem::ItemType>(itemByIndex(index)->type());
+
+    _exportDataAction->setEnabled(type == DBObjectItem::Table);
+
+    switch (type) {
     case DBObjectItem::View:
     case DBObjectItem::Trigger:
     case DBObjectItem::Table:
@@ -310,7 +316,17 @@ void MainWindow::exportCurrrentDatabaseObject()
   QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
   DBObjectItem* curObj = itemByIndex(curIdx);
   curObj->refresh();
-  qDebug() << "DDL:" << curObj->toDDL();
+  QGuiApplication::clipboard()->setText(curObj->toDDL());
+}
+
+void MainWindow::exportCurrentDatabaseObjectData()
+{
+  //TODO: Test implementation
+  qDebug() << "DML export";
+  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
+  DBObjectItem* curObj = itemByIndex(curIdx);
+  curObj->refresh();
+  QGuiApplication::clipboard()->setText(curObj->toDML());
 }
 
 void MainWindow::reloadItemChildren()
