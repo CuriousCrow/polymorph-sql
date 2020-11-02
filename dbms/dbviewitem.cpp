@@ -15,12 +15,12 @@ DBViewItem::~DBViewItem()
 {
 }
 
-int DBViewItem::colCount()
+int DBViewItem::colCount() const
 {
   return 2;
 }
 
-QVariant DBViewItem::colData(int column, int role)
+QVariant DBViewItem::colData(int column, int role) const
 {
 
   switch (role) {
@@ -28,7 +28,7 @@ QVariant DBViewItem::colData(int column, int role)
   case Qt::EditRole:
     switch (column) {
     case 0:
-      return fieldValue(F_CAPTION);
+      return caption();
     case 1:
       return fieldValue(F_QUERY_TEXT);
     default:
@@ -41,7 +41,7 @@ QVariant DBViewItem::colData(int column, int role)
   }
 }
 
-int DBViewItem::type()
+int DBViewItem::type() const
 {
   return View;
 }

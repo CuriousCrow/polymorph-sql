@@ -13,18 +13,18 @@ FolderTreeItem::~FolderTreeItem()
 
 }
 
-int FolderTreeItem::colCount()
+int FolderTreeItem::colCount() const
 {
   return 1;
 }
 
-QVariant FolderTreeItem::colData(int column, int role)
+QVariant FolderTreeItem::colData(int column, int role) const
 {
   Q_UNUSED(column)
 
   switch (role) {
   case Qt::DisplayRole:
-    return QString("%1 (%2)").arg(fieldValue(F_CAPTION).toString(), QString::number(children().count()));
+    return QString("%1 (%2)").arg(caption(), QString::number(children().count()));
   default:
     return QVariant();
   }
@@ -36,7 +36,7 @@ bool FolderTreeItem::reloadChildren()
   return true;
 }
 
-int FolderTreeItem::type()
+int FolderTreeItem::type() const
 {
   return Folder;
 }

@@ -12,24 +12,24 @@ public:
 
   // DBDatabaseItem interface
 protected:
-  virtual QString getViewListSql();
-  virtual QString getSequenceListSql();
-  virtual QString getTriggerListSql();
-  virtual QString getProcedureListSql();
+  virtual QString getViewListSql() const Q_DECL_OVERRIDE;
+  virtual QString getSequenceListSql() const Q_DECL_OVERRIDE;
+  virtual QString getTriggerListSql() const Q_DECL_OVERRIDE;
+  virtual QString getProcedureListSql() const Q_DECL_OVERRIDE;
 
   // DBDatabaseItem interface
 public:
-  virtual DBTableItem *createNewTableItem(QString caption, QObject *parent);
-  virtual DBSequenceItem *createNewSequenceItem(QString caption, QObject *parent);
-  virtual DBProcedureItem *createNewProcedureItem(QString caption, QObject *parent);
-  virtual DBTriggerItem *createNewTriggerItem(QString caption, QObject *parent);
-  virtual QString getAllObjectListSql();
+  virtual DBTableItem *createNewTableItem(QString caption, QObject *parent) Q_DECL_OVERRIDE;
+  virtual DBSequenceItem *createNewSequenceItem(QString caption, QObject *parent) Q_DECL_OVERRIDE;
+  virtual DBProcedureItem *createNewProcedureItem(QString caption, QObject *parent) Q_DECL_OVERRIDE;
+  virtual DBTriggerItem *createNewTriggerItem(QString caption, QObject *parent) Q_DECL_OVERRIDE;
+  virtual QString getAllObjectListSql() const Q_DECL_OVERRIDE;
 
   // DBDatabaseItem interface
 protected:
-  void loadSequenceItems(DBObjectItem *parentItem);
-  void loadTriggerItems(DBObjectItem *parentItem);
-  void loadProcedureItems(DBObjectItem *parentItem);
+  void loadSequenceItems(DBObjectItem *parentItem) Q_DECL_OVERRIDE;
+  void loadTriggerItems(DBObjectItem *parentItem) Q_DECL_OVERRIDE;
+  void loadProcedureItems(DBObjectItem *parentItem) Q_DECL_OVERRIDE;
 };
 
 #endif // POSTGRESDATABASE_H

@@ -39,22 +39,22 @@ QAbstractTableModel *DBTableItem::constraintsModel()
 
 DBForeignKey *DBTableItem::newForeignKey()
 {
-  return new DBForeignKey("fk_" + fieldValue(F_CAPTION).toString());
+  return new DBForeignKey("fk_" + caption());
 }
 
 DBPrimaryKey *DBTableItem::newPrimaryKey()
 {
-  return new DBPrimaryKey("pk_" + fieldValue(F_CAPTION).toString());
+  return new DBPrimaryKey("pk_" + caption());
 }
 
 DBUniqueConstraint *DBTableItem::newUniqueConstraint()
 {
-  return new DBUniqueConstraint("uq_" + fieldValue(F_CAPTION).toString());
+  return new DBUniqueConstraint("uq_" + caption());
 }
 
 DBCheckConstraint *DBTableItem::newCheckConstraint()
 {
-  return new DBCheckConstraint("chk_" + fieldValue(F_CAPTION).toString());
+  return new DBCheckConstraint("chk_" + caption());
 }
 
 int DBTableItem::colTypeFromString(QString name)
@@ -79,18 +79,18 @@ bool DBTableItem::reloadChildren()
   return true;
 }
 
-int DBTableItem::colCount()
+int DBTableItem::colCount() const
 {
   return 1;
 }
 
-QVariant DBTableItem::colData(int column, int role)
+QVariant DBTableItem::colData(int column, int role) const
 {
   switch (role) {
   case Qt::DisplayRole:
     switch (column) {
     case 0:
-      return fieldValue(F_CAPTION);
+      return caption();
     default:
       return QVariant();
     }
@@ -104,7 +104,7 @@ QVariant DBTableItem::colData(int column, int role)
 ActionResult DBTableItem::deleteMe()
 {
   QString sql = "drop table \"%1\"";
-  QString preparedSql = sql.arg(fieldValue(F_CAPTION).toString());
+  QString preparedSql = sql.arg(caption());
   return execSql(preparedSql, connectionName());
 }
 
@@ -119,7 +119,7 @@ DBForeignKey *DBTableItem::loadForeignKey(QString name)
 {
   DBForeignKey* foreignKey = newForeignKey();
   foreignKey->setFieldValue(F_CAPTION, name);
-  foreignKey->setFieldValue(F_TABLE, this->fieldValue(F_CAPTION));
+  foreignKey->setFieldValue(F_TABLE, this->caption());
   foreignKey->setParentUrl(this->objectUrl());
   foreignKey->refresh();
   return foreignKey;
@@ -145,14 +145,14 @@ ActionResult DBTableItem::updateMe()
   }
 }
 
-int DBTableItem::type()
+int DBTableItem::type() const
 {
   return Table;
 }
 
 QString DBTableItem::toDML() const
 {
-  QString tablename = fieldValue(F_CAPTION).toString();
+  QString tablename = caption();
   QString sql = "select * from %1";
   QString preparedSql = sql.arg(tablename);
   QSqlQuery result = QSqlQueryHelper::execSql(preparedSql, _connectionName);
@@ -161,5 +161,5 @@ QString DBTableItem::toDML() const
     QString insertSql = result.driver()->sqlStatement(QSqlDriver::InsertStatement, tablename, result.record(), false);
     dmlList.append(insertSql + SQL_DELIMITER);
   }
-  return dmlList.join("\r\n");
+  return dmlList.join(FILE_DELIMITER);
 }

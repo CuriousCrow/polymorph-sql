@@ -11,7 +11,7 @@ void TableRowModel::setTableItem(DBObjectItem *item)
 {
   _tableItem = item;
   beginResetModel();
-  _infoRec = QSqlQueryHelper::tableRowInfo(item->fieldValue(F_CAPTION).toString(),
+  _infoRec = QSqlQueryHelper::tableRowInfo(item->caption(),
                                            item->connectionName());\
   endResetModel();
 }

@@ -33,7 +33,7 @@ TableEditForm::~TableEditForm()
 
 void TableEditForm::objectToForm()
 {
-  QString tableName = _objItem->fieldValue(F_CAPTION).toString();
+  QString tableName = _objItem->caption();
   setWindowTitle("Table editor: " + tableName);
   ui->lineEdit->setText(tableName);
   DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
@@ -89,7 +89,7 @@ void TableEditForm::on_btnDropConstraint_clicked()
   DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
   DBConstraintItem* constraintItem = new DBConstraintItem(constraintName);
   constraintItem->setParentUrl(tableItem->objectUrl());
-  constraintItem->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  constraintItem->setFieldValue(F_TABLE, tableItem->caption());
 
   ActionResult dropResult = constraintItem->deleteMe();
   constraintItem->deleteLater();
@@ -108,7 +108,7 @@ void TableEditForm::onShowPrimaryKeyEditor()
   UniqueConstraintEditForm* primaryKeyForm = new UniqueConstraintEditForm(this);
   primaryKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBConstraintItem* newPkObj = tableItem->newPrimaryKey();
-  newPkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  newPkObj->setFieldValue(F_TABLE, tableItem->caption());
   newPkObj->setParentUrl(tableItem->objectUrl());
   primaryKeyForm->setObjItem(newPkObj);
   primaryKeyForm->objectToForm();
@@ -127,7 +127,7 @@ void TableEditForm::onShowForeignKeyEditor()
   ForeignKeyForm* foreignKeyForm = new ForeignKeyForm(this);
   foreignKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBForeignKey* newFkObj = tableItem->newForeignKey();
-  newFkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  newFkObj->setFieldValue(F_TABLE, tableItem->caption());
   newFkObj->setParentUrl(tableItem->objectUrl());
   foreignKeyForm->setObjItem(newFkObj);
   foreignKeyForm->objectToForm();
@@ -145,7 +145,7 @@ void TableEditForm::onShowUniqueConstraintEditor()
   UniqueConstraintEditForm* uniqueKeyForm = new UniqueConstraintEditForm(this);
   uniqueKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBUniqueConstraint* newFkObj = tableItem->newUniqueConstraint();
-  newFkObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  newFkObj->setFieldValue(F_TABLE, tableItem->caption());
   newFkObj->setParentUrl(tableItem->objectUrl());
   uniqueKeyForm->setObjItem(newFkObj);
   uniqueKeyForm->objectToForm();
@@ -164,7 +164,7 @@ void TableEditForm::onShowCheckConstraintEditor()
   CheckConstraintEditForm* checkConstraintForm = new CheckConstraintEditForm(this);
   checkConstraintForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBCheckConstraint* newCheckObj = tableItem->newCheckConstraint();
-  newCheckObj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  newCheckObj->setFieldValue(F_TABLE, tableItem->caption());
   newCheckObj->setParentUrl(tableItem->objectUrl());
   checkConstraintForm->setObjItem(newCheckObj);
   checkConstraintForm->objectToForm();
@@ -221,7 +221,7 @@ void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
     return;
   }
   form->setUserAction(AbstractDatabaseEditForm::Edit);
-  obj->setFieldValue(F_TABLE, tableItem->fieldValue(F_CAPTION));
+  obj->setFieldValue(F_TABLE, tableItem->caption());
   obj->setFieldValue(F_CAPTION, constName);
   obj->setParentUrl(tableItem->objectUrl());
   obj->refresh();

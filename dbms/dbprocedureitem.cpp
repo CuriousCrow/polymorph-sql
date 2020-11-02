@@ -15,18 +15,18 @@ DBProcedureItem::~DBProcedureItem()
 }
 
 
-int DBProcedureItem::colCount()
+int DBProcedureItem::colCount() const
 {
   return 1;
 }
 
-QVariant DBProcedureItem::colData(int column, int role)
+QVariant DBProcedureItem::colData(int column, int role) const
 {
   Q_UNUSED(column)
 
   switch (role) {
   case Qt::DisplayRole:
-    return fieldValue(F_CAPTION);
+    return caption();
   case Qt::DecorationRole:
     return QIcon(":/icons/function.png");
   default:
@@ -39,7 +39,7 @@ bool DBProcedureItem::reloadChildren()
   return true;
 }
 
-int DBProcedureItem::type()
+int DBProcedureItem::type() const
 {
   return Procedure;
 }

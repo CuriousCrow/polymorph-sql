@@ -5,6 +5,7 @@
 #include <QSqlField>
 #include <QMessageBox>
 #include <QClipboard>
+#include "databaseexportform.h"
 #include "dbms/appurl.h"
 #include "tablebrowserwindow.h"
 #include "settingsform.h"
@@ -335,7 +336,7 @@ void MainWindow::reloadItemChildren()
   DataStore::structureModel()->deleteChildren(curIdx);
   FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(itemByIndex(curIdx));
 
-  qDebug() << "Folder" << folderItem->fieldValue(F_CAPTION).toString() << "refresh request";
+  qDebug() << "Folder" << folderItem->caption() << "refresh request";
 
   DbmsPlugin* dbms = Core::module(folderItem->driverName());
   dbms->loadFolder(folderItem, folderItem->childrenType());
@@ -570,10 +571,10 @@ void MainWindow::openTableEditor(DBTableItem *tableItem)
   QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
   if (!tableWidget){
     tableWidget = new TableBrowserWindow(this, tableItem);
-    ui->tabWidget->addTab(tableWidget, tableItem->fieldValue(F_CAPTION).toString());
+    ui->tabWidget->addTab(tableWidget, tableItem->caption());
   }
   ui->tabWidget->setCurrentWidget(tableWidget);
-  //  QSqlQueryHelper::tableRowInfo(tableItem->fieldValue(F_CAPTION).toString(), tableItem->connectionName());
+  //  QSqlQueryHelper::tableRowInfo(tableItem->caption(), tableItem->connectionName());
 }
 
 void MainWindow::localEvent(LocalEvent *event)
@@ -596,4 +597,10 @@ void MainWindow::on_aOpenSqlEditor_triggered()
 void MainWindow::on_aSettings_triggered()
 {
   SettingsForm::instance()->show();
+}
+
+void MainWindow::on_aExportDatabase_triggered()
+{
+  qDebug() << "Export database form";
+  DatabaseExportForm::instance()->show();
 }

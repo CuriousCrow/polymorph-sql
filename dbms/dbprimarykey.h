@@ -12,9 +12,9 @@ public:
 
   // DBObjectItem interface
 public:
-  virtual int type() override;
-  virtual bool refresh() override;
-  virtual ActionResult insertMe() override;
+  virtual int type() const Q_DECL_OVERRIDE;
+  virtual bool refresh() Q_DECL_OVERRIDE;
+  virtual ActionResult insertMe() Q_DECL_OVERRIDE;
 };
 
 #endif // DBPRIMARYKEY_H

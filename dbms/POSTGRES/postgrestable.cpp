@@ -27,22 +27,22 @@ PostgresTable::~PostgresTable()
 
 DBForeignKey *PostgresTable::newForeignKey()
 {
-  return new PostgresForeignKey(DEF_FK_PREFIX + fieldValue(F_CAPTION).toString());
+  return new PostgresForeignKey(DEF_FK_PREFIX + caption());
 }
 
 DBPrimaryKey *PostgresTable::newPrimaryKey()
 {
-  return new PostgresPrimaryKey(DEF_PK_PREFIX + fieldValue(F_CAPTION).toString());
+  return new PostgresPrimaryKey(DEF_PK_PREFIX + caption());
 }
 
 DBUniqueConstraint *PostgresTable::newUniqueConstraint()
 {
-  return new PostgresUniqueConstraint(DEF_UQ_PREFIX + fieldValue(F_CAPTION).toString());
+  return new PostgresUniqueConstraint(DEF_UQ_PREFIX + caption());
 }
 
 DBCheckConstraint *PostgresTable::newCheckConstraint()
 {
-  return new PostgresCheckConstraint(DEF_CHK_PREFIX + fieldValue(F_CAPTION).toString());
+  return new PostgresCheckConstraint(DEF_CHK_PREFIX + caption());
 }
 
 ActionResult PostgresTable::insertMe()
@@ -191,12 +191,12 @@ void PostgresTable::reloadConstraintsModel()
 
 }
 
-QString PostgresTable::caption()
+QString PostgresTable::caption() const
 {
   return "\"" + fieldValue(F_CAPTION).toString() + "\"";
 }
 
-QString PostgresTable::createTableQuery(QString table)
+QString PostgresTable::createTableQuery(QString table) const
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;
@@ -216,7 +216,7 @@ QString PostgresTable::createTableQuery(QString table)
   return preparedSql;
 }
 
-QString PostgresTable::columnDef(const SqlColumn &col)
+QString PostgresTable::columnDef(const SqlColumn &col) const
 {
   QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
   if (col.length() > 0)
@@ -228,12 +228,12 @@ QString PostgresTable::columnDef(const SqlColumn &col)
   return colDef;
 }
 
-QString PostgresTable::typeDef(const SqlColumn &col)
+QString PostgresTable::typeDef(const SqlColumn &col) const
 {
   return _columnsModel->columnTypeCaption(col.type());
 }
 
-QString PostgresTable::defaultDef(const SqlColumn &col)
+QString PostgresTable::defaultDef(const SqlColumn &col) const
 {
   if (col.defaultValue().isNull())
     return "";
@@ -252,4 +252,9 @@ QString PostgresTable::defaultDef(const SqlColumn &col)
 //  default:
     return "";
 //  }
+}
+
+QString PostgresTable::toDDL() const
+{
+  return createTableQuery(caption());
 }

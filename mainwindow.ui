@@ -108,6 +108,7 @@
      <string>Settings</string>
     </property>
     <addaction name="aSettings"/>
+    <addaction name="aExportDatabase"/>
    </widget>
    <addaction name="mnuConnections"/>
    <addaction name="mnuQuery"/>
@@ -169,6 +170,11 @@
   <action name="aSettings">
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="aExportDatabase">
+   <property name="text">
+    <string>Backup database</string>
    </property>
   </action>
  </widget>

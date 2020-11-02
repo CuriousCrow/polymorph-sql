@@ -15,25 +15,25 @@ PostgresDatabase::~PostgresDatabase()
 {
 }
 
-QString PostgresDatabase::getViewListSql()
+QString PostgresDatabase::getViewListSql() const
 {
   return "select table_name \"name\", view_definition \"queryText\" "
          "from INFORMATION_SCHEMA.views where table_schema = 'public'";
 }
 
-QString PostgresDatabase::getSequenceListSql()
+QString PostgresDatabase::getSequenceListSql() const
 {
   return "SELECT sequence_name \"name\", start_value \"startValue\", minimum_value \"minValue\", maximum_value \"maxValue\", increment \"step\" "
          "FROM information_schema.sequences order by 1";
 }
 
-QString PostgresDatabase::getTriggerListSql()
+QString PostgresDatabase::getTriggerListSql() const
 {
   return "SELECT distinct(trigger_name) \"name\" "
          "FROM information_schema.triggers order by 1";
 }
 
-QString PostgresDatabase::getProcedureListSql()
+QString PostgresDatabase::getProcedureListSql() const
 {
   return "SELECT distinct(routine_name) \"name\" FROM information_schema.routines "
       "WHERE routine_type='FUNCTION' and specific_schema='public' order by 1";
@@ -80,7 +80,7 @@ DBTriggerItem *PostgresDatabase::createNewTriggerItem(QString caption, QObject *
   return new PostgresTriggerItem(caption, parent);
 }
 
-QString PostgresDatabase::getAllObjectListSql()
+QString PostgresDatabase::getAllObjectListSql() const
 {
   return "select table_name \"name\", 'table' \"type\" FROM information_schema.tables "
          "WHERE table_schema = 'public' AND table_type = 'BASE TABLE' "

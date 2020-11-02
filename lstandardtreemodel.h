@@ -13,8 +13,8 @@ public:
 
   bool hasChildren();
 
-  virtual int colCount() = 0;
-  virtual QVariant colData(int column, int role) = 0;
+  virtual int colCount() const = 0;
+  virtual QVariant colData(int column, int role) const = 0;
   virtual bool setData(int column, QVariant value, int role) = 0;
 };
 
@@ -33,7 +33,7 @@ public:
   QModelIndex indexByName(QString name);
   QModelIndex indexByItem(LAbstractTreeItem* item);
 
-  virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
+  virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
   virtual QModelIndex parent(const QModelIndex &child) const;
   virtual int rowCount(const QModelIndex &parent) const;
   virtual int columnCount(const QModelIndex &parent) const;

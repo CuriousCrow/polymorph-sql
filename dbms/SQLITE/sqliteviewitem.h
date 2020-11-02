@@ -12,7 +12,7 @@ public:
 
   // DBObjectItem interface
 public:
-  virtual bool refresh() override;
+  virtual bool refresh() Q_DECL_OVERRIDE;
 };
 
 #endif // SQLITEVIEWITEM_H

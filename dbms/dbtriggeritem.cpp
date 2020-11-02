@@ -27,18 +27,18 @@ DBTriggerItem::~DBTriggerItem()
 }
 
 
-int DBTriggerItem::colCount()
+int DBTriggerItem::colCount() const
 {
   return 1;
 }
 
-QVariant DBTriggerItem::colData(int column, int role)
+QVariant DBTriggerItem::colData(int column, int role) const
 {
   Q_UNUSED(column)
 
   switch (role) {
   case Qt::DisplayRole:
-    return fieldValue(F_CAPTION);
+    return caption();
   case Qt::DecorationRole:
     return QIcon(":/icons/trigger.png");
   default:
@@ -51,7 +51,7 @@ bool DBTriggerItem::reloadChildren()
   return true;
 }
 
-int DBTriggerItem::type()
+int DBTriggerItem::type() const
 {
   return Trigger;
 }

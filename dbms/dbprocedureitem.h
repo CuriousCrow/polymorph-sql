@@ -8,17 +8,17 @@ class DBProcedureItem : public DBObjectItem
   Q_OBJECT
 public:
   DBProcedureItem(QString caption, QObject* parent = nullptr);
-  ~DBProcedureItem();
+  ~DBProcedureItem() Q_DECL_OVERRIDE;
 
   // LAbstractTreeItem interface
 public:
-  virtual int colCount();
-  virtual QVariant colData(int column, int role);
+  virtual int colCount() const Q_DECL_OVERRIDE;
+  virtual QVariant colData(int column, int role) const Q_DECL_OVERRIDE;
 
   // DBObjectItem interface
 public:
-  virtual bool reloadChildren();
-  virtual int type();
+  virtual bool reloadChildren() Q_DECL_OVERRIDE;
+  virtual int type() const Q_DECL_OVERRIDE;
 };
 
 #endif // DBPROCEDUREITEM_H

@@ -26,7 +26,7 @@ void SqliteTableItem::reloadColumnsModel()
 {
   _columnsModel->clear();
   QSqlRecord sqlColumns = QSqlQueryHelper::tableRowInfo(
-        this->fieldValue(F_CAPTION).toString(),
+        this->caption(),
         connectionName());
   for (int i=0; i<sqlColumns.count(); i++) {
     QSqlField field = sqlColumns.field(i);
@@ -57,7 +57,7 @@ void SqliteTableItem::reloadColumnsModel()
 
 ActionResult SqliteTableItem::insertMe()
 {
-  return execSql(createTableQuery(fieldValue(F_CAPTION).toString()), connectionName());
+  return execSql(createTableQuery(caption()), connectionName());
 }
 
 ActionResult SqliteTableItem::updateMe()
@@ -101,7 +101,7 @@ ActionResult SqliteTableItem::updateMe()
   return ActionResult();
 }
 
-QString SqliteTableItem::createTableQuery(QString table)
+QString SqliteTableItem::createTableQuery(QString table) const
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;

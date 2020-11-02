@@ -67,12 +67,15 @@ public:
   virtual ~DBObjectItem();
   QString connectionName() const;
   void setParentUrl(const AppUrl &url);
-  QString driverName();
+  QString driverName() const;
   void deleteChildren();
+  QString caption() const;
+
+  DBObjectItem* childItem(DBObjectItem::ItemType type, QString name = "");
 
   virtual bool reloadChildren() = 0;
   virtual AppUrl objectUrl();
-  virtual int type() = 0;
+  virtual int type() const = 0;
   virtual bool setData(int column, QVariant value, int role);
   virtual bool refresh();
   //SQL export
@@ -116,8 +119,8 @@ protected:
 
   // LAbstractTreeItem interface
 public:
-  virtual int colCount();
-  virtual QVariant colData(int column, int role);
+  virtual int colCount() const;
+  virtual QVariant colData(int column, int role) const;
 };
 
 #endif // DBOBJECTITEM_H

@@ -13,7 +13,7 @@ DBForeignKey::DBForeignKey(QString caption, QObject *parent)
   registerField(F_ON_DELETE);
 }
 
-int DBForeignKey::type()
+int DBForeignKey::type() const
 {
   return DBObjectItem::ForeignKey;
 }

@@ -16,7 +16,7 @@ bool SqliteDatabase::reloadChildren()
   return true;
 }
 
-QString SqliteDatabase::getAllObjectListSql()
+QString SqliteDatabase::getAllObjectListSql() const
 {
   return "SELECT name, type FROM sqlite_master";
 }

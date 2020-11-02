@@ -35,7 +35,7 @@ void CheckConstraintEditForm::onUserActionChanged()
 
 void CheckConstraintEditForm::objectToForm()
 {
-  ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtName->setText(_objItem->caption());
   ui->edtExpression->setPlainText(_objItem->fieldValue(F_EXPRESSION).toString());
 }
 

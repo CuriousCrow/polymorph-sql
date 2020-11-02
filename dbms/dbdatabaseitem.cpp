@@ -47,8 +47,20 @@ bool DBDatabaseItem::createDbConnection()
     QMessageBox::critical(nullptr, TITLE_ERROR, db.lastError().text());
     return false;
   }
-  qDebug() << "DB" << fieldValue(F_CAPTION).toString() << "connected";
+  qDebug() << "DB" << caption() << "connected";
   return true;
+}
+
+DBObjectItem *DBDatabaseItem::folderByType(DBObjectItem::ItemType type)
+{
+  foreach (QObject* child, children()) {
+    DBObjectItem* childItem = qobject_cast<DBObjectItem*>(child);
+    if (childItem->type() == DBObjectItem::Folder) {
+      if (qobject_cast<FolderTreeItem*>(childItem)->childrenType() == type)
+        return childItem;
+    }
+  }
+  return nullptr;
 }
 
 bool DBDatabaseItem::reloadChildren()
@@ -116,7 +128,7 @@ AppUrl DBDatabaseItem::objectUrl()
 {
   AppUrl url;
   url.setDriver(driver());
-  url.setDatabase(fieldValue(F_CAPTION).toString().replace(' ', '_'));
+  url.setDatabase(caption().replace(' ', '_'));
   return url;
 }
 
@@ -203,7 +215,7 @@ ActionResult DBDatabaseItem::dropDatabase()
   return res;
 }
 
-QVariant DBDatabaseItem::colData(int column, int role)
+QVariant DBDatabaseItem::colData(int column, int role) const
 {
   switch (role) {
   case Qt::DecorationRole:
@@ -214,7 +226,7 @@ QVariant DBDatabaseItem::colData(int column, int role)
   return DBObjectItem::colData(column, role);
 }
 
-int DBDatabaseItem::type()
+int DBDatabaseItem::type() const
 {
   return Database;
 }
@@ -222,7 +234,7 @@ int DBDatabaseItem::type()
 void DBDatabaseItem::onFolderRequestReload()
 {
   FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(sender());
-  qDebug() << "Folder" << folderItem->fieldValue(F_CAPTION).toString() << "reload request";
+  qDebug() << "Folder" << folderItem->caption() << "reload request";
   switch (folderItem->childrenType()) {
   case DBObjectItem::Table:
     loadTableItems(folderItem);
@@ -334,27 +346,27 @@ DBTriggerItem *DBDatabaseItem::createNewTriggerItem(QString caption, QObject* pa
   return new DBTriggerItem(caption, parent);
 }
 
-QString DBDatabaseItem::getViewListSql()
+QString DBDatabaseItem::getViewListSql() const
 {
   return "";
 }
 
-QString DBDatabaseItem::getSequenceListSql()
+QString DBDatabaseItem::getSequenceListSql() const
 {
   return "";
 }
 
-QString DBDatabaseItem::getTriggerListSql()
+QString DBDatabaseItem::getTriggerListSql() const
 {
   return "";
 }
 
-QString DBDatabaseItem::getProcedureListSql()
+QString DBDatabaseItem::getProcedureListSql() const
 {
   return "";
 }
 
-QString DBDatabaseItem::getAllObjectListSql()
+QString DBDatabaseItem::getAllObjectListSql() const
 {
   return "";
 }

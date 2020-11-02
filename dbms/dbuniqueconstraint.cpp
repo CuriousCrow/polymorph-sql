@@ -9,7 +9,7 @@ DBUniqueConstraint::DBUniqueConstraint(QString caption, QObject *parent)
 
 }
 
-int DBUniqueConstraint::type()
+int DBUniqueConstraint::type() const
 {
   return DBObjectItem::UniqueConstraint;
 }

@@ -53,7 +53,7 @@ void ConnectionEditDialog::on_btnCancel_clicked()
 
 void ConnectionEditDialog::objectToForm()
 {
-  ui->edtConnectionName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtConnectionName->setText(_objItem->caption());
   ui->edtUserName->setText(_objItem->fieldValue(F_USERNAME).toString());
   ui->edtPassword->setText(_objItem->fieldValue(F_PASSWORD).toString());
   ui->edtHostAddress->setText(_objItem->fieldValue(F_HOSTNAME).toString());

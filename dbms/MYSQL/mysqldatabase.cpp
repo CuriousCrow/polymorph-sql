@@ -18,7 +18,7 @@ bool MysqlDatabase::reloadChildren()
   return true;
 }
 
-QString MysqlDatabase::getAllObjectListSql()
+QString MysqlDatabase::getAllObjectListSql() const
 {
   return "SELECT table_name, 'table' FROM information_schema.tables "
          "WHERE table_schema = 'test' AND table_type = 'BASE TABLE' "

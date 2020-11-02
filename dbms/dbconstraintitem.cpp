@@ -15,7 +15,7 @@ bool DBConstraintItem::reloadChildren()
   return false;
 }
 
-int DBConstraintItem::type()
+int DBConstraintItem::type() const
 {
   return DBObjectItem::Constraint;
 }

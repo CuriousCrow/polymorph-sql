@@ -84,7 +84,7 @@ void MysqlTableItem::reloadColumnsModel()
   }
 }
 
-QString MysqlTableItem::createTableQuery(QString table)
+QString MysqlTableItem::createTableQuery(QString table) const
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;
@@ -104,7 +104,7 @@ QString MysqlTableItem::createTableQuery(QString table)
   return preparedSql;
 }
 
-QString MysqlTableItem::columnDef(const SqlColumn &col)
+QString MysqlTableItem::columnDef(const SqlColumn &col) const
 {
   QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
   if (col.length() > 0)

@@ -10,7 +10,7 @@ public:
     SqliteDatabase(QString caption);
 public:
     virtual bool reloadChildren() Q_DECL_OVERRIDE;
-    virtual QString getAllObjectListSql() Q_DECL_OVERRIDE;
+    virtual QString getAllObjectListSql() const Q_DECL_OVERRIDE;
 };
 
 #endif // SQLITEDATABASE_H

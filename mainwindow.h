@@ -76,6 +76,8 @@ private slots:
 
   void on_aSettings_triggered();
 
+  void on_aExportDatabase_triggered();
+
 private:
   Ui::MainWindow *ui;
   ConnectionEditDialog* _connectionEditDialog;

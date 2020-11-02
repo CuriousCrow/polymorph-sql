@@ -31,7 +31,7 @@ void ProcedureEditForm::reloadTypes()
 void ProcedureEditForm::objectToForm()
 {
   reloadTypes();
-  ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtName->setText(_objItem->caption());
   ui->edtSourceCode->setPlainText(_objItem->fieldValue(F_SOURCE_CODE).toString());
   ui->cmbLanguage->setCurrentText(_objItem->fieldValue(F_LANGUAGE).toString());
   ui->cmbResultType->setCurrentText(_objItem->fieldValue(F_RETURN_TYPE).toString());

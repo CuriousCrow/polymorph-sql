@@ -3,6 +3,8 @@
 
 #define DELIMITER "/"
 #define SQL_DELIMITER ";"
+#define FILE_DELIMITER "\r\n"
+#define COMMENT_PREFIX "-- "
 
 #define F_NAME "name"
 #define F_DESCRIPTION "description"

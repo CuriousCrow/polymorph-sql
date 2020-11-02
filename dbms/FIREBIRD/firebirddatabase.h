@@ -9,7 +9,7 @@ class FirebirdDatabase : public DBDatabaseItem
   Q_OBJECT
 public:
   FirebirdDatabase(QString caption);
-  virtual QString getAllObjectListSql() override;
+  virtual QString getAllObjectListSql() const Q_DECL_OVERRIDE;
 };
 
 #endif // FIREBIRDDATABASE_H

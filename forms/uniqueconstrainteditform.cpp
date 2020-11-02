@@ -20,7 +20,7 @@ UniqueConstraintEditForm::~UniqueConstraintEditForm()
 
 void UniqueConstraintEditForm::objectToForm()
 {
-  ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtName->setText(_objItem->caption());
 
   DBTableItem* targetObj =
       qobject_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));

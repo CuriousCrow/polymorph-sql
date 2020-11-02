@@ -19,12 +19,12 @@ bool LAbstractTreeItem::hasChildren()
   return children().count() > 0;
 }
 
-int LAbstractTreeItem::colCount()
+int LAbstractTreeItem::colCount() const
 {
   return 1;
 }
 
-QVariant LAbstractTreeItem::colData(int row, int role)
+QVariant LAbstractTreeItem::colData(int row, int role) const
 {
   switch (role) {
   case Qt::DisplayRole:

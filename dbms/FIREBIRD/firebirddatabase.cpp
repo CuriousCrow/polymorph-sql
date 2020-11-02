@@ -8,7 +8,7 @@ FirebirdDatabase::FirebirdDatabase(QString caption)
   setFieldValue(F_DRIVER_NAME, DRIVER_FIREBIRD);
 }
 
-QString FirebirdDatabase::getAllObjectListSql()
+QString FirebirdDatabase::getAllObjectListSql() const
 {
   return "select trim(rdb$relation_name), 'table' from rdb$relations where rdb$relation_type=0 and (rdb$system_flag is null or rdb$system_flag = 0) "
          "union all "

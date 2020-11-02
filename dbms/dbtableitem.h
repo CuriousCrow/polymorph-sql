@@ -34,13 +34,13 @@ public:
 
   // LAbstractTreeItem interface
 public:
-  virtual int colCount() Q_DECL_OVERRIDE;
-  virtual QVariant colData(int column, int role) Q_DECL_OVERRIDE;
+  virtual int colCount() const Q_DECL_OVERRIDE;
+  virtual QVariant colData(int column, int role) const Q_DECL_OVERRIDE;
 
   // DBObjectItem interface
 public:
   virtual bool reloadChildren() Q_DECL_OVERRIDE;
-  virtual int type() Q_DECL_OVERRIDE;
+  virtual int type() const Q_DECL_OVERRIDE;
 
   virtual ActionResult updateMe() Q_DECL_OVERRIDE;
   virtual ActionResult deleteMe() Q_DECL_OVERRIDE;

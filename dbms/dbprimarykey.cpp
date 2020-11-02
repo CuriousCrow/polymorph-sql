@@ -9,7 +9,7 @@ DBPrimaryKey::DBPrimaryKey(QString caption, QObject *parent)
 
 }
 
-int DBPrimaryKey::type()
+int DBPrimaryKey::type() const
 {
   return DBObjectItem::PrimaryKey;
 }

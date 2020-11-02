@@ -34,7 +34,7 @@ void DBObjectItem::setParentUrl(const AppUrl &url)
   }
 }
 
-QString DBObjectItem::driverName()
+QString DBObjectItem::driverName() const
 {
   return _driverName;
 }
@@ -45,6 +45,21 @@ void DBObjectItem::deleteChildren()
     childItem->setParent(nullptr);
     delete childItem;
   }
+}
+
+QString DBObjectItem::caption() const
+{
+  return fieldValue(F_CAPTION).toString();
+}
+
+DBObjectItem *DBObjectItem::childItem(DBObjectItem::ItemType type, QString name)
+{
+  for(int idx=0; idx<children().count(); idx++) {
+    DBObjectItem* child = qobject_cast<DBObjectItem*>(children().at(idx));
+    if (child->type() == type && (name.isEmpty() || child->caption() == name))
+      return child;
+  }
+  return nullptr;
 }
 
 AppUrl DBObjectItem::objectUrl()
@@ -230,12 +245,12 @@ QString DBObjectItem::toDML() const
   return "";
 }
 
-int DBObjectItem::colCount()
+int DBObjectItem::colCount() const
 {
   return fields.count();
 }
 
-QVariant DBObjectItem::colData(int column, int role)
+QVariant DBObjectItem::colData(int column, int role) const
 {
   if (column >= colCount())
     return QVariant();

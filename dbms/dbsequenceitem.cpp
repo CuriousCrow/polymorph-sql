@@ -18,18 +18,18 @@ DBSequenceItem::~DBSequenceItem()
 {
 }
 
-int DBSequenceItem::colCount()
+int DBSequenceItem::colCount() const
 {
   return 1;
 }
 
-QVariant DBSequenceItem::colData(int column, int role)
+QVariant DBSequenceItem::colData(int column, int role) const
 {
   Q_UNUSED(column)
 
   switch (role) {
   case Qt::DisplayRole:
-    return fieldValue(F_CAPTION);
+    return caption();
   case Qt::DecorationRole:
     return QIcon(":/icons/sequence.png");
   default:
@@ -42,7 +42,7 @@ bool DBSequenceItem::reloadChildren()
   return true;
 }
 
-int DBSequenceItem::type()
+int DBSequenceItem::type() const
 {
   return Sequence;
 }
@@ -68,7 +68,7 @@ ActionResult DBSequenceItem::updateMe()
   }
   if (!isModified())
     return ActionResult(RES_OK_CODE, "Sequence is not modified");
-  QString sql = "ALTER SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" {INCREMENT BY #step# }{MINVALUE #minValue# }"
+  QString sql = "ALTER SEQUENCE \"" + caption() + "\" {INCREMENT BY #step# }{MINVALUE #minValue# }"
       "{MAXVALUE #maxValue# }{START WITH #startValue# }{RESTART WITH #currentValue#}";
   QString preparedSql = fillWithModifiedFields(sql);
   return execSql(preparedSql, connectionName());
@@ -83,7 +83,7 @@ ActionResult DBSequenceItem::deleteMe()
 
 QString DBSequenceItem::toDDL() const
 {
-  QString sql = "CREATE SEQUENCE \"" + fieldValue(F_CAPTION).toString() + "\" INCREMENT #step# "
+  QString sql = "CREATE SEQUENCE \"" + caption() + "\" INCREMENT #step# "
       "MINVALUE #minValue# MAXVALUE #maxValue# START WITH #startValue#";
   QString preparedSql = fillPatternWithFields(sql);
   return preparedSql;

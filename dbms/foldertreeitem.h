@@ -8,7 +8,7 @@ class FolderTreeItem : public DBObjectItem
   Q_OBJECT
 public:
   FolderTreeItem(QString urlName, QString caption, QObject* parent = nullptr);
-  virtual ~FolderTreeItem() override;
+  virtual ~FolderTreeItem() Q_DECL_OVERRIDE;
 
   DBObjectItem::ItemType childrenType() const;
   void setChildrenType(DBObjectItem::ItemType childrenType);
@@ -16,14 +16,14 @@ signals:
   void reloadMe();
   // LAbstractTreeItem interface
 public:
-  virtual int colCount() override;
-  virtual QVariant colData(int column, int role) override;
-  virtual AppUrl objectUrl() override;
+  virtual int colCount() const Q_DECL_OVERRIDE;
+  virtual QVariant colData(int column, int role) const Q_DECL_OVERRIDE;
+  virtual AppUrl objectUrl() Q_DECL_OVERRIDE;
 
   // DBObjectItem interface
 public:
-  virtual bool reloadChildren() override;
-  virtual int type() override;
+  virtual bool reloadChildren() Q_DECL_OVERRIDE;
+  virtual int type() const Q_DECL_OVERRIDE;
 
 private:
   QString _urlName;

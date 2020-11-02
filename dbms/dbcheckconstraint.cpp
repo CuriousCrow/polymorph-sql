@@ -9,7 +9,7 @@ DBCheckConstraint::DBCheckConstraint(QString caption, QObject *parent)
   registerField(F_EXPRESSION);
 }
 
-int DBCheckConstraint::type()
+int DBCheckConstraint::type() const
 {
   return DBObjectItem::CheckConstraint;
 }

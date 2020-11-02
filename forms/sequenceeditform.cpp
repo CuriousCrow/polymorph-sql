@@ -27,7 +27,7 @@ void SequenceEditForm::on_btnCancel_clicked()
 
 void SequenceEditForm::objectToForm()
 {
-  ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtName->setText(_objItem->caption());
   ui->edtCurrentValue->setValue(_objItem->fieldValue(F_CURRENT_VALUE).toInt());
   ui->edtMinValue->setValue(_objItem->fieldValue(F_MIN_VALUE).toInt());
   ui->edtMaxValue->setValue(_objItem->fieldValue(F_MAX_VALUE).toInt());

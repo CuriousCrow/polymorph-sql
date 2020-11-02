@@ -30,7 +30,7 @@ void ForeignKeyForm::objectToForm()
   ui->cmbTargetColumn->setModel(targetObj->columnsModel());
   ui->cmbTargetColumn->setModelColumn(1);
 
-  ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtName->setText(_objItem->caption());
   ui->cmbTargetColumn->setCurrentText(_objItem->fieldValue(F_COLUMN).toString());
   ui->cmbReferenceTable->setCurrentText(_objItem->fieldValue(F_REFTABLE).toString());
   ui->cmbReferenceColumn->setCurrentText(_objItem->fieldValue(F_REFCOLUMN).toString());

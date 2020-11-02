@@ -26,7 +26,7 @@ void TriggerEditForm::objectToForm()
   ui->cmbFunction->setModel(DataStore::structureModel());
   ui->cmbFunction->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_PROCEDURES));
 
-  ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
+  ui->edtName->setText(_objItem->caption());
   if (userAction() == AbstractDatabaseEditForm::Edit) {
     ui->cmbBeforeAfter->setCurrentText(_objItem->fieldValue(F_TIMING).toString());
     ui->cmbFunction->setCurrentText(_objItem->fieldValue(F_FUNCTION).toString());
