@@ -22,6 +22,7 @@ public:
   ~DBDatabaseItem() Q_DECL_OVERRIDE;
 
   bool createDbConnection();
+  QString info();
   DBObjectItem* folderByType(DBObjectItem::ItemType type);
 
   virtual DBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);

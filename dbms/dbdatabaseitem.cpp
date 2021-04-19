@@ -39,8 +39,10 @@ bool DBDatabaseItem::createDbConnection()
 {
   QSqlDatabase db = QSqlDatabase::addDatabase(driver(), _connectionName);
   db.setDatabaseName(fieldValue(F_DATABASE_NAME).toString());
+  db.setHostName(fieldValue(F_HOSTNAME).toString());
   db.setUserName(fieldValue(F_USERNAME).toString());
   db.setPassword(fieldValue(F_PASSWORD).toString());
+  qDebug() << "Trying to connect:" << info();
 
   //Trying to connect
   if (!db.open()){
@@ -49,6 +51,11 @@ bool DBDatabaseItem::createDbConnection()
   }
   qDebug() << "DB" << caption() << "connected";
   return true;
+}
+
+QString DBDatabaseItem::info()
+{
+    return fieldValue(F_HOSTNAME).toString().append(":").append(fieldValue(F_DATABASE_NAME).toString());
 }
 
 DBObjectItem *DBDatabaseItem::folderByType(DBObjectItem::ItemType type)
