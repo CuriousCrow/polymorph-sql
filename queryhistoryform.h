@@ -26,6 +26,8 @@ private slots:
 
   void on_btnClose_clicked();
 
+  void on_btnClearQueryHistory_clicked();
+
 private:
   QString _selectedQuery;
   Ui::QueryHistoryForm *ui;

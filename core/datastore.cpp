@@ -93,7 +93,7 @@ int DataStore::databaseIdFromItem(DBObjectItem *item)
   while(curItem && curItem->type() != DBObjectItem::Database) {
       curItem = qobject_cast<DBObjectItem*>(curItem->parent());
   }
-  return curItem->fieldValue(F_ID).toInt();
+  return curItem ? curItem->fieldValue(F_ID).toInt() : -1;
 }
 
 UniSqlTableModel *DataStore::historyModel(int dbId)
@@ -134,6 +134,15 @@ bool DataStore::addQueryHistoryItem(int dbId, QString query)
   QSqlQuery preparedSql = QSqlQueryHelper::prepareQuery(sql);
   preparedSql.bindValue(":db", dbId);
   preparedSql.bindValue(":query", query);
+  bool resultOk = QSqlQueryHelper::execSql(preparedSql);
+  return resultOk;
+}
+
+bool DataStore::clearQueryHistory(int dbId)
+{
+  QString sql = "delete from t_query_history where database_id=:db";
+  QSqlQuery preparedSql = QSqlQueryHelper::prepareQuery(sql);
+  preparedSql.bindValue(":db", dbId);
   bool resultOk = QSqlQueryHelper::execSql(preparedSql);
   return resultOk;
 }
