@@ -19,6 +19,7 @@ public:
   static QByteArray loadTableState(int dbId, QString name);
   static void saveTableState(int dbId, QString name, QByteArray data);
   static bool addQueryHistoryItem(int dbId, QString query);
+  static bool clearQueryHistory(int dbId);
 signals:
 
 public slots:
