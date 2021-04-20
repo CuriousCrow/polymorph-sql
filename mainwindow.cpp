@@ -145,8 +145,8 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     }
     //Database disconnection (clear all database items)
     else {
-      DataStore::structureModel()->deleteChildren(index);
       removeTabsByItemUrl(dbItem->objectUrl().toString());
+      DataStore::structureModel()->deleteChildren(index);
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
     refreshConnectionList();
@@ -189,9 +189,11 @@ void MainWindow::removeTabByIndex(int index)
 
 void MainWindow::removeTabsByItemUrl(QString url)
 {
-  qDebug() << "removing tabs by url" << url;
+  qDebug() << "Removing tabs by url" << url;
   int tabCount = ui->tabWidget->count();
+  qDebug() << "Tabs total:" << tabCount;
   for (int i=tabCount-1; i>=0; i--){
+    qDebug() << "Check tab:" << ui->tabWidget->widget(i)->objectName();
     if (ui->tabWidget->widget(i)->objectName().startsWith(url, Qt::CaseInsensitive))
       removeTabByIndex(i);
   }
