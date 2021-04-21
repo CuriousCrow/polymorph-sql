@@ -1,6 +1,7 @@
 #include "strutils.h"
 #include <QDebug>
 #include <QCryptographicHash>
+#include <QRegularExpression>
 
 
 #define VAL_BRACKETS "#"
@@ -49,21 +50,19 @@ QList<qlonglong> StrUtils::longToList(qlonglong longVal)
 
 QString StrUtils::replaceTag(QString inStr, QString tagName, QString templ)
 {
-    QRegExp rx;
-    rx.setMinimal(true);
-    rx.setCaseSensitivity(Qt::CaseInsensitive);
+    QRegularExpression rx;
+    rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption | QRegularExpression::InvertedGreedinessOption);
     QString pattern = "<%1 ([^>]*)>(.*)</%1>";
     rx.setPattern(pattern.arg(tagName));
     int pos = 0;
     QStringList linksInTempl = dashValues(templ);
-
-    while ((pos = rx.indexIn(inStr, pos)) >= 0) {
-//        qDebug() << "Regexp res:" << rx.cap(1) << rx.cap(2);
+    for(QRegularExpressionMatch match : rx.globalMatch(inStr)) {
+        qDebug() << "Regexp res:" << match.captured(1) << match.captured(2);
         QString replaceStr = templ;
-        QHash<QString, QString> attrHash = attrsToHash(rx.cap(1));
-        attrHash.insert("text", rx.cap(2));
+        QHash<QString, QString> attrHash = attrsToHash(match.captured(1));
+        attrHash.insert("text", match.captured(2));
         foreach (QString link, linksInTempl) {
-            QStringList attrLinks = link.split('/', QString::SkipEmptyParts);
+            QStringList attrLinks = link.split('/', Qt::SkipEmptyParts);
             bool attrFound = false;
             foreach (QString attrName, attrLinks) {
                 if (attrHash.contains(attrName)) {
@@ -80,12 +79,11 @@ QString StrUtils::replaceTag(QString inStr, QString tagName, QString templ)
         foreach (QString name, attrHash.keys()) {
             replaceStr = replaceStr.replace("#" + name + "#", attrHash.value(name));
         }
-        QString cap = rx.cap();
+        QString cap = match.captured();
         int capLength = cap.length();
         inStr = inStr.replace(pos, capLength, replaceStr);
-        pos += replaceStr.length();
     }
-//    rx.setPattern();
+    rx.setPattern("");
     return inStr;
 }
 
@@ -124,11 +122,9 @@ QHash<QString, QString> StrUtils::attrsToHash(QString attrs)
 QStringList StrUtils::dashValues(QString inStr)
 {
     QStringList resVals;
-    QRegExp rx("#([a-z/]+)#");
-    int pos = 0;
-    while ((pos = rx.indexIn(inStr, pos)) >= 0) {
-        resVals.append(rx.cap(1));
-        pos += rx.cap().length();
+    QRegularExpression rx("#([a-z/]+)#");
+    for(const QRegularExpressionMatch &match : rx.globalMatch(inStr)){
+      resVals.append(match.captured(1));
     }
     return resVals;
 }

@@ -170,7 +170,7 @@ QVariant SqlColumnModel::data(const QModelIndex &index, int role) const
       resVal = columnTypeCaption(resVal.toInt());
     return resVal;
   }
-  else if (role == Qt::BackgroundColorRole) {
+  else if (role == Qt::BackgroundRole) {
     if (modified) {
       return _modifiedColor;
     }
@@ -232,21 +232,21 @@ QVariant SqlColumnModel::headerData(int section, Qt::Orientation orientation, in
   if (orientation == Qt::Horizontal) {
     switch (section) {
     case 0:
-      return trUtf8("Primary key");
+      return tr("Primary key");
     case 1:
-      return trUtf8("Column name");
+      return tr("Column name");
     case 2:
-      return trUtf8("Type");
+      return tr("Type");
     case 3:
-      return trUtf8("Length");
+      return tr("Length");
     case 4:
-      return trUtf8("Precision");
+      return tr("Precision");
     case 5:
-      return trUtf8("Not null");
+      return tr("Not null");
     case 6:
-      return trUtf8("Default value");
+      return tr("Default value");
     case 7:
-      return trUtf8("Autoincrement");
+      return tr("Autoincrement");
     default:
       return QVariant();
     }
@@ -263,7 +263,7 @@ bool SqlColumnModel::insertRows(int row, int count, const QModelIndex &parent)
     return false;
 
   emit beginInsertRows(QModelIndex(), row, row);
-  QString newColname = trUtf8("Column") + QString::number(rowCount() + 1);
+  QString newColname = tr("Column") + QString::number(rowCount() + 1);
   SqlColumn newCol(newColname, NoType);
   qlonglong newId = getNextId();
   _idxList.insert(row, newId);

@@ -1,6 +1,7 @@
 #include "appurl.h"
 #include <QDebug>
 #include <QDataStream>
+#include <QRegularExpression>
 
 #define URL_DELIMITER "/"
 
@@ -10,12 +11,12 @@ AppUrl::AppUrl()
 
 AppUrl::AppUrl(const QString &strUrl) : AppUrl()
 {
-  QRegExp rx("^([\\w]+):\\/\\/([\\w_]+)(?:\\/([\\w\\/_]+))?$");
-  bool match = rx.exactMatch(strUrl);
-  if (match) {
-    _driver = rx.cap(1);
-    _database = rx.cap(2);
-    setPath(rx.cap(3));
+  QRegularExpression rx("^([\\w]+):\\/\\/([\\w_]+)(?:\\/([\\w\\/_]+))?$");
+  QRegularExpressionMatch match = rx.match(strUrl);
+  if (match.hasMatch()) {
+    _driver = match.captured(1);
+    _database = match.captured(2);
+    setPath(match.captured(3));
   }
 }
 
@@ -87,7 +88,7 @@ QString AppUrl::path() const
 
 void AppUrl::setPath(const QString &path)
 {
-  _pathItems = path.split(URL_DELIMITER, QString::SkipEmptyParts);
+  _pathItems = path.split(URL_DELIMITER, Qt::SkipEmptyParts);
 }
 
 QString AppUrl::driver() const

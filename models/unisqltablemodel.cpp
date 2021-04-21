@@ -391,7 +391,7 @@ QVariant UniSqlTableModel::headerData(int section, Qt::Orientation orientation, 
       else
         return section + 1;
     }
-    else if (role == Qt::BackgroundColorRole) {
+    else if (role == Qt::BackgroundRole) {
       if (id < 0)
         return QColor(Qt::green);
       else if (_changesHash.contains(id) && _changesHash.value(id).isEmpty()) {

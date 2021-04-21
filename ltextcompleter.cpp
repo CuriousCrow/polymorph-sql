@@ -60,11 +60,11 @@ QString LTextCompleter::getCompletionPrefix()
 QString LTextCompleter::getCompletionContext()
 {
   QString context;
-  QRegExp rx("[A-Za-z_\\.\\-0-9]+");
+  QRegularExpression rx("^[A-Za-z_\\.\\-0-9]+$");
   QTextCursor cursor = textCursor();
   while(!cursor.atStart()) {
     cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor);
-    if (!rx.exactMatch(cursor.selectedText()))
+    if (!rx.match(cursor.selectedText()).hasMatch())
       break;
     context = cursor.selectedText();
   }

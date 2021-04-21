@@ -39,7 +39,7 @@ void DatabaseExportForm::on_btnClose_clicked()
 void DatabaseExportForm::on_btnStart_clicked()
 {
   //Select output file dialog
-  QString filePath = QFileDialog::getSaveFileName(this, trUtf8("Save"));
+  QString filePath = QFileDialog::getSaveFileName(this, tr("Save"));
   if (filePath.isEmpty())
     return;
 

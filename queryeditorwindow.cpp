@@ -94,6 +94,11 @@ QueryEditorWindow::~QueryEditorWindow()
 
 void QueryEditorWindow::on_aExecuteQuery_triggered()
 {
+  if (ui->cmbDatabase->currentIndex() < 0) {
+      ui->statusbar->showMessage("Database need to be selected");
+      return;
+  }
+
   QSqlQuery query =
       QSqlDatabase::database(connectionName()).exec(getActiveText());
   if (!query.lastError().isValid()){
@@ -133,12 +138,13 @@ DBObjectItem *QueryEditorWindow::dbObject()
 QString QueryEditorWindow::aliasSource(QString alias)
 {
   QString aliasPattern = "(?:from|join)\\s+([A-Za-z_]+)\\s+%1\\b";
-  QRegExp rx(aliasPattern.arg(alias));
-  rx.setCaseSensitivity(Qt::CaseInsensitive);
+  QRegularExpression rx(aliasPattern.arg(alias));
+  rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
   qDebug() << rx.pattern() << ui->teQueryEditor->toPlainText();
-  if (rx.indexIn(ui->teQueryEditor->toPlainText()) >= 0) {
-    qDebug() << rx.cap() << rx.cap(1) << rx.cap(2);
-    return rx.cap(1);
+  QRegularExpressionMatch match = rx.match(ui->teQueryEditor->toPlainText());
+  if (match.hasMatch()) {
+    qDebug() << match.captured() << match.captured(1) << match.captured(2);
+    return match.captured(1);
   }
   return alias;
 }
@@ -159,7 +165,7 @@ QString QueryEditorWindow::getActiveText()
 QString QueryEditorWindow::generateAlias(QString tableName)
 {
 //  qDebug() << "Table name: " << tableName;
-  QStringList sl = tableName.split("_", QString::SkipEmptyParts);
+  QStringList sl = tableName.split("_", Qt::SkipEmptyParts);
   QString alias;
   foreach(QString word, sl) {
     alias += word.at(0).toLower();

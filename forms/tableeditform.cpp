@@ -19,10 +19,10 @@ TableEditForm::TableEditForm(QWidget *parent) :
   ui->tableView->setItemDelegateForColumn(COL_IDX_TYPE, _colTypeDelegate);
 
   _menuAddConstraint = new QMenu(this);
-  _menuAddConstraint->addAction(trUtf8("Primary Key"), this, &TableEditForm::onShowPrimaryKeyEditor);
-  _menuAddConstraint->addAction(trUtf8("Foreign Key"), this, &TableEditForm::onShowForeignKeyEditor);
-  _menuAddConstraint->addAction(trUtf8("Unique Constraint"), this, &TableEditForm::onShowUniqueConstraintEditor);
-  _menuAddConstraint->addAction(trUtf8("Check Constraint"), this, &TableEditForm::onShowCheckConstraintEditor);
+  _menuAddConstraint->addAction(tr("Primary Key"), this, &TableEditForm::onShowPrimaryKeyEditor);
+  _menuAddConstraint->addAction(tr("Foreign Key"), this, &TableEditForm::onShowForeignKeyEditor);
+  _menuAddConstraint->addAction(tr("Unique Constraint"), this, &TableEditForm::onShowUniqueConstraintEditor);
+  _menuAddConstraint->addAction(tr("Check Constraint"), this, &TableEditForm::onShowCheckConstraintEditor);
   ui->btnAddConstraint->setMenu(_menuAddConstraint);
 }
 
@@ -74,7 +74,7 @@ void TableEditForm::on_btnDelete_clicked()
     qobject_cast<DBTableItem*>(_objItem)->columnsModel()->removeRow(selectedRow);
   }
   else {
-    QMessageBox::warning(this, trUtf8(TITLE_WARNING), "Please, select the column you want to drop");
+    QMessageBox::warning(this, tr(TITLE_WARNING), "Please, select the column you want to drop");
   }
 }
 
@@ -97,7 +97,7 @@ void TableEditForm::on_btnDropConstraint_clicked()
     tableItem->reloadConstraintsModel();
   }
   else {
-    QMessageBox::warning(this, trUtf8(TITLE_WARNING), dropResult.description());
+    QMessageBox::warning(this, tr(TITLE_WARNING), dropResult.description());
   }
 }
 

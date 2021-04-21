@@ -183,3 +183,9 @@ void LVariantRec::setValue(QString field, QVariant val)
 {
   _dataMap.insert(field, val);
 }
+
+//TODO: Rewrite this method
+size_t qHash(const QVariant &key)
+{
+  return qHash(key.toString());
+}

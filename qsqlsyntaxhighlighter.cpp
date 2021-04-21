@@ -42,26 +42,25 @@ void QSqlSyntaxHighlighter::highlightBlock(const QString &text)
 
 void QSqlSyntaxHighlighter::highlightKeywords(const QString &text)
 {
-  QTextCharFormat format;
-  format.setFontWeight(QFont::Bold);
+    QTextCharFormat format;
+    format.setFontWeight(QFont::Bold);
 
-  QRegExp rx;
-  rx.setCaseSensitivity(Qt::CaseInsensitive);
+    QRegularExpression rx;
+    rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
 
-  QString pattern = "\\b(%1)\\b";
+    QString pattern = "\\b(%1)\\b";
 
-  foreach (QString keyword, _sqlKeyWords){
-    Q_ASSERT(!keyword.isEmpty());
+    foreach (QString keyword, _sqlKeyWords){
+        Q_ASSERT(!keyword.isEmpty());
 
-    rx.setPattern(pattern.arg(keyword));
+        rx.setPattern(pattern.arg(keyword));
 
-    int index = rx.indexIn(text, 0);
-    while (index >= 0){
-      //применение формата на найденную подстроку
-      setFormat(rx.pos(1), rx.cap(1).length(), format);
-      index = rx.indexIn(text, rx.pos(1) + rx.cap(1).length());
+        for(const QRegularExpressionMatch &match : rx.globalMatch(text)) {
+            int capNum = (rx.captureCount() == 0) ? 0 : 1;
+            //применение формата на найденную подстроку
+            setFormat(match.capturedStart(capNum), match.capturedLength(capNum), format);
+        }
     }
-  }
 }
 
 void QSqlSyntaxHighlighter::highlightFunctions(const QString &text)
@@ -69,8 +68,8 @@ void QSqlSyntaxHighlighter::highlightFunctions(const QString &text)
   QTextCharFormat format;
   format.setFontItalic(true);
 
-  QRegExp rx;
-  rx.setCaseSensitivity(Qt::CaseInsensitive);
+  QRegularExpression rx;
+  rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
   QString pattern = "\\b(%1)\\(";
 
   foreach (QString function, _sqlFunctions){
@@ -78,11 +77,10 @@ void QSqlSyntaxHighlighter::highlightFunctions(const QString &text)
 
     rx.setPattern(pattern.arg(function));
 
-    int index = rx.indexIn(text, 0);
-    while (index >= 0){
-      //применение формата на найденную подстроку
-      setFormat(rx.pos(1), rx.cap(1).length(), format);
-      index = rx.indexIn(text, rx.pos(1) + rx.cap(1).length());
+    for(const QRegularExpressionMatch &match : rx.globalMatch(text)) {
+        int capNum = (rx.captureCount() == 0) ? 0 : 1;
+        //применение формата на найденную подстроку
+        setFormat(match.capturedStart(capNum), match.capturedLength(capNum), format);
     }
   }
 }

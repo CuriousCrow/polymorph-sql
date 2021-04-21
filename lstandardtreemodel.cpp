@@ -34,7 +34,7 @@ QVariant LAbstractTreeItem::colData(int row, int role) const
     default:
       return QVariant();
     }
-  case Qt::BackgroundColorRole:
+  case Qt::BackgroundRole:
     return QVariant();
   default:
     return QVariant();

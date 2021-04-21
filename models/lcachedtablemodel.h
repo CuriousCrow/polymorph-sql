@@ -30,8 +30,8 @@ private:
   int _idColIdx;
   QList<QString> _fieldNames;
   QList<QVariant> _idList;
-  QMap<QVariant, LVariantRec> _rows;
-  QMap<QVariant, LVariantRec> _changes;
+  QHash<QVariant, LVariantRec> _rows;
+  QHash<QVariant, LVariantRec> _changes;
   QVariant idByRow(int row) const;
   QString fieldByIndex(int col) const;
   // QAbstractItemModel interface
@@ -50,5 +50,7 @@ public slots:
   virtual bool insertRows(int row, int count, const QModelIndex &parent);
   virtual bool removeRows(int row, int count, const QModelIndex &parent);
 };
+
+size_t qHash(const QVariant &key);
 
 #endif // LCACHEDTABLEMODEL_H

@@ -2,6 +2,7 @@
 #include <QDebug>
 
 #include <QMetaProperty>
+#include <QRegularExpression>
 #include "qsqlqueryhelper.h"
 #include "dbms/appconst.h"
 
@@ -136,21 +137,20 @@ QString DBObjectItem::fillWithModifiedFields(QString pattern) const
 QString DBObjectItem::filterUnmodifiedFields(QString pattern) const
 {
   QString resSql;
-  QStringList parts = pattern.split(QRegExp("[\\{\\}]"), QString::SkipEmptyParts);
-  QRegExp rxParam("#([A-Za-z_]+)#");
+  QStringList parts = pattern.split(QRegularExpression("[\\{\\}]"), Qt::SkipEmptyParts);
+  QRegularExpression rxParam("#([A-Za-z_]+)#");
   foreach(QString part, parts) {
-    int paramIdx = 0;
     bool include = true;
-    while (rxParam.indexIn(part, paramIdx) >= 0) {
-      QString paramName = rxParam.cap(1);
-      if (!fieldModified(paramName)) {
-        include = false;
-        break;
-      }
-      paramIdx += rxParam.pos() + rxParam.matchedLength();
+
+    for (QRegularExpressionMatch match : rxParam.globalMatch(part)) {
+        QString paramName = match.captured(1);
+        if (!fieldModified(paramName)) {
+            include = false;
+            break;
+        }
     }
     if (include)
-      resSql.append(part);
+        resSql.append(part);
   }
   return resSql;
 }

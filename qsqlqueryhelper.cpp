@@ -1,6 +1,6 @@
 #include "qsqlqueryhelper.h"
 #include <QMetaProperty>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSqlRecord>
 #include "lstandardtreemodel.h"
 
@@ -17,7 +17,7 @@ QSqlQueryHelper::~QSqlQueryHelper()
 QSqlQuery QSqlQueryHelper::execSql(QString sql, QString connectionName)
 {
 #ifdef DEBUG_SQL
-  qDebug() << QString("SQL(%1): %2").arg(connectionName).arg(sql);
+  qDebug() << QString("SQL(%1): %2").arg(connectionName, sql);
 #endif
   QSqlQuery sqlResult = QSqlDatabase::database(connectionName).exec(sql);
 #ifdef DEBUG_SQL
@@ -83,31 +83,24 @@ QStringList QSqlQueryHelper::propertyList(const QMetaObject *metaObj)
 QString QSqlQueryHelper::fillSqlPattern(QString pattern, const QObject *object)
 {
   QString resSql;
-  QStringList parts = pattern.split(QRegExp("[\\{\\}]"), QString::SkipEmptyParts);
-  QRegExp rxParam = QRegExp("#([A-Za-z_]+)#");
+  QStringList parts = pattern.split(QRegularExpression("[\\{\\}]"), Qt::SkipEmptyParts);
+  QRegularExpression rxParam = QRegularExpression("#([A-Za-z_]+)#");
   foreach(QString sqlPart, parts) {
-    int paramIdx = 0;
     bool include = true;
-    while (rxParam.indexIn(sqlPart, paramIdx) >= 0) {
-      QString paramName = rxParam.cap(1);
-      if (object->property(paramName.toUtf8()).isValid()) {
-        include = false;
-        break;
-      }
-      paramIdx += rxParam.pos() + rxParam.matchedLength();
+    for(const QRegularExpressionMatch &match : rxParam.globalMatch(sqlPart)) {
+        QString paramName = match.captured(1);
+        if (object->property(paramName.toUtf8()).isValid()) {
+            include = false;
+            break;
+        }
     }
     if (include)
       resSql.append(sqlPart);
   }
 
   QStringList fields;
-  int index = 0;
-  while (index >= 0){
-    index = rxParam.indexIn(pattern, index);
-    if (index >= 0){
-      fields.append(rxParam.cap(1));
-      index += rxParam.cap().length();
-    }
+  for(const QRegularExpressionMatch &match : rxParam.globalMatch(pattern)) {
+      fields.append(match.captured(1));
   }
   fields.removeDuplicates();
   QString result(pattern);
