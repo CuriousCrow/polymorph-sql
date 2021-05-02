@@ -33,8 +33,10 @@ void AbstractDatabaseEditForm::tryUserAction()
   else if (userAction() == AbstractDatabaseEditForm::Edit) {
     res = _objItem->updateMe();
   }
-  if (res.isSuccess())
+  if (res.isSuccess()) {
+    _objItem->submit();
     accept();
+  }
   else if (res.resCode() == ERR_NOT_IMPLEMENTED) {
     QMessageBox::warning(this, TITLE_ERROR, "Feature not implemented yet");
   }
