@@ -76,6 +76,17 @@ void DatabaseExportForm::on_btnStart_clicked()
         backupScript.append(viewItem->toDDL());
       }
   }
+  folder = dbItem->folderByType(DBObjectItem::Sequence);
+  if (folder) {
+      backupScript.append("");
+      backupScript.append(COMMENT_PREFIX + folder->caption());
+      foreach(QObject* sequenceObj, folder->children()) {
+        DBSequenceItem* sequenceItem = qobject_cast<DBSequenceItem*>(sequenceObj);
+        backupScript.append(COMMENT_PREFIX + sequenceItem->caption());
+        sequenceItem->refresh();
+        backupScript.append(sequenceItem->toDDL());
+      }
+  }
 
   //DML
   folder = dbItem->folderByType(DBObjectItem::Table);
