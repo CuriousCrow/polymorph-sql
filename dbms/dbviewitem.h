@@ -23,6 +23,8 @@ public:
   virtual int type() const Q_DECL_OVERRIDE;
   virtual ActionResult insertMe() Q_DECL_OVERRIDE;
   virtual ActionResult deleteMe() Q_DECL_OVERRIDE;
+
+  virtual QString toDDL() const Q_DECL_OVERRIDE;
 };
 
 #endif // DBVIEWITEM_H

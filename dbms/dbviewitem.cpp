@@ -49,9 +49,7 @@ int DBViewItem::type() const
 ActionResult DBViewItem::insertMe()
 {
   qDebug() << "Connection name" << connectionName();
-  QString sql = "create view \"#caption#\" as #queryText#";
-  QString preparedSql = fillSqlPattern(sql);
-  return execSql(preparedSql, connectionName());
+  return execSql(toDDL(), connectionName());
 }
 
 
@@ -72,10 +70,16 @@ bool DBViewItem::setData(int column, QVariant value, int role)
   return true;
 }
 
-
 ActionResult DBViewItem::deleteMe()
 {
   QString sql = "drop view \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);
   return execSql(preparedSql, connectionName());
+}
+
+QString DBViewItem::toDDL() const
+{
+    QString sql = "create view \"#caption#\" as #queryText#";
+    QString preparedSql = fillPatternWithFields(sql);
+    return preparedSql;
 }

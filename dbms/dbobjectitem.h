@@ -111,6 +111,7 @@ protected:
   QString databaseName() const;
   DBObjectField& field(QString fieldName);
   QString fillSqlPattern(QString pattern);
+  QString fillSqlPattern(QString pattern) const;
   QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap) const;
   QString fillPatternWithFields(QString pattern) const;
   QString fillWithModifiedFields(QString pattern) const;

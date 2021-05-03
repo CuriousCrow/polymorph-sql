@@ -65,10 +65,22 @@ void DatabaseExportForm::on_btnStart_clicked()
     }
     backupScript.append("");
   }
+  folder = dbItem->folderByType(DBObjectItem::View);
+  if (folder) {
+      backupScript.append("");
+      backupScript.append(COMMENT_PREFIX + folder->caption());
+      foreach(QObject* viewObj, folder->children()) {
+        DBViewItem* viewItem = qobject_cast<DBViewItem*>(viewObj);
+        backupScript.append(COMMENT_PREFIX + viewItem->caption());
+        viewItem->refresh();
+        backupScript.append(viewItem->toDDL());
+      }
+  }
 
   //DML
   folder = dbItem->folderByType(DBObjectItem::Table);
   if (folder) {
+    backupScript.append("");
     backupScript.append(COMMENT_PREFIX + folder->caption());
     foreach(QObject* tableObj, folder->children()) {
       DBTableItem* tableItem = qobject_cast<DBTableItem*>(tableObj);

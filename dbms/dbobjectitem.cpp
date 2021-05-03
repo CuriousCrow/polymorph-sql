@@ -101,10 +101,15 @@ DBObjectField& DBObjectItem::field(QString fieldName)
 
 QString DBObjectItem::fillSqlPattern(QString pattern)
 {
-  foreach(DBObjectField field, fields) {
-    this->setProperty(qPrintable(field.name), field.value());
-  }
-  return QSqlQueryHelper::fillSqlPattern(pattern, this);
+    foreach(DBObjectField field, fields) {
+      this->setProperty(qPrintable(field.name), field.value());
+    }
+    return QSqlQueryHelper::fillSqlPattern(pattern, this);
+}
+
+QString DBObjectItem::fillSqlPattern(QString pattern) const
+{
+    return QSqlQueryHelper::fillSqlPattern(pattern, this);
 }
 
 QString DBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> valueMap) const
@@ -209,7 +214,7 @@ void DBObjectItem::setFieldValue(QString fieldName, QVariant value)
   int index = fieldIndex(fieldName);
   if (index < 0)
     return;
-  fields[index].setValue(value);
+  setFieldValue(index, value);
 }
 
 void DBObjectItem::setFieldValue(int colNumber, QVariant value)
