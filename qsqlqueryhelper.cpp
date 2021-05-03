@@ -70,17 +70,7 @@ QSqlRecord QSqlQueryHelper::tableRowInfo(QString table, QString connectionName)
   return rec;
 }
 
-
-QStringList QSqlQueryHelper::propertyList(const QMetaObject *metaObj)
-{
-  QStringList resList = QStringList();
-  for(int i=LAbstractTreeItem::staticMetaObject.propertyOffset(); i<metaObj->propertyCount(); i++){
-    resList << metaObj->property(i).name();
-  }
-  return resList;
-}
-
-QString QSqlQueryHelper::fillSqlPattern(QString pattern, const QObject *object)
+QString QSqlQueryHelper::fillSqlPatternByProps(QString pattern, const QObject *object)
 {
   QString resSql;
   QStringList parts = pattern.split(QRegularExpression("[\\{\\}]"), Qt::SkipEmptyParts);

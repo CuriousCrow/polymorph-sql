@@ -71,15 +71,6 @@ AppUrl DBObjectItem::objectUrl()
   return url;
 }
 
-QStringList DBObjectItem::propertyList()
-{
-  QStringList resList = QStringList();
-  for(int i=LAbstractTreeItem::staticMetaObject.propertyOffset(); i<metaObject()->propertyCount(); i++){
-    resList << metaObject()->property(i).name();
-  }
-  return resList;
-}
-
 int DBObjectItem::fieldIndex(QString fieldName) const
 {
   for(int i=0; i<fields.count(); i++){
@@ -99,17 +90,10 @@ DBObjectField& DBObjectItem::field(QString fieldName)
   return fields[fieldIndex(fieldName)];
 }
 
-QString DBObjectItem::fillSqlPattern(QString pattern)
-{
-    foreach(DBObjectField field, fields) {
-      this->setProperty(qPrintable(field.name), field.value());
-    }
-    return QSqlQueryHelper::fillSqlPattern(pattern, this);
-}
-
+//TODO: Пробная замена на вызов fillPatternWithFields. Если ничего не сломается, можно будет заменить одним методом
 QString DBObjectItem::fillSqlPattern(QString pattern) const
 {
-    return QSqlQueryHelper::fillSqlPattern(pattern, this);
+    return fillPatternWithFields(pattern);
 }
 
 QString DBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> valueMap) const
@@ -212,15 +196,19 @@ bool DBObjectItem::fieldModified(QString fieldName) const
 void DBObjectItem::setFieldValue(QString fieldName, QVariant value)
 {
   int index = fieldIndex(fieldName);
-  if (index < 0)
+  if (index < 0) {
+    qWarning() << "setFieldValue(): Field not found " << fieldName;
     return;
+  }
   setFieldValue(index, value);
 }
 
 void DBObjectItem::setFieldValue(int colNumber, QVariant value)
 {
-  if (colNumber >= fields.count())
+  if (colNumber >= fields.count()) {
+    qWarning() << "setFieldValue(): Invalid field index " << colNumber;
     return;
+  }
   fields[colNumber].setValue(value);
 }
 

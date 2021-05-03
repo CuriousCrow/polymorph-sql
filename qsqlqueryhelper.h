@@ -20,8 +20,7 @@ public:
   static QString databaseName(QString connection);
   static QString driverName(QString connection);
   static QSqlRecord tableRowInfo(QString table, QString connectionName);
-  static QStringList propertyList(const QMetaObject *metaObj);
-  static QString fillSqlPattern(QString pattern, const QObject* object);
+  static QString fillSqlPatternByProps(QString pattern, const QObject* object);
   static void fillObjectFromRecord(QObject* object, QSqlRecord& rec);
 };
 

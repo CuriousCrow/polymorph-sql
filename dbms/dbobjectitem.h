@@ -98,9 +98,9 @@ public:
   QVariant fieldOldValue(int colIdx) const;
   bool fieldModified(QString fieldName) const;
   void setFieldValue(QString fieldName, QVariant value);
+private:
   void setFieldValue(int colNumber, QVariant value);
 
-  QStringList propertyList();
 protected:
   QString _connectionName;
   bool _editable = true;
@@ -110,7 +110,6 @@ protected:
   int fieldIndex(QString fieldName) const;
   QString databaseName() const;
   DBObjectField& field(QString fieldName);
-  QString fillSqlPattern(QString pattern);
   QString fillSqlPattern(QString pattern) const;
   QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap) const;
   QString fillPatternWithFields(QString pattern) const;
