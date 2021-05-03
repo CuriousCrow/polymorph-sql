@@ -5,7 +5,7 @@
 
 
 DBViewItem::DBViewItem(QString caption, QObject *parent):
-  DBTableItem(caption, parent)
+  DBSelectableItem(caption, parent)
 {
   _editable = false;
   registerField(F_QUERY_TEXT);

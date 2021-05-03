@@ -11,7 +11,7 @@
 #include "core/datastore.h"
 #include "tablebrowserdelegate.h"
 
-TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) :
+TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBSelectableItem* tableItem) :
   QMainWindow(parent),
   ui(new Ui::TableBrowserWindow),
   _tableItem(tableItem)
@@ -19,8 +19,11 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBTableItem* tableItem) 
   qDebug() << "Connections:" << QSqlDatabase::connectionNames();
   ui->setupUi(this);
 
-  _tableItem->reloadColumnsModel();
-  _tableItem->reloadConstraintsModel();
+  _tableItem->refresh();
+
+  ui->tableView->setEditTriggers(_tableItem->type() == DBObjectItem::Table
+                                 ? (QAbstractItemView::SelectedClicked | QAbstractItemView::DoubleClicked)
+                                 : QAbstractItemView::NoEditTriggers);
 
   AppUrl url = _tableItem->objectUrl();
   setObjectName(url.toString());

@@ -18,7 +18,7 @@ class TableBrowserWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  explicit TableBrowserWindow(QWidget *parent, DBTableItem* tableItem);
+  explicit TableBrowserWindow(QWidget *parent, DBSelectableItem* tableItem);
   ~TableBrowserWindow();
 
 private slots:
@@ -71,7 +71,7 @@ private:
   QString _connectionName;
   UniSqlTableModel* _sourceModel;
   QSortFilterProxyModel* _proxyModel;
-  DBTableItem* _tableItem;
+  DBSelectableItem* _tableItem;
   QMenu* _mnuContext;
   QMenu* _mnuFilterList;
   QMenu* _mnuColumns;

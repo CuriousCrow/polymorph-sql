@@ -35,6 +35,7 @@ SOURCES += main.cpp\
   dbms/SQLITE/sqliteplugin.cpp \
   dbms/SQLITE/sqlitetable.cpp \
   dbms/SQLITE/sqliteviewitem.cpp \
+    dbms/dbselectableitem.cpp \
   itemviewer.cpp \
   ltextcompleter.cpp \
   models/jointdbojbectmodel.cpp \
@@ -134,6 +135,7 @@ HEADERS  += \
   dbms/SQLITE/sqlitetable.h \
   dbms/SQLITE/sqliteviewitem.h \
   dbms/dbmsplugin.h \
+    dbms/dbselectableitem.h \
   itemviewer.h \
   ltextcompleter.h \
   models/jointdbojbectmodel.h \

@@ -10,7 +10,7 @@ class TableBrowserDelegate : public QStyledItemDelegate
 {
   Q_OBJECT
 public:
-  TableBrowserDelegate(DBTableItem* tableItem, QObject *parent = nullptr);
+  TableBrowserDelegate(DBSelectableItem* item, QObject *parent = nullptr);
 
   // QAbstractItemDelegate interface
 public:
@@ -19,7 +19,7 @@ public:
   virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
   virtual void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 private:
-  DBTableItem* _tableItem;
+  DBSelectableItem* _tableItem;
   UniSqlTableModel* _foreignTable;
   QMap<int, QString> _foreignKeys;
 private slots:

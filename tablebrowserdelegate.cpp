@@ -7,27 +7,32 @@
 #define BLOB_COL -1 //Temperary disabled. Should be deleted when implementing uni-type item delegate
 
 
-TableBrowserDelegate::TableBrowserDelegate(DBTableItem* tableItem, QObject *parent)
-  : QStyledItemDelegate(parent), _tableItem(tableItem)
+TableBrowserDelegate::TableBrowserDelegate(DBSelectableItem* item, QObject *parent)
+  : QStyledItemDelegate(parent), _tableItem(item)
 {
-  _foreignTable = new UniSqlTableModel(this, QSqlDatabase::database(tableItem->connectionName()));
-  QAbstractTableModel* constraints = _tableItem->constraintsModel();
-  for(int i=0; i<constraints->rowCount(); i++) {
-    QString type = constraints->data(constraints->index(i, 0)).toString();
-    QString name = constraints->data(constraints->index(i, 1)).toString();
-    qDebug() << name << type;
-    if (type == "FOREIGN KEY") {
-      DBForeignKey* item = _tableItem->loadForeignKey(name);
-      QString table = item->fieldValue(F_TABLE).toString();
-      QString column = item->fieldValue(F_COLUMN).toString();
-      QString refColumn = item->fieldValue(F_REFCOLUMN).toString();
-      QString refTable = item->fieldValue(F_REFTABLE).toString();
+  _foreignTable = new UniSqlTableModel(this, QSqlDatabase::database(item->connectionName()));
 
-      int colIdx = _tableItem->columnsModel()->rowByName(column);
-      qDebug() << "Foreign key:" << colIdx << column << refTable << refColumn;
-      _foreignKeys.insert(colIdx, refTable);
-    }
+  if (item->type() == DBObjectItem::Table) {
+      DBTableItem* tableItem = qobject_cast<DBTableItem*>(item);
+      QAbstractTableModel* constraints = tableItem->constraintsModel();
+      for(int i=0; i<constraints->rowCount(); i++) {
+        QString type = constraints->data(constraints->index(i, 0)).toString();
+        QString name = constraints->data(constraints->index(i, 1)).toString();
+        qDebug() << name << type;
+        if (type == "FOREIGN KEY") {
+          DBForeignKey* item = tableItem->loadForeignKey(name);
+//          QString table = item->fieldValue(F_TABLE).toString();
+          QString column = item->fieldValue(F_COLUMN).toString();
+          QString refColumn = item->fieldValue(F_REFCOLUMN).toString();
+          QString refTable = item->fieldValue(F_REFTABLE).toString();
+
+          int colIdx = tableItem->columnsModel()->rowByName(column);
+          qDebug() << "Foreign key:" << colIdx << column << refTable << refColumn;
+          _foreignKeys.insert(colIdx, refTable);
+        }
+      }
   }
+
 }
 
 QWidget *TableBrowserDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const

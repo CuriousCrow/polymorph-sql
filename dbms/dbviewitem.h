@@ -1,8 +1,10 @@
 #ifndef DBVIEWITEM_H
 #define DBVIEWITEM_H
 
-#include "dbtableitem.h"
-class DBViewItem : public DBTableItem
+#include "dbselectableitem.h"
+
+
+class DBViewItem : public DBSelectableItem
 {
   Q_OBJECT
 public:

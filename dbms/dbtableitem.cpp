@@ -9,7 +9,7 @@
 
 
 DBTableItem::DBTableItem(QString caption, QObject* parent):
-  DBObjectItem(caption, parent)
+  DBSelectableItem(caption, parent)
 {      
 }
 
@@ -74,38 +74,19 @@ void DBTableItem::addDefaultColumn()
   _columnsModel->addSqlColumn(SqlColumn(DEF_COLUMN_NAME + QString::number(newColNumber), NoType));
 }
 
-bool DBTableItem::reloadChildren()
-{
-  return true;
-}
-
-int DBTableItem::colCount() const
-{
-  return 1;
-}
-
-QVariant DBTableItem::colData(int column, int role) const
-{
-  switch (role) {
-  case Qt::DisplayRole:
-    switch (column) {
-    case 0:
-      return caption();
-    default:
-      return QVariant();
-    }
-  case Qt::DecorationRole:
-    return QIcon(":/icons/table.png");
-  default:
-    return QVariant();
-  }
-}
 
 ActionResult DBTableItem::deleteMe()
 {
   QString sql = "drop table \"%1\"";
   QString preparedSql = sql.arg(caption());
   return execSql(preparedSql, connectionName());
+}
+
+bool DBTableItem::refresh()
+{
+  reloadColumnsModel();
+  reloadConstraintsModel();
+  return true;
 }
 
 bool DBTableItem::isModified() const

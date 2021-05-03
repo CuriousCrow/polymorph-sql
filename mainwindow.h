@@ -107,7 +107,7 @@ protected:
   void refreshQueryEditorAssistance();
 
   void showItemInfoWidget(DBObjectItem* dbItem);
-  void openTableEditor(DBTableItem* tableItem);
+  void openTableEditor(DBSelectableItem* tableItem);
 
   // NotifiableWindow interface
 protected:

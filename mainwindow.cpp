@@ -159,7 +159,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
   case DBObjectItem::Table:
   case DBObjectItem::View: {
     //Show or add table editor
-    DBTableItem* tableItem = qobject_cast<DBTableItem*>(objectItem);
+    DBSelectableItem* tableItem = qobject_cast<DBSelectableItem*>(objectItem);
     openTableEditor(tableItem);
     break;
   }
@@ -375,7 +375,7 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::View: {
-    DBTableItem* newViewItem = dbms->newViewItem(DEF_VIEW_NAME);
+    DBViewItem* newViewItem = dbms->newViewItem(DEF_VIEW_NAME);
     newViewItem->setParentUrl(folderItem->objectUrl());
     _viewEditorWindow->setObjItem(newViewItem);
     _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Create);
@@ -561,13 +561,13 @@ void MainWindow::showItemInfoWidget(DBObjectItem *dbItem)
   case DBObjectItem::Table:
   case DBObjectItem::View:
     //Show or add table editor
-    DBTableItem* tableItem = qobject_cast<DBTableItem*>(dbItem);
+    DBSelectableItem* tableItem = qobject_cast<DBSelectableItem*>(dbItem);
     openTableEditor(tableItem);
     break;
   }
 }
 
-void MainWindow::openTableEditor(DBTableItem *tableItem)
+void MainWindow::openTableEditor(DBSelectableItem *tableItem)
 {
   QString itemUrl = tableItem->objectUrl().toString();
   QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
