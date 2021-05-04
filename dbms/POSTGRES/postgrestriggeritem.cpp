@@ -41,15 +41,8 @@ bool PostgresTriggerItem::refresh()
 ActionResult PostgresTriggerItem::insertMe()
 {
   qDebug() << "Create trigger" << caption();
-  QString sql =
-      "CREATE TRIGGER \"#caption#\" "
-      "#timing# %1 "
-      "ON \"#table#\" "
-      "FOR EACH ROW "
-      "EXECUTE PROCEDURE #function#";
-  sql = sql.arg(events().join(" OR "));
-  QString preparedSql = fillPatternWithFields(sql);
-  return execSql(preparedSql, connectionName());
+  QString sql = toDDL();
+  return execSql(sql, connectionName());
 }
 
 ActionResult PostgresTriggerItem::updateMe()
@@ -107,7 +100,7 @@ QString PostgresTriggerItem::parseActionStatement(QString statement)
   return statement.section(" ", -1, -1).remove("()");
 }
 
-QStringList PostgresTriggerItem::events()
+QStringList PostgresTriggerItem::events() const
 {
   QStringList list;
   if (fieldValue(F_EVENT_INSERT).toBool())
@@ -128,4 +121,17 @@ ActionResult PostgresTriggerItem::deleteMe()
   QString sql = "drop trigger \"#caption#\" on \"#table#\"";
   QString preparedSql = fillSqlPattern(sql);
   return execSql(preparedSql, connectionName());
+}
+
+QString PostgresTriggerItem::toDDL() const
+{
+    QString sql =
+        "CREATE TRIGGER \"#caption#\" "
+        "#timing# %1 "
+        "ON \"#table#\" "
+        "FOR EACH ROW "
+        "EXECUTE PROCEDURE #function#()";
+    sql = sql.arg(events().join(" OR "));
+    QString preparedSql = fillPatternWithFields(sql);
+    return preparedSql;
 }

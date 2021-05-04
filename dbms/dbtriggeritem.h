@@ -5,6 +5,7 @@
 
 class DBTriggerItem : public DBObjectItem
 {
+  Q_OBJECT
 public:
   DBTriggerItem(QString caption, QObject* parent = nullptr);
   virtual ~DBTriggerItem() Q_DECL_OVERRIDE;

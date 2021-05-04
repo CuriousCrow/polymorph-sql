@@ -65,6 +65,7 @@ void DatabaseExportForm::on_btnStart_clicked()
     }
     backupScript.append("");
   }
+  //VIEWS
   folder = dbItem->folderByType(DBObjectItem::View);
   if (folder) {
       backupScript.append("");
@@ -76,6 +77,7 @@ void DatabaseExportForm::on_btnStart_clicked()
         backupScript.append(viewItem->toDDL());
       }
   }
+  //SEQUENCES
   folder = dbItem->folderByType(DBObjectItem::Sequence);
   if (folder) {
       backupScript.append("");
@@ -87,6 +89,44 @@ void DatabaseExportForm::on_btnStart_clicked()
         backupScript.append(sequenceItem->toDDL());
       }
   }
+  //PROCEDURES
+  folder = dbItem->folderByType(DBObjectItem::Procedure);
+  if (folder) {
+      backupScript.append("");
+      backupScript.append(COMMENT_PREFIX + folder->caption());
+      foreach(QObject* procedureObj, folder->children()) {
+        DBProcedureItem* procedureItem = qobject_cast<DBProcedureItem*>(procedureObj);
+        backupScript.append(COMMENT_PREFIX + procedureItem->caption());
+        procedureItem->refresh();
+        backupScript.append(procedureItem->toDDL());
+      }
+  }
+
+  //TRIGGERS
+  folder = dbItem->folderByType(DBObjectItem::Trigger);
+  if (folder) {
+      backupScript.append("");
+      backupScript.append(COMMENT_PREFIX + folder->caption());
+      foreach(QObject* triggerObj, folder->children()) {
+        DBTriggerItem* triggerItem = qobject_cast<DBTriggerItem*>(triggerObj);
+        backupScript.append(COMMENT_PREFIX + triggerItem->caption());
+        triggerItem->refresh();
+        backupScript.append(triggerItem->toDDL());
+      }
+  }
+
+  //INDEXES
+//  folder = dbItem->folderByType(DBObjectItem::Sequence);
+//  if (folder) {
+//      backupScript.append("");
+//      backupScript.append(COMMENT_PREFIX + folder->caption());
+//      foreach(QObject* sequenceObj, folder->children()) {
+//        DBSequenceItem* sequenceItem = qobject_cast<DBSequenceItem*>(sequenceObj);
+//        backupScript.append(COMMENT_PREFIX + sequenceItem->caption());
+//        sequenceItem->refresh();
+//        backupScript.append(sequenceItem->toDDL());
+//      }
+//  }
 
   //DML
   folder = dbItem->folderByType(DBObjectItem::Table);

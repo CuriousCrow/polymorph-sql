@@ -30,13 +30,8 @@ bool PostgresFunctionItem::refresh()
 
 ActionResult PostgresFunctionItem::insertMe()
 {
-  QString sql =
-      "CREATE OR REPLACE FUNCTION #caption#() "
-      "RETURNS #returnType# "
-      "LANGUAGE '#language#' "
-      "AS $BODY$#sourceCode#$BODY$";
-  QString preparedSql = fillSqlPattern(sql);
-  return execSql(preparedSql, connectionName());
+  QString sql = toDDL();
+  return execSql(sql, connectionName());
 }
 
 ActionResult PostgresFunctionItem::updateMe()
@@ -49,4 +44,15 @@ ActionResult PostgresFunctionItem::deleteMe()
   QString sql = "DROP FUNCTION \"#caption#\"";
   QString preparedSql = fillSqlPattern(sql);
   return execSql(preparedSql, connectionName());
+}
+
+QString PostgresFunctionItem::toDDL() const
+{
+    QString sql =
+        "CREATE OR REPLACE FUNCTION #caption#() "
+        "RETURNS #returnType# "
+        "LANGUAGE '#language#' "
+        "AS $BODY$#sourceCode#$BODY$";
+    QString preparedSql = fillSqlPattern(sql);
+    return preparedSql;
 }
