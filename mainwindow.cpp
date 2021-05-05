@@ -22,6 +22,7 @@
 #include "dbms/FIREBIRD/firebirdplugin.h"
 #include "dbms/MYSQL/mysqlplugin.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
   NotifiableWindow(parent),
   ui(new Ui::MainWindow)
@@ -586,6 +587,10 @@ void MainWindow::localEvent(LocalEvent *event)
     DBObjectItem* item = itemByName(event->url());
     if (item)
       showItemInfoWidget(item);
+  }
+  else if (event->type() == InfoMessageEvent) {
+    QString message = event->param(PARAM_MESSAGE).toString();
+    ui->statusBar->showMessage(message, MAIN_STATUS_BAR_TIMEOUT);
   }
 }
 

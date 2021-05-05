@@ -40,6 +40,7 @@ public:
   QPoint cursorGlobalPos();
 signals:
   void wordClicked(QString word, Qt::KeyboardModifiers modifiers);
+  void infoMessage(const QString &message);
   // QWidget interface
 protected:
   void mousePressEvent(QMouseEvent *event) override;

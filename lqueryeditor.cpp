@@ -49,14 +49,14 @@ void LQueryEditor::dropEvent(QDropEvent *event)
             setPlainText(QFileUtils::fileToString(path, true));
         }
         else {
-            qWarning() << "SqlEditor: Unsupported file type";
+            emit infoMessage("Trying to drop unsupported file type");
         }
     }
     else if (event->mimeData()->hasText()) {
         setPlainText(event->mimeData()->text());
     }
     else {
-        qDebug() << "Trying to drop unsupported mime type";
+        emit infoMessage("Trying to drop unsupported mime type");
     }
 }
 

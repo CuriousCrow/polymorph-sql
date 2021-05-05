@@ -13,6 +13,8 @@
 #include "models/jointdbojbectmodel.h"
 #include "core/datastore.h"
 
+#define STATUS_BAR_TIMEOUT 5000
+
 namespace Ui {
 class QueryEditorWindow;
 }
@@ -41,6 +43,7 @@ private slots:
   void onCompleterRequested(const QString &contextText);
   void on_aQueryHistory_triggered();
   void onHistoryClosed();
+  void updateStatusMessage(const QString &message);
 
 private:
   Ui::QueryEditorWindow *ui;

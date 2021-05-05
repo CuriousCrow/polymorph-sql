@@ -33,6 +33,11 @@ LocalEvent::LocalEvent(QEvent::Type type, QString url, QVariantMap params)
 
 }
 
+QVariant LocalEvent::param(QString name)
+{
+    return _params.value(name);
+}
+
 QString LocalEvent::url()
 {
   return _url;

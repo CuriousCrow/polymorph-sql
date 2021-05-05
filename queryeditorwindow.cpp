@@ -84,6 +84,9 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
 
   connect(ui->teQueryEditor, SIGNAL(wordClicked(QString, Qt::KeyboardModifiers)),
           this, SLOT(onFindObject(QString, Qt::KeyboardModifiers)));
+
+  connect(ui->teQueryEditor, &LQueryEditor::infoMessage,
+          this, &QueryEditorWindow::updateStatusMessage);
 }
 
 QueryEditorWindow::~QueryEditorWindow()
@@ -95,7 +98,7 @@ QueryEditorWindow::~QueryEditorWindow()
 void QueryEditorWindow::on_aExecuteQuery_triggered()
 {
   if (ui->cmbDatabase->currentIndex() < 0) {
-      ui->statusbar->showMessage("Database need to be selected");
+      updateStatusMessage("Database need to be selected");
       return;
   }
 
@@ -106,13 +109,13 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
     ui->tabWidget->setCurrentWidget(ui->tabResult);
   }
   if (query.lastError().isValid()){
-    ui->statusbar->showMessage(query.lastError().text());
+    updateStatusMessage(query.lastError().text());
   }
   else {
     if (query.isSelect())
-      ui->statusbar->showMessage(QString::number(query.size()) + " rows selected");
+      updateStatusMessage(QString::number(query.size()) + " rows selected");
     else
-      ui->statusbar->showMessage(QString::number(query.numRowsAffected()) + " rows affected");
+      updateStatusMessage(QString::number(query.numRowsAffected()) + " rows affected");
   }
 }
 
@@ -236,7 +239,7 @@ void QueryEditorWindow::on_aExecScript_triggered()
       qDebug() << "Error:" << query.lastError().text();
     }
   }
-  ui->statusbar->showMessage("Succcess: " + QString::number(success) + ", Failed: " + QString::number(failed));
+  updateStatusMessage("Succcess: " + QString::number(success) + ", Failed: " + QString::number(failed));
 }
 
 void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifiers)
@@ -304,4 +307,9 @@ void QueryEditorWindow::onHistoryClosed()
   if (historyForm->result()) {
     ui->teQueryEditor->setPlainText(historyForm->selectedQuery());
   }
+}
+
+void QueryEditorWindow::updateStatusMessage(const QString &message)
+{
+    ui->statusbar->showMessage(message, STATUS_BAR_TIMEOUT);
 }

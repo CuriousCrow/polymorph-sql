@@ -6,8 +6,12 @@
 #include <QVariant>
 #include <QMainWindow>
 
+#define PARAM_MESSAGE "msg"
+
 const QEvent::Type ShowObjectEvent = static_cast<QEvent::Type>(QEvent::User + 1);
 const QEvent::Type CloseObjectEvent = static_cast<QEvent::Type>(QEvent::User + 2);
+const QEvent::Type InfoMessageEvent = static_cast<QEvent::Type>(QEvent::User + 3);
+
 
 class LocalEvent : public QEvent
 {

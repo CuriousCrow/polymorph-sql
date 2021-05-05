@@ -17,6 +17,8 @@
 #include "dbms/dbtableitem.h"
 #include "core/localeventnotifier.h"
 
+#define MAIN_STATUS_BAR_TIMEOUT 5000
+
 namespace Ui {
 class MainWindow;
 }
