@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
-    <height>399</height>
+    <width>630</width>
+    <height>514</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,20 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="LQueryEditor" name="teQueryEditor"/>
+         <widget class="LQueryEditor" name="teQueryEditor">
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
+          </property>
+          <property name="placeholderText">
+           <string>Put your SQL here!</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

@@ -1,7 +1,9 @@
 #include "lqueryeditor.h"
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QMimeData>
 #include <QDebug>
+#include "utils/qfileutils.h"
 
 
 LQueryEditor::LQueryEditor(QWidget *parent) : QPlainTextEdit(parent)
@@ -34,7 +36,28 @@ void LQueryEditor::mousePressEvent(QMouseEvent *event)
   QPlainTextEdit::mousePressEvent(event);
 
   if (event->button() == Qt::LeftButton)
-    emit wordClicked(currentWord(), event->modifiers());
+      emit wordClicked(currentWord(), event->modifiers());
+}
+
+void LQueryEditor::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QUrl url = event->mimeData()->urls().first();
+        if (url.isLocalFile() && (url.path().endsWith(".sql") || url.path().endsWith(".txt"))) {
+            QString path = url.toLocalFile();
+            qInfo() << "SqlEditor: Loading dropped file" << path;
+            setPlainText(QFileUtils::fileToString(path, true));
+        }
+        else {
+            qWarning() << "SqlEditor: Unsupported file type";
+        }
+    }
+    else if (event->mimeData()->hasText()) {
+        setPlainText(event->mimeData()->text());
+    }
+    else {
+        qDebug() << "Trying to drop unsupported mime type";
+    }
 }
 
 LKeySequenceInterceptor::LKeySequenceInterceptor(QObject *parent) : QObject(parent)

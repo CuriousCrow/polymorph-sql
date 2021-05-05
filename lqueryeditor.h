@@ -42,7 +42,8 @@ signals:
   void wordClicked(QString word, Qt::KeyboardModifiers modifiers);
   // QWidget interface
 protected:
-  void mousePressEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event) override;
+  virtual void dropEvent(QDropEvent *event) override;
 };
 
 #endif // LQUERYEDITOR_H
