@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
-    <height>514</height>
+    <width>897</width>
+    <height>532</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,19 +32,44 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="LQueryEditor" name="teQueryEditor">
-          <property name="acceptDrops">
-           <bool>true</bool>
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOn</enum>
+          <property name="childrenCollapsible">
+           <bool>false</bool>
           </property>
-          <property name="horizontalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOn</enum>
-          </property>
-          <property name="placeholderText">
-           <string>Put your SQL here!</string>
-          </property>
+          <widget class="LQueryEditor" name="teQueryEditor">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="acceptDrops">
+            <bool>true</bool>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOn</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOn</enum>
+           </property>
+           <property name="placeholderText">
+            <string>Put your SQL here!</string>
+           </property>
+          </widget>
+          <widget class="QueryParamsForm" name="paramsForm" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>250</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -85,6 +110,7 @@
    <addaction name="aExecScript"/>
    <addaction name="separator"/>
    <addaction name="aQueryHistory"/>
+   <addaction name="aUpdateParams"/>
   </widget>
   <action name="aCommit">
    <property name="icon">
@@ -146,12 +172,27 @@
     <string>Query history</string>
    </property>
   </action>
+  <action name="aUpdateParams">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>Update params</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
    <class>LQueryEditor</class>
    <extends>QPlainTextEdit</extends>
    <header>lqueryeditor.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QueryParamsForm</class>
+   <extends>QWidget</extends>
+   <header>forms/queryparamsform.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

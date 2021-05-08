@@ -82,11 +82,12 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
           this, SLOT(onAddAlias()));
 
 
-  connect(ui->teQueryEditor, SIGNAL(wordClicked(QString, Qt::KeyboardModifiers)),
-          this, SLOT(onFindObject(QString, Qt::KeyboardModifiers)));
+  connect(ui->teQueryEditor, &LQueryEditor::wordClicked,
+          this, &QueryEditorWindow::onFindObject);
 
   connect(ui->teQueryEditor, &LQueryEditor::infoMessage,
           this, &QueryEditorWindow::updateStatusMessage);
+
 }
 
 QueryEditorWindow::~QueryEditorWindow()
@@ -102,8 +103,7 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
       return;
   }
 
-  QSqlQuery query =
-      QSqlDatabase::database(connectionName()).exec(getActiveText());
+  QSqlQuery query = QSqlQueryHelper::execSql(getActiveText(), connectionName());
   if (!query.lastError().isValid()){
     _resultModel->setQuery(query);
     ui->tabWidget->setCurrentWidget(ui->tabResult);
@@ -157,6 +157,7 @@ QString QueryEditorWindow::getActiveText()
   QString activeText = ui->teQueryEditor->textCursor().selectedText();
   if (activeText.isEmpty())
     activeText = ui->teQueryEditor->toPlainText();
+  activeText = ui->paramsForm->applyParams(activeText);
   if (_lastExecutedQuery != activeText) {
     qDebug() << "New query registered in history:" << activeText;
     DataStore::addQueryHistoryItem(ui->cmbDatabase->currentData().toInt(), activeText);
@@ -312,4 +313,17 @@ void QueryEditorWindow::onHistoryClosed()
 void QueryEditorWindow::updateStatusMessage(const QString &message)
 {
     ui->statusbar->showMessage(message, STATUS_BAR_TIMEOUT);
+}
+
+void QueryEditorWindow::on_aUpdateParams_triggered()
+{
+    QRegularExpression rxParam("#([A-Za-z]+)#");
+    QString text = ui->teQueryEditor->toPlainText();
+    QVariantMap paramMap;
+    for(const QRegularExpressionMatch &match : rxParam.globalMatch(text)) {
+        QString paramName = match.captured(1);
+        qDebug() << paramName;
+        paramMap.insert(paramName, "");
+    }
+    ui->paramsForm->setParams(paramMap);
 }

@@ -36,10 +36,12 @@ SOURCES += main.cpp\
   dbms/SQLITE/sqlitetable.cpp \
   dbms/SQLITE/sqliteviewitem.cpp \
     dbms/dbselectableitem.cpp \
+    forms/queryparamsform.cpp \
   itemviewer.cpp \
   ltextcompleter.cpp \
   models/jointdbojbectmodel.cpp \
   models/ldbobjecttablemodel.cpp \
+    models/queryparamtablemodel.cpp \
   models/unisqltablemodel.cpp \
   qknowledgebase.cpp \
 #Forms
@@ -136,10 +138,12 @@ HEADERS  += \
   dbms/SQLITE/sqliteviewitem.h \
   dbms/dbmsplugin.h \
     dbms/dbselectableitem.h \
+    forms/queryparamsform.h \
   itemviewer.h \
   ltextcompleter.h \
   models/jointdbojbectmodel.h \
   models/ldbobjecttablemodel.h \
+    models/queryparamtablemodel.h \
   models/unisqltablemodel.h \
   qknowledgebase.h \
 #Forms
@@ -220,6 +224,7 @@ FORMS    += mainwindow.ui \
     forms/checkconstrainteditform.ui \
     forms/foreignkeyform.ui \
     forms/procedureeditform.ui \
+    forms/queryparamsform.ui \
     forms/sequenceeditform.ui \
     forms/triggereditform.ui \
     forms/uniqueconstrainteditform.ui \

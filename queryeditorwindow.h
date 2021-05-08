@@ -11,6 +11,8 @@
 #include "utils/qsimpletooltip.h"
 #include "models/ldbobjecttablemodel.h"
 #include "models/jointdbojbectmodel.h"
+#include "models/queryparamtablemodel.h"
+#include "forms/queryparamsform.h"
 #include "core/datastore.h"
 
 #define STATUS_BAR_TIMEOUT 5000
@@ -44,6 +46,8 @@ private slots:
   void on_aQueryHistory_triggered();
   void onHistoryClosed();
   void updateStatusMessage(const QString &message);
+
+  void on_aUpdateParams_triggered();
 
 private:
   Ui::QueryEditorWindow *ui;
