@@ -113,7 +113,10 @@ QString DBObjectItem::fillPatternWithFields(QString pattern) const
     result = result.replace("#" + field.name + ".old#", field.oldValue().toString());
     result = result.replace("#" + field.name + "#", field.value().toString());
   }
-  result = result.replace("#databaseName#", databaseName());
+  //Only for already existing objects
+  if (!_connectionName.isEmpty()) {
+    result = result.replace("#databaseName#", databaseName());
+  }
   return result;
 }
 
