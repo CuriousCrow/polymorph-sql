@@ -2,7 +2,7 @@
 #define CORE_H
 
 #include <QObject>
-#include "../dbms/dbmsplugin.h"
+#include "../sdk/objects/dbmsplugin.h"
 
 class Core : public QObject
 {

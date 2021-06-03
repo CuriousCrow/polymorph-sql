@@ -7,7 +7,7 @@
 #include <QMenu>
 #include "models/unisqltablemodel.h"
 #include <QSortFilterProxyModel>
-#include "dbms/dbtableitem.h"
+#include "sdk/objects/dbtableitem.h"
 
 namespace Ui {
 class TableBrowserWindow;

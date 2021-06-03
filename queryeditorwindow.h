@@ -12,7 +12,7 @@
 #include "models/ldbobjecttablemodel.h"
 #include "models/jointdbojbectmodel.h"
 #include "models/queryparamtablemodel.h"
-#include "forms/queryparamsform.h"
+#include "sdk/forms/queryparamsform.h"
 #include "core/datastore.h"
 
 #define STATUS_BAR_TIMEOUT 5000

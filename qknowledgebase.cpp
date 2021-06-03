@@ -1,6 +1,6 @@
 #include "qknowledgebase.h"
 #include <QDebug>
-#include "dbms/appconst.h"
+#include "sdk/objects/appconst.h"
 
 QKnowledgeBase* QKnowledgeBase::_kb = nullptr;
 

@@ -1,5 +1,5 @@
 #include "sqlhelplookupprovider.h"
-#include "../dbms/appconst.h"
+#include "sdk/objects/appconst.h"
 
 
 SqlHelpLookupProvider::SqlHelpLookupProvider(QObject *parent) : QObject(parent)

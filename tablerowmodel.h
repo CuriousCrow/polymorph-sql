@@ -2,7 +2,7 @@
 #define TABLEROWMODEL_H
 
 #include <QAbstractTableModel>
-#include "dbms/dbobjectitem.h"
+#include "sdk/objects/dbobjectitem.h"
 #include <QSqlRecord>
 
 

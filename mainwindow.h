@@ -5,16 +5,16 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include "models/lsqltablemodel.h"
-#include "forms/connectioneditdialog.h"
+#include "sdk/forms/connectioneditdialog.h"
 #include <QMenu>
 #include "qstructureitemmodel.h"
 #include "queryeditorwindow.h"
-#include "forms/tableeditform.h"
-#include "forms/sequenceeditform.h"
-#include "forms/procedureeditform.h"
-#include "forms/vieweditdialog.h"
-#include "forms/triggereditform.h"
-#include "dbms/dbtableitem.h"
+#include "sdk/forms/tableeditform.h"
+#include "sdk/forms/sequenceeditform.h"
+#include "sdk/forms/procedureeditform.h"
+#include "sdk/forms/vieweditdialog.h"
+#include "sdk/forms/triggereditform.h"
+#include "sdk/objects/dbtableitem.h"
 #include "core/localeventnotifier.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000
@@ -98,8 +98,6 @@ private:
   void addDatabase();
   DBObjectItem* itemByIndex(QModelIndex index);
   DBObjectItem* itemByName(QString name);
-
-  QString typeName(DBObjectItem::ItemType type);
 protected:
   //Dummy source change
 

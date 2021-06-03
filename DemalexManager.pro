@@ -16,6 +16,7 @@ RC_ICONS = icons/cc_16.ico
 SOURCES += main.cpp\
 #Core
   blobeditor.cpp \
+  core/basepluginmanager.cpp \
   core/core.cpp \
   core/datastore.cpp \
   core/localeventnotifier.cpp \
@@ -23,51 +24,53 @@ SOURCES += main.cpp\
   core/sqlhelplookupprovider.cpp \
   core/appsettings.cpp \
   databaseexportform.cpp \
-  dbms/FIREBIRD/firebirddatabase.cpp \
-  dbms/FIREBIRD/firebirdplugin.cpp \
-  dbms/FIREBIRD/firebirdtable.cpp \
-  dbms/MYSQL/mysqldatabase.cpp \
-  dbms/MYSQL/mysqlplugin.cpp \
-  dbms/MYSQL/mysqltable.cpp \
-  dbms/POSTGRES/postgresplugin.cpp \
-  dbms/POSTGRES/postgresviewitem.cpp \
-  dbms/SQLITE/sqlitedatabase.cpp \
-  dbms/SQLITE/sqliteplugin.cpp \
-  dbms/SQLITE/sqlitetable.cpp \
-  dbms/SQLITE/sqliteviewitem.cpp \
-    dbms/dbselectableitem.cpp \
-    forms/queryparamsform.cpp \
+  plugins/FIREBIRD/firebirddatabase.cpp \
+  plugins/FIREBIRD/firebirdplugin.cpp \
+  plugins/FIREBIRD/firebirdtable.cpp \
+  plugins/MYSQL/mysqldatabase.cpp \
+  plugins/MYSQL/mysqlplugin.cpp \
+  plugins/MYSQL/mysqltable.cpp \
+  plugins/POSTGRES/postgresplugin.cpp \
+  plugins/POSTGRES/postgresviewitem.cpp \
+  plugins/SQLITE/sqlitedatabase.cpp \
+  plugins/SQLITE/sqliteplugin.cpp \
+  plugins/SQLITE/sqlitetable.cpp \
+  plugins/SQLITE/sqliteviewitem.cpp \
+  sdk/objects/dbselectableitem.cpp \
+  sdk/forms/queryparamsform.cpp \
   itemviewer.cpp \
   ltextcompleter.cpp \
   models/jointdbojbectmodel.cpp \
   models/ldbobjecttablemodel.cpp \
-    models/queryparamtablemodel.cpp \
+  models/queryparamtablemodel.cpp \
+  sdk/dependencycontainer.cpp \
   models/unisqltablemodel.cpp \
   qknowledgebase.cpp \
 #Forms
-  forms/abstractdatabaseitemform.cpp \
-  forms/tableeditform.cpp \
-  forms/checkconstrainteditform.cpp \
-  forms/foreignkeyform.cpp \
-  forms/procedureeditform.cpp \
-  forms/sequenceeditform.cpp \
-  forms/triggereditform.cpp \
-  forms/uniqueconstrainteditform.cpp \
-  forms/vieweditdialog.cpp \
+  sdk/forms/abstractdatabaseitemform.cpp \
+  sdk/forms/tableeditform.cpp \
+  sdk/forms/checkconstrainteditform.cpp \
+  sdk/forms/foreignkeyform.cpp \
+  sdk/forms/procedureeditform.cpp \
+  sdk/forms/sequenceeditform.cpp \
+  sdk/forms/triggereditform.cpp \
+  sdk/forms/uniqueconstrainteditform.cpp \
+  sdk/forms/vieweditdialog.cpp \
   mainwindow.cpp \
-  forms/connectioneditdialog.cpp \
+  sdk/forms/connectioneditdialog.cpp \
   queryhistoryform.cpp \
+    sdk/objects/postgresfolderitem.cpp \
   settingsform.cpp \
   tablebrowserdelegate.cpp \
   tablebrowserwindow.cpp \
   queryeditorwindow.cpp \
   lqueryeditor.cpp \
 #Utils
-  qsqlqueryhelper.cpp \
-  qsqlsyntaxhighlighter.cpp \
-  utils/eventinterceptors.cpp \
-  utils/qfileutils.cpp \
-  utils/qsimpletooltip.cpp \
+    qsqlqueryhelper.cpp \
+    qsqlsyntaxhighlighter.cpp \
+    utils/eventinterceptors.cpp \
+    utils/qfileutils.cpp \
+    utils/qsimpletooltip.cpp \
 #Models
     models/simplecachedtablemodel.cpp \
     models/comboboxitemdelegate.cpp \
@@ -83,40 +86,41 @@ SOURCES += main.cpp\
     models/sqlcolumnmodel.cpp \
     comboboxhashdelegate.cpp \
 #Base DB classes
-    dbms/appurl.cpp \
-    dbms/dbobjectitem.cpp \
-    dbms/dbdatabaseitem.cpp \
-    dbms/dbtableitem.cpp \
-    dbms/dbsequenceitem.cpp \
-    dbms/dbtriggeritem.cpp \
-    dbms/dbprocedureitem.cpp \
-    dbms/dbviewitem.cpp \
-    dbms/foldertreeitem.cpp \
-    dbms/dbcheckconstraint.cpp \
-    dbms/dbconstraintitem.cpp \
-    dbms/dbforeignkey.cpp \
-    dbms/dbprimarykey.cpp \
-    dbms/dbuniqueconstraint.cpp \
+    sdk/objects/appurl.cpp \
+    sdk/objects/dbobjectitem.cpp \
+    sdk/objects/dbdatabaseitem.cpp \
+    sdk/objects/dbtableitem.cpp \
+    sdk/objects/dbsequenceitem.cpp \
+    sdk/objects/dbtriggeritem.cpp \
+    sdk/objects/dbprocedureitem.cpp \
+    sdk/objects/dbviewitem.cpp \
+    sdk/objects/foldertreeitem.cpp \
+    sdk/objects/dbcheckconstraint.cpp \
+    sdk/objects/dbconstraintitem.cpp \
+    sdk/objects/dbforeignkey.cpp \
+    sdk/objects/dbprimarykey.cpp \
+    sdk/objects/dbuniqueconstraint.cpp \
 #SQLite
 #MySQL
 #Postgres
-    dbms/POSTGRES/postgrestriggeritem.cpp \
-    dbms/POSTGRES/postgrescheckconstraint.cpp \
-    dbms/POSTGRES/postgresdatabase.cpp \
-    dbms/POSTGRES/postgresforeignkey.cpp \
-    dbms/POSTGRES/postgresfunction.cpp \
-    dbms/POSTGRES/postgresprimarykey.cpp \
-    dbms/POSTGRES/postgressequence.cpp \
-    dbms/POSTGRES/postgrestable.cpp \
-    dbms/POSTGRES/postgresuniqueconstraint.cpp \
+    plugins/POSTGRES/postgrestriggeritem.cpp \
+    plugins/POSTGRES/postgrescheckconstraint.cpp \
+    plugins/POSTGRES/postgresdatabase.cpp \
+    plugins/POSTGRES/postgresforeignkey.cpp \
+    plugins/POSTGRES/postgresfunction.cpp \
+    plugins/POSTGRES/postgresprimarykey.cpp \
+    plugins/POSTGRES/postgressequence.cpp \
+    plugins/POSTGRES/postgrestable.cpp \
+    plugins/POSTGRES/postgresuniqueconstraint.cpp \
     utils/sqlfiltermanager.cpp \
-  utils/sqlutils.cpp \
-  utils/strutils.cpp
+    utils/sqlutils.cpp \
+    utils/strutils.cpp
 #Firebird
 
 HEADERS  += \
 #Core
   blobeditor.h \
+  core/basepluginmanager.h \
   core/core.h \
   core/datastore.h \
   core/localeventnotifier.h \
@@ -124,52 +128,55 @@ HEADERS  += \
   core/sqlhelplookupprovider.h \
   core/appsettings.h \
   databaseexportform.h \
-  dbms/FIREBIRD/firebirddatabase.h \
-  dbms/FIREBIRD/firebirdplugin.h \
-  dbms/FIREBIRD/firebirdtable.h \
-  dbms/MYSQL/mysqldatabase.h \
-  dbms/MYSQL/mysqlplugin.h \
-  dbms/MYSQL/mysqltable.h \
-  dbms/POSTGRES/postgresplugin.h \
-  dbms/POSTGRES/postgresviewitem.h \
-  dbms/SQLITE/sqlitedatabase.h \
-  dbms/SQLITE/sqliteplugin.h \
-  dbms/SQLITE/sqlitetable.h \
-  dbms/SQLITE/sqliteviewitem.h \
-  dbms/dbmsplugin.h \
-    dbms/dbselectableitem.h \
-    forms/queryparamsform.h \
+  plugins/FIREBIRD/firebirddatabase.h \
+  plugins/FIREBIRD/firebirdplugin.h \
+  plugins/FIREBIRD/firebirdtable.h \
+  plugins/MYSQL/mysqldatabase.h \
+  plugins/MYSQL/mysqlplugin.h \
+  plugins/MYSQL/mysqltable.h \
+  plugins/POSTGRES/postgresplugin.h \
+  plugins/POSTGRES/postgresviewitem.h \
+  plugins/SQLITE/sqlitedatabase.h \
+  plugins/SQLITE/sqliteplugin.h \
+  plugins/SQLITE/sqlitetable.h \
+  plugins/SQLITE/sqliteviewitem.h \
+  sdk/objects/dbmsplugin.h \
+  sdk/objects/dbselectableitem.h \
+  sdk/forms/queryparamsform.h \
+  sdk/abstractpluginmanager.h \
+  sdk/dependencycontainer.h \
   itemviewer.h \
   ltextcompleter.h \
   models/jointdbojbectmodel.h \
   models/ldbobjecttablemodel.h \
-    models/queryparamtablemodel.h \
+  models/queryparamtablemodel.h \
   models/unisqltablemodel.h \
   qknowledgebase.h \
 #Forms
-  forms/abstractdatabaseitemform.h \
-  forms/tableeditform.h \
-  forms/checkconstrainteditform.h \
-  forms/foreignkeyform.h \
-  forms/procedureeditform.h \
-  forms/sequenceeditform.h \
-  forms/triggereditform.h \
-  forms/uniqueconstrainteditform.h \
-  forms/vieweditdialog.h \
+  sdk/forms/abstractdatabaseitemform.h \
+  sdk/forms/tableeditform.h \
+  sdk/forms/checkconstrainteditform.h \
+  sdk/forms/foreignkeyform.h \
+  sdk/forms/procedureeditform.h \
+  sdk/forms/sequenceeditform.h \
+  sdk/forms/triggereditform.h \
+  sdk/forms/uniqueconstrainteditform.h \
+  sdk/forms/vieweditdialog.h \
   mainwindow.h \
-  forms/connectioneditdialog.h \
+  sdk/forms/connectioneditdialog.h \
   queryhistoryform.h \
+    sdk/objects/postgresfolderitem.h \
   settingsform.h \
   tablebrowserdelegate.h \
   tablebrowserwindow.h \
   queryeditorwindow.h \
   lqueryeditor.h \
 #Utils
-  qsqlqueryhelper.h \
-  qsqlsyntaxhighlighter.h \
-  utils/eventinterceptors.h \
-  utils/qfileutils.h \
-  utils/qsimpletooltip.h \
+    qsqlqueryhelper.h \
+    qsqlsyntaxhighlighter.h \
+    utils/eventinterceptors.h \
+    utils/qfileutils.h \
+    utils/qsimpletooltip.h \
 #Models
     models/simplecachedtablemodel.h \
     models/comboboxitemdelegate.h \
@@ -185,56 +192,56 @@ HEADERS  += \
     models/sqlcolumnmodel.h \
     comboboxhashdelegate.h \
 #Base DB classes
-    dbms/appconst.h \
-    dbms/appurl.h \
-    dbms/dbobjectitem.h \
-    dbms/dbdatabaseitem.h \
-    dbms/dbtableitem.h \
-    dbms/dbsequenceitem.h \
-    dbms/dbtriggeritem.h \
-    dbms/dbprocedureitem.h \
-    dbms/dbviewitem.h \
-    dbms/foldertreeitem.h \
-    dbms/dbcheckconstraint.h \
-    dbms/dbconstraintitem.h \
-    dbms/dbforeignkey.h \
-    dbms/dbprimarykey.h \
-    dbms/dbuniqueconstraint.h \
+    sdk/objects/appconst.h \
+    sdk/objects/appurl.h \
+    sdk/objects/dbobjectitem.h \
+    sdk/objects/dbdatabaseitem.h \
+    sdk/objects/dbtableitem.h \
+    sdk/objects/dbsequenceitem.h \
+    sdk/objects/dbtriggeritem.h \
+    sdk/objects/dbprocedureitem.h \
+    sdk/objects/dbviewitem.h \
+    sdk/objects/foldertreeitem.h \
+    sdk/objects/dbcheckconstraint.h \
+    sdk/objects/dbconstraintitem.h \
+    sdk/objects/dbforeignkey.h \
+    sdk/objects/dbprimarykey.h \
+    sdk/objects/dbuniqueconstraint.h \
 #SQLite
 #MySQL
 #Postgres
-    dbms/POSTGRES/postgrestriggeritem.h \
-    dbms/POSTGRES/postgrescheckconstraint.h \
-    dbms/POSTGRES/postgresdatabase.h \
-    dbms/POSTGRES/postgresforeignkey.h \
-    dbms/POSTGRES/postgresfunctionitem.h \
-    dbms/POSTGRES/postgresprimarykey.h \
-    dbms/POSTGRES/postgressequence.h \
-    dbms/POSTGRES/postgrestable.h \
-    dbms/POSTGRES/postgresuniqueconstraint.h \
-  utils/sqlfiltermanager.h \
-  utils/sqlutils.h \
-  utils/strutils.h
+    plugins/POSTGRES/postgrestriggeritem.h \
+    plugins/POSTGRES/postgrescheckconstraint.h \
+    plugins/POSTGRES/postgresdatabase.h \
+    plugins/POSTGRES/postgresforeignkey.h \
+    plugins/POSTGRES/postgresfunctionitem.h \
+    plugins/POSTGRES/postgresprimarykey.h \
+    plugins/POSTGRES/postgressequence.h \
+    plugins/POSTGRES/postgrestable.h \
+    plugins/POSTGRES/postgresuniqueconstraint.h \
+    utils/sqlfiltermanager.h \
+    utils/sqlutils.h \
+    utils/strutils.h
 #Firebird
 
 FORMS    += mainwindow.ui \
     blobeditor.ui \
     databaseexportform.ui \
-    forms/connectioneditdialog.ui \
-    forms/checkconstrainteditform.ui \
-    forms/foreignkeyform.ui \
-    forms/procedureeditform.ui \
-    forms/queryparamsform.ui \
-    forms/sequenceeditform.ui \
-    forms/triggereditform.ui \
-    forms/uniqueconstrainteditform.ui \
+    sdk/forms/connectioneditdialog.ui \
+    sdk/forms/checkconstrainteditform.ui \
+    sdk/forms/foreignkeyform.ui \
+    sdk/forms/procedureeditform.ui \
+    sdk/forms/queryparamsform.ui \
+    sdk/forms/sequenceeditform.ui \
+    sdk/forms/triggereditform.ui \
+    sdk/forms/uniqueconstrainteditform.ui \
     itemviewer.ui \
     queryhistoryform.ui \
     settingsform.ui \
     tablebrowserwindow.ui \
     queryeditorwindow.ui \
-    forms/vieweditdialog.ui \
-    forms/tableeditform.ui
+    sdk/forms/vieweditdialog.ui \
+    sdk/forms/tableeditform.ui
 
 RESOURCES += \
     icons.qrc

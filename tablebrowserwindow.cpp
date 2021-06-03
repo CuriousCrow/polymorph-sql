@@ -3,9 +3,9 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QFileDialog>
-#include "dbms/appconst.h"
-#include "dbms/appurl.h"
-#include "dbms/appconst.h"
+#include "sdk/objects/appconst.h"
+#include "sdk/objects/appurl.h"
+#include "sdk/objects/appconst.h"
 #include "utils/qfileutils.h"
 #include "utils/eventinterceptors.h"
 #include "core/datastore.h"

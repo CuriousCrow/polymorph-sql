@@ -1,13 +1,13 @@
 #include "qstructureitemmodel.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "dbms/FIREBIRD/firebirddatabase.h"
-#include "dbms/SQLITE/sqlitedatabase.h"
-#include "dbms/MYSQL/mysqldatabase.h"
-#include "dbms/POSTGRES/postgresdatabase.h"
-#include "dbms/appconst.h"
+#include "plugins/FIREBIRD/firebirddatabase.h"
+#include "plugins/SQLITE/sqlitedatabase.h"
+#include "plugins/MYSQL/mysqldatabase.h"
+#include "plugins/POSTGRES/postgresdatabase.h"
+#include "sdk/objects/appconst.h"
 #include <QDebug>
-#include "dbms/appurl.h"
+#include "sdk/objects/appurl.h"
 #include "qsqlqueryhelper.h"
 
 QStructureItemModel::QStructureItemModel(QObject *parent):

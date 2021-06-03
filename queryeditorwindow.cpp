@@ -10,7 +10,7 @@
 #include "core/maphelplookupprovider.h"
 #include "core/sqlhelplookupprovider.h"
 #include "core/localeventnotifier.h"
-#include "dbms/appconst.h"
+#include "sdk/objects/appconst.h"
 #include "qknowledgebase.h"
 #include "queryhistoryform.h"
 

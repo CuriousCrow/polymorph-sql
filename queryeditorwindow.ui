@@ -191,7 +191,7 @@
   <customwidget>
    <class>QueryParamsForm</class>
    <extends>QWidget</extends>
-   <header>forms/queryparamsform.h</header>
+   <header>sdk/forms/queryparamsform.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

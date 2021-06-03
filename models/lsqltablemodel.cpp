@@ -1,7 +1,7 @@
 #include "lsqltablemodel.h"
 #include <QDebug>
 #include <QSqlError>
-#include "dbms/appconst.h"
+#include "sdk/objects/appconst.h"
 
 /*!
     \class LSqlTableModel

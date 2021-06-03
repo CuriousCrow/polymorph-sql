@@ -52,8 +52,7 @@ QSqlQuery QSqlQueryHelper::prepareQuery(QString sql,  QString connectionName)
 QString QSqlQueryHelper::databaseName(QString connection)
 {
   QSqlDatabase dbCon = QSqlDatabase::database(connection, false);
-  Q_ASSERT(dbCon.isValid());
-  return dbCon.databaseName();
+  return dbCon.isValid() ? dbCon.databaseName() : "";
 }
 
 QString QSqlQueryHelper::driverName(QString connection)

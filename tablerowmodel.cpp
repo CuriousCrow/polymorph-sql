@@ -1,7 +1,7 @@
 #include "tablerowmodel.h"
 #include "qsqlqueryhelper.h"
 #include <QSqlField>
-#include "dbms/AppConst.h"
+#include "sdk/objects/AppConst.h"
 
 TableRowModel::TableRowModel(QObject *parent) : QAbstractTableModel(parent)
 {

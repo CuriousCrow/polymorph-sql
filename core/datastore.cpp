@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QSqlRecord>
-#include "../dbms/appconst.h"
+#include "../sdk/objects/appconst.h"
 #include "../qsqlqueryhelper.h"
 #include "core.h"
 

@@ -6,21 +6,22 @@
 #include <QMessageBox>
 #include <QClipboard>
 #include "databaseexportform.h"
-#include "dbms/appurl.h"
+#include "sdk/objects/appurl.h"
 #include "tablebrowserwindow.h"
 #include "settingsform.h"
-#include "dbms/dbdatabaseitem.h"
-#include "dbms/dbobjectitem.h"
-#include "dbms/foldertreeitem.h"
+#include "sdk/objects/dbdatabaseitem.h"
+#include "sdk/objects/dbobjectitem.h"
+#include "sdk/objects/foldertreeitem.h"
 #include "qknowledgebase.h"
 #include "core/appsettings.h"
 #include "core/datastore.h"
 #include "core/core.h"
-#include "dbms/appconst.h"
-#include "dbms/POSTGRES/postgresplugin.h"
-#include "dbms/SQLITE/sqliteplugin.h"
-#include "dbms/FIREBIRD/firebirdplugin.h"
-#include "dbms/MYSQL/mysqlplugin.h"
+#include "core/basepluginmanager.h"
+#include "sdk/objects/appconst.h"
+#include "plugins/POSTGRES/postgresplugin.h"
+#include "plugins/SQLITE/sqliteplugin.h"
+#include "plugins/FIREBIRD/firebirdplugin.h"
+#include "plugins/MYSQL/mysqlplugin.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -35,6 +36,12 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerModule(new SqlitePlugin());
   Core::registerModule(new FirebirdPlugin());
   Core::registerModule(new MysqlPlugin());
+
+  BasePluginManager* pluginManager = BasePluginManager::instance(this);
+  pluginManager->registerPlugin(new PostgresPlugin());
+  pluginManager->registerPlugin(new SqlitePlugin());
+  pluginManager->registerPlugin(new FirebirdPlugin());
+  pluginManager->registerPlugin(new MysqlPlugin());
 
   //
   DataStore* ds = DataStore::instance(this);
@@ -136,7 +143,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
         break;
       DbmsPlugin* dbms = Core::module(dbItem->driverName());
       foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
-        FolderTreeItem* folder = new FolderTreeItem(typeName(type), dbms->folderName(type), dbItem);
+        FolderTreeItem* folder = new FolderTreeItem(dbItem);
         folder->setParentUrl(dbItem->objectUrl());
         folder->setChildrenType(type);
         dbms->loadFolder(folder, type);
@@ -344,7 +351,7 @@ void MainWindow::reloadItemChildren()
   DbmsPlugin* dbms = Core::module(folderItem->driverName());
   dbms->loadFolder(folderItem, folderItem->childrenType());
 
-  DataStore::structureModel()->dataChanged(curIdx, curIdx);
+  emit DataStore::structureModel()->dataChanged(curIdx, curIdx);
 }
 
 void MainWindow::updateStructureContextMenu()
@@ -363,11 +370,12 @@ void MainWindow::showCreateItemEditor()
     return;
   }
   FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(currentItem);
-  DbmsPlugin* dbms = Core::module(folderItem->driverName());
+  QString driverName = folderItem->driverName();
 
   switch (folderItem->childrenType()) {
   case DBObjectItem::Table: {
-    DBTableItem* newTableItem = dbms->newTableItem(DEF_TABLE_NAME);
+    DBTableItem* newTableItem =
+            qobject_cast<DBTableItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::Table, DEF_TABLE_NAME));
     newTableItem->setParentUrl(folderItem->objectUrl());
     _tableEditForm->setObjItem(newTableItem);
     _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -376,7 +384,8 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::View: {
-    DBViewItem* newViewItem = dbms->newViewItem(DEF_VIEW_NAME);
+    DBViewItem* newViewItem =
+            qobject_cast<DBViewItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::View, DEF_VIEW_NAME));
     newViewItem->setParentUrl(folderItem->objectUrl());
     _viewEditorWindow->setObjItem(newViewItem);
     _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Create);
@@ -385,7 +394,8 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::Sequence: {
-    DBSequenceItem* newSequenceItem = dbms->newSequenceItem(DEF_SEQUENCE_NAME);
+    DBSequenceItem* newSequenceItem =
+       qobject_cast<DBSequenceItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::Sequence, DEF_SEQUENCE_NAME));
     newSequenceItem->setParentUrl(folderItem->objectUrl());
     _sequenceEditForm->setObjItem(newSequenceItem);
     _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -394,7 +404,8 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::Procedure: {
-    DBProcedureItem* newProcedureItem = dbms->newProcedureItem(DEF_PROCEDURE_NAME);
+    DBProcedureItem* newProcedureItem =
+        qobject_cast<DBProcedureItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::Procedure, DEF_PROCEDURE_NAME));
     newProcedureItem->setParentUrl(folderItem->objectUrl());
     _procedureEditForm->setObjItem(newProcedureItem);
     _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -403,7 +414,8 @@ void MainWindow::showCreateItemEditor()
     break;
   }
   case DBObjectItem::Trigger: {
-    DBTriggerItem* newTriggerItem = dbms->newTriggerItem(DEF_TRIGGER_NAME);
+    DBTriggerItem* newTriggerItem =
+        qobject_cast<DBTriggerItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::Trigger, DEF_TRIGGER_NAME));
     newTriggerItem->setParentUrl(folderItem->objectUrl());
     _triggerEditForm->setObjItem(newTriggerItem);
     _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -516,26 +528,6 @@ DBObjectItem *MainWindow::itemByIndex(QModelIndex index)
 DBObjectItem *MainWindow::itemByName(QString name)
 {
   return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByName(name));
-}
-
-QString MainWindow::typeName(DBObjectItem::ItemType type)
-{
-  switch (type) {
-  case DBObjectItem::Table:
-    return FOLDER_TABLES;
-  case DBObjectItem::SystemTable:
-    return FOLDER_SYSTABLES;
-  case DBObjectItem::View:
-    return FOLDER_VIEWS;
-  case DBObjectItem::Trigger:
-    return FOLDER_TRIGGERS;
-  case DBObjectItem::Sequence:
-    return FOLDER_SEQUENCES;
-  case DBObjectItem::Procedure:
-    return FOLDER_PROCEDURES;
-  default:
-    return "unknown";
-  }
 }
 
 void MainWindow::refreshConnectionList()

@@ -1,7 +1,7 @@
 #include "tablebrowserdelegate.h"
 #include <QTableView>
 #include "blobeditor.h"
-#include "dbms/appconst.h"
+#include "sdk/objects/appconst.h"
 #include <QDebug>
 
 #define BLOB_COL -1 //Temperary disabled. Should be deleted when implementing uni-type item delegate
