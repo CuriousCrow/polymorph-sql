@@ -4,6 +4,8 @@
 #include <QObject>
 #include "sdk/objects/dbmsplugin.h"
 
+#define DRIVER_POSTGRES "QPSQL"
+
 class PostgresPlugin : public DbmsPlugin
 {
   Q_OBJECT
@@ -17,7 +19,7 @@ public:
   virtual DBProcedureItem *newProcedureItem(QString caption, QObject *parent) override;
   virtual DBSequenceItem *newSequenceItem(QString caption, QObject *parent) override;
   virtual DBTriggerItem *newTriggerItem(QString caption, QObject *parent) override;
-  virtual FolderTreeItem *newFolderItem(DBObjectItem::ItemType type, QObject *parent) override;
+  virtual FolderTreeItem *newFolderItem(QObject *parent) override;
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) override;
   virtual FolderTreeItem *loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType) override;
 

@@ -40,10 +40,9 @@ DBTriggerItem *FirebirdPlugin::newTriggerItem(QString caption, QObject *parent)
     return new DBTriggerItem(caption, parent);
 }
 
-FolderTreeItem *FirebirdPlugin::newFolderItem(DBObjectItem::ItemType type, QObject *parent)
+FolderTreeItem *FirebirdPlugin::newFolderItem(QObject *parent)
 {
     FolderTreeItem* folder = new FolderTreeItem(parent);
-    folder->setChildrenType(type);
     return folder;
 }
 

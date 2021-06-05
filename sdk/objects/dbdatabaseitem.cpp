@@ -267,7 +267,7 @@ void DBDatabaseItem::loadTableItems(DBObjectItem *parentItem)
 {
   QStringList tableNames = QSqlDatabase::database(connectionName()).tables();
   foreach (QString name, tableNames){
-    AppUrl folderUrl = parentItem->objectUrl();
+//    AppUrl folderUrl = parentItem->objectUrl();
     DBTableItem* tableItem = createNewTableItem(name, parentItem);
     tableItem->setParentUrl(parentItem->objectUrl());
   }

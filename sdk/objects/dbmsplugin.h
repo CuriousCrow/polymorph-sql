@@ -22,7 +22,7 @@ public:
   virtual DBProcedureItem* newProcedureItem(QString caption, QObject* parent = nullptr) = 0;
   virtual DBSequenceItem* newSequenceItem(QString caption, QObject* parent = nullptr) = 0;
   virtual DBTriggerItem* newTriggerItem(QString caption, QObject* parent = nullptr) = 0;
-  virtual FolderTreeItem* newFolderItem(DBObjectItem::ItemType type, QObject* parent = nullptr) = 0;
+  virtual FolderTreeItem* newFolderItem(QObject* parent = nullptr) = 0;
 
   virtual FolderTreeItem* loadFolder(FolderTreeItem* folderItem, DBObjectItem::ItemType childrenType) = 0;
   virtual QList<DBObjectItem::ItemType> supportedTypes() = 0;

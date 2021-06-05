@@ -50,10 +50,9 @@ DBTriggerItem *SqlitePlugin::newTriggerItem(QString caption, QObject *parent)
     return nullptr;
 }
 
-FolderTreeItem *SqlitePlugin::newFolderItem(DBObjectItem::ItemType type, QObject *parent)
+FolderTreeItem *SqlitePlugin::newFolderItem(QObject *parent)
 {
     FolderTreeItem* folder = new FolderTreeItem(parent);
-    folder->setChildrenType(type);
     return folder;
 }
 

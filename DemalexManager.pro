@@ -59,7 +59,6 @@ SOURCES += main.cpp\
   mainwindow.cpp \
   sdk/forms/connectioneditdialog.cpp \
   queryhistoryform.cpp \
-    sdk/objects/postgresfolderitem.cpp \
   settingsform.cpp \
   tablebrowserdelegate.cpp \
   tablebrowserwindow.cpp \
@@ -112,6 +111,7 @@ SOURCES += main.cpp\
     plugins/POSTGRES/postgressequence.cpp \
     plugins/POSTGRES/postgrestable.cpp \
     plugins/POSTGRES/postgresuniqueconstraint.cpp \
+    plugins/POSTGRES/postgresfolderitem.cpp \
     utils/sqlfiltermanager.cpp \
     utils/sqlutils.cpp \
     utils/strutils.cpp
@@ -165,7 +165,6 @@ HEADERS  += \
   mainwindow.h \
   sdk/forms/connectioneditdialog.h \
   queryhistoryform.h \
-    sdk/objects/postgresfolderitem.h \
   settingsform.h \
   tablebrowserdelegate.h \
   tablebrowserwindow.h \
@@ -219,6 +218,7 @@ HEADERS  += \
     plugins/POSTGRES/postgressequence.h \
     plugins/POSTGRES/postgrestable.h \
     plugins/POSTGRES/postgresuniqueconstraint.h \
+    plugins/POSTGRES/postgresfolderitem.h \
     utils/sqlfiltermanager.h \
     utils/sqlutils.h \
     utils/strutils.h

@@ -43,6 +43,8 @@ DBObjectItem *BasePluginManager::newDbmsObject(QString driverName, DBObjectItem:
         return dbms->newTriggerItem(caption, parent);
     case DBObjectItem::Sequence:
         return dbms->newSequenceItem(caption, parent);
+    case DBObjectItem::Folder:
+        return dbms->newFolderItem(parent);
     default:
         qWarning() << "Cannot instantiate object of type:" << type;
         return nullptr;

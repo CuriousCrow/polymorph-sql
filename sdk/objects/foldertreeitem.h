@@ -15,6 +15,7 @@ public:
 protected:
   QString typeName(DBObjectItem::ItemType type);
   virtual QString folderName(DBObjectItem::ItemType type);
+  virtual void loadChildren();
 
 signals:
   void reloadMe();
@@ -30,6 +31,9 @@ public:
   virtual int type() const Q_DECL_OVERRIDE;
 
 private:
+  void loadTableItems();
+  void loadViewItems();
+  void loadSystemTableItems();
   QString _urlName;
   DBObjectItem::ItemType _childrenType = UnknownType;
 };

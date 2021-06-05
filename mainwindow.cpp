@@ -143,7 +143,10 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
         break;
       DbmsPlugin* dbms = Core::module(dbItem->driverName());
       foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
-        FolderTreeItem* folder = new FolderTreeItem(dbItem);
+        FolderTreeItem* folder =
+                qobject_cast<FolderTreeItem*>(
+                    BasePluginManager::instance()->newDbmsObject(dbItem->driverName(),
+                    DBObjectItem::Folder, "", dbItem));
         folder->setParentUrl(dbItem->objectUrl());
         folder->setChildrenType(type);
         dbms->loadFolder(folder, type);

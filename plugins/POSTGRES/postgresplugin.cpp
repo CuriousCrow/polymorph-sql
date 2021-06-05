@@ -44,10 +44,9 @@ DBTriggerItem *PostgresPlugin::newTriggerItem(QString caption, QObject *parent)
     return new PostgresTriggerItem(caption, parent);
 }
 
-FolderTreeItem *PostgresPlugin::newFolderItem(DBObjectItem::ItemType type, QObject *parent)
+FolderTreeItem *PostgresPlugin::newFolderItem(QObject *parent)
 {
     FolderTreeItem* folder = new FolderTreeItem(parent);
-    folder->setChildrenType(type);
     return folder;
 }
 

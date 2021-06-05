@@ -2,6 +2,9 @@
 #include "appconst.h"
 #include "appurl.h"
 #include <QDebug>
+#include "core/basepluginmanager.h"
+#include "dbtableitem.h"
+#include "dbviewitem.h"
 
 FolderTreeItem::FolderTreeItem(QObject* parent):
   DBObjectItem("", parent)
@@ -31,13 +34,54 @@ QVariant FolderTreeItem::colData(int column, int role) const
 
 bool FolderTreeItem::reloadChildren()
 {
+  deleteChildren();
+  loadChildren();
   emit reloadMe();
   return true;
 }
 
 int FolderTreeItem::type() const
 {
-  return Folder;
+    return Folder;
+}
+
+void FolderTreeItem::loadTableItems()
+{
+    QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::Tables);
+    foreach (QString name, tableNames){
+      DBTableItem* tableItem = qobject_cast<DBTableItem*>(
+                  BasePluginManager::instance()->newDbmsObject(driverName(),
+                                                         DBObjectItem::Table,
+                                                         name,
+                                                         this));
+      tableItem->setParentUrl(objectUrl());
+    }
+}
+
+void FolderTreeItem::loadViewItems()
+{
+    QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
+    foreach (QString name, tableNames){
+      DBViewItem* tableItem = qobject_cast<DBViewItem*>(
+                  BasePluginManager::instance()->newDbmsObject(driverName(),
+                                                         DBObjectItem::View,
+                                                         name,
+                                                         this));
+      tableItem->setParentUrl(objectUrl());
+    }
+}
+
+void FolderTreeItem::loadSystemTableItems()
+{
+    QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
+    foreach (QString name, tableNames){
+      DBTableItem* tableItem = qobject_cast<DBTableItem*>(
+                  BasePluginManager::instance()->newDbmsObject(driverName(),
+                                                         DBObjectItem::Table,
+                                                         name,
+                                                         this));
+      tableItem->setParentUrl(objectUrl());
+    }
 }
 
 DBObjectItem::ItemType FolderTreeItem::childrenType() const
@@ -89,6 +133,23 @@ QString FolderTreeItem::folderName(DBObjectItem::ItemType type)
       return tr("Triggers");
     default:
       return "";
+    }
+}
+
+void FolderTreeItem::loadChildren()
+{
+    switch(_childrenType) {
+    case DBObjectItem::Table:
+        loadTableItems();
+        break;
+    case DBObjectItem::View:
+        loadViewItems();
+        break;
+    case DBObjectItem::SystemTable:
+        loadSystemTableItems();
+        break;
+    default:
+        qWarning() << "loadChildren for type is not implemented yet" << _childrenType;
     }
 }
 

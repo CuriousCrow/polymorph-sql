@@ -45,7 +45,7 @@ DBTriggerItem *MysqlPlugin::newTriggerItem(QString caption, QObject *parent)
     return new DBTriggerItem(caption, parent);
 }
 
-FolderTreeItem *MysqlPlugin::newFolderItem(DBObjectItem::ItemType type, QObject *parent)
+FolderTreeItem *MysqlPlugin::newFolderItem(QObject *parent)
 {
     return new FolderTreeItem(parent);
 }
