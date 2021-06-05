@@ -20,7 +20,6 @@ public:
   virtual DBTriggerItem *newTriggerItem(QString caption, QObject *parent) override;
   virtual FolderTreeItem *newFolderItem(QObject *parent) override;
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) override;
-  virtual FolderTreeItem *loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType) override;
 
   void loadSequences(FolderTreeItem* folderItem);
   void loadTables(FolderTreeItem* folderItem);

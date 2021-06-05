@@ -6,6 +6,7 @@
 #include "postgrestriggeritem.h"
 #include "postgresfunctionitem.h"
 #include "postgresviewitem.h"
+#include "postgresfolderitem.h"
 
 
 QString PostgresPlugin::driver()
@@ -46,7 +47,7 @@ DBTriggerItem *PostgresPlugin::newTriggerItem(QString caption, QObject *parent)
 
 FolderTreeItem *PostgresPlugin::newFolderItem(QObject *parent)
 {
-    FolderTreeItem* folder = new FolderTreeItem(parent);
+    FolderTreeItem* folder = new PostgresFolderItem(parent);
     return folder;
 }
 
@@ -54,89 +55,6 @@ AbstractDatabaseEditForm *PostgresPlugin::formByType(DBObjectItem::ItemType type
 {
   Q_UNUSED(type)
   return nullptr;
-}
-
-FolderTreeItem *PostgresPlugin::loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType)
-{
-  switch (childrenType) {
-  case DBObjectItem::Sequence:
-    loadSequences(folderItem);
-    break;
-  case DBObjectItem::Table:
-    loadTables(folderItem);
-    break;
-  case DBObjectItem::View:
-    loadViews(folderItem);
-    break;
-  case DBObjectItem::Procedure:
-    loadProcedures(folderItem);
-    break;
-  case DBObjectItem::Trigger:
-    loadTriggers(folderItem);
-    break;
-  default:
-    folderItem = nullptr;
-    break;
-  }
-  return folderItem;
-}
-
-void PostgresPlugin::loadSequences(FolderTreeItem *folderItem)
-{
-  qDebug() << DRIVER_POSTGRES << "loading sequences";
-  QString sql = "select sequence_name \"name\" from information_schema.sequences";
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, folderItem->connectionName());
-  while (resultSet.next()) {
-    DBSequenceItem* sequenceItem
-        = newSequenceItem(resultSet.value(F_NAME).toString(), folderItem);
-    sequenceItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void PostgresPlugin::loadTables(FolderTreeItem *folderItem)
-{
-  qDebug() << DRIVER_POSTGRES << "loading tables";
-  QStringList tableNames = QSqlDatabase::database(folderItem->connectionName()).tables();
-  foreach (QString name, tableNames){
-    DBTableItem* tableItem = newTableItem(name, folderItem);
-    tableItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void PostgresPlugin::loadViews(FolderTreeItem *folderItem)
-{
-  qDebug() << DRIVER_POSTGRES << "loading views";
-  QStringList viewNames = QSqlDatabase::database(folderItem->connectionName()).tables(QSql::Views);
-  foreach (QString name, viewNames){
-    DBViewItem* viewItem = newViewItem(name, folderItem);
-    viewItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void PostgresPlugin::loadTriggers(FolderTreeItem *folderItem)
-{
-  qDebug() << DRIVER_POSTGRES << "loading triggers";
-  QString sql = "SELECT distinct(trigger_name) \"name\" "
-                "FROM information_schema.triggers order by 1";
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, folderItem->connectionName());
-  while (resultSet.next()) {
-    DBTriggerItem* triggerItem
-        = newTriggerItem(resultSet.value(F_NAME).toString(), folderItem);
-    triggerItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void PostgresPlugin::loadProcedures(FolderTreeItem *folderItem)
-{
-  qDebug() << DRIVER_POSTGRES << "loading procedures";
-  QString sql = "SELECT distinct(routine_name) \"name\" FROM information_schema.routines "
-                "WHERE routine_type='FUNCTION' and specific_schema='public' order by 1";
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, folderItem->connectionName());
-  while (resultSet.next()) {
-    DBProcedureItem* procedureItem
-        = newProcedureItem(resultSet.value(F_NAME).toString(), folderItem);
-    procedureItem->setParentUrl(folderItem->objectUrl());
-  }
 }
 
 QList<DBObjectItem::ItemType> PostgresPlugin::supportedTypes()

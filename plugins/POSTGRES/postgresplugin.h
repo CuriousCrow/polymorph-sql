@@ -21,13 +21,6 @@ public:
   virtual DBTriggerItem *newTriggerItem(QString caption, QObject *parent) override;
   virtual FolderTreeItem *newFolderItem(QObject *parent) override;
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) override;
-  virtual FolderTreeItem *loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType) override;
-
-  void loadSequences(FolderTreeItem* folderItem);
-  void loadTables(FolderTreeItem* folderItem);
-  void loadViews(FolderTreeItem* folderItem);
-  void loadTriggers(FolderTreeItem* folderItem);
-  void loadProcedures(FolderTreeItem* folderItem);
 
   virtual QList<DBObjectItem::ItemType> supportedTypes() override;
   virtual QString folderName(DBObjectItem::ItemType type) override;

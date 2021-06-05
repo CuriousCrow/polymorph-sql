@@ -22,7 +22,6 @@ public:
   virtual FolderTreeItem *newFolderItem(QObject *parent) override;
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) override;
 
-  virtual FolderTreeItem *loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType) override;
   virtual QList<DBObjectItem::ItemType> supportedTypes() override;
   virtual QString folderName(DBObjectItem::ItemType type) override;
 

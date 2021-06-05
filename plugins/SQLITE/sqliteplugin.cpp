@@ -3,6 +3,7 @@
 #include "sqlitedatabase.h"
 #include "sqlitetable.h"
 #include "sqliteviewitem.h"
+#include "sqlitefolderitem.h"
 #include "sdk/objects/dbsequenceitem.h"
 
 
@@ -52,7 +53,7 @@ DBTriggerItem *SqlitePlugin::newTriggerItem(QString caption, QObject *parent)
 
 FolderTreeItem *SqlitePlugin::newFolderItem(QObject *parent)
 {
-    FolderTreeItem* folder = new FolderTreeItem(parent);
+    FolderTreeItem* folder = new SqliteFolderItem(parent);
     return folder;
 }
 
@@ -60,28 +61,6 @@ AbstractDatabaseEditForm *SqlitePlugin::formByType(DBObjectItem::ItemType type)
 {
   Q_UNUSED(type)
   return nullptr;
-}
-
-FolderTreeItem *SqlitePlugin::loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType)
-{
-  switch (childrenType) {
-  case DBObjectItem::Sequence:
-    loadSequences(folderItem);
-    break;
-  case DBObjectItem::Table:
-    loadTables(folderItem);
-    break;
-  case DBObjectItem::View:
-    loadViews(folderItem);
-    break;
-  case DBObjectItem::SystemTable:
-    loadSysTables(folderItem);
-    break;
-  default:
-    folderItem = nullptr;
-    break;
-  }
-  return folderItem;
 }
 
 void SqlitePlugin::loadSequences(FolderTreeItem *folderItem)
@@ -93,33 +72,6 @@ void SqlitePlugin::loadSequences(FolderTreeItem *folderItem)
         = newSequenceItem(resultSet.value(F_NAME).toString(), folderItem);
     sequenceItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
     sequenceItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void SqlitePlugin::loadTables(FolderTreeItem *folderItem)
-{
-  QStringList tableNames = QSqlDatabase::database(folderItem->connectionName()).tables();
-  foreach (QString name, tableNames){
-    DBTableItem* tableItem = newTableItem(name, folderItem);
-    tableItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void SqlitePlugin::loadSysTables(FolderTreeItem *folderItem)
-{
-  QStringList tableNames = QSqlDatabase::database(folderItem->connectionName()).tables(QSql::SystemTables);
-  foreach (QString name, tableNames){
-    DBTableItem* tableItem = newTableItem(name, folderItem);
-    tableItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void SqlitePlugin::loadViews(FolderTreeItem *folderItem)
-{
-  QStringList viewNames = QSqlDatabase::database(folderItem->connectionName()).tables(QSql::Views);
-  foreach (QString name, viewNames){
-    DBViewItem* viewItem = newViewItem(name, folderItem);
-    viewItem->setParentUrl(folderItem->objectUrl());
   }
 }
 

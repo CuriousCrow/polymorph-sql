@@ -47,6 +47,7 @@ int FolderTreeItem::type() const
 
 void FolderTreeItem::loadTableItems()
 {
+    qDebug() << "loadTableItems()";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::Tables);
     foreach (QString name, tableNames){
       DBTableItem* tableItem = qobject_cast<DBTableItem*>(
@@ -60,6 +61,7 @@ void FolderTreeItem::loadTableItems()
 
 void FolderTreeItem::loadViewItems()
 {
+    qDebug() << "loadViewItems()";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
     foreach (QString name, tableNames){
       DBViewItem* tableItem = qobject_cast<DBViewItem*>(
@@ -73,6 +75,7 @@ void FolderTreeItem::loadViewItems()
 
 void FolderTreeItem::loadSystemTableItems()
 {
+    qDebug() << "loadSystemTableItems";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
     foreach (QString name, tableNames){
       DBTableItem* tableItem = qobject_cast<DBTableItem*>(

@@ -25,14 +25,17 @@ SOURCES += main.cpp\
   core/appsettings.cpp \
   databaseexportform.cpp \
   plugins/FIREBIRD/firebirddatabase.cpp \
+    plugins/FIREBIRD/firebirdfolderitem.cpp \
   plugins/FIREBIRD/firebirdplugin.cpp \
   plugins/FIREBIRD/firebirdtable.cpp \
   plugins/MYSQL/mysqldatabase.cpp \
+    plugins/MYSQL/mysqlfolderitem.cpp \
   plugins/MYSQL/mysqlplugin.cpp \
   plugins/MYSQL/mysqltable.cpp \
   plugins/POSTGRES/postgresplugin.cpp \
   plugins/POSTGRES/postgresviewitem.cpp \
   plugins/SQLITE/sqlitedatabase.cpp \
+    plugins/SQLITE/sqlitefolderitem.cpp \
   plugins/SQLITE/sqliteplugin.cpp \
   plugins/SQLITE/sqlitetable.cpp \
   plugins/SQLITE/sqliteviewitem.cpp \
@@ -129,14 +132,17 @@ HEADERS  += \
   core/appsettings.h \
   databaseexportform.h \
   plugins/FIREBIRD/firebirddatabase.h \
+    plugins/FIREBIRD/firebirdfolderitem.h \
   plugins/FIREBIRD/firebirdplugin.h \
   plugins/FIREBIRD/firebirdtable.h \
   plugins/MYSQL/mysqldatabase.h \
+    plugins/MYSQL/mysqlfolderitem.h \
   plugins/MYSQL/mysqlplugin.h \
   plugins/MYSQL/mysqltable.h \
   plugins/POSTGRES/postgresplugin.h \
   plugins/POSTGRES/postgresviewitem.h \
   plugins/SQLITE/sqlitedatabase.h \
+    plugins/SQLITE/sqlitefolderitem.h \
   plugins/SQLITE/sqliteplugin.h \
   plugins/SQLITE/sqlitetable.h \
   plugins/SQLITE/sqliteviewitem.h \

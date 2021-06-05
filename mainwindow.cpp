@@ -149,7 +149,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
                     DBObjectItem::Folder, "", dbItem));
         folder->setParentUrl(dbItem->objectUrl());
         folder->setChildrenType(type);
-        dbms->loadFolder(folder, type);
+        folder->reloadChildren();
       }
       ui->tvDatabaseStructure->reset();
       ui->tvDatabaseStructure->expand(index);
@@ -351,8 +351,7 @@ void MainWindow::reloadItemChildren()
 
   qDebug() << "Folder" << folderItem->caption() << "refresh request";
 
-  DbmsPlugin* dbms = Core::module(folderItem->driverName());
-  dbms->loadFolder(folderItem, folderItem->childrenType());
+  folderItem->reloadChildren();
 
   emit DataStore::structureModel()->dataChanged(curIdx, curIdx);
 }

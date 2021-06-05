@@ -24,7 +24,6 @@ public:
   virtual DBTriggerItem* newTriggerItem(QString caption, QObject* parent = nullptr) = 0;
   virtual FolderTreeItem* newFolderItem(QObject* parent = nullptr) = 0;
 
-  virtual FolderTreeItem* loadFolder(FolderTreeItem* folderItem, DBObjectItem::ItemType childrenType) = 0;
   virtual QList<DBObjectItem::ItemType> supportedTypes() = 0;
 
   virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) = 0;

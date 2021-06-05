@@ -1,5 +1,6 @@
 #include "firebirdplugin.h"
 #include "sdk/objects/appconst.h"
+#include "firebirdfolderitem.h"
 #include "firebirddatabase.h"
 #include "firebirdtable.h"
 
@@ -42,7 +43,7 @@ DBTriggerItem *FirebirdPlugin::newTriggerItem(QString caption, QObject *parent)
 
 FolderTreeItem *FirebirdPlugin::newFolderItem(QObject *parent)
 {
-    FolderTreeItem* folder = new FolderTreeItem(parent);
+    FolderTreeItem* folder = new FirebirdFolderItem(parent);
     return folder;
 }
 
@@ -50,59 +51,6 @@ AbstractDatabaseEditForm *FirebirdPlugin::formByType(DBObjectItem::ItemType type
 {
   Q_UNUSED(type)
   return nullptr;
-}
-
-
-FolderTreeItem *FirebirdPlugin::loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType)
-{
-  QString sql;
-  switch (childrenType) {
-  case DBObjectItem::Table:
-    loadTables(folderItem);
-    return folderItem;
-  case DBObjectItem::View:
-//    sql = "select trim(rdb$relation_name) name, rdb$view_source queryText from rdb$relations "
-//          "where rdb$relation_type=1";
-    loadViews(folderItem);
-    return folderItem;
-  case DBObjectItem::Sequence:
-    sql = "select rdb$generator_id id, trim(rdb$generator_name) name from rdb$generators where rdb$system_flag = 0";
-    break;
-  case DBObjectItem::Procedure:
-    sql = "select rdb$procedure_id id, trim(rdb$procedure_name) name from rdb$procedures";
-    break;
-  case DBObjectItem::Trigger:
-    sql = "select trim(rdb$trigger_name) name from rdb$triggers where rdb$system_flag = 0";
-    break;
-  default:
-    return folderItem;
-  }
-
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, folderItem->connectionName());
-  while (resultSet.next()){
-    DBObjectItem* childItem = nullptr;
-    switch (childrenType) {
-    case DBObjectItem::Table:
-      childItem = newTableItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    case DBObjectItem::View:
-      childItem = newViewItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    case DBObjectItem::Sequence:
-      childItem = newSequenceItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    case DBObjectItem::Procedure:
-      childItem = newProcedureItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    case DBObjectItem::Trigger:
-      childItem = newTriggerItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    default:
-      break;
-    }
-    childItem->setParentUrl(folderItem->objectUrl());
-  }
-  return folderItem;
 }
 
 QList<DBObjectItem::ItemType> FirebirdPlugin::supportedTypes()

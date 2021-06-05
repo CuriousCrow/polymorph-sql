@@ -2,6 +2,7 @@
 #include "sdk/objects/appconst.h"
 #include "mysqldatabase.h"
 #include "mysqltable.h"
+#include "mysqlfolderitem.h"
 #include "sdk/objects/dbsequenceitem.h"
 #include "sdk/objects/dbviewitem.h"
 #include "sdk/objects/dbprocedureitem.h"
@@ -47,63 +48,13 @@ DBTriggerItem *MysqlPlugin::newTriggerItem(QString caption, QObject *parent)
 
 FolderTreeItem *MysqlPlugin::newFolderItem(QObject *parent)
 {
-    return new FolderTreeItem(parent);
+    return new MysqlFolderItem(parent);
 }
 
 AbstractDatabaseEditForm *MysqlPlugin::formByType(DBObjectItem::ItemType type)
 {
   Q_UNUSED(type)
   return nullptr;
-}
-
-
-FolderTreeItem *MysqlPlugin::loadFolder(FolderTreeItem *folderItem, DBObjectItem::ItemType childrenType)
-{
-  QString sql;
-  switch (childrenType) {
-  case DBObjectItem::Table:
-    break;
-  case DBObjectItem::View:
-    sql = "select table_name \"name\" from INFORMATION_SCHEMA.views";
-    break;
-//  case DBObjectItem::Sequence:
-//    sql = "";
-//    break;
-//  case DBObjectItem::Procedure:
-//    sql = "";
-//    break;
-//  case DBObjectItem::Trigger:
-//    sql = "";
-//    break;
-  default:
-    return folderItem;
-  }
-
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, folderItem->connectionName());
-  while (resultSet.next()){
-    DBObjectItem* childItem = nullptr;
-    switch (childrenType) {
-    case DBObjectItem::Table:
-      childItem = newTableItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    case DBObjectItem::View:
-      childItem = newViewItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    case DBObjectItem::Sequence:
-      childItem = newSequenceItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    case DBObjectItem::Procedure:
-      childItem = newProcedureItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    case DBObjectItem::Trigger:
-      childItem = newTriggerItem(resultSet.value(F_NAME).toString(), folderItem);
-      break;
-    default:
-      break;
-    }
-    childItem->setParentUrl(folderItem->objectUrl());
-  }
-  return folderItem;
 }
 
 QList<DBObjectItem::ItemType> MysqlPlugin::supportedTypes()
