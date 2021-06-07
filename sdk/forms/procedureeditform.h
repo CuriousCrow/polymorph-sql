@@ -13,7 +13,7 @@ class ProcedureEditForm : public AbstractDatabaseEditForm
   Q_OBJECT
 
 public:
-  explicit ProcedureEditForm(QWidget *parent = nullptr);
+  Q_INVOKABLE ProcedureEditForm();
   ~ProcedureEditForm();
 
 private:

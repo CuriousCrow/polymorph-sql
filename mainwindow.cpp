@@ -16,8 +16,8 @@
 #include "core/appsettings.h"
 #include "core/datastore.h"
 #include "core/core.h"
-#include "core/basepluginmanager.h"
 #include "sdk/objects/appconst.h"
+#include "sdk/objects/sdkplugin.h"
 #include "plugins/POSTGRES/postgresplugin.h"
 #include "plugins/SQLITE/sqliteplugin.h"
 #include "plugins/FIREBIRD/firebirdplugin.h"
@@ -32,18 +32,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //Loading DBMS plugins
   Core::instance(this);
+  Core::registerPlugin(new SdkPlugin());
   Core::registerPlugin(new PostgresPlugin());
   Core::registerPlugin(new SqlitePlugin());
   Core::registerPlugin(new FirebirdPlugin());
   Core::registerPlugin(new MysqlPlugin());
 
-  BasePluginManager* pluginManager = BasePluginManager::instance(this);
-
   //
   DataStore* ds = DataStore::instance(this);
   QStructureItemModel* structureModel = ds->structureModel();
 
-  QStringList modules = Core::instance()->pluginNames();
+  QStringList modules = Core::instance()->supportedDrivers();
   QKnowledgeBase::kb(this)->loadModels(modules);
 
   //Showing first column only
@@ -70,30 +69,6 @@ MainWindow::MainWindow(QWidget *parent) :
   _connectionEditDialog = new ConnectionEditDialog(this);
   connect(_connectionEditDialog, SIGNAL(accepted()),
           this, SLOT(saveDatabaseChanges()));
-
-  //View editor window
-  _viewEditorWindow = new ViewEditDialog(this);
-  connect(_viewEditorWindow, SIGNAL(accepted()),
-          this, SLOT(saveViewChanges()));
-
-  //Table item editor
-  _tableEditForm = new TableEditForm(this);
-  _tableEditForm->setModal(true);
-  connect(_tableEditForm, SIGNAL(accepted()),
-          this, SLOT(saveTableChanges()));
-
-  _sequenceEditForm = new SequenceEditForm(this);
-  _sequenceEditForm->setModal(true);
-  connect(_sequenceEditForm, SIGNAL(accepted()),
-          this, SLOT(saveSequenceChanges()));
-
-  _procedureEditForm = new ProcedureEditForm(this);
-  connect(_procedureEditForm, SIGNAL(accepted()),
-          this, SLOT(saveProcedureChanges()));
-
-  _triggerEditForm = new TriggerEditForm(this);
-  connect(_triggerEditForm, SIGNAL(accepted()),
-          this, SLOT(saveTriggerChanges()));
 
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
@@ -247,47 +222,21 @@ void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
 
 void MainWindow::showEditorForCurrentItem()
 {
-  //Show view editor window
+  qDebug() << "Request edit form";
   DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  switch (currentItem->type()) {
-  case DBObjectItem::View:
-    currentItem->refresh();
-    _viewEditorWindow->setObjItem(currentItem);
-    _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Edit);
-    _viewEditorWindow->objectToForm();
-    _viewEditorWindow->show();
-    break;
-  case DBObjectItem::Table:
-    _tableEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
-    _tableEditForm->setObjItem(currentItem);
-    _tableEditForm->objectToForm();
-    _tableEditForm->show();
-    break;
-  case DBObjectItem::Sequence:
-    currentItem->refresh();
-    _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
-    _sequenceEditForm->setObjItem(currentItem);
-    _sequenceEditForm->objectToForm();
-    _sequenceEditForm->show();
-    break;
-  case DBObjectItem::Procedure:
-    currentItem->refresh();
-    _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
-    _procedureEditForm->setObjItem(currentItem);
-    _procedureEditForm->objectToForm();
-    _procedureEditForm->show();
-    break;
-  case DBObjectItem::Trigger:
-    currentItem->refresh();
-    _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Edit);
-    _triggerEditForm->setObjItem(currentItem);
-    _triggerEditForm->objectToForm();
-    _triggerEditForm->show();
-    break;
-  default:
+  IocPlugin* plugin = Core::plugin(currentItem->driverName(), FeatureType::DbmsForms);
+  QVariantHash p;
+  p.insert(F_TYPE, currentItem->type());
+  AbstractDatabaseEditForm* editForm = plugin->dependency<AbstractDatabaseEditForm>(p);
+  if (!editForm) {
     QMessageBox::warning(this, TITLE_WARNING, "Edit form isn't supported yet");
+    return;
   }
-  //TODO: Implementation for other DB objects
+  currentItem->refresh();
+  editForm->setUserAction(AbstractDatabaseEditForm::Edit);
+  editForm->setObjItem(currentItem);
+  editForm->objectToForm();
+  editForm->show();
 }
 
 void MainWindow::dropCurrentDatabaseObject()
@@ -371,6 +320,7 @@ void MainWindow::showCreateItemEditor()
   QVariantHash pForm;
   pForm.insert(F_TYPE, folderItem->childrenType());
   AbstractDatabaseEditForm* editForm = plugin->dependency<AbstractDatabaseEditForm>(pForm);
+  plugin = Core::plugin(driverName, FeatureType::DbmsObjects);
   QVariantHash pObj;
   pObj.insert(F_TYPE, folderItem->childrenType());
   DBObjectItem* newItem = plugin->dependency<DBObjectItem>(pObj);

@@ -10,8 +10,8 @@
 #include "checkconstrainteditform.h"
 
 
-TableEditForm::TableEditForm(QWidget *parent) :
-  AbstractDatabaseEditForm(parent),
+TableEditForm::TableEditForm() :
+  AbstractDatabaseEditForm(nullptr),
   ui(new Ui::TableEditForm)
 {
   ui->setupUi(this);

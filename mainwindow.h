@@ -83,11 +83,6 @@ private slots:
 private:
   Ui::MainWindow *ui;
   ConnectionEditDialog* _connectionEditDialog;
-  ViewEditDialog* _viewEditorWindow;
-  TableEditForm* _tableEditForm;
-  ProcedureEditForm* _procedureEditForm;
-  SequenceEditForm* _sequenceEditForm;
-  TriggerEditForm* _triggerEditForm;
   QMenu* _itemContextMenu;
   QMenu* _folderContextMenu;
   QAction* _editAction;

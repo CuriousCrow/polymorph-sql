@@ -22,6 +22,7 @@ public:
     virtual int minorVersion() override;
     virtual FeatureTypes featureTypes() override;
     virtual bool driverSupported(QString driverName) override;
+    virtual QString driver() override;
 };
 
 #endif // SDKPLUGIN_H

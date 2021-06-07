@@ -9,12 +9,17 @@
 
 SqlitePlugin::SqlitePlugin(QObject *parent) : IocPlugin(parent)
 {
-    registerDependency(new DependencyMeta("sqliteDatabase", CLASSMETA(SqliteDatabase), InstanceMode::Prototype));
-    registerDependency(new DependencyMeta("sqliteFolder", CLASSMETA(SqliteFolderItem), InstanceMode::Prototype));
-    registerDependency(new DependencyMeta("sqliteTable", CLASSMETA(SqliteTableItem), InstanceMode::Prototype));
-    registerDependency(new DependencyMeta("sqliteView", CLASSMETA(SqliteViewItem), InstanceMode::Prototype));
+    registerDependency((new DependencyMeta("sqliteDatabase", CLASSMETA(SqliteDatabase), InstanceMode::Prototype))
+                       ->setParam(F_TYPE, DBObjectItem::Database));
+    registerDependency((new DependencyMeta("sqliteFolder", CLASSMETA(SqliteFolderItem), InstanceMode::Prototype))
+                       ->setParam(F_TYPE, DBObjectItem::Folder));
+    registerDependency((new DependencyMeta("sqliteTable", CLASSMETA(SqliteTableItem), InstanceMode::Prototype))
+                       ->setParam(F_TYPE, DBObjectItem::Table));
+    registerDependency((new DependencyMeta("sqliteView", CLASSMETA(SqliteViewItem), InstanceMode::Prototype))
+                       ->setParam(F_TYPE, DBObjectItem::View));
 
-    registerDependency(new DependencyMeta("baseSequence", CLASSMETA(DBSequenceItem), InstanceMode::Prototype));
+    registerDependency((new DependencyMeta("baseSequence", CLASSMETA(DBSequenceItem), InstanceMode::Prototype))
+                       ->setParam(F_TYPE, DBObjectItem::Sequence));
 }
 
 QList<DBObjectItem::ItemType> SqlitePlugin::supportedTypes()

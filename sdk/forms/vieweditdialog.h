@@ -16,7 +16,7 @@ class ViewEditDialog : public AbstractDatabaseEditForm
   Q_OBJECT
 
 public:
-  explicit ViewEditDialog(QWidget *parent = nullptr);
+  Q_INVOKABLE ViewEditDialog();
   ~ViewEditDialog();
 
 private:

@@ -100,3 +100,9 @@ bool SdkPlugin::driverSupported(QString driverName)
 {
     return driverName.isEmpty();
 }
+
+
+QString SdkPlugin::driver()
+{
+    return "";
+}

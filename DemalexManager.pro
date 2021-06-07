@@ -16,7 +16,6 @@ RC_ICONS = icons/cc_16.ico
 SOURCES += main.cpp\
 #Core
   blobeditor.cpp \
-  core/basepluginmanager.cpp \
   core/core.cpp \
   core/datastore.cpp \
   core/localeventnotifier.cpp \
@@ -125,7 +124,6 @@ SOURCES += main.cpp\
 HEADERS  += \
 #Core
   blobeditor.h \
-  core/basepluginmanager.h \
   core/core.h \
   core/datastore.h \
   core/localeventnotifier.h \

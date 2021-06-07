@@ -13,7 +13,7 @@ class SequenceEditForm : public AbstractDatabaseEditForm
   Q_OBJECT
 
 public:
-  explicit SequenceEditForm(QWidget *parent = nullptr);
+  Q_INVOKABLE SequenceEditForm();
   ~SequenceEditForm();
 
 private slots:

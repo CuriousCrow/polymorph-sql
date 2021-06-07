@@ -4,8 +4,8 @@
 #include "../objects/appconst.h"
 #include "../../qknowledgebase.h"
 
-ProcedureEditForm::ProcedureEditForm(QWidget *parent) :
-  AbstractDatabaseEditForm(parent),
+ProcedureEditForm::ProcedureEditForm() :
+  AbstractDatabaseEditForm(nullptr),
   ui(new Ui::ProcedureEditForm)
 {
   ui->setupUi(this);

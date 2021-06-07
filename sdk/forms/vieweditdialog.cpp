@@ -3,8 +3,8 @@
 #include "../objects/appconst.h"
 #include <QMessageBox>
 
-ViewEditDialog::ViewEditDialog(QWidget *parent) :
-  AbstractDatabaseEditForm(parent),
+ViewEditDialog::ViewEditDialog() :
+  AbstractDatabaseEditForm(nullptr),
   ui(new Ui::ViewEditDialog)
 {
   ui->setupUi(this);

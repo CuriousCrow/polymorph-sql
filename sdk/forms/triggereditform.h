@@ -12,9 +12,8 @@ class TriggerEditForm;
 class TriggerEditForm : public AbstractDatabaseEditForm
 {
   Q_OBJECT
-
 public:
-  explicit TriggerEditForm(QWidget *parent = nullptr);
+  Q_INVOKABLE TriggerEditForm();
   ~TriggerEditForm();
 
 private:

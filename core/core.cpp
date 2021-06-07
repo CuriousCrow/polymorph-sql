@@ -25,10 +25,12 @@ IocPlugin *Core::plugin(QString driver, FeatureType featureType)
     qDebug() << "Get plugin for driver" << driver << "with feature" << featureType;
     Core* core = instance();
     foreach(IocPlugin* plugin, core->_plugins) {
-        if (plugin->driverSupported(driver) && plugin->featureTypes().testFlag(featureType))
+        if (plugin->driverSupported(driver) && plugin->featureTypes().testFlag(featureType)) {
+            qDebug() << "Plugin match:" << plugin->title();
             return plugin;
+        }
     }
-    return nullptr;
+    return plugin("", featureType);
 }
 
 QStringList Core::pluginNames() const

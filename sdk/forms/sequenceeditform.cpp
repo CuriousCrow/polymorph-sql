@@ -3,8 +3,8 @@
 #include "../objects/appconst.h"
 #include <QDebug>
 
-SequenceEditForm::SequenceEditForm(QWidget *parent) :
-  AbstractDatabaseEditForm(parent),
+SequenceEditForm::SequenceEditForm() :
+  AbstractDatabaseEditForm(nullptr),
   ui(new Ui::SequenceEditForm)
 {
   ui->setupUi(this);

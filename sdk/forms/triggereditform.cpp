@@ -3,8 +3,8 @@
 #include "../../qstructureitemmodel.h"
 #include "../../core/datastore.h"
 
-TriggerEditForm::TriggerEditForm(QWidget *parent) :
-  AbstractDatabaseEditForm(parent),
+TriggerEditForm::TriggerEditForm() :
+  AbstractDatabaseEditForm(nullptr),
   ui(new Ui::TriggerEditForm)
 {
   ui->setupUi(this);
