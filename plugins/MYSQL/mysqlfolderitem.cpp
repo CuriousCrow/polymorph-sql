@@ -4,7 +4,6 @@
 #include "sdk/objects/dbtriggeritem.h"
 #include "sdk/objects/dbprocedureitem.h"
 #include "sdk/objects/dbsequenceitem.h"
-#include "core/basepluginmanager.h"
 #include "sdk/core/iocplugin.h"
 #include "core/core.h"
 

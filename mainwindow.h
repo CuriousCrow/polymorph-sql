@@ -64,15 +64,7 @@ private slots:
 
   void saveDatabaseChanges();
 
-  void saveTableChanges();
-
-  void saveViewChanges();
-
-  void saveSequenceChanges();
-
-  void saveProcedureChanges();
-
-  void saveTriggerChanges();
+  void saveObjectChanges();
 
   void on_aOpenSqlEditor_triggered();
 

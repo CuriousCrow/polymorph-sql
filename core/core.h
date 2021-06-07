@@ -14,6 +14,7 @@ public:
   static IocPlugin* plugin(QString driver, FeatureType featureType);
   QStringList pluginNames() const;
   QStringList supportedDrivers() const;
+  QList<IocPlugin*> plugins();
 signals:
 
 public slots:

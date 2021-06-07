@@ -6,6 +6,7 @@
 AbstractDatabaseEditForm::AbstractDatabaseEditForm(QWidget *parent, Qt::WindowFlags f)
   : QDialog(parent, f)
 {
+    setWindowModality(Qt::ApplicationModal);
 }
 
 DBObjectItem *AbstractDatabaseEditForm::objItem() const

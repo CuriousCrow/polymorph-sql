@@ -38,6 +38,18 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerPlugin(new FirebirdPlugin());
   Core::registerPlugin(new MysqlPlugin());
 
+  qDebug() << "Connect edit forms with handler slot";
+  foreach(IocPlugin* plugin, Core::instance()->plugins()) {
+    if (!plugin->featureTypes().testFlag(FeatureType::DbmsForms))
+        continue;
+    QStringList formBeans = plugin->namesByClass<AbstractDatabaseEditForm>();
+    foreach(QString beanName, formBeans) {
+        qDebug() << "Form:" << beanName;
+        AbstractDatabaseEditForm* editForm = plugin->dependency<AbstractDatabaseEditForm>(beanName);
+        connect(editForm, &AbstractDatabaseEditForm::accepted, this, &MainWindow::saveObjectChanges);
+    }
+  }
+
   //
   DataStore* ds = DataStore::instance(this);
   QStructureItemModel* structureModel = ds->structureModel();
@@ -328,7 +340,9 @@ void MainWindow::showCreateItemEditor()
   editForm->setObjItem(newItem);
   editForm->setUserAction(AbstractDatabaseEditForm::Create);
   editForm->objectToForm();
+  qDebug() << "Before show";
   editForm->show();
+  qDebug() << "After show";
 }
 
 void MainWindow::saveDatabaseChanges()
@@ -345,82 +359,19 @@ void MainWindow::saveDatabaseChanges()
   }
 }
 
-void MainWindow::saveTableChanges()
+void MainWindow::saveObjectChanges()
 {
-  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
-  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
-  if (action == AbstractDatabaseEditForm::Create) {
-    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DBObjectItem* newItem = editForm->objItem();
-    DataStore::structureModel()->appendItem(newItem, folderItem);
-    refreshQueryEditorAssistance();
-  }
-  else if (action == AbstractDatabaseEditForm::Edit) {
-    refreshQueryEditorAssistance();
-  }
-  else {
-    qWarning() << "Table delete action is not possible from edit form";
-  }
-}
-
-void MainWindow::saveViewChanges()
-{
-  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
-  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
-  if (action == AbstractDatabaseEditForm::Create) {
-    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DBObjectItem* newItem = editForm->objItem();
-    DataStore::structureModel()->appendItem(newItem, folderItem);
-    refreshQueryEditorAssistance();
-  }
-  else {
-    qWarning() << "Table delete action is not possible from edit form";
-  }
-}
-
-void MainWindow::saveSequenceChanges()
-{
-  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
-  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
-  if (action == AbstractDatabaseEditForm::Create) {
-    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DBObjectItem* newItem = editForm->objItem();
-    DataStore::structureModel()->appendItem(newItem, folderItem);
-    refreshQueryEditorAssistance();
-  }
-  else if (action == AbstractDatabaseEditForm::Edit) {
-    refreshQueryEditorAssistance();
-  }
-}
-
-void MainWindow::saveProcedureChanges()
-{
-  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
-  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
-  if (action == AbstractDatabaseEditForm::Create) {
-    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DBObjectItem* newItem = editForm->objItem();
-    DataStore::structureModel()->appendItem(newItem, folderItem);
-    refreshQueryEditorAssistance();
-  }
-  else if (action == AbstractDatabaseEditForm::Edit) {
-    refreshQueryEditorAssistance();
-  }
-}
-
-void MainWindow::saveTriggerChanges()
-{
-  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
-  AbstractDatabaseEditForm::UserAction action = editForm->userAction();
-  if (action == AbstractDatabaseEditForm::Create) {
-    DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-    DBObjectItem* newItem = editForm->objItem();
-    DataStore::structureModel()->appendItem(newItem, folderItem);
-    refreshQueryEditorAssistance();
-  }
-  else if (action == AbstractDatabaseEditForm::Edit) {
-    refreshQueryEditorAssistance();
-  }
+    AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
+    AbstractDatabaseEditForm::UserAction action = editForm->userAction();
+    if (action == AbstractDatabaseEditForm::Create) {
+      DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
+      DBObjectItem* newItem = editForm->objItem();
+      DataStore::structureModel()->appendItem(newItem, folderItem);
+      refreshQueryEditorAssistance();
+    }
+    else if (action == AbstractDatabaseEditForm::Edit) {
+      refreshQueryEditorAssistance();
+    }
 }
 
 DBObjectItem *MainWindow::itemByIndex(QModelIndex index)

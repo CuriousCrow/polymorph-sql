@@ -1,6 +1,5 @@
 #include "firebirdfolderitem.h"
 #include "qsqlqueryhelper.h"
-#include "core/basepluginmanager.h"
 #include "core/core.h"
 #include "sdk/objects/dbprocedureitem.h"
 #include "sdk/objects/dbtriggeritem.h"

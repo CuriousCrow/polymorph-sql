@@ -51,3 +51,8 @@ QStringList Core::supportedDrivers() const
     }
     return drivers;
 }
+
+QList<IocPlugin *> Core::plugins()
+{
+    return _plugins;
+}

@@ -1,9 +1,9 @@
 #include "postgresfolderitem.h"
-#include "postgresplugin.h"
+#include "postgresdatabase.h"
 #include "sdk/objects/appconst.h"
-#include "core/basepluginmanager.h"
 #include "core/core.h"
 #include "sdk/core/iocplugin.h"
+#include "qsqlqueryhelper.h"
 
 PostgresFolderItem::PostgresFolderItem() : FolderTreeItem()
 {

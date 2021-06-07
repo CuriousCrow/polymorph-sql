@@ -3,7 +3,6 @@
 #include "sdk/objects/dbsequenceitem.h"
 #include "sdk/objects/appconst.h"
 #include "core/core.h"
-#include "core/basepluginmanager.h"
 #include "qsqlqueryhelper.h"
 
 
