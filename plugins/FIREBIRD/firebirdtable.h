@@ -7,7 +7,7 @@ class FirebirdTable : public DBTableItem
 {
   Q_OBJECT
 public:
-  FirebirdTable(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE FirebirdTable();
   virtual ~FirebirdTable() override;
   // DBTableItem interface
 public:

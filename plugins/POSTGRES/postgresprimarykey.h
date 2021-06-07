@@ -8,7 +8,7 @@ class PostgresPrimaryKey : public DBPrimaryKey
 {
   Q_OBJECT
 public:
-  PostgresPrimaryKey(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE PostgresPrimaryKey();
 
   // DBObjectItem interface
 public:

@@ -7,7 +7,7 @@ class MysqlDatabase : public DBDatabaseItem
 {
   Q_OBJECT
 public:
-  MysqlDatabase(QString caption);
+  Q_INVOKABLE MysqlDatabase();
   ~MysqlDatabase() Q_DECL_OVERRIDE;
 
   // DBObjectItem interface

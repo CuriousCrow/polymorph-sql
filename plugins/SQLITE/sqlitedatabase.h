@@ -7,7 +7,7 @@ class SqliteDatabase : public DBDatabaseItem
 {
     Q_OBJECT
 public:
-    SqliteDatabase(QString caption);
+    Q_INVOKABLE SqliteDatabase();
 public:
     virtual bool reloadChildren() Q_DECL_OVERRIDE;
     virtual QString getAllObjectListSql() const Q_DECL_OVERRIDE;

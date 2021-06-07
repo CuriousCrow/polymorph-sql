@@ -55,27 +55,6 @@ bool QStructureItemModel::deleteChildren(QModelIndex parent)
   return removeRows(0, rowCount(parent), parent);
 }
 
-DBDatabaseItem *QStructureItemModel::dbItemByDriver(QString caption, QString driverName)
-{
-  DBDatabaseItem* item;
-  if (driverName == DRIVER_FIREBIRD) {
-    item = new FirebirdDatabase(caption);
-  }
-  else if (driverName == DRIVER_SQLITE) {
-    item = new SqliteDatabase(caption);
-  }
-  else if (driverName == DRIVER_MYSQL) {
-    item = new MysqlDatabase(caption);
-  }
-  else if (driverName == DRIVER_POSTGRES) {
-    item = new PostgresDatabase(caption);
-  }
-  else {
-    item = new DBDatabaseItem(caption);
-  }
-  return item;
-}
-
 void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)
 {
   for (int row=first; row<last; row++){

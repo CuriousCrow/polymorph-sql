@@ -4,8 +4,8 @@
 #include <QIcon>
 
 
-DBSequenceItem::DBSequenceItem(QString caption, QObject *parent):
-  DBObjectItem(caption, parent)
+DBSequenceItem::DBSequenceItem():
+  DBObjectItem("", nullptr)
 {
   registerField(F_CURRENT_VALUE);
   registerField(F_MIN_VALUE);

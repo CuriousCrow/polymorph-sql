@@ -6,7 +6,7 @@
 #include <QHash>
 #include "sdk/objects/dbmsplugin.h"
 
-class BasePluginManager : public QObject, public AbstractPluginManager
+class BasePluginManager : public QObject
 {    
     Q_OBJECT
 private:
@@ -20,8 +20,8 @@ public:
 
     // AbstractPluginManager interface
 public:
-    virtual DBObjectItem *newDbmsObject(QString driverName, DBObjectItem::ItemType type, QString caption, QObject *parent = nullptr) override;
-    virtual AbstractDatabaseEditForm *getObjectEditForm(QString driverName, DBObjectItem::ItemType type) override;
+//    virtual DBObjectItem *newDbmsObject(QString driverName, DBObjectItem::ItemType type, QString caption, QObject *parent = nullptr) override;
+    virtual AbstractDatabaseEditForm *getObjectEditForm(QString driverName, DBObjectItem::ItemType type);
 };
 
 #endif // BASEPLUGINMANAGER_H

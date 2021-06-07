@@ -25,17 +25,7 @@ public:
   QString info();
   DBObjectItem* folderByType(DBObjectItem::ItemType type);
 
-  virtual DBTableItem* createNewTableItem(QString caption, QObject* parent = nullptr);
-  virtual DBViewItem* createNewViewItem(QString caption, QObject* parent = nullptr);
-  virtual DBProcedureItem* createNewProcedureItem(QString caption, QObject* parent = nullptr);
-  virtual DBSequenceItem* createNewSequenceItem(QString caption, QObject* parent = nullptr);
-  virtual DBTriggerItem* createNewTriggerItem(QString caption, QObject* parent = nullptr);
 protected:
-  virtual void loadTableItems(DBObjectItem* parentItem);
-  virtual void loadViewItems(DBObjectItem* parentItem);
-  virtual void loadSequenceItems(DBObjectItem* parentItem);
-  virtual void loadTriggerItems(DBObjectItem* parentItem);
-  virtual void loadProcedureItems(DBObjectItem* parentItem);
   
   virtual QString getViewListSql() const;
   virtual QString getSequenceListSql() const;

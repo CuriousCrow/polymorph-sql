@@ -2,8 +2,8 @@
 #include "../../qsqlqueryhelper.h"
 #include "sdk/objects/appconst.h"
 
-PostgresPrimaryKey::PostgresPrimaryKey(QString caption, QObject *parent)
-  : DBPrimaryKey(caption, parent)
+PostgresPrimaryKey::PostgresPrimaryKey()
+  : DBPrimaryKey("", nullptr)
 {
 
 }

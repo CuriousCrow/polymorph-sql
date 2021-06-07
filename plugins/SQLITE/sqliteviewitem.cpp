@@ -3,8 +3,8 @@
 #include "../../qsqlqueryhelper.h"
 
 
-SqliteViewItem::SqliteViewItem(QString caption, QObject *parent)
-  : DBViewItem(caption, parent)
+SqliteViewItem::SqliteViewItem()
+  : DBViewItem()
 {
 }
 

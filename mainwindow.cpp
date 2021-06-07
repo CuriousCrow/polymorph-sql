@@ -32,22 +32,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //Loading DBMS plugins
   Core::instance(this);
-  Core::registerModule(new PostgresPlugin());
-  Core::registerModule(new SqlitePlugin());
-  Core::registerModule(new FirebirdPlugin());
-  Core::registerModule(new MysqlPlugin());
+  Core::registerPlugin(new PostgresPlugin());
+  Core::registerPlugin(new SqlitePlugin());
+  Core::registerPlugin(new FirebirdPlugin());
+  Core::registerPlugin(new MysqlPlugin());
 
   BasePluginManager* pluginManager = BasePluginManager::instance(this);
-  pluginManager->registerPlugin(new PostgresPlugin());
-  pluginManager->registerPlugin(new SqlitePlugin());
-  pluginManager->registerPlugin(new FirebirdPlugin());
-  pluginManager->registerPlugin(new MysqlPlugin());
 
   //
   DataStore* ds = DataStore::instance(this);
   QStructureItemModel* structureModel = ds->structureModel();
 
-  QStringList modules = Core::instance()->moduleNames();
+  QStringList modules = Core::instance()->pluginNames();
   QKnowledgeBase::kb(this)->loadModels(modules);
 
   //Showing first column only
@@ -141,12 +137,10 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     if (dbItem->children().isEmpty()){
       if (!dbItem->createDbConnection())
         break;
-      DbmsPlugin* dbms = Core::module(dbItem->driverName());
+      IocPlugin* dbms = Core::plugin(dbItem->driverName(), FeatureType::DbmsObjects);
       foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
-        FolderTreeItem* folder =
-                qobject_cast<FolderTreeItem*>(
-                    BasePluginManager::instance()->newDbmsObject(dbItem->driverName(),
-                    DBObjectItem::Folder, "", dbItem));
+        FolderTreeItem* folder = dbms->dependency<FolderTreeItem>(QVariantHash());
+        folder->setParent(dbItem);
         folder->setParentUrl(dbItem->objectUrl());
         folder->setChildrenType(type);
         folder->reloadChildren();
@@ -373,61 +367,18 @@ void MainWindow::showCreateItemEditor()
   }
   FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(currentItem);
   QString driverName = folderItem->driverName();
-
-  switch (folderItem->childrenType()) {
-  case DBObjectItem::Table: {
-    DBTableItem* newTableItem =
-            qobject_cast<DBTableItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::Table, DEF_TABLE_NAME));
-    newTableItem->setParentUrl(folderItem->objectUrl());
-    _tableEditForm->setObjItem(newTableItem);
-    _tableEditForm->setUserAction(AbstractDatabaseEditForm::Create);
-    _tableEditForm->objectToForm();
-    _tableEditForm->show();
-    break;
-  }
-  case DBObjectItem::View: {
-    DBViewItem* newViewItem =
-            qobject_cast<DBViewItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::View, DEF_VIEW_NAME));
-    newViewItem->setParentUrl(folderItem->objectUrl());
-    _viewEditorWindow->setObjItem(newViewItem);
-    _viewEditorWindow->setUserAction(AbstractDatabaseEditForm::Create);
-    _viewEditorWindow->objectToForm();
-    _viewEditorWindow->show();
-    break;
-  }
-  case DBObjectItem::Sequence: {
-    DBSequenceItem* newSequenceItem =
-       qobject_cast<DBSequenceItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::Sequence, DEF_SEQUENCE_NAME));
-    newSequenceItem->setParentUrl(folderItem->objectUrl());
-    _sequenceEditForm->setObjItem(newSequenceItem);
-    _sequenceEditForm->setUserAction(AbstractDatabaseEditForm::Create);
-    _sequenceEditForm->objectToForm();
-    _sequenceEditForm->show();
-    break;
-  }
-  case DBObjectItem::Procedure: {
-    DBProcedureItem* newProcedureItem =
-        qobject_cast<DBProcedureItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::Procedure, DEF_PROCEDURE_NAME));
-    newProcedureItem->setParentUrl(folderItem->objectUrl());
-    _procedureEditForm->setObjItem(newProcedureItem);
-    _procedureEditForm->setUserAction(AbstractDatabaseEditForm::Create);
-    _procedureEditForm->objectToForm();
-    _procedureEditForm->show();
-    break;
-  }
-  case DBObjectItem::Trigger: {
-    DBTriggerItem* newTriggerItem =
-        qobject_cast<DBTriggerItem*>(BasePluginManager::instance()->newDbmsObject(driverName, DBObjectItem::Trigger, DEF_TRIGGER_NAME));
-    newTriggerItem->setParentUrl(folderItem->objectUrl());
-    _triggerEditForm->setObjItem(newTriggerItem);
-    _triggerEditForm->setUserAction(AbstractDatabaseEditForm::Create);
-    _triggerEditForm->objectToForm();
-    _triggerEditForm->show();
-    break;
-  }
-  default:
-    break;
-  }
+  IocPlugin* plugin = Core::plugin(driverName, FeatureType::DbmsForms);
+  QVariantHash pForm;
+  pForm.insert(F_TYPE, folderItem->childrenType());
+  AbstractDatabaseEditForm* editForm = plugin->dependency<AbstractDatabaseEditForm>(pForm);
+  QVariantHash pObj;
+  pObj.insert(F_TYPE, folderItem->childrenType());
+  DBObjectItem* newItem = plugin->dependency<DBObjectItem>(pObj);
+  newItem->setParentUrl(folderItem->objectUrl());
+  editForm->setObjItem(newItem);
+  editForm->setUserAction(AbstractDatabaseEditForm::Create);
+  editForm->objectToForm();
+  editForm->show();
 }
 
 void MainWindow::saveDatabaseChanges()

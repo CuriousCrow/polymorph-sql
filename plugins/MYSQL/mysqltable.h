@@ -7,7 +7,7 @@ class MysqlTableItem : public DBTableItem
 {
   Q_OBJECT
 public:
-  MysqlTableItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE MysqlTableItem();
   virtual ~MysqlTableItem() Q_DECL_OVERRIDE;
 
   // DBObjectItem interface

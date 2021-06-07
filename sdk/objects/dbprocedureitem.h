@@ -7,7 +7,7 @@ class DBProcedureItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  DBProcedureItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE DBProcedureItem();
   ~DBProcedureItem() Q_DECL_OVERRIDE;
 
   // LAbstractTreeItem interface

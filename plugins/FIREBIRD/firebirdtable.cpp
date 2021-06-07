@@ -2,8 +2,8 @@
 #include "qsqlqueryhelper.h"
 
 
-FirebirdTable::FirebirdTable(QString caption, QObject *parent)
-  : DBTableItem(caption, parent)
+FirebirdTable::FirebirdTable()
+  : DBTableItem()
 {
   _columnsModel = new SqlColumnModel();
   _constraintsModel = new VariantMapTableModel();

@@ -8,7 +8,7 @@ class PostgresCheckConstraint : public DBCheckConstraint
 {
   Q_OBJECT
 public:
-  PostgresCheckConstraint(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE PostgresCheckConstraint();
 
   // DBObjectItem interface
 public:

@@ -8,7 +8,7 @@ class MysqlFolderItem : public FolderTreeItem
 {
     Q_OBJECT
 public:
-    MysqlFolderItem(QObject* parent = nullptr);
+    Q_INVOKABLE MysqlFolderItem();
 
     // FolderTreeItem interface
 protected:

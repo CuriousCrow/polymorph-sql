@@ -3,6 +3,8 @@
 #include "appurl.h"
 #include <QDebug>
 #include "core/basepluginmanager.h"
+#include "core/core.h"
+#include "sdk/core/iocplugin.h"
 #include "dbtableitem.h"
 #include "dbviewitem.h"
 
@@ -47,42 +49,39 @@ int FolderTreeItem::type() const
 
 void FolderTreeItem::loadTableItems()
 {
+    IocPlugin* plugin = Core::plugin(driverName(), FeatureType::DbmsObjects);
     qDebug() << "loadTableItems()";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::Tables);
     foreach (QString name, tableNames){
-      DBTableItem* tableItem = qobject_cast<DBTableItem*>(
-                  BasePluginManager::instance()->newDbmsObject(driverName(),
-                                                         DBObjectItem::Table,
-                                                         name,
-                                                         this));
+      DBTableItem* tableItem = plugin->dependency<DBTableItem>(QVariantHash());
+      tableItem->setParent(this);
+      tableItem->setFieldValue(F_CAPTION, name);
       tableItem->setParentUrl(objectUrl());
     }
 }
 
 void FolderTreeItem::loadViewItems()
 {
+    IocPlugin* plugin = Core::plugin(driverName(), FeatureType::DbmsObjects);
     qDebug() << "loadViewItems()";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
     foreach (QString name, tableNames){
-      DBViewItem* tableItem = qobject_cast<DBViewItem*>(
-                  BasePluginManager::instance()->newDbmsObject(driverName(),
-                                                         DBObjectItem::View,
-                                                         name,
-                                                         this));
-      tableItem->setParentUrl(objectUrl());
+      DBViewItem* viewItem = plugin->dependency<DBViewItem>(QVariantHash());
+      viewItem->setParent(this);
+      viewItem->setFieldValue(F_CAPTION, name);
+      viewItem->setParentUrl(objectUrl());
     }
 }
 
 void FolderTreeItem::loadSystemTableItems()
 {
+    IocPlugin* plugin = Core::plugin(driverName(), FeatureType::DbmsObjects);
     qDebug() << "loadSystemTableItems";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
     foreach (QString name, tableNames){
-      DBTableItem* tableItem = qobject_cast<DBTableItem*>(
-                  BasePluginManager::instance()->newDbmsObject(driverName(),
-                                                         DBObjectItem::Table,
-                                                         name,
-                                                         this));
+      DBTableItem* tableItem = plugin->dependency<DBTableItem>(QVariantHash());
+      tableItem->setParent(this);
+      tableItem->setFieldValue(F_CAPTION, name);
       tableItem->setParentUrl(objectUrl());
     }
 }

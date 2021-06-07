@@ -8,7 +8,7 @@ class DBViewItem : public DBSelectableItem
 {
   Q_OBJECT
 public:
-  DBViewItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE DBViewItem();
   virtual ~DBViewItem() Q_DECL_OVERRIDE;
 
 private:

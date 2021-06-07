@@ -4,8 +4,8 @@
 #include <QDebug>
 
 
-PostgresViewItem::PostgresViewItem(QString caption, QObject *parent)
-  : DBViewItem(caption, parent)
+PostgresViewItem::PostgresViewItem()
+  : DBViewItem()
 {
 }
 

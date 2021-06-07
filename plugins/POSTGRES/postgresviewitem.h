@@ -7,7 +7,7 @@ class PostgresViewItem : public DBViewItem
 {
   Q_OBJECT
 public:
-  PostgresViewItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE PostgresViewItem();
 
   // DBObjectItem interface
 public:

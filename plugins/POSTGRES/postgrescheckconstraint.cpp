@@ -3,8 +3,8 @@
 #include "sdk/objects/appconst.h"
 
 
-PostgresCheckConstraint::PostgresCheckConstraint(QString caption, QObject *parent)
-  : DBCheckConstraint(caption, parent)
+PostgresCheckConstraint::PostgresCheckConstraint()
+  : DBCheckConstraint("", nullptr)
 {
 
 }

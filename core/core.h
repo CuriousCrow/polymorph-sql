@@ -2,23 +2,26 @@
 #define CORE_H
 
 #include <QObject>
-#include "../sdk/objects/dbmsplugin.h"
+#include <QList>
+#include "../sdk/core/iocplugin.h"
 
 class Core : public QObject
 {
   Q_OBJECT
 public:
   static Core* instance(QObject* parent = nullptr);
-  static void registerModule(DbmsPlugin* module);
-  static DbmsPlugin* module(QString name);
-  QStringList moduleNames() const;
+  static void registerPlugin(IocPlugin* plugin);
+  static IocPlugin* plugin(QString driver, FeatureType featureType);
+  QStringList pluginNames() const;
+  QStringList supportedDrivers() const;
 signals:
 
 public slots:
 
 private:
   explicit Core(QObject *parent = nullptr);
-  QHash<QString, DbmsPlugin*> _modules;
+  QList<IocPlugin*> _plugins;
+  QHash<QString, IocPlugin*> _modules;
   static Core* _singleton;
 };
 

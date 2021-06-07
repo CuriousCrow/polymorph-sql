@@ -3,8 +3,8 @@
 #include "sdk/objects/appconst.h"
 
 
-PostgresSequence::PostgresSequence(QString caption, QObject* parent)
-  : DBSequenceItem(caption, parent)
+PostgresSequence::PostgresSequence()
+  : DBSequenceItem()
 {
 
 }

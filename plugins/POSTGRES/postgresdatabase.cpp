@@ -6,7 +6,7 @@
 #include "postgrestriggeritem.h"
 
 
-PostgresDatabase::PostgresDatabase(QString caption) : DBDatabaseItem(caption)
+PostgresDatabase::PostgresDatabase() : DBDatabaseItem("")
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_POSTGRES);
 }
@@ -37,47 +37,6 @@ QString PostgresDatabase::getProcedureListSql() const
 {
   return "SELECT distinct(routine_name) \"name\" FROM information_schema.routines "
       "WHERE routine_type='FUNCTION' and specific_schema='public' order by 1";
-}
-
-DBTableItem *PostgresDatabase::createNewTableItem(QString caption, QObject *parent)
-{
-  return new PostgresTable(caption, parent);
-}
-
-DBSequenceItem *PostgresDatabase::createNewSequenceItem(QString caption, QObject *parent)
-{
-  return new PostgresSequence(caption, parent);
-}
-
-void PostgresDatabase::loadSequenceItems(DBObjectItem *parentItem)
-{
-  QString sql = getSequenceListSql();
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
-  while (resultSet.next()) {
-    DBSequenceItem* sequenceItem = createNewSequenceItem(resultSet.value(F_NAME).toString(), parentItem);
-    sequenceItem->setParentUrl(parentItem->objectUrl());
-  }
-}
-
-void PostgresDatabase::loadTriggerItems(DBObjectItem *parentItem)
-{
-  DBDatabaseItem::loadTriggerItems(parentItem);
-}
-
-void PostgresDatabase::loadProcedureItems(DBObjectItem *parentItem)
-{
-  DBDatabaseItem::loadProcedureItems(parentItem);
-}
-
-
-DBProcedureItem *PostgresDatabase::createNewProcedureItem(QString caption, QObject *parent)
-{
-  return new PostgresFunctionItem(caption, parent);
-}
-
-DBTriggerItem *PostgresDatabase::createNewTriggerItem(QString caption, QObject *parent)
-{
-  return new PostgresTriggerItem(caption, parent);
 }
 
 QString PostgresDatabase::getAllObjectListSql() const

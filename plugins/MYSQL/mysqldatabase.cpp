@@ -3,8 +3,8 @@
 #include "sdk/objects/foldertreeitem.h"
 #include "sdk/objects/appconst.h"
 
-MysqlDatabase::MysqlDatabase(QString caption)
-  : DBDatabaseItem(caption)
+MysqlDatabase::MysqlDatabase()
+  : DBDatabaseItem("")
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_MYSQL);
 }

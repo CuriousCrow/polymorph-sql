@@ -5,8 +5,9 @@
 
 class SqliteTableItem : public DBTableItem
 {
+    Q_OBJECT
 public:
-    SqliteTableItem(QString caption, QObject* parent = nullptr);
+    Q_INVOKABLE SqliteTableItem();
     virtual ~SqliteTableItem() override;
     virtual void reloadColumnsModel() Q_DECL_OVERRIDE;
     // DBObjectItem interface

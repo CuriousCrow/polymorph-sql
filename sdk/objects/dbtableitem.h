@@ -13,7 +13,7 @@ class DBTableItem : public DBSelectableItem
 {
   Q_OBJECT
 public:
-  DBTableItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE DBTableItem();
   virtual ~DBTableItem() Q_DECL_OVERRIDE;
   virtual void reloadColumnsModel();
   virtual void reloadConstraintsModel();

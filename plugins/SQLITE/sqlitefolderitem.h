@@ -8,7 +8,7 @@ class SqliteFolderItem : public FolderTreeItem
 {
     Q_OBJECT
 public:
-    SqliteFolderItem(QObject* parent = nullptr);
+    Q_INVOKABLE SqliteFolderItem();
 
     // FolderTreeItem interface
 protected:

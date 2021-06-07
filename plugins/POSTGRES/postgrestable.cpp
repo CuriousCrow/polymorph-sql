@@ -4,13 +4,14 @@
 #include "qsqlqueryhelper.h"
 #include "../../models/sqlcolumnmodel.h"
 #include "sdk/objects/appconst.h"
+#include "sdk/objects/dbforeignkey.h"
 #include "postgresprimarykey.h"
 #include "postgresforeignkey.h"
 #include "postgresuniqueconstraint.h"
 #include "postgrescheckconstraint.h"
 
-PostgresTable::PostgresTable(QString caption, QObject *parent)
-  : DBTableItem(caption, parent)
+PostgresTable::PostgresTable()
+  : DBTableItem()
 {
   _columnsModel = new SqlColumnModel();
 
@@ -27,22 +28,30 @@ PostgresTable::~PostgresTable()
 
 DBForeignKey *PostgresTable::newForeignKey()
 {
-  return new PostgresForeignKey(DEF_FK_PREFIX + caption());
+  DBForeignKey* foreignKey = new PostgresForeignKey();
+  foreignKey->setFieldValue(F_CAPTION, DEF_FK_PREFIX + caption());
+  return foreignKey;
 }
 
 DBPrimaryKey *PostgresTable::newPrimaryKey()
 {
-  return new PostgresPrimaryKey(DEF_PK_PREFIX + caption());
+  DBPrimaryKey* primaryKey = new PostgresPrimaryKey();
+  primaryKey->setFieldValue(F_CAPTION, DEF_PK_PREFIX + caption());
+  return primaryKey;
 }
 
 DBUniqueConstraint *PostgresTable::newUniqueConstraint()
 {
-  return new PostgresUniqueConstraint(DEF_UQ_PREFIX + caption());
+  DBUniqueConstraint* uniqueConstraint = new PostgresUniqueConstraint();
+  uniqueConstraint->setFieldValue(F_CAPTION, DEF_UQ_PREFIX + caption());
+  return uniqueConstraint;
 }
 
 DBCheckConstraint *PostgresTable::newCheckConstraint()
 {
-  return new PostgresCheckConstraint(DEF_CHK_PREFIX + caption());
+  DBCheckConstraint* checkConstraint = new PostgresCheckConstraint();
+  checkConstraint->setFieldValue(F_CAPTION, DEF_CHK_PREFIX + caption());
+  return checkConstraint;
 }
 
 ActionResult PostgresTable::insertMe()

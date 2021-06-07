@@ -25,20 +25,22 @@ SOURCES += main.cpp\
   core/appsettings.cpp \
   databaseexportform.cpp \
   plugins/FIREBIRD/firebirddatabase.cpp \
-    plugins/FIREBIRD/firebirdfolderitem.cpp \
+  plugins/FIREBIRD/firebirdfolderitem.cpp \
   plugins/FIREBIRD/firebirdplugin.cpp \
   plugins/FIREBIRD/firebirdtable.cpp \
   plugins/MYSQL/mysqldatabase.cpp \
-    plugins/MYSQL/mysqlfolderitem.cpp \
+  plugins/MYSQL/mysqlfolderitem.cpp \
   plugins/MYSQL/mysqlplugin.cpp \
   plugins/MYSQL/mysqltable.cpp \
+    plugins/POSTGRES/postgresfunctionitem.cpp \
   plugins/POSTGRES/postgresplugin.cpp \
   plugins/POSTGRES/postgresviewitem.cpp \
   plugins/SQLITE/sqlitedatabase.cpp \
-    plugins/SQLITE/sqlitefolderitem.cpp \
+  plugins/SQLITE/sqlitefolderitem.cpp \
   plugins/SQLITE/sqliteplugin.cpp \
   plugins/SQLITE/sqlitetable.cpp \
   plugins/SQLITE/sqliteviewitem.cpp \
+  sdk/core/iocplugin.cpp \
   sdk/objects/dbselectableitem.cpp \
   sdk/forms/queryparamsform.cpp \
   itemviewer.cpp \
@@ -62,6 +64,7 @@ SOURCES += main.cpp\
   mainwindow.cpp \
   sdk/forms/connectioneditdialog.cpp \
   queryhistoryform.cpp \
+  sdk/objects/sdkplugin.cpp \
   settingsform.cpp \
   tablebrowserdelegate.cpp \
   tablebrowserwindow.cpp \
@@ -109,7 +112,6 @@ SOURCES += main.cpp\
     plugins/POSTGRES/postgrescheckconstraint.cpp \
     plugins/POSTGRES/postgresdatabase.cpp \
     plugins/POSTGRES/postgresforeignkey.cpp \
-    plugins/POSTGRES/postgresfunction.cpp \
     plugins/POSTGRES/postgresprimarykey.cpp \
     plugins/POSTGRES/postgressequence.cpp \
     plugins/POSTGRES/postgrestable.cpp \
@@ -146,6 +148,7 @@ HEADERS  += \
   plugins/SQLITE/sqliteplugin.h \
   plugins/SQLITE/sqlitetable.h \
   plugins/SQLITE/sqliteviewitem.h \
+  sdk/core/iocplugin.h \
   sdk/objects/dbmsplugin.h \
   sdk/objects/dbselectableitem.h \
   sdk/forms/queryparamsform.h \
@@ -171,6 +174,7 @@ HEADERS  += \
   mainwindow.h \
   sdk/forms/connectioneditdialog.h \
   queryhistoryform.h \
+    sdk/objects/sdkplugin.h \
   settingsform.h \
   tablebrowserdelegate.h \
   tablebrowserwindow.h \

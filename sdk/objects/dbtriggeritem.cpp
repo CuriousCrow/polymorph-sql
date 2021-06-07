@@ -4,8 +4,8 @@
 #include <QIcon>
 
 
-DBTriggerItem::DBTriggerItem(QString caption, QObject *parent):
-  DBObjectItem(caption, parent)
+DBTriggerItem::DBTriggerItem():
+  DBObjectItem("", nullptr)
 {
   registerField(F_EVENT_INSERT);
   registerField(F_EVENT_UPDATE);

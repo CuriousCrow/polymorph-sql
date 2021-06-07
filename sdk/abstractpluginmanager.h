@@ -20,12 +20,7 @@ public:
     virtual int minorVersion() = 0;
     virtual FeatureTypes featureTypes() = 0;
     virtual bool driverSupported(QString driverName) = 0;
-};
-
-class AbstractPluginManager {
-public:
-    virtual DBObjectItem* newDbmsObject(QString driverName, DBObjectItem::ItemType type, QString caption = "", QObject* parent = 0) = 0;
-    virtual AbstractDatabaseEditForm* getObjectEditForm(QString driverName, DBObjectItem::ItemType type) = 0;
+    virtual QString driver() = 0;
 };
 
 

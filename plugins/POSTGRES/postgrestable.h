@@ -8,7 +8,7 @@ class PostgresTable : public DBTableItem
 {
   Q_OBJECT
 public:
-  PostgresTable(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE PostgresTable();
   virtual ~PostgresTable() Q_DECL_OVERRIDE;
 
   virtual DBForeignKey* newForeignKey() Q_DECL_OVERRIDE;

@@ -5,52 +5,11 @@
 #include "firebirdtable.h"
 
 
-QString FirebirdPlugin::driver()
+FirebirdPlugin::FirebirdPlugin(QObject *parent) : IocPlugin(parent)
 {
-  return DRIVER_FIREBIRD;
-}
-
-DBDatabaseItem *FirebirdPlugin::newDatabaseItem(QString caption, QObject *parent)
-{
-  Q_UNUSED(parent)
-  return new FirebirdDatabase(caption);
-}
-
-DBTableItem *FirebirdPlugin::newTableItem(QString caption, QObject *parent)
-{
-  return new FirebirdTable(caption, parent);
-}
-
-DBViewItem *FirebirdPlugin::newViewItem(QString caption, QObject *parent)
-{
-  return new DBViewItem(caption, parent);
-}
-
-DBProcedureItem *FirebirdPlugin::newProcedureItem(QString caption, QObject *parent)
-{
-  return new DBProcedureItem(caption, parent);
-}
-
-DBSequenceItem *FirebirdPlugin::newSequenceItem(QString caption, QObject *parent)
-{
-  return new DBSequenceItem(caption, parent);
-}
-
-DBTriggerItem *FirebirdPlugin::newTriggerItem(QString caption, QObject *parent)
-{
-    return new DBTriggerItem(caption, parent);
-}
-
-FolderTreeItem *FirebirdPlugin::newFolderItem(QObject *parent)
-{
-    FolderTreeItem* folder = new FirebirdFolderItem(parent);
-    return folder;
-}
-
-AbstractDatabaseEditForm *FirebirdPlugin::formByType(DBObjectItem::ItemType type)
-{
-  Q_UNUSED(type)
-  return nullptr;
+    registerDependency(new DependencyMeta("firebirdDatabase", CLASSMETA(FirebirdDatabase), InstanceMode::Prototype));
+    registerDependency(new DependencyMeta("firebirdFolderItem", CLASSMETA(FirebirdFolderItem), InstanceMode::Prototype));
+    registerDependency(new DependencyMeta("firebirdTableItem", CLASSMETA(FirebirdTable), InstanceMode::Prototype));
 }
 
 QList<DBObjectItem::ItemType> FirebirdPlugin::supportedTypes()
@@ -64,40 +23,38 @@ QList<DBObjectItem::ItemType> FirebirdPlugin::supportedTypes()
   return types;
 }
 
-QString FirebirdPlugin::folderName(DBObjectItem::ItemType type)
+
+QString FirebirdPlugin::title()
 {
-  switch (type) {
-  case DBObjectItem::Table:
-    return tr("Tables");
-  case DBObjectItem::SystemTable:
-    return tr("System tables");
-  case DBObjectItem::View:
-    return tr("Views");
-  case DBObjectItem::Sequence:
-    return tr("Sequences");
-  case DBObjectItem::Procedure:
-    return tr("Procedures");
-  case DBObjectItem::Trigger:
-    return tr("Triggers");
-  default:
-    return "";
-  }
+    return "Firebird database support plugin";
 }
 
-void FirebirdPlugin::loadTables(FolderTreeItem *folderItem)
+QString FirebirdPlugin::author()
 {
-  QStringList tableNames = QSqlDatabase::database(folderItem->connectionName()).tables();
-  foreach (QString name, tableNames){
-    DBTableItem* tableItem = newTableItem(name, folderItem);
-    tableItem->setParentUrl(folderItem->objectUrl());
-  }
+    return "Lev Alekseevskiy";
 }
 
-void FirebirdPlugin::loadViews(FolderTreeItem *folderItem)
+int FirebirdPlugin::majorVersion()
 {
-  QStringList viewNames = QSqlDatabase::database(folderItem->connectionName()).tables(QSql::Views);
-  foreach (QString name, viewNames){
-    DBViewItem* viewItem = newViewItem(name, folderItem);
-    viewItem->setParentUrl(folderItem->objectUrl());
-  }
+    return 1;
+}
+
+int FirebirdPlugin::minorVersion()
+{
+    return 0;
+}
+
+FeatureTypes FirebirdPlugin::featureTypes()
+{
+    return FeatureType::DbmsObjects;
+}
+
+bool FirebirdPlugin::driverSupported(QString driverName)
+{
+    return driverName.toUpper() == DRIVER_FIREBIRD;
+}
+
+QString FirebirdPlugin::driver()
+{
+    return DRIVER_FIREBIRD;
 }

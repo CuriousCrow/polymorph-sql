@@ -3,8 +3,8 @@
 #include "sdk/objects/appconst.h"
 
 
-PostgresUniqueConstraint::PostgresUniqueConstraint(QString caption, QObject *parent)
-  : DBUniqueConstraint(caption, parent)
+PostgresUniqueConstraint::PostgresUniqueConstraint()
+  : DBUniqueConstraint("", nullptr)
 {
 
 }

@@ -7,7 +7,7 @@ class DBSequenceItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  DBSequenceItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE DBSequenceItem();
   virtual ~DBSequenceItem() Q_DECL_OVERRIDE;
 
   // LAbstractTreeItem interface

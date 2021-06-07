@@ -22,9 +22,6 @@ public:
   bool deleteChildren(QModelIndex parent);
 signals:
   void itemAboutToBeRemoved(QString itemUrl);
-private:
-  //Fabric method
-  DBDatabaseItem* dbItemByDriver(QString caption, QString driverName);
 private slots:
   void onAboutToBeRemoved(const QModelIndex & parent, int first, int last);
 

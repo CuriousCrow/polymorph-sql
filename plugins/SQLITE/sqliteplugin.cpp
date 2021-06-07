@@ -7,89 +7,14 @@
 #include "sdk/objects/dbsequenceitem.h"
 
 
-QString SqlitePlugin::driver()
+SqlitePlugin::SqlitePlugin(QObject *parent) : IocPlugin(parent)
 {
-  return DRIVER_SQLITE;
-}
+    registerDependency(new DependencyMeta("sqliteDatabase", CLASSMETA(SqliteDatabase), InstanceMode::Prototype));
+    registerDependency(new DependencyMeta("sqliteFolder", CLASSMETA(SqliteFolderItem), InstanceMode::Prototype));
+    registerDependency(new DependencyMeta("sqliteTable", CLASSMETA(SqliteTableItem), InstanceMode::Prototype));
+    registerDependency(new DependencyMeta("sqliteView", CLASSMETA(SqliteViewItem), InstanceMode::Prototype));
 
-DBDatabaseItem *SqlitePlugin::newDatabaseItem(QString caption, QObject *parent)
-{
-  Q_UNUSED(parent)
-  return new SqliteDatabase(caption);
-}
-
-DBTableItem *SqlitePlugin::newTableItem(QString caption, QObject *parent)
-{
-  return new SqliteTableItem(caption, parent);
-}
-
-DBViewItem *SqlitePlugin::newViewItem(QString caption, QObject *parent)
-{
-  Q_UNUSED(caption)
-  Q_UNUSED(parent)
-  return new SqliteViewItem(caption, parent);
-}
-
-DBProcedureItem *SqlitePlugin::newProcedureItem(QString caption, QObject *parent)
-{
-  Q_UNUSED(caption)
-  Q_UNUSED(parent)
-  return nullptr;
-}
-
-DBSequenceItem *SqlitePlugin::newSequenceItem(QString caption, QObject *parent)
-{
-  Q_UNUSED(caption)
-  Q_UNUSED(parent)
-  return new DBSequenceItem(caption, parent);
-}
-
-DBTriggerItem *SqlitePlugin::newTriggerItem(QString caption, QObject *parent)
-{
-  Q_UNUSED(caption)
-  Q_UNUSED(parent)
-    return nullptr;
-}
-
-FolderTreeItem *SqlitePlugin::newFolderItem(QObject *parent)
-{
-    FolderTreeItem* folder = new SqliteFolderItem(parent);
-    return folder;
-}
-
-AbstractDatabaseEditForm *SqlitePlugin::formByType(DBObjectItem::ItemType type)
-{
-  Q_UNUSED(type)
-  return nullptr;
-}
-
-void SqlitePlugin::loadSequences(FolderTreeItem *folderItem)
-{
-  QString sql = "SELECT name, seq currentValue FROM sqlite_sequence";
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, folderItem->connectionName());
-  while (resultSet.next()) {
-    DBSequenceItem* sequenceItem
-        = newSequenceItem(resultSet.value(F_NAME).toString(), folderItem);
-    sequenceItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
-    sequenceItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void SqlitePlugin::loadTriggers(FolderTreeItem *folderItem)
-{
-  QString sql = "select name name from sqlite_master where type = 'trigger'";
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, folderItem->connectionName());
-  while (resultSet.next()) {
-    DBSequenceItem* sequenceItem
-        = newSequenceItem(resultSet.value(F_NAME).toString(), folderItem);
-    sequenceItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
-    sequenceItem->setParentUrl(folderItem->objectUrl());
-  }
-}
-
-void SqlitePlugin::loadProcedures(FolderTreeItem *folderItem)
-{
-  Q_UNUSED(folderItem)
+    registerDependency(new DependencyMeta("baseSequence", CLASSMETA(DBSequenceItem), InstanceMode::Prototype));
 }
 
 QList<DBObjectItem::ItemType> SqlitePlugin::supportedTypes()
@@ -102,18 +27,38 @@ QList<DBObjectItem::ItemType> SqlitePlugin::supportedTypes()
   return types;
 }
 
-QString SqlitePlugin::folderName(DBObjectItem::ItemType type)
+
+QString SqlitePlugin::title()
 {
-  switch (type) {
-  case DBObjectItem::Table:
-    return tr("Tables");
-  case DBObjectItem::SystemTable:
-    return tr("System tables");
-  case DBObjectItem::View:
-    return tr("Views");
-  case DBObjectItem::Sequence:
-    return tr("Sequence");
-  default:
-    return "";
-  }
+    return "Sqlite database support plugin";
+}
+
+QString SqlitePlugin::author()
+{
+    return "Lev Alekseevskiy";
+}
+
+int SqlitePlugin::majorVersion()
+{
+    return 1;
+}
+
+int SqlitePlugin::minorVersion()
+{
+    return 0;
+}
+
+FeatureTypes SqlitePlugin::featureTypes()
+{
+    return FeatureType::DbmsObjects;
+}
+
+bool SqlitePlugin::driverSupported(QString driverName)
+{
+    return driverName.toUpper() == DRIVER_SQLITE;
+}
+
+QString SqlitePlugin::driver()
+{
+    return DRIVER_SQLITE;
 }

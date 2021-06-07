@@ -8,7 +8,7 @@ class PostgresTriggerItem : public DBTriggerItem
 {
   Q_OBJECT
 public:
-  PostgresTriggerItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE PostgresTriggerItem();
 
   // DBObjectItem interface
 public:

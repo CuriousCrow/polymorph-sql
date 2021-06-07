@@ -5,8 +5,8 @@
 #include "sqlitetable.h"
 
 
-SqliteDatabase::SqliteDatabase(QString caption)
-  : DBDatabaseItem(caption)
+SqliteDatabase::SqliteDatabase()
+  : DBDatabaseItem("")
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_SQLITE);
 }

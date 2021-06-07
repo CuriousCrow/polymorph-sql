@@ -19,14 +19,13 @@ DependencyContainer::~DependencyContainer()
     }
 }
 
-DependencyMeta* DependencyContainer::registerDependency(DependencyMeta* meta)
+void DependencyContainer::registerDependency(DependencyMeta* meta)
 {
     QStringList classes = meta->ancessors();
     foreach(QString className, classes) {
         _metaByClass.insert(className, meta);
     }
     _metaByName.insert(meta->name(), meta);
-    return meta;
 }
 
 QStringList DependencyContainer::namesByClass(QString className)
@@ -128,12 +127,6 @@ QStringList DependencyMeta::ancessors() const
 const QMetaObject* DependencyMeta::metaObj() const
 {
     return _metaObj;
-}
-
-DependencyMeta *DependencyMeta::setParam(QString name, QVariant value)
-{
-    insert(name, value);
-    return this;
 }
 
 

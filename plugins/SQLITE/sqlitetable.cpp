@@ -6,8 +6,8 @@
 #include <QSqlField>
 #include "sdk/objects/appconst.h"
 
-SqliteTableItem::SqliteTableItem(QString caption, QObject *parent)
-  : DBTableItem(caption, parent)
+SqliteTableItem::SqliteTableItem()
+  : DBTableItem()
 {
   _columnsModel = new SqlColumnModel();
 

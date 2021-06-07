@@ -2,8 +2,8 @@
 #include "appconst.h"
 #include <QIcon>
 
-DBProcedureItem::DBProcedureItem(QString caption, QObject *parent):
-  DBObjectItem(caption, parent)
+DBProcedureItem::DBProcedureItem():
+  DBObjectItem("", nullptr)
 {
   registerField(F_SOURCE_CODE);
   registerField(F_LANGUAGE);

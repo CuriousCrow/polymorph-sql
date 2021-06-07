@@ -2,8 +2,8 @@
 #include "../../qsqlqueryhelper.h"
 #include "sdk/objects/appconst.h"
 
-PostgresForeignKey::PostgresForeignKey(QString caption, QObject *parent)
-  : DBForeignKey(caption, parent)
+PostgresForeignKey::PostgresForeignKey()
+  : DBForeignKey("", nullptr)
 {
 
 }

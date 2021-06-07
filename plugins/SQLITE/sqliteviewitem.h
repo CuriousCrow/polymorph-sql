@@ -8,7 +8,7 @@ class SqliteViewItem : public DBViewItem
 {
   Q_OBJECT
 public:
-  SqliteViewItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE SqliteViewItem();
 
   // DBObjectItem interface
 public:

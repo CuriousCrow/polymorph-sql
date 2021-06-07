@@ -9,8 +9,8 @@
 #include <QVariantMap>
 
 
-//TODO: Поиск бина по классу. Необходимо уметь сортировать бины
-//TODO: Поиск бина по произвольному набору параметров. В параметры же можно записывать и классы всех предков
+//TODO: ÐŸÐ¾Ð¸ÑÐº Ð±Ð¸Ð½Ð° Ð¿Ð¾ ÐºÐ»Ð°ÑÑÑƒ. ÐÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ ÑƒÐ¼ÐµÑ‚ÑŒ ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð±Ð¸Ð½Ñ‹
+//TODO: ÐŸÐ¾Ð¸ÑÐº Ð±Ð¸Ð½Ð° Ð¿Ð¾ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð»ÑŒÐ½Ð¾Ð¼Ñƒ Ð½Ð°Ð±Ð¾Ñ€Ñƒ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð². Ð’ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¶Ðµ Ð¼Ð¾Ð¶Ð½Ð¾ Ð·Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°Ñ‚ÑŒ Ð¸ ÐºÐ»Ð°ÑÑÑ‹ Ð²ÑÐµÑ… Ð¿Ñ€ÐµÐ´ÐºÐ¾Ð²
 
 #define INJECT_PREFIX "inject_"
 #define INJECT(Type, Name) Type _##Name; Q_INVOKABLE void inject_##Name(QObject* obj){ _##Name = qobject_cast<Type>(obj); }
@@ -26,7 +26,7 @@
 
 enum InstanceMode {
     Singleton = 0,
-    Proptotype = 1
+    Prototype = 1
 };
 
 class DependencyMeta : public QVariantHash
@@ -57,7 +57,7 @@ class DependencyContainer : public QObject
 public:
     explicit DependencyContainer(QObject *parent = nullptr);
     virtual ~DependencyContainer();
-    DependencyMeta* registerDependency(DependencyMeta* meta);
+    void registerDependency(DependencyMeta* meta);
 
     QStringList namesByClass(QString className);
 

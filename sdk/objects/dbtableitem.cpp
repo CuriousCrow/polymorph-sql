@@ -8,8 +8,8 @@
 #include "qknowledgebase.h"
 
 
-DBTableItem::DBTableItem(QString caption, QObject* parent):
-  DBSelectableItem(caption, parent)
+DBTableItem::DBTableItem():
+  DBSelectableItem("", nullptr)
 {      
 }
 

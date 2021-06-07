@@ -2,8 +2,8 @@
 #include "firebirdtable.h"
 #include "sdk/objects/appconst.h"
 
-FirebirdDatabase::FirebirdDatabase(QString caption)
-  : DBDatabaseItem(caption)
+FirebirdDatabase::FirebirdDatabase()
+  : DBDatabaseItem("")
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_FIREBIRD);
 }

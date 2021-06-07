@@ -4,8 +4,8 @@
 #include "appconst.h"
 
 
-DBViewItem::DBViewItem(QString caption, QObject *parent):
-  DBSelectableItem(caption, parent)
+DBViewItem::DBViewItem():
+  DBSelectableItem("", nullptr)
 {
   _editable = false;
   registerField(F_QUERY_TEXT);

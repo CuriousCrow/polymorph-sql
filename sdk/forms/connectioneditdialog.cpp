@@ -15,7 +15,7 @@ ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
   ui->setupUi(this);
 
   QStringListModel* mModules = new QStringListModel(this);
-  mModules->setStringList(Core::instance()->moduleNames());
+  mModules->setStringList(Core::instance()->supportedDrivers());
   ui->cmbDriverName->setModel(mModules);
 
   connect(this, SIGNAL(userActionChanged()),

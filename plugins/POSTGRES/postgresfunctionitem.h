@@ -8,7 +8,7 @@ class PostgresFunctionItem : public DBProcedureItem
 {
   Q_OBJECT
 public:
-  PostgresFunctionItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE PostgresFunctionItem();
 
   // DBObjectItem interface
 public:

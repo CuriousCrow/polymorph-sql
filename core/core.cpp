@@ -14,19 +14,38 @@ Core *Core::instance(QObject *parent)
   return _singleton;
 }
 
-void Core::registerModule(DbmsPlugin *module)
+void Core::registerPlugin(IocPlugin *plugin)
 {
-  module->setParent(instance());
-  instance()->_modules.insert(module->driver(), module);
+  plugin->setParent(instance());
+  instance()->_plugins.append(plugin);
 }
 
-DbmsPlugin *Core::module(QString name)
+IocPlugin *Core::plugin(QString driver, FeatureType featureType)
 {
-  qDebug() << "Get module:" << name << _singleton->_modules.keys();
-  return _singleton->_modules.value(name);
+    qDebug() << "Get plugin for driver" << driver << "with feature" << featureType;
+    Core* core = instance();
+    foreach(IocPlugin* plugin, core->_plugins) {
+        if (plugin->driverSupported(driver) && plugin->featureTypes().testFlag(featureType))
+            return plugin;
+    }
+    return nullptr;
 }
 
-QStringList Core::moduleNames() const
+QStringList Core::pluginNames() const
 {
-  return _modules.keys();
+    QStringList names;
+    foreach(IocPlugin* plugin, _plugins) {
+        names.append(plugin->title());
+    }
+    return names;
+}
+
+QStringList Core::supportedDrivers() const
+{
+    QStringList drivers;
+    foreach(IocPlugin* plugin, _plugins) {
+        if (!plugin->driver().isEmpty())
+            drivers.append(plugin->driver());
+    }
+    return drivers;
 }

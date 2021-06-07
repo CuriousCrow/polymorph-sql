@@ -2,34 +2,24 @@
 #define SQLITEPLUGIN_H
 
 #include <QObject>
-#include "sdk/objects/dbmsplugin.h"
+#include "sdk/core/iocplugin.h"
 
-class SqlitePlugin : public DbmsPlugin
+class SqlitePlugin : public IocPlugin
 {
   Q_OBJECT
 public:
-
-  // DbmsPlugin interface
-public:
-  virtual QString driver() override;
-  virtual DBDatabaseItem *newDatabaseItem(QString caption, QObject *parent) override;
-  virtual DBTableItem *newTableItem(QString caption, QObject *parent) override;
-  virtual DBViewItem *newViewItem(QString caption, QObject *parent) override;
-  virtual DBProcedureItem *newProcedureItem(QString caption, QObject *parent) override;
-  virtual DBSequenceItem *newSequenceItem(QString caption, QObject *parent) override;
-  virtual DBTriggerItem *newTriggerItem(QString caption, QObject *parent) override;
-  virtual FolderTreeItem *newFolderItem(QObject *parent) override;
-  virtual AbstractDatabaseEditForm *formByType(DBObjectItem::ItemType type) override;
-
-  void loadSequences(FolderTreeItem* folderItem);
-  void loadTables(FolderTreeItem* folderItem);
-  void loadSysTables(FolderTreeItem* folderItem);
-  void loadViews(FolderTreeItem* folderItem);
-  void loadTriggers(FolderTreeItem* folderItem);
-  void loadProcedures(FolderTreeItem* folderItem);
-
+  SqlitePlugin(QObject *parent = nullptr);
   virtual QList<DBObjectItem::ItemType> supportedTypes() override;
-  virtual QString folderName(DBObjectItem::ItemType type) override;
+
+  // AbstractPlugin interface
+public:
+  virtual QString title() override;
+  virtual QString author() override;
+  virtual int majorVersion() override;
+  virtual int minorVersion() override;
+  virtual FeatureTypes featureTypes() override;
+  virtual bool driverSupported(QString driverName) override;
+  virtual QString driver() override;
 };
 
 #endif // SQLITEPLUGIN_H

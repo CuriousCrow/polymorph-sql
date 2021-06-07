@@ -45,12 +45,12 @@ void DataStore::initRegisteredDatabases()
     QSqlRecord rec = sqlResult.record();
     QString caption = rec.value(F_CAPTION).toString();
     QString driverName = rec.value(F_DRIVER_NAME).toString();
-    DbmsPlugin* plugin = Core::module(driverName);
+    IocPlugin* plugin = Core::plugin(driverName, FeatureType::DbmsObjects);
     if (!plugin) {
       qWarning() << "Can't load dbms plugin:" << driverName;
       continue;
     }
-    DBDatabaseItem* item = plugin->newDatabaseItem(caption);
+    DBDatabaseItem* item = plugin->dependency<DBDatabaseItem>(QVariantHash());
     for (int i=0; i<rec.count(); i++) {
       item->setFieldValue(rec.fieldName(i), rec.value(i));
     }

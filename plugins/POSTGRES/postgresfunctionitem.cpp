@@ -3,8 +3,8 @@
 #include "../../qsqlqueryhelper.h"
 
 
-PostgresFunctionItem::PostgresFunctionItem(QString caption, QObject *parent)
-  : DBProcedureItem(caption, parent)
+PostgresFunctionItem::PostgresFunctionItem()
+  : DBProcedureItem()
 {
 }
 

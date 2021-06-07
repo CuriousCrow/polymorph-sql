@@ -7,7 +7,7 @@ class DBTriggerItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  DBTriggerItem(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE DBTriggerItem();
   virtual ~DBTriggerItem() Q_DECL_OVERRIDE;
 
   // LAbstractTreeItem interface

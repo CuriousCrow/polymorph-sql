@@ -8,7 +8,7 @@ class PostgresFolderItem : public FolderTreeItem
 {
     Q_OBJECT
 public:
-    PostgresFolderItem(QObject* parent = nullptr);
+    Q_INVOKABLE PostgresFolderItem();
 
     // FolderTreeItem interface
 protected:

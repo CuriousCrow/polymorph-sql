@@ -8,7 +8,7 @@ class FirebirdDatabase : public DBDatabaseItem
 {
   Q_OBJECT
 public:
-  FirebirdDatabase(QString caption);
+  Q_INVOKABLE FirebirdDatabase();
   virtual QString getAllObjectListSql() const Q_DECL_OVERRIDE;
 };
 

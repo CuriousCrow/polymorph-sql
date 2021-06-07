@@ -8,7 +8,7 @@ class PostgresForeignKey : public DBForeignKey
 {
   Q_OBJECT
 public:
-  PostgresForeignKey(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE PostgresForeignKey();
 
   // DBObjectItem interface
 public:

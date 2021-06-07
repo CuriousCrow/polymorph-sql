@@ -8,7 +8,7 @@ class PostgresSequence : public DBSequenceItem
 {
   Q_OBJECT
 public:
-  PostgresSequence(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE PostgresSequence();
 
   // DBObjectItem interface
 public:

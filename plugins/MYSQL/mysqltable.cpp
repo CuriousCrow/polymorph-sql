@@ -3,8 +3,8 @@
 #include <QDebug>
 #include "sdk/objects/appurl.h"
 
-MysqlTableItem::MysqlTableItem(QString caption, QObject *parent)
-  : DBTableItem(caption, parent)
+MysqlTableItem::MysqlTableItem()
+  : DBTableItem()
 {
   _columnsModel = new SqlColumnModel();
 }

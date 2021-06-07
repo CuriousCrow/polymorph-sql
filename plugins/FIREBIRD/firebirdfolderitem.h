@@ -8,7 +8,7 @@ class FirebirdFolderItem : public FolderTreeItem
 {
     Q_OBJECT
 public:
-    FirebirdFolderItem(QObject* parent = nullptr);
+    Q_INVOKABLE FirebirdFolderItem();
 
     // FolderTreeItem interface
 protected:
