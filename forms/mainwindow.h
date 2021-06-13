@@ -4,10 +4,10 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
-#include "models/lsqltablemodel.h"
+#include "sdk/models/lsqltablemodel.h"
 #include "sdk/forms/connectioneditdialog.h"
 #include <QMenu>
-#include "qstructureitemmodel.h"
+#include "sdk/models/qstructureitemmodel.h"
 #include "queryeditorwindow.h"
 #include "sdk/forms/tableeditform.h"
 #include "sdk/forms/sequenceeditform.h"
@@ -15,7 +15,7 @@
 #include "sdk/forms/vieweditdialog.h"
 #include "sdk/forms/triggereditform.h"
 #include "sdk/objects/dbtableitem.h"
-#include "core/localeventnotifier.h"
+#include "sdk/core/localeventnotifier.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000
 

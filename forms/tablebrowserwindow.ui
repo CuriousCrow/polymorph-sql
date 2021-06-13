@@ -81,7 +81,7 @@
   </widget>
   <action name="aAddRow">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset resource="../icons.qrc">
      <normaloff>:/icons/table_row_add.png</normaloff>:/icons/table_row_add.png</iconset>
    </property>
    <property name="text">
@@ -93,7 +93,7 @@
   </action>
   <action name="aDeleteRow">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset resource="../icons.qrc">
      <normaloff>:/icons/table_row_delete.png</normaloff>:/icons/table_row_delete.png</iconset>
    </property>
    <property name="text">
@@ -105,7 +105,7 @@
   </action>
   <action name="aSubmit">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset resource="../icons.qrc">
      <normaloff>:/icons/commit.png</normaloff>:/icons/commit.png</iconset>
    </property>
    <property name="text">
@@ -117,7 +117,7 @@
   </action>
   <action name="aRevert">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset resource="../icons.qrc">
      <normaloff>:/icons/rollback.png</normaloff>:/icons/rollback.png</iconset>
    </property>
    <property name="text">
@@ -129,7 +129,7 @@
   </action>
   <action name="aRefresh">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset resource="../icons.qrc">
      <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
    </property>
    <property name="text">
@@ -196,12 +196,12 @@
   <customwidget>
    <class>ItemViewer</class>
    <extends>QStackedWidget</extends>
-   <header>itemviewer.h</header>
+   <header>widgets/itemviewer.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="icons.qrc"/>
+  <include location="../icons.qrc"/>
  </resources>
  <connections/>
 </ui>

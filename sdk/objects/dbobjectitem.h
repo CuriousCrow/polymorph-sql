@@ -1,7 +1,7 @@
 #ifndef DBOBJECTITEM_H
 #define DBOBJECTITEM_H
 
-#include "lstandardtreemodel.h"
+#include "../models/lstandardtreemodel.h"
 #include <QSqlDatabase>
 #include "appurl.h"
 

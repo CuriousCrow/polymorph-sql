@@ -1,6 +1,6 @@
 #include "dbviewitem.h"
 #include <QIcon>
-#include "qsqlqueryhelper.h"
+#include "../utils/qsqlqueryhelper.h"
 #include "appconst.h"
 
 

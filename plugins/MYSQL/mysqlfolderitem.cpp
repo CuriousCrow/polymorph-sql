@@ -1,11 +1,11 @@
 #include "mysqlfolderitem.h"
-#include "qsqlqueryhelper.h"
+#include "sdk/utils/qsqlqueryhelper.h"
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/dbtriggeritem.h"
 #include "sdk/objects/dbprocedureitem.h"
 #include "sdk/objects/dbsequenceitem.h"
 #include "sdk/core/iocplugin.h"
-#include "core/core.h"
+#include "sdk/core/core.h"
 
 
 MysqlFolderItem::MysqlFolderItem() : FolderTreeItem()
@@ -15,7 +15,6 @@ MysqlFolderItem::MysqlFolderItem() : FolderTreeItem()
 
 void MysqlFolderItem::loadChildren()
 {
-    IocPlugin* plugin = Core::plugin(driverName(), FeatureType::DbmsObjects);
     switch (childrenType()) {
     case DBObjectItem::Table:
     case DBObjectItem::SystemTable:

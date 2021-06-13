@@ -2,8 +2,8 @@
 #include "appconst.h"
 #include "appurl.h"
 #include <QDebug>
-#include "core/core.h"
-#include "sdk/core/iocplugin.h"
+#include "../core/core.h"
+#include "../core/iocplugin.h"
 #include "dbtableitem.h"
 #include "dbviewitem.h"
 

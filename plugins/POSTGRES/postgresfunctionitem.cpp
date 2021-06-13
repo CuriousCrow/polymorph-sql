@@ -1,6 +1,6 @@
 #include "postgresfunctionitem.h"
 #include "sdk/objects/appconst.h"
-#include "../../qsqlqueryhelper.h"
+#include "sdk/utils/qsqlqueryhelper.h"
 
 
 PostgresFunctionItem::PostgresFunctionItem()

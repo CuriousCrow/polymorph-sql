@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QList>
-#include "../sdk/core/iocplugin.h"
-#include "../sdk/objects/appconst.h"
+#include "../core/iocplugin.h"
+#include "../objects/appconst.h"
 
 class Core : public DependencyContainer
 {

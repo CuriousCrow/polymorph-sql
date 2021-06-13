@@ -1,5 +1,5 @@
 #include "mysqltable.h"
-#include "qsqlqueryhelper.h"
+#include "sdk/utils/qsqlqueryhelper.h"
 #include <QDebug>
 #include "sdk/objects/appurl.h"
 

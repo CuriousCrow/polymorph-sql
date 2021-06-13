@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
-#include "models/lsqltablemodel.h"
-#include "models/ldbobjecttablemodel.h"
+#include "../models/lsqltablemodel.h"
+#include "../models/ldbobjecttablemodel.h"
 
 class QKnowledgeBase : public QObject
 {

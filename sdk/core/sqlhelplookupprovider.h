@@ -1,9 +1,8 @@
 #ifndef SQLHELPLOOKUPPROVIDER_H
 #define SQLHELPLOOKUPPROVIDER_H
 
-#include "../qknowledgebase.h"
+#include "qknowledgebase.h"
 #include "../utils/qsimpletooltip.h"
-#include "../qknowledgebase.h"
 #include "../models/lsqltablemodel.h"
 
 class SqlHelpLookupProvider : public QObject, public HelpLookupProvider

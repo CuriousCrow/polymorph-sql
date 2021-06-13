@@ -1,7 +1,7 @@
 #include "triggereditform.h"
 #include "ui_triggereditform.h"
-#include "../../qstructureitemmodel.h"
-#include "../../core/datastore.h"
+#include "../models/qstructureitemmodel.h"
+#include "../core/datastore.h"
 
 TriggerEditForm::TriggerEditForm() :
   AbstractDatabaseEditForm(nullptr),

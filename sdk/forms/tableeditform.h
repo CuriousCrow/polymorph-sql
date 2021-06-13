@@ -4,9 +4,9 @@
 #include <QDialog>
 #include <QMenu>
 #include "abstractdatabaseitemform.h"
-#include "../../tablerowmodel.h"
+#include "../models/tablerowmodel.h"
 #include "../objects/dbtableitem.h"
-#include "comboboxhashdelegate.h"
+#include "../models/comboboxhashdelegate.h"
 
 namespace Ui {
 class TableEditForm;

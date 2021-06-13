@@ -1,5 +1,5 @@
 #include "dbtriggeritem.h"
-#include "qsqlqueryhelper.h"
+#include "../utils/qsqlqueryhelper.h"
 #include "appconst.h"
 #include <QIcon>
 

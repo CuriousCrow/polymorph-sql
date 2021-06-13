@@ -1,5 +1,5 @@
 #include "postgresforeignkey.h"
-#include "../../qsqlqueryhelper.h"
+#include "sdk/utils/qsqlqueryhelper.h"
 #include "sdk/objects/appconst.h"
 
 PostgresForeignKey::PostgresForeignKey()

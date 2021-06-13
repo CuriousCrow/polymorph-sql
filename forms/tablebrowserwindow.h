@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QMenu>
-#include "models/unisqltablemodel.h"
+#include "sdk/models/unisqltablemodel.h"
 #include <QSortFilterProxyModel>
 #include "sdk/objects/dbtableitem.h"
 

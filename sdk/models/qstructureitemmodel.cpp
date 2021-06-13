@@ -7,8 +7,8 @@
 #include "plugins/POSTGRES/postgresdatabase.h"
 #include "sdk/objects/appconst.h"
 #include <QDebug>
-#include "sdk/objects/appurl.h"
-#include "qsqlqueryhelper.h"
+#include "../objects/appurl.h"
+#include "../utils/qsqlqueryhelper.h"
 
 QStructureItemModel::QStructureItemModel(QObject *parent):
   LStandardTreeModel(parent)

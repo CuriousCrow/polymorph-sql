@@ -1,5 +1,5 @@
 #include "dbuniqueconstraint.h"
-#include "qsqlqueryhelper.h"
+#include "../utils/qsqlqueryhelper.h"
 #include "appconst.h"
 
 

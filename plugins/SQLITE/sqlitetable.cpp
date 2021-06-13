@@ -1,6 +1,6 @@
 #include "sqlitetable.h"
 #include <QStringList>
-#include "qsqlqueryhelper.h"
+#include "sdk/utils/qsqlqueryhelper.h"
 #include <QDebug>
 #include <QSqlRecord>
 #include <QSqlField>

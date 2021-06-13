@@ -3,7 +3,7 @@
 
 #include <QMetaProperty>
 #include <QRegularExpression>
-#include "qsqlqueryhelper.h"
+#include "../utils/qsqlqueryhelper.h"
 #include "appconst.h"
 
 

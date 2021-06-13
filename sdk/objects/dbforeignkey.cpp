@@ -1,6 +1,6 @@
 #include "dbforeignkey.h"
 #include "appconst.h"
-#include "qsqlqueryhelper.h"
+#include "../utils/qsqlqueryhelper.h"
 
 
 DBForeignKey::DBForeignKey(QString caption, QObject *parent)

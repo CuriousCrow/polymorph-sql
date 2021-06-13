@@ -6,10 +6,10 @@
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/appurl.h"
 #include "sdk/objects/appconst.h"
-#include "utils/qfileutils.h"
-#include "utils/eventinterceptors.h"
-#include "core/datastore.h"
-#include "tablebrowserdelegate.h"
+#include "sdk/utils/qfileutils.h"
+#include "sdk/utils/eventinterceptors.h"
+#include "sdk/core/datastore.h"
+#include "widgets/tablebrowserdelegate.h"
 
 TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBSelectableItem* tableItem) :
   QMainWindow(parent),

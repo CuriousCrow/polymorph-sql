@@ -1,6 +1,6 @@
 #include "dbprimarykey.h"
 #include "appconst.h"
-#include "qsqlqueryhelper.h"
+#include "../utils/qsqlqueryhelper.h"
 
 
 DBPrimaryKey::DBPrimaryKey(QString caption, QObject *parent)

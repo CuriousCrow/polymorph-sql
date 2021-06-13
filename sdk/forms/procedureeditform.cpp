@@ -2,7 +2,7 @@
 #include "ui_procedureeditform.h"
 
 #include "../objects/appconst.h"
-#include "../../qknowledgebase.h"
+#include "../core/qknowledgebase.h"
 
 ProcedureEditForm::ProcedureEditForm() :
   AbstractDatabaseEditForm(nullptr),

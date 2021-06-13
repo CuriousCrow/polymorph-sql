@@ -6,12 +6,12 @@
 #include <QSqlError>
 #include <QStandardItemModel>
 #include <QStandardItem>
-#include "lqueryeditor.h"
-#include "core/maphelplookupprovider.h"
-#include "core/sqlhelplookupprovider.h"
-#include "core/localeventnotifier.h"
+#include "widgets/lqueryeditor.h"
+#include "sdk/core/maphelplookupprovider.h"
+#include "sdk/core/sqlhelplookupprovider.h"
+#include "sdk/core/localeventnotifier.h"
 #include "sdk/objects/appconst.h"
-#include "qknowledgebase.h"
+#include "sdk/core/qknowledgebase.h"
 #include "queryhistoryform.h"
 
 #include <QComboBox>

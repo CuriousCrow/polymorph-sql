@@ -2,8 +2,8 @@
 #define DBTABLEITEM_H
 
 #include "dbselectableitem.h"
-#include "models/sqlcolumnmodel.h"
-#include "models/variantmaptablemodel.h"
+#include "../models/sqlcolumnmodel.h"
+#include "../models/variantmaptablemodel.h"
 #include "dbforeignkey.h"
 #include "dbuniqueconstraint.h"
 #include "dbcheckconstraint.h"

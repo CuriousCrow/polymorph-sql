@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QStyledItemDelegate>
-#include "models/unisqltablemodel.h"
+#include "sdk/models/unisqltablemodel.h"
 #include "sdk/objects/dbtableitem.h"
 
 class TableBrowserDelegate : public QStyledItemDelegate

@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
-#include "../qstructureitemmodel.h"
+#include "../models/qstructureitemmodel.h"
 #include "../models/unisqltablemodel.h"
 
 class DataStore : public QObject

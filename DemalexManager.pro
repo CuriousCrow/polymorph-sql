@@ -15,14 +15,14 @@ RC_ICONS = icons/cc_16.ico
 
 SOURCES += main.cpp\
 #Core
-  blobeditor.cpp \
-  core/core.cpp \
-  core/datastore.cpp \
-  core/localeventnotifier.cpp \
-  core/maphelplookupprovider.cpp \
-  core/sqlhelplookupprovider.cpp \
-  core/appsettings.cpp \
-  databaseexportform.cpp \
+  widgets/blobeditor.cpp \
+  sdk/core/core.cpp \
+  sdk/core/datastore.cpp \
+  sdk/core/localeventnotifier.cpp \
+  sdk/core/maphelplookupprovider.cpp \
+  sdk/core/sqlhelplookupprovider.cpp \
+  sdk/core/appsettings.cpp \
+  forms/databaseexportform.cpp \
   plugins/FIREBIRD/firebirddatabase.cpp \
   plugins/FIREBIRD/firebirdfolderitem.cpp \
   plugins/FIREBIRD/firebirdplugin.cpp \
@@ -31,7 +31,7 @@ SOURCES += main.cpp\
   plugins/MYSQL/mysqlfolderitem.cpp \
   plugins/MYSQL/mysqlplugin.cpp \
   plugins/MYSQL/mysqltable.cpp \
-    plugins/POSTGRES/postgresfunctionitem.cpp \
+  plugins/POSTGRES/postgresfunctionitem.cpp \
   plugins/POSTGRES/postgresplugin.cpp \
   plugins/POSTGRES/postgresviewitem.cpp \
   plugins/SQLITE/sqlitedatabase.cpp \
@@ -42,14 +42,14 @@ SOURCES += main.cpp\
   sdk/core/iocplugin.cpp \
   sdk/objects/dbselectableitem.cpp \
   sdk/forms/queryparamsform.cpp \
-  itemviewer.cpp \
-  ltextcompleter.cpp \
-  models/jointdbojbectmodel.cpp \
-  models/ldbobjecttablemodel.cpp \
-  models/queryparamtablemodel.cpp \
-  sdk/dependencycontainer.cpp \
-  models/unisqltablemodel.cpp \
-  qknowledgebase.cpp \
+  widgets/itemviewer.cpp \
+  sdk/tools/ltextcompleter.cpp \
+  sdk/models/jointdbojbectmodel.cpp \
+  sdk/models/ldbobjecttablemodel.cpp \
+  sdk/models/queryparamtablemodel.cpp \
+  sdk/core/dependencycontainer.cpp \
+  sdk/models/unisqltablemodel.cpp \
+  sdk/core/qknowledgebase.cpp \
 #Forms
   sdk/forms/abstractdatabaseitemform.cpp \
   sdk/forms/tableeditform.cpp \
@@ -60,35 +60,35 @@ SOURCES += main.cpp\
   sdk/forms/triggereditform.cpp \
   sdk/forms/uniqueconstrainteditform.cpp \
   sdk/forms/vieweditdialog.cpp \
-  mainwindow.cpp \
+  forms/mainwindow.cpp \
   sdk/forms/connectioneditdialog.cpp \
-  queryhistoryform.cpp \
+  forms/queryhistoryform.cpp \
   sdk/objects/sdkplugin.cpp \
-  settingsform.cpp \
-  tablebrowserdelegate.cpp \
-  tablebrowserwindow.cpp \
-  queryeditorwindow.cpp \
-  lqueryeditor.cpp \
+  forms/settingsform.cpp \
+  widgets/tablebrowserdelegate.cpp \
+  forms/tablebrowserwindow.cpp \
+  forms/queryeditorwindow.cpp \
+  widgets/lqueryeditor.cpp \
 #Utils
-    qsqlqueryhelper.cpp \
-    qsqlsyntaxhighlighter.cpp \
-    utils/eventinterceptors.cpp \
-    utils/qfileutils.cpp \
-    utils/qsimpletooltip.cpp \
+    sdk/utils/qsqlqueryhelper.cpp \
+    sdk/tools/qsqlsyntaxhighlighter.cpp \
+    sdk/utils/eventinterceptors.cpp \
+    sdk/utils/qfileutils.cpp \
+    sdk/utils/qsimpletooltip.cpp \
 #Models
-    models/simplecachedtablemodel.cpp \
-    models/comboboxitemdelegate.cpp \
-    models/lcachedtablemodel.cpp \
-    models/lsqltablemodel.cpp \
-    qstructureitemmodel.cpp \
-    tablerowmodel.cpp \
-    models/variantmaptablemodel.cpp \
-    ldbobjectmodel.cpp \
-    qactiveconnectionmodel.cpp \
-    lstandardtreemodel.cpp \
-    ldatawidgetmapper.cpp \
-    models/sqlcolumnmodel.cpp \
-    comboboxhashdelegate.cpp \
+    sdk/models/simplecachedtablemodel.cpp \
+    sdk/models/comboboxitemdelegate.cpp \
+    sdk/models/lcachedtablemodel.cpp \
+    sdk/models/lsqltablemodel.cpp \
+    sdk/models/qstructureitemmodel.cpp \
+    sdk/models/tablerowmodel.cpp \
+    sdk/models/variantmaptablemodel.cpp \
+    sdk/models/ldbobjectmodel.cpp \
+    sdk/models/qactiveconnectionmodel.cpp \
+    sdk/models/lstandardtreemodel.cpp \
+    sdk/tools/ldatawidgetmapper.cpp \
+    sdk/models/sqlcolumnmodel.cpp \
+    sdk/models/comboboxhashdelegate.cpp \
 #Base DB classes
     sdk/objects/appurl.cpp \
     sdk/objects/dbobjectitem.cpp \
@@ -116,33 +116,33 @@ SOURCES += main.cpp\
     plugins/POSTGRES/postgrestable.cpp \
     plugins/POSTGRES/postgresuniqueconstraint.cpp \
     plugins/POSTGRES/postgresfolderitem.cpp \
-    utils/sqlfiltermanager.cpp \
-    utils/sqlutils.cpp \
-    utils/strutils.cpp
+    sdk/utils/sqlfiltermanager.cpp \
+    sdk/utils/sqlutils.cpp \
+    sdk/utils/strutils.cpp
 #Firebird
 
 HEADERS  += \
 #Core
-  blobeditor.h \
-  core/core.h \
-  core/datastore.h \
-  core/localeventnotifier.h \
-  core/maphelplookupprovider.h \
-  core/sqlhelplookupprovider.h \
-  core/appsettings.h \
-  databaseexportform.h \
+  widgets/blobeditor.h \
+  sdk/core/core.h \
+  sdk/core/datastore.h \
+  sdk/core/localeventnotifier.h \
+  sdk/core/maphelplookupprovider.h \
+  sdk/core/sqlhelplookupprovider.h \
+  sdk/core/appsettings.h \
+  forms/databaseexportform.h \
   plugins/FIREBIRD/firebirddatabase.h \
-    plugins/FIREBIRD/firebirdfolderitem.h \
+  plugins/FIREBIRD/firebirdfolderitem.h \
   plugins/FIREBIRD/firebirdplugin.h \
   plugins/FIREBIRD/firebirdtable.h \
   plugins/MYSQL/mysqldatabase.h \
-    plugins/MYSQL/mysqlfolderitem.h \
+  plugins/MYSQL/mysqlfolderitem.h \
   plugins/MYSQL/mysqlplugin.h \
   plugins/MYSQL/mysqltable.h \
   plugins/POSTGRES/postgresplugin.h \
   plugins/POSTGRES/postgresviewitem.h \
   plugins/SQLITE/sqlitedatabase.h \
-    plugins/SQLITE/sqlitefolderitem.h \
+  plugins/SQLITE/sqlitefolderitem.h \
   plugins/SQLITE/sqliteplugin.h \
   plugins/SQLITE/sqlitetable.h \
   plugins/SQLITE/sqliteviewitem.h \
@@ -150,15 +150,15 @@ HEADERS  += \
   sdk/objects/dbmsplugin.h \
   sdk/objects/dbselectableitem.h \
   sdk/forms/queryparamsform.h \
-  sdk/abstractpluginmanager.h \
-  sdk/dependencycontainer.h \
-  itemviewer.h \
-  ltextcompleter.h \
-  models/jointdbojbectmodel.h \
-  models/ldbobjecttablemodel.h \
-  models/queryparamtablemodel.h \
-  models/unisqltablemodel.h \
-  qknowledgebase.h \
+  sdk/abstractplugin.h \
+  sdk/core/dependencycontainer.h \
+  widgets/itemviewer.h \
+  sdk/tools/ltextcompleter.h \
+  sdk/models/jointdbojbectmodel.h \
+  sdk/models/ldbobjecttablemodel.h \
+  sdk/models/queryparamtablemodel.h \
+  sdk/models/unisqltablemodel.h \
+  sdk/core/qknowledgebase.h \
 #Forms
   sdk/forms/abstractdatabaseitemform.h \
   sdk/forms/tableeditform.h \
@@ -169,35 +169,35 @@ HEADERS  += \
   sdk/forms/triggereditform.h \
   sdk/forms/uniqueconstrainteditform.h \
   sdk/forms/vieweditdialog.h \
-  mainwindow.h \
+  forms/mainwindow.h \
   sdk/forms/connectioneditdialog.h \
-  queryhistoryform.h \
-    sdk/objects/sdkplugin.h \
-  settingsform.h \
-  tablebrowserdelegate.h \
-  tablebrowserwindow.h \
-  queryeditorwindow.h \
-  lqueryeditor.h \
+  forms/queryhistoryform.h \
+  sdk/objects/sdkplugin.h \
+  forms/settingsform.h \
+  widgets/tablebrowserdelegate.h \
+  forms/tablebrowserwindow.h \
+  forms/queryeditorwindow.h \
+  widgets/lqueryeditor.h \
 #Utils
-    qsqlqueryhelper.h \
-    qsqlsyntaxhighlighter.h \
-    utils/eventinterceptors.h \
-    utils/qfileutils.h \
-    utils/qsimpletooltip.h \
+    sdk/utils/qsqlqueryhelper.h \
+    sdk/tools/qsqlsyntaxhighlighter.h \
+    sdk/utils/eventinterceptors.h \
+    sdk/utils/qfileutils.h \
+    sdk/utils/qsimpletooltip.h \
 #Models
-    models/simplecachedtablemodel.h \
-    models/comboboxitemdelegate.h \
-    models/lcachedtablemodel.h \
-    models/lsqltablemodel.h \
-    qstructureitemmodel.h \
-    tablerowmodel.h \
-    models/variantmaptablemodel.h \
-    ldbobjectmodel.h \
-    qactiveconnectionmodel.h \
-    lstandardtreemodel.h \
-    ldatawidgetmapper.h \
-    models/sqlcolumnmodel.h \
-    comboboxhashdelegate.h \
+    sdk/models/simplecachedtablemodel.h \
+    sdk/models/comboboxitemdelegate.h \
+    sdk/models/lcachedtablemodel.h \
+    sdk/models/lsqltablemodel.h \
+    sdk/models/qstructureitemmodel.h \
+    sdk/models/tablerowmodel.h \
+    sdk/models/variantmaptablemodel.h \
+    sdk/models/ldbobjectmodel.h \
+    sdk/models/qactiveconnectionmodel.h \
+    sdk/models/lstandardtreemodel.h \
+    sdk/tools/ldatawidgetmapper.h \
+    sdk/models/sqlcolumnmodel.h \
+    sdk/models/comboboxhashdelegate.h \
 #Base DB classes
     sdk/objects/appconst.h \
     sdk/objects/appurl.h \
@@ -227,14 +227,14 @@ HEADERS  += \
     plugins/POSTGRES/postgrestable.h \
     plugins/POSTGRES/postgresuniqueconstraint.h \
     plugins/POSTGRES/postgresfolderitem.h \
-    utils/sqlfiltermanager.h \
-    utils/sqlutils.h \
-    utils/strutils.h
+    sdk/utils/sqlfiltermanager.h \
+    sdk/utils/sqlutils.h \
+    sdk/utils/strutils.h
 #Firebird
 
-FORMS    += mainwindow.ui \
-    blobeditor.ui \
-    databaseexportform.ui \
+FORMS    += forms/mainwindow.ui \
+    widgets/blobeditor.ui \
+    forms/databaseexportform.ui \
     sdk/forms/connectioneditdialog.ui \
     sdk/forms/checkconstrainteditform.ui \
     sdk/forms/foreignkeyform.ui \
@@ -243,11 +243,11 @@ FORMS    += mainwindow.ui \
     sdk/forms/sequenceeditform.ui \
     sdk/forms/triggereditform.ui \
     sdk/forms/uniqueconstrainteditform.ui \
-    itemviewer.ui \
-    queryhistoryform.ui \
-    settingsform.ui \
-    tablebrowserwindow.ui \
-    queryeditorwindow.ui \
+    widgets/itemviewer.ui \
+    forms/queryhistoryform.ui \
+    forms/settingsform.ui \
+    forms/tablebrowserwindow.ui \
+    forms/queryeditorwindow.ui \
     sdk/forms/vieweditdialog.ui \
     sdk/forms/tableeditform.ui
 

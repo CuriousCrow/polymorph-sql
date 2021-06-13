@@ -1,5 +1,5 @@
-#ifndef ABSTRACTPLUGINMANAGER_H
-#define ABSTRACTPLUGINMANAGER_H
+#ifndef ABSTRACTPLUGIN_H
+#define ABSTRACTPLUGIN_H
 
 #include "../sdk/objects/dbobjectitem.h"
 #include "../sdk/forms/abstractdatabaseitemform.h"
@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif // ABSTRACTPLUGINMANAGER_H
+#endif // ABSTRACTPLUGIN_H

@@ -2,8 +2,8 @@
 #include "sdk/objects/dbtriggeritem.h"
 #include "sdk/objects/dbsequenceitem.h"
 #include "sdk/objects/appconst.h"
-#include "core/core.h"
-#include "qsqlqueryhelper.h"
+#include "sdk/core/core.h"
+#include "sdk/utils/qsqlqueryhelper.h"
 
 
 SqliteFolderItem::SqliteFolderItem() : FolderTreeItem()

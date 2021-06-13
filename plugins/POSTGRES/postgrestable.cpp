@@ -1,8 +1,8 @@
 #include "postgrestable.h"
 #include <QSqlQuery>
 #include <QDebug>
-#include "qsqlqueryhelper.h"
-#include "../../models/sqlcolumnmodel.h"
+#include "sdk/utils/qsqlqueryhelper.h"
+#include "sdk/models/sqlcolumnmodel.h"
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/dbforeignkey.h"
 #include "postgresprimarykey.h"

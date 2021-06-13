@@ -4,7 +4,7 @@
 #include "dependencycontainer.h"
 #include <QObject>
 #include "../objects/dbobjectitem.h"
-#include "sdk/abstractpluginmanager.h"
+#include "sdk/abstractplugin.h"
 
 class IocPlugin : public QObject, public AbstractPlugin
 {

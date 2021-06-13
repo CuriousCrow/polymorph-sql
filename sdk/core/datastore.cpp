@@ -4,8 +4,8 @@
 #include <QDebug>
 #include <QApplication>
 #include <QSqlRecord>
-#include "../sdk/objects/appconst.h"
-#include "../qsqlqueryhelper.h"
+#include "../objects/appconst.h"
+#include "../utils/qsqlqueryhelper.h"
 #include "core.h"
 
 

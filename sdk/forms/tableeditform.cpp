@@ -4,7 +4,7 @@
 #include <QDebug>
 #include "../objects/appconst.h"
 #include "../objects/dbuniqueconstraint.h"
-#include "../../qknowledgebase.h"
+#include "../core/qknowledgebase.h"
 #include "foreignkeyform.h"
 #include "uniqueconstrainteditform.h"
 #include "checkconstrainteditform.h"

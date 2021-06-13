@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QMessageBox>
 #include <QStringListModel>
-#include "core/core.h"
+#include "../core/core.h"
 #include "../objects/appconst.h"
 
 ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :

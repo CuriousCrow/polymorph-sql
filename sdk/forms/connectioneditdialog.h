@@ -2,8 +2,8 @@
 #define CONNECTIONEDITDIALOG_H
 
 #include <QDialog>
-#include "qstructureitemmodel.h"
-#include "ldatawidgetmapper.h"
+#include "sdk/models/qstructureitemmodel.h"
+#include "sdk/tools/ldatawidgetmapper.h"
 #include "abstractdatabaseitemform.h"
 
 namespace Ui {
