@@ -6,7 +6,7 @@
 #include "core/datastore.h"
 #include "sdk/objects/appconst.h"
 #include "utils/qfileutils.h"
-#include "qstructureitemmodel.h"
+#include "sdk/models/qstructureitemmodel.h"
 
 DatabaseExportForm* DatabaseExportForm::_singleton = nullptr;
 

@@ -1,5 +1,5 @@
 #include "ldbobjecttablemodel.h"
-#include "../qsqlqueryhelper.h"
+#include "../utils/qsqlqueryhelper.h"
 #include <QSqlRecord>
 
 

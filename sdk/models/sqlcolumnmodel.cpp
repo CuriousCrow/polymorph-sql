@@ -1,6 +1,6 @@
 #include "sqlcolumnmodel.h"
 #include <QDebug>
-#include "qknowledgebase.h"
+#include "../core/qknowledgebase.h"
 
 SqlColumnModel::SqlColumnModel(QObject *parent) : QAbstractTableModel(parent)
 {

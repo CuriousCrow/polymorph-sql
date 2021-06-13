@@ -1,7 +1,7 @@
 #include "qsqlsyntaxhighlighter.h"
 #include <QTextCharFormat>
 #include <QDebug>
-#include "qknowledgebase.h"
+#include "../core/qknowledgebase.h"
 #include <QSqlTableModel>
 #include "models/lsqltablemodel.h"
 

@@ -2,7 +2,7 @@
 #include <QMetaProperty>
 #include <QRegularExpression>
 #include <QSqlRecord>
-#include "lstandardtreemodel.h"
+//#include "lstandardtreemodel.h"
 
 QSqlQueryHelper::QSqlQueryHelper()
 {

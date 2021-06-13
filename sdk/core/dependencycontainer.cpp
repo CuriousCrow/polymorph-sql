@@ -129,6 +129,12 @@ const QMetaObject* DependencyMeta::metaObj() const
     return _metaObj;
 }
 
+DependencyMeta *DependencyMeta::setParam(QString name, QVariant value)
+{
+    insert(name, value);
+    return this;
+}
+
 
 bool DependencyMeta::hasMatch(QVariantHash params) const
 {
