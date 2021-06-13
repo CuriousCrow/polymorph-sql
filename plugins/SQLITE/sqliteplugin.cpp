@@ -9,17 +9,7 @@
 
 SqlitePlugin::SqlitePlugin(QObject *parent) : IocPlugin(parent)
 {
-    registerDependency((new DependencyMeta("sqliteDatabase", CLASSMETA(SqliteDatabase), InstanceMode::Prototype))
-                       ->setParam(F_TYPE, DBObjectItem::Database));
-    registerDependency((new DependencyMeta("sqliteFolder", CLASSMETA(SqliteFolderItem), InstanceMode::Prototype))
-                       ->setParam(F_TYPE, DBObjectItem::Folder));
-    registerDependency((new DependencyMeta("sqliteTable", CLASSMETA(SqliteTableItem), InstanceMode::Prototype))
-                       ->setParam(F_TYPE, DBObjectItem::Table));
-    registerDependency((new DependencyMeta("sqliteView", CLASSMETA(SqliteViewItem), InstanceMode::Prototype))
-                       ->setParam(F_TYPE, DBObjectItem::View));
 
-    registerDependency((new DependencyMeta("baseSequence", CLASSMETA(DBSequenceItem), InstanceMode::Prototype))
-                       ->setParam(F_TYPE, DBObjectItem::Sequence));
 }
 
 QList<DBObjectItem::ItemType> SqlitePlugin::supportedTypes()
@@ -30,6 +20,23 @@ QList<DBObjectItem::ItemType> SqlitePlugin::supportedTypes()
   types.append(DBObjectItem::SystemTable);
   types.append(DBObjectItem::Sequence);
   return types;
+}
+
+bool SqlitePlugin::registerPlugin(DependencyContainer *c)
+{
+    c->registerDependency((new DependencyMeta("sqliteDatabase", CLASSMETA(SqliteDatabase), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)
+                       ->setParam(F_TYPE, DBObjectItem::Database));
+    c->registerDependency((new DependencyMeta("sqliteFolder", CLASSMETA(SqliteFolderItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)
+                       ->setParam(F_TYPE, DBObjectItem::Folder));
+    c->registerDependency((new DependencyMeta("sqliteTable", CLASSMETA(SqliteTableItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)
+                       ->setParam(F_TYPE, DBObjectItem::Table));
+    c->registerDependency((new DependencyMeta("sqliteView", CLASSMETA(SqliteViewItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)
+                       ->setParam(F_TYPE, DBObjectItem::View));
+    return true;
 }
 
 

@@ -1,7 +1,7 @@
 #include "iocplugin.h"
 
 
-IocPlugin::IocPlugin(QObject *parent) : DependencyContainer(parent)
+IocPlugin::IocPlugin(QObject *parent) : QObject(parent)
 {
 
 }

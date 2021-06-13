@@ -40,13 +40,13 @@ void FirebirdFolderItem::loadChildren()
         DBObjectItem* childItem = nullptr;
         switch (childrenType()) {
         case DBObjectItem::Sequence:
-            childItem = plugin->dependency<DBSequenceItem>(QVariantHash());
+            childItem = Core::instance()->dependencyForDriver<DBSequenceItem>(driverName());
             break;
         case DBObjectItem::Procedure:
-            childItem = plugin->dependency<DBProcedureItem>(QVariantHash());
+            childItem = Core::instance()->dependencyForDriver<DBProcedureItem>(driverName());
             break;
         case DBObjectItem::Trigger:
-            childItem = plugin->dependency<DBTriggerItem>(QVariantHash());
+            childItem = Core::instance()->dependencyForDriver<DBTriggerItem>(driverName());
             break;
         default:
             break;

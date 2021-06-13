@@ -16,28 +16,7 @@
 
 PostgresPlugin::PostgresPlugin(QObject *parent) : IocPlugin(parent)
 {
-  registerDependency((new DependencyMeta("postgresDatabase", CLASSMETA(PostgresDatabase), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::Database));
-  registerDependency((new DependencyMeta("postgresTable", CLASSMETA(PostgresTable), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::Table));
-  registerDependency((new DependencyMeta("postgresView", CLASSMETA(PostgresViewItem), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::View));
-  registerDependency((new DependencyMeta("postgresFolder", CLASSMETA(PostgresFolderItem), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::Folder));
-  registerDependency((new DependencyMeta("postgresTrigger", CLASSMETA(PostgresTriggerItem), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::Trigger));
-  registerDependency((new DependencyMeta("postgresSequence", CLASSMETA(PostgresSequence), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::Sequence));
-  registerDependency((new DependencyMeta("postgresFunction", CLASSMETA(PostgresFunctionItem), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::Procedure));
-  registerDependency((new DependencyMeta("postgresPrimaryKey", CLASSMETA(PostgresPrimaryKey), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::PrimaryKey));
-  registerDependency((new DependencyMeta("postgresForeignKey", CLASSMETA(PostgresForeignKey), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::ForeignKey));
-  registerDependency((new DependencyMeta("postgresUnique", CLASSMETA(PostgresUniqueConstraint), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::UniqueConstraint));
-  registerDependency((new DependencyMeta("postgresCheck", CLASSMETA(PostgresCheckConstraint), InstanceMode::Prototype))
-                     ->setParam(F_TYPE, DBObjectItem::CheckConstraint));
+
 }
 
 QList<DBObjectItem::ItemType> PostgresPlugin::supportedTypes()
@@ -49,6 +28,44 @@ QList<DBObjectItem::ItemType> PostgresPlugin::supportedTypes()
   types.append(DBObjectItem::Procedure);
   types.append(DBObjectItem::Trigger);
   return types;
+}
+
+bool PostgresPlugin::registerPlugin(DependencyContainer *c)
+{
+    c->registerDependency((new DependencyMeta("postgresDatabase", CLASSMETA(PostgresDatabase), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::Database));
+    c->registerDependency((new DependencyMeta("postgresTable", CLASSMETA(PostgresTable), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::Table));
+    c->registerDependency((new DependencyMeta("postgresView", CLASSMETA(PostgresViewItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::View));
+    c->registerDependency((new DependencyMeta("postgresFolder", CLASSMETA(PostgresFolderItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::Folder));
+    c->registerDependency((new DependencyMeta("postgresTrigger", CLASSMETA(PostgresTriggerItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::Trigger));
+    c->registerDependency((new DependencyMeta("postgresSequence", CLASSMETA(PostgresSequence), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::Sequence));
+    c->registerDependency((new DependencyMeta("postgresFunction", CLASSMETA(PostgresFunctionItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::Procedure));
+    c->registerDependency((new DependencyMeta("postgresPrimaryKey", CLASSMETA(PostgresPrimaryKey), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::PrimaryKey));
+    c->registerDependency((new DependencyMeta("postgresForeignKey", CLASSMETA(PostgresForeignKey), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::ForeignKey));
+    c->registerDependency((new DependencyMeta("postgresUnique", CLASSMETA(PostgresUniqueConstraint), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::UniqueConstraint));
+    c->registerDependency((new DependencyMeta("postgresCheck", CLASSMETA(PostgresCheckConstraint), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)
+                       ->setParam(F_TYPE, DBObjectItem::CheckConstraint));
+    return true;
 }
 
 

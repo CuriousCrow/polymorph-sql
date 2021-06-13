@@ -2,7 +2,7 @@
 
 Core* Core::_singleton = nullptr;
 
-Core::Core(QObject *parent) : QObject(parent)
+Core::Core(QObject *parent) : DependencyContainer(parent)
 {
   qDebug() << "Core object created";
 }
@@ -16,7 +16,9 @@ Core *Core::instance(QObject *parent)
 
 void Core::registerPlugin(IocPlugin *plugin)
 {
-  plugin->setParent(instance());
+  Core* core = instance();
+  plugin->registerPlugin(core);
+  plugin->setParent(core);
   instance()->_plugins.append(plugin);
 }
 
@@ -55,4 +57,16 @@ QStringList Core::supportedDrivers() const
 QList<IocPlugin *> Core::plugins()
 {
     return _plugins;
+}
+
+AbstractDatabaseEditForm *Core::objectForm(const QString &driver, DBObjectItem::ItemType itemType)
+{
+    QVariantHash p;
+    p.insert(F_DRIVER_NAME, driver);
+    p.insert(F_TYPE, itemType);
+    AbstractDatabaseEditForm* form = dependency<AbstractDatabaseEditForm>(p);
+    if (form)
+        return form;
+    p.remove(F_DRIVER_NAME);
+    return dependency<AbstractDatabaseEditForm>(p);
 }

@@ -50,7 +50,7 @@ void DataStore::initRegisteredDatabases()
       qWarning() << "Can't load dbms plugin:" << driverName;
       continue;
     }
-    DBDatabaseItem* item = plugin->dependency<DBDatabaseItem>(QVariantHash());
+    DBDatabaseItem* item = Core::instance()->dependencyForDriver<DBDatabaseItem>(driverName);
     for (int i=0; i<rec.count(); i++) {
       item->setFieldValue(rec.fieldName(i), rec.value(i));
     }

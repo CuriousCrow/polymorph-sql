@@ -11,9 +11,7 @@
 
 MysqlPlugin::MysqlPlugin(QObject *parent) : IocPlugin(parent)
 {
-  registerDependency(new DependencyMeta("mysqlDatabaseItem", CLASSMETA(MysqlDatabase), InstanceMode::Prototype));
-  registerDependency(new DependencyMeta("mysqlFolderItem", CLASSMETA(MysqlFolderItem), InstanceMode::Prototype));
-  registerDependency(new DependencyMeta("mysqlTableItem", CLASSMETA(MysqlTableItem), InstanceMode::Prototype));
+
 }
 
 QList<DBObjectItem::ItemType> MysqlPlugin::supportedTypes()
@@ -27,6 +25,19 @@ QList<DBObjectItem::ItemType> MysqlPlugin::supportedTypes()
   return types;
 }
 
+bool MysqlPlugin::registerPlugin(DependencyContainer *c)
+{
+  c->registerDependency((new DependencyMeta("mysqlDatabaseItem", CLASSMETA(MysqlDatabase), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)
+                        ->setParam(F_TYPE, DBObjectItem::Database));
+  c->registerDependency((new DependencyMeta("mysqlFolderItem", CLASSMETA(MysqlFolderItem), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)
+                        ->setParam(F_TYPE, DBObjectItem::Folder));
+  c->registerDependency((new DependencyMeta("mysqlTableItem", CLASSMETA(MysqlTableItem), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)
+                        ->setParam(F_TYPE, DBObjectItem::Table));
+  return true;
+}
 
 QString MysqlPlugin::title()
 {

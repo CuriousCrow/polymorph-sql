@@ -11,6 +11,7 @@ public:
   PostgresPlugin(QObject *parent = nullptr);
 
   virtual QList<DBObjectItem::ItemType> supportedTypes() override;
+  virtual bool registerPlugin(DependencyContainer *c) override;
 
   // AbstractPlugin interface
 public:

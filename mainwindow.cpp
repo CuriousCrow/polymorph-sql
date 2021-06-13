@@ -39,15 +39,12 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerPlugin(new MysqlPlugin());
 
   qDebug() << "Connect edit forms with handler slot";
-  foreach(IocPlugin* plugin, Core::instance()->plugins()) {
-    if (!plugin->featureTypes().testFlag(FeatureType::DbmsForms))
-        continue;
-    QStringList formBeans = plugin->namesByClass<AbstractDatabaseEditForm>();
-    foreach(QString beanName, formBeans) {
-        qDebug() << "Form:" << beanName;
-        AbstractDatabaseEditForm* editForm = plugin->dependency<AbstractDatabaseEditForm>(beanName);
-        connect(editForm, &AbstractDatabaseEditForm::accepted, this, &MainWindow::saveObjectChanges);
-    }
+
+  QStringList formBeans = Core::instance()->namesByClass<AbstractDatabaseEditForm>();
+  foreach(QString beanName, formBeans) {
+      qDebug() << "Form:" << beanName;
+      AbstractDatabaseEditForm* editForm = Core::instance()->dependency<AbstractDatabaseEditForm>(beanName);
+      connect(editForm, &AbstractDatabaseEditForm::accepted, this, &MainWindow::saveObjectChanges);
   }
 
   //
@@ -126,7 +123,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
         break;
       IocPlugin* dbms = Core::plugin(dbItem->driverName(), FeatureType::DbmsObjects);
       foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
-        FolderTreeItem* folder = dbms->dependency<FolderTreeItem>(QVariantHash());
+        FolderTreeItem* folder = Core::instance()->dependencyForDriver<FolderTreeItem>(dbItem->driverName());
         folder->setParent(dbItem);
         folder->setParentUrl(dbItem->objectUrl());
         folder->setChildrenType(type);
@@ -236,10 +233,9 @@ void MainWindow::showEditorForCurrentItem()
 {
   qDebug() << "Request edit form";
   DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  IocPlugin* plugin = Core::plugin(currentItem->driverName(), FeatureType::DbmsForms);
   QVariantHash p;
   p.insert(F_TYPE, currentItem->type());
-  AbstractDatabaseEditForm* editForm = plugin->dependency<AbstractDatabaseEditForm>(p);
+  AbstractDatabaseEditForm* editForm = Core::instance()->dependency<AbstractDatabaseEditForm>(p);
   if (!editForm) {
     QMessageBox::warning(this, TITLE_WARNING, "Edit form isn't supported yet");
     return;
@@ -328,14 +324,11 @@ void MainWindow::showCreateItemEditor()
   }
   FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(currentItem);
   QString driverName = folderItem->driverName();
-  IocPlugin* plugin = Core::plugin(driverName, FeatureType::DbmsForms);
-  QVariantHash pForm;
-  pForm.insert(F_TYPE, folderItem->childrenType());
-  AbstractDatabaseEditForm* editForm = plugin->dependency<AbstractDatabaseEditForm>(pForm);
-  plugin = Core::plugin(driverName, FeatureType::DbmsObjects);
+  AbstractDatabaseEditForm* editForm = Core::instance()->objectForm(driverName, folderItem->childrenType());
   QVariantHash pObj;
   pObj.insert(F_TYPE, folderItem->childrenType());
-  DBObjectItem* newItem = plugin->dependency<DBObjectItem>(pObj);
+  pObj.insert(F_DRIVER_NAME, driverName);
+  DBObjectItem* newItem = Core::instance()->dependency<DBObjectItem>(pObj);
   newItem->setParentUrl(folderItem->objectUrl());
   editForm->setObjItem(newItem);
   editForm->setUserAction(AbstractDatabaseEditForm::Create);

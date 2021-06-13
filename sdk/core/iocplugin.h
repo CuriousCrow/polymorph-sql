@@ -6,11 +6,13 @@
 #include "../objects/dbobjectitem.h"
 #include "sdk/abstractpluginmanager.h"
 
-class IocPlugin : public DependencyContainer, public AbstractPlugin
+class IocPlugin : public QObject, public AbstractPlugin
 {
     Q_OBJECT
 public:
     IocPlugin(QObject *parent = nullptr);
+
+    virtual bool registerPlugin(DependencyContainer* container) = 0;
 
     virtual QList<DBObjectItem::ItemType> supportedTypes() = 0;
 };
