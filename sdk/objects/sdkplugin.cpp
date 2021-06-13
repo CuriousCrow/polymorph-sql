@@ -75,39 +75,34 @@ QString SdkPlugin::driver()
 
 bool SdkPlugin::registerPlugin(DependencyContainer *c)
 {
-    c->registerDependency((new DependencyMeta("baseTableObject", CLASSMETA(DBTableItem), InstanceMode::Prototype))
-                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)
-                          ->setParam(F_TYPE, DBObjectItem::Table));
-    c->registerDependency((new DependencyMeta("baseViewObject", CLASSMETA(DBViewItem), InstanceMode::Prototype))
-                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)
-                          ->setParam(F_TYPE, DBObjectItem::View));
-    c->registerDependency((new DependencyMeta("baseTriggerObject", CLASSMETA(DBTriggerItem), InstanceMode::Prototype))
-                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)
-                          ->setParam(F_TYPE, DBObjectItem::Trigger));
-    c->registerDependency((new DependencyMeta("baseProcedureObject", CLASSMETA(DBProcedureItem), InstanceMode::Prototype))
-                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)
-                          ->setParam(F_TYPE, DBObjectItem::Procedure));
-    c->registerDependency((new DependencyMeta("baseSequenceObject", CLASSMETA(DBSequenceItem), InstanceMode::Prototype))
-                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)
-                          ->setParam(F_TYPE, DBObjectItem::Sequence));
+    c->registerDependency(new DependencyMeta("baseTableObject", CLASSMETA(DBTableItem), InstanceMode::Prototype))
+                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)->setParam(F_TYPE, DBObjectItem::Table);
+    c->registerDependency(new DependencyMeta("baseViewObject", CLASSMETA(DBViewItem), InstanceMode::Prototype))
+                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)->setParam(F_TYPE, DBObjectItem::View);
+    c->registerDependency(new DependencyMeta("baseTriggerObject", CLASSMETA(DBTriggerItem), InstanceMode::Prototype))
+                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)->setParam(F_TYPE, DBObjectItem::Trigger);
+    c->registerDependency(new DependencyMeta("baseProcedureObject", CLASSMETA(DBProcedureItem), InstanceMode::Prototype))
+                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)->setParam(F_TYPE, DBObjectItem::Procedure);
+    c->registerDependency(new DependencyMeta("baseSequenceObject", CLASSMETA(DBSequenceItem), InstanceMode::Prototype))
+                          ->setParam(F_DRIVER_NAME, BASE_DRIVER)->setParam(F_TYPE, DBObjectItem::Sequence);
 
-    c->registerDependency((new DependencyMeta("baseTableForm", CLASSMETA(TableEditForm), InstanceMode::Singleton))
-                           ->setParam(F_TYPE, DBObjectItem::Table));
-    c->registerDependency((new DependencyMeta("baseViewForm", CLASSMETA(ViewEditDialog), InstanceMode::Singleton))
-                          ->setParam(F_TYPE, DBObjectItem::View));
-    c->registerDependency((new DependencyMeta("baseProcedureForm", CLASSMETA(ProcedureEditForm), InstanceMode::Singleton))
-                          ->setParam(F_TYPE, DBObjectItem::Procedure));
-    c->registerDependency((new DependencyMeta("baseSequenceForm", CLASSMETA(SequenceEditForm), InstanceMode::Singleton))
-                          ->setParam(F_TYPE, DBObjectItem::Sequence));
-    c->registerDependency((new DependencyMeta("baseTriggerForm", CLASSMETA(TriggerEditForm), InstanceMode::Singleton))
-                          ->setParam(F_TYPE, DBObjectItem::Trigger));
-    c->registerDependency((new DependencyMeta("baseConnectionForm", CLASSMETA(ConnectionEditDialog), InstanceMode::Singleton))
-                          ->setParam(F_TYPE, DBObjectItem::Database));
-    c->registerDependency((new DependencyMeta("baseForeignKeyForm", CLASSMETA(ForeignKeyForm), InstanceMode::Singleton))
-                          ->setParam(F_TYPE, DBObjectItem::ForeignKey));
-    c->registerDependency((new DependencyMeta("baseCheckForm", CLASSMETA(CheckConstraintEditForm), InstanceMode::Singleton))
-                          ->setParam(F_TYPE, DBObjectItem::CheckConstraint));
-    c->registerDependency((new DependencyMeta("baseUniqueForm", CLASSMETA(UniqueConstraintEditForm), InstanceMode::Singleton))
-                          ->setParam(F_TYPE, DBObjectItem::UniqueConstraint));
+    c->registerDependency(new DependencyMeta("baseTableForm", CLASSMETA(TableEditForm), InstanceMode::Singleton))
+                           ->setParam(F_TYPE, DBObjectItem::Table);
+    c->registerDependency(new DependencyMeta("baseViewForm", CLASSMETA(ViewEditDialog), InstanceMode::Singleton))
+                          ->setParam(F_TYPE, DBObjectItem::View);
+    c->registerDependency(new DependencyMeta("baseProcedureForm", CLASSMETA(ProcedureEditForm), InstanceMode::Singleton))
+                          ->setParam(F_TYPE, DBObjectItem::Procedure);
+    c->registerDependency(new DependencyMeta("baseSequenceForm", CLASSMETA(SequenceEditForm), InstanceMode::Singleton))
+                          ->setParam(F_TYPE, DBObjectItem::Sequence);
+    c->registerDependency(new DependencyMeta("baseTriggerForm", CLASSMETA(TriggerEditForm), InstanceMode::Singleton))
+                          ->setParam(F_TYPE, DBObjectItem::Trigger);
+    c->registerDependency(new DependencyMeta("baseConnectionForm", CLASSMETA(ConnectionEditDialog), InstanceMode::Singleton))
+                          ->setParam(F_TYPE, DBObjectItem::Database);
+    c->registerDependency(new DependencyMeta("baseForeignKeyForm", CLASSMETA(ForeignKeyForm), InstanceMode::Singleton))
+                          ->setParam(F_TYPE, DBObjectItem::ForeignKey);
+    c->registerDependency(new DependencyMeta("baseCheckForm", CLASSMETA(CheckConstraintEditForm), InstanceMode::Singleton))
+                          ->setParam(F_TYPE, DBObjectItem::CheckConstraint);
+    c->registerDependency(new DependencyMeta("baseUniqueForm", CLASSMETA(UniqueConstraintEditForm), InstanceMode::Singleton))
+                          ->setParam(F_TYPE, DBObjectItem::UniqueConstraint);
     return true;
 }

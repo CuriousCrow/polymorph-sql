@@ -19,13 +19,14 @@ DependencyContainer::~DependencyContainer()
     }
 }
 
-void DependencyContainer::registerDependency(DependencyMeta* meta)
+DependencyMeta *DependencyContainer::registerDependency(DependencyMeta *meta)
 {
     QStringList classes = meta->ancessors();
     foreach(QString className, classes) {
         _metaByClass.insert(className, meta);
     }
     _metaByName.insert(meta->name(), meta);
+    return meta;
 }
 
 QStringList DependencyContainer::namesByClass(QString className)

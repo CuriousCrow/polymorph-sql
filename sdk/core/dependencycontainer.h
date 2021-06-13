@@ -57,7 +57,7 @@ class DependencyContainer : public QObject
 public:
     explicit DependencyContainer(QObject *parent = nullptr);
     virtual ~DependencyContainer();
-    void registerDependency(DependencyMeta* meta);
+    DependencyMeta* registerDependency(DependencyMeta* meta);
 
     QStringList namesByClass(QString className);
 

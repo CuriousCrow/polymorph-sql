@@ -27,15 +27,12 @@ QList<DBObjectItem::ItemType> MysqlPlugin::supportedTypes()
 
 bool MysqlPlugin::registerPlugin(DependencyContainer *c)
 {
-  c->registerDependency((new DependencyMeta("mysqlDatabaseItem", CLASSMETA(MysqlDatabase), InstanceMode::Prototype))
-                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)
-                        ->setParam(F_TYPE, DBObjectItem::Database));
-  c->registerDependency((new DependencyMeta("mysqlFolderItem", CLASSMETA(MysqlFolderItem), InstanceMode::Prototype))
-                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)
-                        ->setParam(F_TYPE, DBObjectItem::Folder));
-  c->registerDependency((new DependencyMeta("mysqlTableItem", CLASSMETA(MysqlTableItem), InstanceMode::Prototype))
-                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)
-                        ->setParam(F_TYPE, DBObjectItem::Table));
+  c->registerDependency(new DependencyMeta("mysqlDatabaseItem", CLASSMETA(MysqlDatabase), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Database);
+  c->registerDependency(new DependencyMeta("mysqlFolderItem", CLASSMETA(MysqlFolderItem), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Folder);
+  c->registerDependency(new DependencyMeta("mysqlTableItem", CLASSMETA(MysqlTableItem), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Table);
   return true;
 }
 

@@ -23,15 +23,12 @@ QList<DBObjectItem::ItemType> FirebirdPlugin::supportedTypes()
 
 bool FirebirdPlugin::registerPlugin(DependencyContainer *c)
 {
-  c->registerDependency((new DependencyMeta("firebirdDatabase", CLASSMETA(FirebirdDatabase), InstanceMode::Prototype))
-                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)
-                        ->setParam(F_TYPE, DBObjectItem::Database));
-  c->registerDependency((new DependencyMeta("firebirdFolderItem", CLASSMETA(FirebirdFolderItem), InstanceMode::Prototype))
-                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)
-                        ->setParam(F_TYPE, DBObjectItem::Folder));
-  c->registerDependency((new DependencyMeta("firebirdTableItem", CLASSMETA(FirebirdTable), InstanceMode::Prototype))
-                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)
-                        ->setParam(F_TYPE, DBObjectItem::Table));
+  c->registerDependency(new DependencyMeta("firebirdDatabase", CLASSMETA(FirebirdDatabase), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Database);
+  c->registerDependency(new DependencyMeta("firebirdFolderItem", CLASSMETA(FirebirdFolderItem), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Folder);
+  c->registerDependency(new DependencyMeta("firebirdTableItem", CLASSMETA(FirebirdTable), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Table);
   return true;
 }
 

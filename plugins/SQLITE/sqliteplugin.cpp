@@ -24,18 +24,14 @@ QList<DBObjectItem::ItemType> SqlitePlugin::supportedTypes()
 
 bool SqlitePlugin::registerPlugin(DependencyContainer *c)
 {
-    c->registerDependency((new DependencyMeta("sqliteDatabase", CLASSMETA(SqliteDatabase), InstanceMode::Prototype))
-                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)
-                       ->setParam(F_TYPE, DBObjectItem::Database));
-    c->registerDependency((new DependencyMeta("sqliteFolder", CLASSMETA(SqliteFolderItem), InstanceMode::Prototype))
-                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)
-                       ->setParam(F_TYPE, DBObjectItem::Folder));
-    c->registerDependency((new DependencyMeta("sqliteTable", CLASSMETA(SqliteTableItem), InstanceMode::Prototype))
-                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)
-                       ->setParam(F_TYPE, DBObjectItem::Table));
-    c->registerDependency((new DependencyMeta("sqliteView", CLASSMETA(SqliteViewItem), InstanceMode::Prototype))
-                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)
-                       ->setParam(F_TYPE, DBObjectItem::View));
+    c->registerDependency(new DependencyMeta("sqliteDatabase", CLASSMETA(SqliteDatabase), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)->setParam(F_TYPE, DBObjectItem::Database);
+    c->registerDependency(new DependencyMeta("sqliteFolder", CLASSMETA(SqliteFolderItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)->setParam(F_TYPE, DBObjectItem::Folder);
+    c->registerDependency(new DependencyMeta("sqliteTable", CLASSMETA(SqliteTableItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)->setParam(F_TYPE, DBObjectItem::Table);
+    c->registerDependency(new DependencyMeta("sqliteView", CLASSMETA(SqliteViewItem), InstanceMode::Prototype))
+                       ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)->setParam(F_TYPE, DBObjectItem::View);
     return true;
 }
 
