@@ -51,7 +51,7 @@ void FolderTreeItem::loadTableItems()
     qDebug() << "loadTableItems()";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::Tables);
     foreach (QString name, tableNames){
-      DBTableItem* tableItem = Core::instance()->dependencyForDriver<DBTableItem>(driverName());
+      DBTableItem* tableItem = _core->dependencyForDriver<DBTableItem>(driverName());
       tableItem->setParent(this);
       tableItem->setFieldValue(F_CAPTION, name);
       tableItem->setParentUrl(objectUrl());
@@ -63,7 +63,7 @@ void FolderTreeItem::loadViewItems()
     qDebug() << "loadViewItems()";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::Views);
     foreach (QString name, tableNames){
-      DBViewItem* viewItem = Core::instance()->dependencyForDriver<DBViewItem>(driverName());
+      DBViewItem* viewItem = _core->dependencyForDriver<DBViewItem>(driverName());
       viewItem->setParent(this);
       viewItem->setFieldValue(F_CAPTION, name);
       viewItem->setParentUrl(objectUrl());
@@ -75,7 +75,7 @@ void FolderTreeItem::loadSystemTableItems()
     qDebug() << "loadSystemTableItems";
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
     foreach (QString name, tableNames){
-      DBTableItem* tableItem = Core::instance()->dependencyForDriver<DBTableItem>(driverName());
+      DBTableItem* tableItem = _core->dependencyForDriver<DBTableItem>(driverName());
       tableItem->setParent(this);
       tableItem->setFieldValue(F_CAPTION, name);
       tableItem->setParentUrl(objectUrl());

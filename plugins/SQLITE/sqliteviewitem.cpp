@@ -1,6 +1,6 @@
 #include "sqliteviewitem.h"
-#include "sdk/objects/appconst.h"
-#include "sdk/utils/qsqlqueryhelper.h"
+#include "objects/appconst.h"
+#include "utils/qsqlqueryhelper.h"
 
 
 SqliteViewItem::SqliteViewItem()

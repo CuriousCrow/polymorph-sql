@@ -1,7 +1,7 @@
 #ifndef DBSQLITETABLEITEM_H
 #define DBSQLITETABLEITEM_H
 
-#include "sdk/objects/dbtableitem.h"
+#include "objects/dbtableitem.h"
 
 class SqliteTableItem : public DBTableItem
 {

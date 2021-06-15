@@ -38,8 +38,10 @@ private:
   explicit Core(QObject *parent = nullptr);
   QList<IocPlugin*> _plugins;
   QHash<QString, IocPlugin*> _modules;
-//  DependencyContainer* _container;
   static Core* _singleton;
 };
+
+#define DemalexCore_iid "ru.levolex.demalexcore"
+Q_DECLARE_INTERFACE(Core, DemalexCore_iid)
 
 #endif // CORE_H

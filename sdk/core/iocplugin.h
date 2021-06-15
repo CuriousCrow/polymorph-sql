@@ -4,7 +4,7 @@
 #include "dependencycontainer.h"
 #include <QObject>
 #include "../objects/dbobjectitem.h"
-#include "sdk/abstractplugin.h"
+#include "../abstractplugin.h"
 
 class IocPlugin : public QObject, public AbstractPlugin
 {
@@ -16,5 +16,9 @@ public:
 
     virtual QList<DBObjectItem::ItemType> supportedTypes() = 0;
 };
+
+#define IocPlugin_iid "ru.levolex.iocplugin"
+Q_DECLARE_INTERFACE(IocPlugin, IocPlugin_iid)
+
 
 #endif // IOCPLUGIN_H

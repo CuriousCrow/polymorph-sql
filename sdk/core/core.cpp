@@ -1,5 +1,7 @@
 #include "core.h"
 
+#define COREBEAN "core"
+
 Core* Core::_singleton = nullptr;
 
 Core::Core(QObject *parent) : DependencyContainer(parent)
@@ -9,8 +11,11 @@ Core::Core(QObject *parent) : DependencyContainer(parent)
 
 Core *Core::instance(QObject *parent)
 {
-  if (!_singleton)
+  if (!_singleton) {
     _singleton = new Core(parent);
+    DependencyMeta* meta = new DependencyMeta(COREBEAN, CLASSMETA(Core), InstanceMode::Singleton);
+    _singleton->registerSingletonObject(meta, _singleton);
+  }
   return _singleton;
 }
 

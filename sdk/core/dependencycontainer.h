@@ -9,9 +9,6 @@
 #include <QVariantMap>
 
 
-//TODO: ÐŸÐ¾Ð¸ÑÐº Ð±Ð¸Ð½Ð° Ð¿Ð¾ ÐºÐ»Ð°ÑÑÑƒ. ÐÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ ÑƒÐ¼ÐµÑ‚ÑŒ ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð±Ð¸Ð½Ñ‹
-//TODO: ÐŸÐ¾Ð¸ÑÐº Ð±Ð¸Ð½Ð° Ð¿Ð¾ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð»ÑŒÐ½Ð¾Ð¼Ñƒ Ð½Ð°Ð±Ð¾Ñ€Ñƒ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð². Ð’ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¶Ðµ Ð¼Ð¾Ð¶Ð½Ð¾ Ð·Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°Ñ‚ÑŒ Ð¸ ÐºÐ»Ð°ÑÑÑ‹ Ð²ÑÐµÑ… Ð¿Ñ€ÐµÐ´ÐºÐ¾Ð²
-
 #define INJECT_PREFIX "inject_"
 #define INJECT(Type, Name) Type _##Name; Q_INVOKABLE void inject_##Name(QObject* obj){ _##Name = qobject_cast<Type>(obj); }
 #define CLASS(Type) Type::staticMetaObject.className()
@@ -58,6 +55,7 @@ public:
     explicit DependencyContainer(QObject *parent = nullptr);
     virtual ~DependencyContainer();
     DependencyMeta* registerDependency(DependencyMeta* meta);
+    DependencyMeta* registerSingletonObject(DependencyMeta* meta, QObject* object);
 
     QStringList namesByClass(QString className);
 
@@ -89,7 +87,7 @@ private:
     QHash<QString, QObject*> _singletonHash; //all instaciated singletons
 };
 
-#define DependencyContainer_iid "ru.levolex.testinterface"
+#define DependencyContainer_iid "ru.levolex.dependencycontainer"
 Q_DECLARE_INTERFACE(DependencyContainer, DependencyContainer_iid)
 
 

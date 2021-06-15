@@ -2,6 +2,8 @@
 #define FOLDERTREEITEM_H
 
 #include "dbobjectitem.h"
+#include "../core/core.h"
+#include "../core/dependencycontainer.h"
 
 class FolderTreeItem : public DBObjectItem
 {
@@ -12,6 +14,8 @@ public:
 
   DBObjectItem::ItemType childrenType() const;
   void setChildrenType(DBObjectItem::ItemType childrenType);
+
+  INJECT(Core*, core)
 protected:
   QString typeName(DBObjectItem::ItemType type);
   virtual QString folderName(DBObjectItem::ItemType type);

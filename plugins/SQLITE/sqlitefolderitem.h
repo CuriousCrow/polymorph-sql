@@ -1,7 +1,7 @@
 #ifndef SQLITEFOLDERITEM_H
 #define SQLITEFOLDERITEM_H
 
-#include "sdk/objects/foldertreeitem.h"
+#include "objects/foldertreeitem.h"
 #include <QObject>
 
 class SqliteFolderItem : public FolderTreeItem

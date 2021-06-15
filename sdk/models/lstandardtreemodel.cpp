@@ -109,11 +109,11 @@ QModelIndex LStandardTreeModel::index(int row, int column, const QModelIndex &pa
   LAbstractTreeItem* childItem;
 
   if (!parent.isValid()){
-    childItem = qobject_cast<LAbstractTreeItem*>(children().at(row));
+    childItem = static_cast<LAbstractTreeItem*>(children().at(row));
   }
   else {
     LAbstractTreeItem* parentItem = itemByIndex(parent);
-    childItem = qobject_cast<LAbstractTreeItem*>(parentItem->children().at(row));
+    childItem = static_cast<LAbstractTreeItem*>(parentItem->children().at(row));
   }
   if (childItem){
     return createIndex(row, column, childItem);
@@ -127,7 +127,7 @@ QModelIndex LStandardTreeModel::parent(const QModelIndex &child) const
 {
   LAbstractTreeItem* childItem = itemByIndex(child);
   if (childItem->parent()->inherits("LAbstractTreeItem")){
-    LAbstractTreeItem* parentItem = qobject_cast<LAbstractTreeItem*>(childItem->parent());
+    LAbstractTreeItem* parentItem = static_cast<LAbstractTreeItem*>(childItem->parent());
     QObject* grandParent = parentItem->parent();
     return createIndex(grandParent->children().indexOf(parentItem), 0, parentItem);
   }
@@ -155,12 +155,12 @@ int LStandardTreeModel::columnCount(const QModelIndex &parent) const
     LAbstractTreeItem* parentItem = itemByIndex(parent);
     if (parentItem->children().isEmpty())
       return 1;
-    firstChildItem = qobject_cast<LAbstractTreeItem*>(parentItem->children().at(0));
+    firstChildItem = static_cast<LAbstractTreeItem*>(parentItem->children().at(0));
   }
   else {
     if (children().isEmpty())
       return 1;
-    firstChildItem = qobject_cast<LAbstractTreeItem*>(children().at(0));
+    firstChildItem = static_cast<LAbstractTreeItem*>(children().at(0));
   }
   return firstChildItem->colCount();
 }
@@ -197,7 +197,7 @@ bool LStandardTreeModel::removeRows(int row, int count, const QModelIndex &paren
   if (row < 0 || count <= 0)
     return false;
   //TODO: Here should be existance check of some sort
-  QObject* parentObj = parent.isValid() ? itemByIndex(parent) : qobject_cast<QObject*>(this);
+  QObject* parentObj = parent.isValid() ? itemByIndex(parent) : static_cast<QObject*>(this);
 
   beginRemoveRows(parent, row, row + count - 1);
   for (int i=0; i<count; i++){

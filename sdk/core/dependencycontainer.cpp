@@ -29,6 +29,16 @@ DependencyMeta *DependencyContainer::registerDependency(DependencyMeta *meta)
     return meta;
 }
 
+DependencyMeta *DependencyContainer::registerSingletonObject(DependencyMeta *meta, QObject *object)
+{
+    if (meta->mode() != InstanceMode::Singleton) {
+        qWarning() << "RegisterSingletonObject method only with singleton mode";
+        return nullptr;
+    }
+    _singletonHash.insert(meta->name(), object);
+    return registerDependency(meta);
+}
+
 QStringList DependencyContainer::namesByClass(QString className)
 {
     QStringList resList;
@@ -84,10 +94,13 @@ QObject *DependencyContainer::dependency(const QString &name)
             QString dependencyName = methodName;
             dependencyName.remove(INJECT_PREFIX);
             QObject* dependencyObj = dependency(dependencyName);
-            if (!dependencyObj)
+            if (!dependencyObj) {
+                qWarning() << "Can't get dependency of name" << dependencyName;
                 continue;
-            qDebug() << "Inject bean:" << methodName;
-            metaObj->invokeMethod(newObj, methodName.toLocal8Bit(), Qt::DirectConnection, Q_ARG(QObject*, dependencyObj));
+            }
+            qDebug() << "Invoke inject bean method:" << methodName;
+            bool injectResult = metaObj->invokeMethod(newObj, methodName.toLocal8Bit(), Qt::DirectConnection, Q_ARG(QObject*, dependencyObj));
+            qDebug() << "Inject method result:" << injectResult;
         }
 
     }

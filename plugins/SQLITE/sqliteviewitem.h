@@ -2,7 +2,7 @@
 #define SQLITEVIEWITEM_H
 
 #include <QObject>
-#include "sdk/objects/dbviewitem.h"
+#include "objects/dbviewitem.h"
 
 class SqliteViewItem : public DBViewItem
 {

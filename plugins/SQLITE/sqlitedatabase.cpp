@@ -1,7 +1,7 @@
 #include "sqlitedatabase.h"
-#include "sdk/objects/foldertreeitem.h"
-#include "sdk/objects/dbtableitem.h"
-#include "sdk/objects/appconst.h"
+#include "objects/foldertreeitem.h"
+#include "objects/dbtableitem.h"
+#include "objects/appconst.h"
 #include "sqlitetable.h"
 
 

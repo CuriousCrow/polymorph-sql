@@ -1,10 +1,10 @@
 #include "sqliteplugin.h"
-#include "sdk/objects/appconst.h"
+#include "objects/appconst.h"
 #include "sqlitedatabase.h"
 #include "sqlitetable.h"
 #include "sqliteviewitem.h"
 #include "sqlitefolderitem.h"
-#include "sdk/objects/dbsequenceitem.h"
+#include "objects/dbsequenceitem.h"
 
 
 SqlitePlugin::SqlitePlugin(QObject *parent) : IocPlugin(parent)

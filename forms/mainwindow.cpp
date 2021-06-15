@@ -22,6 +22,9 @@
 #include "plugins/SQLITE/sqliteplugin.h"
 #include "plugins/FIREBIRD/firebirdplugin.h"
 #include "plugins/MYSQL/mysqlplugin.h"
+#include <QPluginLoader>
+
+//#define SINGLEAPP
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -33,10 +36,25 @@ MainWindow::MainWindow(QWidget *parent) :
   //Loading DBMS plugins
   Core::instance(this);
   Core::registerPlugin(new SdkPlugin());
+
+#ifdef SINGLEAPP
   Core::registerPlugin(new PostgresPlugin());
   Core::registerPlugin(new SqlitePlugin());
-  Core::registerPlugin(new FirebirdPlugin());
-  Core::registerPlugin(new MysqlPlugin());
+//  Core::registerPlugin(new FirebirdPlugin());
+//  Core::registerPlugin(new MysqlPlugin());
+#else
+  Core::registerPlugin(new PostgresPlugin());
+  QPluginLoader* pluginLoader = new QPluginLoader(this);
+  pluginLoader->setFileName("plugins/SqlitePlugin");
+  IocPlugin* plugin = qobject_cast<IocPlugin*>(pluginLoader->instance());
+  if (plugin) {
+      qDebug() << "Plugin is successfully loaded:" << plugin->title();
+      Core::registerPlugin(plugin);
+  }
+  else {
+      qDebug() << "Plugin not loaded:" << pluginLoader->errorString();
+  }
+#endif
 
   qDebug() << "Connect edit forms with handler slot";
 
@@ -116,7 +134,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
   DBObjectItem* objectItem = itemByIndex(index);
   switch (objectItem->type()) {
   case DBObjectItem::Database: {
-    DBDatabaseItem* dbItem = qobject_cast<DBDatabaseItem*>(objectItem);
+    DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(objectItem);
     //Database connection (loading database items)
     if (dbItem->children().isEmpty()){
       if (!dbItem->createDbConnection())
@@ -148,7 +166,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
   case DBObjectItem::Table:
   case DBObjectItem::View: {
     //Show or add table editor
-    DBSelectableItem* tableItem = qobject_cast<DBSelectableItem*>(objectItem);
+    DBSelectableItem* tableItem = static_cast<DBSelectableItem*>(objectItem);
     openTableEditor(tableItem);
     break;
   }
@@ -162,7 +180,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_tvDatabaseStructure_clicked(const QModelIndex &index)
 {
-  DBObjectItem* curItem = qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
+  DBObjectItem* curItem = static_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
   qDebug() << "Obj url:" << curItem->objectName();
 
   ui->aEditDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
@@ -298,7 +316,7 @@ void MainWindow::reloadItemChildren()
 {
   QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
   DataStore::structureModel()->deleteChildren(curIdx);
-  FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(itemByIndex(curIdx));
+  FolderTreeItem* folderItem = static_cast<FolderTreeItem*>(itemByIndex(curIdx));
 
   qDebug() << "Folder" << folderItem->caption() << "refresh request";
 
@@ -322,7 +340,7 @@ void MainWindow::showCreateItemEditor()
     qWarning() << "Create item action: Not folder item";
     return;
   }
-  FolderTreeItem* folderItem = qobject_cast<FolderTreeItem*>(currentItem);
+  FolderTreeItem* folderItem = static_cast<FolderTreeItem*>(currentItem);
   QString driverName = folderItem->driverName();
   AbstractDatabaseEditForm* editForm = Core::instance()->objectForm(driverName, folderItem->childrenType());
   QVariantHash pObj;
@@ -340,7 +358,7 @@ void MainWindow::showCreateItemEditor()
 
 void MainWindow::saveDatabaseChanges()
 {
-  AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
+  AbstractDatabaseEditForm* editForm = static_cast<AbstractDatabaseEditForm*>(sender());
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
     DBObjectItem* newItem = editForm->objItem();
@@ -354,7 +372,7 @@ void MainWindow::saveDatabaseChanges()
 
 void MainWindow::saveObjectChanges()
 {
-    AbstractDatabaseEditForm* editForm = qobject_cast<AbstractDatabaseEditForm*>(sender());
+    AbstractDatabaseEditForm* editForm = static_cast<AbstractDatabaseEditForm*>(sender());
     AbstractDatabaseEditForm::UserAction action = editForm->userAction();
     if (action == AbstractDatabaseEditForm::Create) {
       DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
@@ -369,18 +387,18 @@ void MainWindow::saveObjectChanges()
 
 DBObjectItem *MainWindow::itemByIndex(QModelIndex index)
 {
-  return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
+  return static_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
 }
 
 DBObjectItem *MainWindow::itemByName(QString name)
 {
-  return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByName(name));
+  return static_cast<DBObjectItem*>(DataStore::structureModel()->itemByName(name));
 }
 
 void MainWindow::refreshConnectionList()
 {
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
-    QueryEditorWindow* editor = qobject_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
+    QueryEditorWindow* editor = static_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)
       editor->refreshConnectionList();
   }
@@ -389,7 +407,7 @@ void MainWindow::refreshConnectionList()
 void MainWindow::refreshQueryEditorAssistance()
 {
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
-    QueryEditorWindow* editor = qobject_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
+    QueryEditorWindow* editor = static_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)
       editor->reloadKnowledgeModel();
   }
@@ -401,7 +419,7 @@ void MainWindow::showItemInfoWidget(DBObjectItem *dbItem)
   case DBObjectItem::Table:
   case DBObjectItem::View:
     //Show or add table editor
-    DBSelectableItem* tableItem = qobject_cast<DBSelectableItem*>(dbItem);
+    DBSelectableItem* tableItem = static_cast<DBSelectableItem*>(dbItem);
     openTableEditor(tableItem);
     break;
   }

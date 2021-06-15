@@ -2,7 +2,7 @@
 #include "ui_foreignkeyform.h"
 #include <QDebug>
 #include "../objects/appconst.h"
-#include "sdk/core/datastore.h"
+#include "../core/datastore.h"
 #include "../objects/appurl.h"
 
 ForeignKeyForm::ForeignKeyForm(QWidget *parent) :

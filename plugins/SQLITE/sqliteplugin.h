@@ -2,11 +2,13 @@
 #define SQLITEPLUGIN_H
 
 #include <QObject>
-#include "sdk/core/iocplugin.h"
+#include "core/iocplugin.h"
 
 class SqlitePlugin : public IocPlugin
 {
   Q_OBJECT
+  Q_PLUGIN_METADATA(IID IocPlugin_iid FILE "SqlitePlugin.json")
+  Q_INTERFACES(IocPlugin)
 public:
   SqlitePlugin(QObject *parent = nullptr);
   virtual QList<DBObjectItem::ItemType> supportedTypes() override;

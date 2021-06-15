@@ -1,11 +1,7 @@
 #include "qstructureitemmodel.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "plugins/FIREBIRD/firebirddatabase.h"
-#include "plugins/SQLITE/sqlitedatabase.h"
-#include "plugins/MYSQL/mysqldatabase.h"
-#include "plugins/POSTGRES/postgresdatabase.h"
-#include "sdk/objects/appconst.h"
+#include "../objects/appconst.h"
 #include <QDebug>
 #include "../objects/appurl.h"
 #include "../utils/qsqlqueryhelper.h"
@@ -34,7 +30,7 @@ void QStructureItemModel::appendItem(DBObjectItem *item, QModelIndex parent)
 {
   addItem(item, parent);
   if (parent.isValid()) {
-    DBObjectItem* parentItem = qobject_cast<DBObjectItem*>(itemByIndex(parent));
+    DBObjectItem* parentItem = static_cast<DBObjectItem*>(itemByIndex(parent));
     Q_ASSERT(parentItem);
     item->setParentUrl(parentItem->objectUrl());
   }
@@ -47,7 +43,7 @@ QModelIndex QStructureItemModel::indexByUrl(const AppUrl &url)
 
 DBObjectItem *QStructureItemModel::itemByUrl(const AppUrl &url)
 {
-  return qobject_cast<DBObjectItem*>(itemByName(url.toString()));
+  return static_cast<DBObjectItem*>(itemByName(url.toString()));
 }
 
 bool QStructureItemModel::deleteChildren(QModelIndex parent)
@@ -58,7 +54,7 @@ bool QStructureItemModel::deleteChildren(QModelIndex parent)
 void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)
 {
   for (int row=first; row<last; row++){
-    DBObjectItem* item = qobject_cast<DBObjectItem*>(itemByIndex(index(row, 0, parent)));
+    DBObjectItem* item = static_cast<DBObjectItem*>(itemByIndex(index(row, 0, parent)));
     emit itemAboutToBeRemoved(item->objectUrl().toString());
   }
 }
@@ -66,7 +62,7 @@ void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int firs
 
 Qt::ItemFlags QStructureItemModel::flags(const QModelIndex &index) const
 {
-  DBObjectItem* item = qobject_cast<DBObjectItem*>(itemByIndex(index));
+  DBObjectItem* item = static_cast<DBObjectItem*>(itemByIndex(index));
   if ((item->type() == DBObjectItem::Database)
       && item->children().count() > 0){
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
