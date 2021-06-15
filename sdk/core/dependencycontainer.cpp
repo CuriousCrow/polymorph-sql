@@ -10,6 +10,7 @@ DependencyContainer::DependencyContainer(QObject *parent) : QObject(parent)
 DependencyContainer::~DependencyContainer()
 {
     qDebug() << "Dependency container destructor";
+
     while(!_singletonHash.isEmpty()) {
         QStringList keys = _singletonHash.keys();
         QString name = keys.first();
@@ -37,6 +38,11 @@ DependencyMeta *DependencyContainer::registerSingletonObject(DependencyMeta *met
     }
     _singletonHash.insert(meta->name(), object);
     return registerDependency(meta);
+}
+
+void DependencyContainer::removeSingleton(QString name)
+{
+    _singletonHash.remove(name);
 }
 
 QStringList DependencyContainer::namesByClass(QString className)

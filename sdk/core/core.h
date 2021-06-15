@@ -36,6 +36,7 @@ public slots:
 
 private:
   explicit Core(QObject *parent = nullptr);
+  ~Core();
   QList<IocPlugin*> _plugins;
   QHash<QString, IocPlugin*> _modules;
   static Core* _singleton;

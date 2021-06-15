@@ -135,7 +135,7 @@ DBObjectItem *QueryEditorWindow::dbObject()
   QModelIndex proxyIndex = _activeConnectionModel->index(ui->cmbDatabase->currentIndex(), 0);
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
-  return qobject_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(sourceIndex));
+  return static_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(sourceIndex));
 }
 
 QString QueryEditorWindow::aliasSource(QString alias)
@@ -179,7 +179,7 @@ QString QueryEditorWindow::generateAlias(QString tableName)
 
 void QueryEditorWindow::reloadKnowledgeModel()
 {
-  DBDatabaseItem* dbObj = qobject_cast<DBDatabaseItem*>(dbObject());
+  DBDatabaseItem* dbObj = static_cast<DBDatabaseItem*>(dbObject());
   _knowledgeModel->clear();
 
   _objectsModel->setQuery(dbObj->getAllObjectListSql());
@@ -275,7 +275,7 @@ void QueryEditorWindow::onCompleterRequested(const QString &contextText)
       DBObjectItem* item = DataStore::itemByFolderAndName(dbObject(), FOLDER_TABLES, objName.toLower());
       if (item && item->type() == DBObjectItem::Table) {
         qDebug() << "Table object found";
-        DBTableItem* tableItem = qobject_cast<DBTableItem*>(item);
+        DBTableItem* tableItem = static_cast<DBTableItem*>(item);
         tableItem->reloadColumnsModel();
         _completer->setModel(tableItem->columnsModel());
         _completer->setMinCompletionPrefixLength(0);
@@ -292,7 +292,7 @@ void QueryEditorWindow::onCompleterRequested(const QString &contextText)
 
 void QueryEditorWindow::on_aQueryHistory_triggered()
 {
-  DBDatabaseItem* dbObj = qobject_cast<DBDatabaseItem*>(dbObject());
+  DBDatabaseItem* dbObj = static_cast<DBDatabaseItem*>(dbObject());
   if (dbObj) {
     QueryHistoryForm* historyForm = QueryHistoryForm::instance(dbObj->fieldValue(F_ID).toInt());
     connect(historyForm, &QueryHistoryForm::accepted,
@@ -304,7 +304,7 @@ void QueryEditorWindow::on_aQueryHistory_triggered()
 
 void QueryEditorWindow::onHistoryClosed()
 {
-  QueryHistoryForm* historyForm = qobject_cast<QueryHistoryForm*>(sender());
+  QueryHistoryForm* historyForm = static_cast<QueryHistoryForm*>(sender());
   if (historyForm->result()) {
     ui->teQueryEditor->setPlainText(historyForm->selectedQuery());
   }

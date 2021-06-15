@@ -91,7 +91,7 @@ int DataStore::databaseIdFromItem(DBObjectItem *item)
 {
   DBObjectItem* curItem = item;
   while(curItem && curItem->type() != DBObjectItem::Database) {
-      curItem = qobject_cast<DBObjectItem*>(curItem->parent());
+      curItem = static_cast<DBObjectItem*>(curItem->parent());
   }
   return curItem ? curItem->fieldValue(F_ID).toInt() : -1;
 }

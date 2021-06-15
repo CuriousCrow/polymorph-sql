@@ -91,10 +91,12 @@ QModelIndex LStandardTreeModel::indexByName(QString name)
   return createIndex(itemRow, 0, item);
 }
 
+//TODO: findChild doesnt work with Items from plugins
 QModelIndex LStandardTreeModel::indexByItem(LAbstractTreeItem *item)
 {
-  if (!item || !findChild<LAbstractTreeItem*>(item->objectName()))
+  if (!item){  // || !findChild<LAbstractTreeItem*>(item->objectName())){
     return QModelIndex();
+  }
 
   QObject* parentObj = item->parent();
   int itemRow = parentObj->children().indexOf(item);

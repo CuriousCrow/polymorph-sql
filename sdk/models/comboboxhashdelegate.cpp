@@ -35,13 +35,13 @@ QWidget *ComboboxHashDelegate::createEditor(QWidget *parent, const QStyleOptionV
 
 void ComboboxHashDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-  QComboBox* combo = qobject_cast<QComboBox*>(editor);
+  QComboBox* combo = static_cast<QComboBox*>(editor);
   combo->setCurrentText(index.data().toString());
 }
 
 void ComboboxHashDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-  QComboBox* combo = qobject_cast<QComboBox*>(editor);
+  QComboBox* combo = static_cast<QComboBox*>(editor);
   model->setData(index, combo->currentData());
 }
 

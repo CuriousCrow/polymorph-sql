@@ -137,25 +137,25 @@ bool LTextCompleter::isMultilineEditor()
 QTextCursor LTextCompleter::textCursor()
 {
   if (widget()->inherits(QPlainTextEdit::staticMetaObject.className()))
-    return (qobject_cast<QPlainTextEdit*>(widget()))->textCursor();
+    return (static_cast<QPlainTextEdit*>(widget()))->textCursor();
   else
-    return (qobject_cast<QTextEdit*>(widget()))->textCursor();
+    return (static_cast<QTextEdit*>(widget()))->textCursor();
 }
 
 QRect LTextCompleter::cursorRect()
 {
   if (widget()->inherits(QPlainTextEdit::staticMetaObject.className()))
-    return (qobject_cast<QPlainTextEdit*>(widget()))->cursorRect();
+    return (static_cast<QPlainTextEdit*>(widget()))->cursorRect();
   else
-    return (qobject_cast<QTextEdit*>(widget()))->cursorRect();
+    return (static_cast<QTextEdit*>(widget()))->cursorRect();
 }
 
 void LTextCompleter::setTextCursor(QTextCursor cursor)
 {
   if (widget()->inherits(QPlainTextEdit::staticMetaObject.className()))
-    return (qobject_cast<QPlainTextEdit*>(widget()))->setTextCursor(cursor);
+    return (static_cast<QPlainTextEdit*>(widget()))->setTextCursor(cursor);
   else
-    return (qobject_cast<QTextEdit*>(widget()))->setTextCursor(cursor);
+    return (static_cast<QTextEdit*>(widget()))->setTextCursor(cursor);
 }
 
 

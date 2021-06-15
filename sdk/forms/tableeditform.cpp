@@ -36,7 +36,7 @@ void TableEditForm::objectToForm()
   QString tableName = _objItem->caption();
   setWindowTitle("Table editor: " + tableName);
   ui->lineEdit->setText(tableName);
-  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   tableItem->reloadColumnsModel();
 
   _colTypeDelegate->setItemsHash(QKnowledgeBase::kb()->typesHash(_objItem->driverName()));
@@ -64,14 +64,14 @@ void TableEditForm::on_pushButton_2_clicked()
 
 void TableEditForm::on_btnAdd_clicked()
 {
-  qobject_cast<DBTableItem*>(_objItem)->addDefaultColumn();
+  static_cast<DBTableItem*>(_objItem)->addDefaultColumn();
 }
 
 void TableEditForm::on_btnDelete_clicked()
 {
   int selectedRow = ui->tableView->currentIndex().row();
   if (selectedRow >= 0) {
-    qobject_cast<DBTableItem*>(_objItem)->columnsModel()->removeRow(selectedRow);
+    static_cast<DBTableItem*>(_objItem)->columnsModel()->removeRow(selectedRow);
   }
   else {
     QMessageBox::warning(this, tr(TITLE_WARNING), "Please, select the column you want to drop");
@@ -86,7 +86,7 @@ void TableEditForm::on_btnDropConstraint_clicked()
 
   QString constraintName = ui->tvConstraints->model()->index(curIdx.row(), 1).data().toString();
   qDebug() << "Deleting constraint:" << constraintName;
-  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   DBConstraintItem* constraintItem = new DBConstraintItem(constraintName);
   constraintItem->setParentUrl(tableItem->objectUrl());
   constraintItem->setFieldValue(F_TABLE, tableItem->caption());
@@ -104,7 +104,7 @@ void TableEditForm::on_btnDropConstraint_clicked()
 void TableEditForm::onShowPrimaryKeyEditor()
 {
   qDebug() << "Show unique constraint editor";
-  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   UniqueConstraintEditForm* primaryKeyForm = new UniqueConstraintEditForm(this);
   primaryKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBConstraintItem* newPkObj = tableItem->newPrimaryKey();
@@ -123,7 +123,7 @@ void TableEditForm::onShowPrimaryKeyEditor()
 void TableEditForm::onShowForeignKeyEditor()
 {
   qDebug() << "Show foreign key editor";
-  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   ForeignKeyForm* foreignKeyForm = new ForeignKeyForm(this);
   foreignKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBForeignKey* newFkObj = tableItem->newForeignKey();
@@ -141,7 +141,7 @@ void TableEditForm::onShowForeignKeyEditor()
 void TableEditForm::onShowUniqueConstraintEditor()
 {
   qDebug() << "Show unique constraint editor";
-  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   UniqueConstraintEditForm* uniqueKeyForm = new UniqueConstraintEditForm(this);
   uniqueKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBUniqueConstraint* newFkObj = tableItem->newUniqueConstraint();
@@ -160,7 +160,7 @@ void TableEditForm::onShowUniqueConstraintEditor()
 void TableEditForm::onShowCheckConstraintEditor()
 {
   qDebug() << "Show check constraint editor";
-  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   CheckConstraintEditForm* checkConstraintForm = new CheckConstraintEditForm(this);
   checkConstraintForm->setUserAction(AbstractDatabaseEditForm::Create);
   DBCheckConstraint* newCheckObj = tableItem->newCheckConstraint();
@@ -178,7 +178,7 @@ void TableEditForm::onShowCheckConstraintEditor()
 
 void TableEditForm::onNewConstraintApply()
 {
-  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   sender()->deleteLater();
   tableItem->reloadConstraintsModel();
 }
@@ -190,7 +190,7 @@ void TableEditForm::onNewConstraintCancel()
 
 void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
 {
-  DBTableItem* tableItem = qobject_cast<DBTableItem*>(_objItem);
+  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
 
   QAbstractTableModel* model = tableItem->constraintsModel();
   QString constType = model->index(index.row(), 0).data().toString();

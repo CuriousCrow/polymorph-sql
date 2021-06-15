@@ -15,7 +15,9 @@ public:
   DBObjectItem::ItemType childrenType() const;
   void setChildrenType(DBObjectItem::ItemType childrenType);
 
-  INJECT(Core*, core)
+  void setCore(Core* core);
+  INJECT(Core*, core);
+
 protected:
   QString typeName(DBObjectItem::ItemType type);
   virtual QString folderName(DBObjectItem::ItemType type);

@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerPlugin(new PostgresPlugin());
   QPluginLoader* pluginLoader = new QPluginLoader(this);
   pluginLoader->setFileName("plugins/SqlitePlugin");
-  IocPlugin* plugin = qobject_cast<IocPlugin*>(pluginLoader->instance());
+  IocPlugin* plugin = static_cast<IocPlugin*>(pluginLoader->instance());
   if (plugin) {
       qDebug() << "Plugin is successfully loaded:" << plugin->title();
       Core::registerPlugin(plugin);
@@ -142,6 +142,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       IocPlugin* dbms = Core::plugin(dbItem->driverName(), FeatureType::DbmsObjects);
       foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
         FolderTreeItem* folder = Core::instance()->dependencyForDriver<FolderTreeItem>(dbItem->driverName());
+//        folder->setCore(Core::instance());
         folder->setParent(dbItem);
         folder->setParentUrl(dbItem->objectUrl());
         folder->setChildrenType(type);
@@ -372,11 +373,13 @@ void MainWindow::saveDatabaseChanges()
 
 void MainWindow::saveObjectChanges()
 {
+    qDebug() << "saveObjectChanges() slot called by Dialog accept";
     AbstractDatabaseEditForm* editForm = static_cast<AbstractDatabaseEditForm*>(sender());
     AbstractDatabaseEditForm::UserAction action = editForm->userAction();
     if (action == AbstractDatabaseEditForm::Create) {
       DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
       DBObjectItem* newItem = editForm->objItem();
+      qDebug() << "appendItem():" << folderItem->objectName();
       DataStore::structureModel()->appendItem(newItem, folderItem);
       refreshQueryEditorAssistance();
     }

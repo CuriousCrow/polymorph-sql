@@ -13,7 +13,7 @@ TableBrowserDelegate::TableBrowserDelegate(DBSelectableItem* item, QObject *pare
   _foreignTable = new UniSqlTableModel(this, QSqlDatabase::database(item->connectionName()));
 
   if (item->type() == DBObjectItem::Table) {
-      DBTableItem* tableItem = qobject_cast<DBTableItem*>(item);
+      DBTableItem* tableItem = static_cast<DBTableItem*>(item);
       QAbstractTableModel* constraints = tableItem->constraintsModel();
       for(int i=0; i<constraints->rowCount(); i++) {
         QString type = constraints->data(constraints->index(i, 0)).toString();
@@ -64,7 +64,7 @@ void TableBrowserDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
 
   }
   else if (index.column() == BLOB_COL) {
-    qobject_cast<BlobEditor*>(editor)->setData(index.data().toByteArray());
+    static_cast<BlobEditor*>(editor)->setData(index.data().toByteArray());
   }
   else {
     return QStyledItemDelegate::setEditorData(editor, index);
@@ -76,11 +76,11 @@ void TableBrowserDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
   qDebug() << "setModelData() called";
 
   if (_foreignKeys.contains(index.column())) {
-    QTableView* editorView = qobject_cast<QTableView*>(editor);
+    QTableView* editorView = static_cast<QTableView*>(editor);
     model->setData(index, _foreignTable->idByRow(editorView->currentIndex().row()));
   }
   else if (index.column() == BLOB_COL) {
-    BlobEditor* blobEditor = qobject_cast<BlobEditor*>(editor);
+    BlobEditor* blobEditor = static_cast<BlobEditor*>(editor);
     model->setData(index, blobEditor->data());
   }
   else {
@@ -105,7 +105,7 @@ void TableBrowserDelegate::onValueSelected(const QModelIndex &index)
 {
   Q_UNUSED(index)
 
-  QTableView* editor = qobject_cast<QTableView*>(sender());
+  QTableView* editor = static_cast<QTableView*>(sender());
   emit commitData(editor);
   emit closeEditor(editor);
 }

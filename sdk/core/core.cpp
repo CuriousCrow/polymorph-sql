@@ -6,7 +6,12 @@ Core* Core::_singleton = nullptr;
 
 Core::Core(QObject *parent) : DependencyContainer(parent)
 {
-  qDebug() << "Core object created";
+    qDebug() << "Core object created";
+}
+
+Core::~Core()
+{
+    removeSingleton(COREBEAN);
 }
 
 Core *Core::instance(QObject *parent)

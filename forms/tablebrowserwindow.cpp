@@ -239,7 +239,7 @@ void TableBrowserWindow::on_aTest_triggered()
 
 void TableBrowserWindow::onColumnVisibilityActionToggled(bool checked)
 {
-  QAction* action = qobject_cast<QAction*>(sender());
+  QAction* action = static_cast<QAction*>(sender());
   int index = _sourceModel->fieldIndex(action->text());
   checked ? ui->tableView->showColumn(index) : ui->tableView->hideColumn(index);
 }

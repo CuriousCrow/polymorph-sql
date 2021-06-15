@@ -10,7 +10,7 @@
 
 
 #define INJECT_PREFIX "inject_"
-#define INJECT(Type, Name) Type _##Name; Q_INVOKABLE void inject_##Name(QObject* obj){ _##Name = qobject_cast<Type>(obj); }
+#define INJECT(Type, Name) Type _##Name; Q_INVOKABLE void inject_##Name(QObject* obj){ _##Name = static_cast<Type>(obj); }
 #define CLASS(Type) Type::staticMetaObject.className()
 #define CLASSMETA(Type) &Type::staticMetaObject
 
@@ -56,6 +56,7 @@ public:
     virtual ~DependencyContainer();
     DependencyMeta* registerDependency(DependencyMeta* meta);
     DependencyMeta* registerSingletonObject(DependencyMeta* meta, QObject* object);
+    void removeSingleton(QString name);
 
     QStringList namesByClass(QString className);
 

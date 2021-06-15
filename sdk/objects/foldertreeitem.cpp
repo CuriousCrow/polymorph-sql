@@ -94,6 +94,11 @@ void FolderTreeItem::setChildrenType(DBObjectItem::ItemType childrenType)
     setFieldValue(F_CAPTION, folderName(_childrenType));
 }
 
+void FolderTreeItem::setCore(Core *core)
+{
+    _core = core;
+}
+
 QString FolderTreeItem::typeName(DBObjectItem::ItemType type)
 {
     switch (type) {

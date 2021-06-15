@@ -61,9 +61,9 @@ QString DBDatabaseItem::info()
 DBObjectItem *DBDatabaseItem::folderByType(DBObjectItem::ItemType type)
 {
   foreach (QObject* child, children()) {
-    DBObjectItem* childItem = qobject_cast<DBObjectItem*>(child);
+    DBObjectItem* childItem = static_cast<DBObjectItem*>(child);
     if (childItem->type() == DBObjectItem::Folder) {
-      if (qobject_cast<FolderTreeItem*>(childItem)->childrenType() == type)
+      if (static_cast<FolderTreeItem*>(childItem)->childrenType() == type)
         return childItem;
     }
   }

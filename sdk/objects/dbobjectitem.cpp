@@ -31,7 +31,7 @@ void DBObjectItem::setParentUrl(const AppUrl &url)
   _driverName = newUrl.driver();
   setObjectName(newUrl.toString());
   for (int i=0; i<children().count(); i++){
-    qobject_cast<DBObjectItem*>(children().at(i))->setParentUrl(newUrl);
+    static_cast<DBObjectItem*>(children().at(i))->setParentUrl(newUrl);
   }
 }
 
@@ -56,7 +56,7 @@ QString DBObjectItem::caption() const
 DBObjectItem *DBObjectItem::childItem(DBObjectItem::ItemType type, QString name)
 {
   for(int idx=0; idx<children().count(); idx++) {
-    DBObjectItem* child = qobject_cast<DBObjectItem*>(children().at(idx));
+    DBObjectItem* child = static_cast<DBObjectItem*>(children().at(idx));
     if (child->type() == type && (name.isEmpty() || child->caption() == name))
       return child;
   }

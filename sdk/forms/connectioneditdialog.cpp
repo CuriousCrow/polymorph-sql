@@ -74,7 +74,7 @@ void ConnectionEditDialog::formToObject()
 void ConnectionEditDialog::on_btnCreate_clicked()
 {
   formToObject();
-  DBDatabaseItem* dbItem = qobject_cast<DBDatabaseItem*>(_objItem);
+  DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(_objItem);
   ActionResult res = dbItem->createDatabase();
   if (res.isSuccess())
     QMessageBox::information(this, "Information", "Database successfully created");
@@ -85,7 +85,7 @@ void ConnectionEditDialog::on_btnCreate_clicked()
 void ConnectionEditDialog::on_btnDrop_clicked()
 {
   formToObject();
-  DBDatabaseItem* dbItem = qobject_cast<DBDatabaseItem*>(_objItem);
+  DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(_objItem);
   ActionResult res = dbItem->dropDatabase();
   if (res.isSuccess())
     QMessageBox::information(this, "Information", "Database successfully dropped");

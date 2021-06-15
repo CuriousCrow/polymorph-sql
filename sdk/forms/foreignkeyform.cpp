@@ -26,7 +26,7 @@ void ForeignKeyForm::objectToForm()
   ui->cmbReferenceTable->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_TABLES));
 
   DBTableItem* targetObj =
-      qobject_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));
+      static_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));
   ui->cmbTargetColumn->setModel(targetObj->columnsModel());
   ui->cmbTargetColumn->setModelColumn(1);
 
@@ -63,7 +63,7 @@ void ForeignKeyForm::on_btnCancel_clicked()
 void ForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &refTable)
 {
   DBTableItem* refObj =
-      qobject_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, refTable));
+      static_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, refTable));
   if (refObj) {
     qDebug() << "Reference table found";
     refObj->reloadColumnsModel();

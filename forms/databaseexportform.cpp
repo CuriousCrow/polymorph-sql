@@ -44,8 +44,8 @@ void DatabaseExportForm::on_btnStart_clicked()
     return;
 
   int row = ui->cmbDatabase->currentIndex();
-  QStructureItemModel* model = qobject_cast<QStructureItemModel*>(ui->cmbDatabase->model());
-  DBDatabaseItem* dbItem = qobject_cast<DBDatabaseItem*>(model->itemByIndex(model->index(row, 0)));
+  QStructureItemModel* model = static_cast<QStructureItemModel*>(ui->cmbDatabase->model());
+  DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(model->itemByIndex(model->index(row, 0)));
   if (!dbItem->hasChildren()) {
     qDebug() << "Database is not connected";
     reject();
@@ -58,7 +58,7 @@ void DatabaseExportForm::on_btnStart_clicked()
   if (folder) {
     backupScript.append(COMMENT_PREFIX + folder->caption());
     foreach(QObject* tableObj, folder->children()) {
-      DBTableItem* tableItem = qobject_cast<DBTableItem*>(tableObj);
+      DBTableItem* tableItem = static_cast<DBTableItem*>(tableObj);
       backupScript.append(COMMENT_PREFIX + tableItem->caption());
       tableItem->reloadColumnsModel();
       backupScript.append(tableItem->toDDL());
@@ -71,7 +71,7 @@ void DatabaseExportForm::on_btnStart_clicked()
       backupScript.append("");
       backupScript.append(COMMENT_PREFIX + folder->caption());
       foreach(QObject* viewObj, folder->children()) {
-        DBViewItem* viewItem = qobject_cast<DBViewItem*>(viewObj);
+        DBViewItem* viewItem = static_cast<DBViewItem*>(viewObj);
         backupScript.append(COMMENT_PREFIX + viewItem->caption());
         viewItem->refresh();
         backupScript.append(viewItem->toDDL());
@@ -83,7 +83,7 @@ void DatabaseExportForm::on_btnStart_clicked()
       backupScript.append("");
       backupScript.append(COMMENT_PREFIX + folder->caption());
       foreach(QObject* sequenceObj, folder->children()) {
-        DBSequenceItem* sequenceItem = qobject_cast<DBSequenceItem*>(sequenceObj);
+        DBSequenceItem* sequenceItem = static_cast<DBSequenceItem*>(sequenceObj);
         backupScript.append(COMMENT_PREFIX + sequenceItem->caption());
         sequenceItem->refresh();
         backupScript.append(sequenceItem->toDDL());
@@ -95,7 +95,7 @@ void DatabaseExportForm::on_btnStart_clicked()
       backupScript.append("");
       backupScript.append(COMMENT_PREFIX + folder->caption());
       foreach(QObject* procedureObj, folder->children()) {
-        DBProcedureItem* procedureItem = qobject_cast<DBProcedureItem*>(procedureObj);
+        DBProcedureItem* procedureItem = static_cast<DBProcedureItem*>(procedureObj);
         backupScript.append(COMMENT_PREFIX + procedureItem->caption());
         procedureItem->refresh();
         backupScript.append(procedureItem->toDDL());
@@ -108,7 +108,7 @@ void DatabaseExportForm::on_btnStart_clicked()
       backupScript.append("");
       backupScript.append(COMMENT_PREFIX + folder->caption());
       foreach(QObject* triggerObj, folder->children()) {
-        DBTriggerItem* triggerItem = qobject_cast<DBTriggerItem*>(triggerObj);
+        DBTriggerItem* triggerItem = static_cast<DBTriggerItem*>(triggerObj);
         backupScript.append(COMMENT_PREFIX + triggerItem->caption());
         triggerItem->refresh();
         backupScript.append(triggerItem->toDDL());
@@ -121,7 +121,7 @@ void DatabaseExportForm::on_btnStart_clicked()
 //      backupScript.append("");
 //      backupScript.append(COMMENT_PREFIX + folder->caption());
 //      foreach(QObject* sequenceObj, folder->children()) {
-//        DBSequenceItem* sequenceItem = qobject_cast<DBSequenceItem*>(sequenceObj);
+//        DBSequenceItem* sequenceItem = static_cast<DBSequenceItem*>(sequenceObj);
 //        backupScript.append(COMMENT_PREFIX + sequenceItem->caption());
 //        sequenceItem->refresh();
 //        backupScript.append(sequenceItem->toDDL());
@@ -134,7 +134,7 @@ void DatabaseExportForm::on_btnStart_clicked()
     backupScript.append("");
     backupScript.append(COMMENT_PREFIX + folder->caption());
     foreach(QObject* tableObj, folder->children()) {
-      DBTableItem* tableItem = qobject_cast<DBTableItem*>(tableObj);
+      DBTableItem* tableItem = static_cast<DBTableItem*>(tableObj);
       backupScript.append(COMMENT_PREFIX + tableItem->caption());
       backupScript.append(tableItem->toDML());
     }
