@@ -2,7 +2,7 @@
 #define POSTGRESUNIQUECONSTRAINT_H
 
 #include <QObject>
-#include "sdk/objects/dbuniqueconstraint.h"
+#include "objects/dbuniqueconstraint.h"
 
 class PostgresUniqueConstraint : public DBUniqueConstraint
 {

@@ -1,11 +1,11 @@
 #include "mysqlfolderitem.h"
-#include "sdk/utils/qsqlqueryhelper.h"
-#include "sdk/objects/appconst.h"
-#include "sdk/objects/dbtriggeritem.h"
-#include "sdk/objects/dbprocedureitem.h"
-#include "sdk/objects/dbsequenceitem.h"
-#include "sdk/core/iocplugin.h"
-#include "sdk/core/core.h"
+#include "utils/qsqlqueryhelper.h"
+#include "objects/appconst.h"
+#include "objects/dbtriggeritem.h"
+#include "objects/dbprocedureitem.h"
+#include "objects/dbsequenceitem.h"
+#include "core/iocplugin.h"
+#include "core/core.h"
 
 
 MysqlFolderItem::MysqlFolderItem() : FolderTreeItem()

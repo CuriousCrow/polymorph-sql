@@ -1,7 +1,7 @@
 #ifndef DBMYSQLTABLEITEM_H
 #define DBMYSQLTABLEITEM_H
 
-#include "sdk/objects/dbtableitem.h"
+#include "objects/dbtableitem.h"
 
 class MysqlTableItem : public DBTableItem
 {

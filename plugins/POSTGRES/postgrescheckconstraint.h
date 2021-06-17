@@ -2,7 +2,7 @@
 #define POSTGRESCHECKCONSTRAINT_H
 
 #include <QObject>
-#include "sdk/objects/dbcheckconstraint.h"
+#include "objects/dbcheckconstraint.h"
 
 class PostgresCheckConstraint : public DBCheckConstraint
 {

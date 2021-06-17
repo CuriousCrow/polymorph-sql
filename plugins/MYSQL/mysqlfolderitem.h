@@ -1,7 +1,7 @@
 #ifndef MYSQLFOLDERITEM_H
 #define MYSQLFOLDERITEM_H
 
-#include "sdk/objects/foldertreeitem.h"
+#include "objects/foldertreeitem.h"
 #include <QObject>
 
 class MysqlFolderItem : public FolderTreeItem

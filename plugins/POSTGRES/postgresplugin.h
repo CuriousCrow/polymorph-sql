@@ -2,11 +2,13 @@
 #define POSTGRESPLUGIN_H
 
 #include <QObject>
-#include "sdk/core/iocplugin.h"
+#include "core/iocplugin.h"
 
 class PostgresPlugin : public IocPlugin
 {
   Q_OBJECT
+  Q_PLUGIN_METADATA(IID IocPlugin_iid FILE "PostgresPlugin.json")
+  Q_INTERFACES(IocPlugin)
 public:
   PostgresPlugin(QObject *parent = nullptr);
 

@@ -2,13 +2,15 @@
 #define FIREBIRDPLUGIN_H
 
 #include <QObject>
-#include "sdk/objects/dbmsplugin.h"
-#include "sdk/core/iocplugin.h"
+#include "objects/dbmsplugin.h"
+#include "core/iocplugin.h"
 
 
 class FirebirdPlugin : public IocPlugin
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID IocPlugin_iid FILE "FirebirdPlugin.json")
+    Q_INTERFACES(IocPlugin)
 public:
   Q_INVOKABLE FirebirdPlugin(QObject *parent = nullptr);
   // DbmsPlugin interface

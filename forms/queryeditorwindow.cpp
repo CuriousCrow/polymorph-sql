@@ -292,7 +292,7 @@ void QueryEditorWindow::onCompleterRequested(const QString &contextText)
 
 void QueryEditorWindow::on_aQueryHistory_triggered()
 {
-  DBDatabaseItem* dbObj = static_cast<DBDatabaseItem*>(dbObject());
+  DBDatabaseItem* dbObj = dynamic_cast<DBDatabaseItem*>(dbObject());
   if (dbObj) {
     QueryHistoryForm* historyForm = QueryHistoryForm::instance(dbObj->fieldValue(F_ID).toInt());
     connect(historyForm, &QueryHistoryForm::accepted,

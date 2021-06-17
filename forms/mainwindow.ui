@@ -14,7 +14,7 @@
    <string>Demalex SQL manager</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
+   <iconset resource="../icons.qrc">
     <normaloff>:/icons/cc_64.png</normaloff>:/icons/cc_64.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -128,7 +128,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="aAddDatabase">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset resource="../icons.qrc">
      <normaloff>:/icons/database_add.png</normaloff>:/icons/database_add.png</iconset>
    </property>
    <property name="text">
@@ -140,7 +140,7 @@
   </action>
   <action name="aRemoveDatabase">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset resource="../icons.qrc">
      <normaloff>:/icons/database_delete.png</normaloff>:/icons/database_delete.png</iconset>
    </property>
    <property name="text">
@@ -152,7 +152,7 @@
   </action>
   <action name="aEditDatabase">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset resource="../icons.qrc">
      <normaloff>:/icons/database_edit.png</normaloff>:/icons/database_edit.png</iconset>
    </property>
    <property name="text">
@@ -180,7 +180,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="icons.qrc"/>
+  <include location="../icons.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -1,7 +1,7 @@
 #ifndef FIREBIRDTABLE_H
 #define FIREBIRDTABLE_H
 
-#include "sdk/objects/dbtableitem.h"
+#include "objects/dbtableitem.h"
 
 class FirebirdTable : public DBTableItem
 {

@@ -1,10 +1,10 @@
 #include "firebirdfolderitem.h"
-#include "sdk/utils/qsqlqueryhelper.h"
-#include "sdk/core/core.h"
-#include "sdk/objects/dbprocedureitem.h"
-#include "sdk/objects/dbtriggeritem.h"
-#include "sdk/objects/dbsequenceitem.h"
-#include "sdk/objects/appconst.h"
+#include "utils/qsqlqueryhelper.h"
+#include "core/core.h"
+#include "objects/dbprocedureitem.h"
+#include "objects/dbtriggeritem.h"
+#include "objects/dbsequenceitem.h"
+#include "objects/appconst.h"
 
 
 FirebirdFolderItem::FirebirdFolderItem() : FolderTreeItem()
@@ -14,7 +14,6 @@ FirebirdFolderItem::FirebirdFolderItem() : FolderTreeItem()
 
 void FirebirdFolderItem::loadChildren()
 {
-    IocPlugin* plugin = Core::plugin(driverName(), FeatureType::DbmsObjects);
     QString sql;
     switch (childrenType()) {
     case DBObjectItem::Table:

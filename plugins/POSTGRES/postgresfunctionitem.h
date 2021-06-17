@@ -2,7 +2,7 @@
 #define POSTGRESFUNCTIONITEM_H
 
 #include <QObject>
-#include "sdk/objects/dbprocedureitem.h"
+#include "objects/dbprocedureitem.h"
 
 class PostgresFunctionItem : public DBProcedureItem
 {

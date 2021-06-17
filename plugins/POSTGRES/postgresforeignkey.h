@@ -2,7 +2,7 @@
 #define POSTGRESFOREIGNKEY_H
 
 #include <QObject>
-#include "sdk/objects/dbforeignkey.h"
+#include "objects/dbforeignkey.h"
 
 class PostgresForeignKey : public DBForeignKey
 {

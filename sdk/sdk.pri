@@ -17,16 +17,10 @@ SOURCES += \
     $$PWD/core/sqlhelplookupprovider.cpp \
     $$PWD/core/appsettings.cpp \
     $$PWD/core/iocplugin.cpp \
-    $$PWD/objects/dbselectableitem.cpp \
-    $$PWD/forms/queryparamsform.cpp \
-    $$PWD/tools/ltextcompleter.cpp \
-    $$PWD/models/jointdbojbectmodel.cpp \
-    $$PWD/models/ldbobjecttablemodel.cpp \
-    $$PWD/models/queryparamtablemodel.cpp \
     $$PWD/core/dependencycontainer.cpp \
-    $$PWD/models/unisqltablemodel.cpp \
     $$PWD/core/qknowledgebase.cpp \
 #Forms
+    $$PWD/forms/queryparamsform.cpp \
     $$PWD/forms/abstractdatabaseitemform.cpp \
     $$PWD/forms/tableeditform.cpp \
     $$PWD/forms/checkconstrainteditform.cpp \
@@ -37,14 +31,23 @@ SOURCES += \
     $$PWD/forms/uniqueconstrainteditform.cpp \
     $$PWD/forms/vieweditdialog.cpp \
     $$PWD/forms/connectioneditdialog.cpp \
-    $$PWD/objects/sdkplugin.cpp \
+#Tools
+    $$PWD/tools/qsqlsyntaxhighlighter.cpp \
+    $$PWD/tools/ltextcompleter.cpp \
+    $$PWD/tools/ldatawidgetmapper.cpp \
 #Utils
     $$PWD/utils/qsqlqueryhelper.cpp \
-    $$PWD/tools/qsqlsyntaxhighlighter.cpp \
     $$PWD/utils/eventinterceptors.cpp \
     $$PWD/utils/qfileutils.cpp \
     $$PWD/utils/qsimpletooltip.cpp \
+    $$PWD/utils/sqlfiltermanager.cpp \
+    $$PWD/utils/sqlutils.cpp \
+    $$PWD/utils/strutils.cpp \
 #Models
+    $$PWD/models/unisqltablemodel.cpp \
+    $$PWD/models/jointdbojbectmodel.cpp \
+    $$PWD/models/ldbobjecttablemodel.cpp \
+    $$PWD/models/queryparamtablemodel.cpp \
     $$PWD/models/simplecachedtablemodel.cpp \
     $$PWD/models/comboboxitemdelegate.cpp \
     $$PWD/models/lcachedtablemodel.cpp \
@@ -55,10 +58,11 @@ SOURCES += \
     $$PWD/models/ldbobjectmodel.cpp \
     $$PWD/models/qactiveconnectionmodel.cpp \
     $$PWD/models/lstandardtreemodel.cpp \
-    $$PWD/tools/ldatawidgetmapper.cpp \
     $$PWD/models/sqlcolumnmodel.cpp \
     $$PWD/models/comboboxhashdelegate.cpp \
 #Base DB classes
+    $$PWD/objects/dbselectableitem.cpp \
+    $$PWD/objects/sdkplugin.cpp \
     $$PWD/objects/appurl.cpp \
     $$PWD/objects/dbobjectitem.cpp \
     $$PWD/objects/dbdatabaseitem.cpp \
@@ -72,12 +76,10 @@ SOURCES += \
     $$PWD/objects/dbconstraintitem.cpp \
     $$PWD/objects/dbforeignkey.cpp \
     $$PWD/objects/dbprimarykey.cpp \
-    $$PWD/objects/dbuniqueconstraint.cpp \
-    $$PWD/utils/sqlfiltermanager.cpp \
-    $$PWD/utils/sqlutils.cpp \
-    $$PWD/utils/strutils.cpp
+    $$PWD/objects/dbuniqueconstraint.cpp
 
 HEADERS  += \
+    $$PWD/abstractplugin.h \
 #Core
     $$PWD/core/core.h \
     $$PWD/core/datastore.h \
@@ -86,18 +88,10 @@ HEADERS  += \
     $$PWD/core/sqlhelplookupprovider.h \
     $$PWD/core/appsettings.h \
     $$PWD/core/iocplugin.h \
-    $$PWD/objects/dbmsplugin.h \
-    $$PWD/objects/dbselectableitem.h \
-    $$PWD/forms/queryparamsform.h \
-    $$PWD/abstractplugin.h \
     $$PWD/core/dependencycontainer.h \
-    $$PWD/tools/ltextcompleter.h \
-    $$PWD/models/jointdbojbectmodel.h \
-    $$PWD/models/ldbobjecttablemodel.h \
-    $$PWD/models/queryparamtablemodel.h \
-    $$PWD/models/unisqltablemodel.h \
     $$PWD/core/qknowledgebase.h \
 #Forms
+    $$PWD/forms/queryparamsform.h \
     $$PWD/forms/abstractdatabaseitemform.h \
     $$PWD/forms/tableeditform.h \
     $$PWD/forms/checkconstrainteditform.h \
@@ -108,14 +102,23 @@ HEADERS  += \
     $$PWD/forms/uniqueconstrainteditform.h \
     $$PWD/forms/vieweditdialog.h \
     $$PWD/forms/connectioneditdialog.h \
-    $$PWD/objects/sdkplugin.h \
+#Tools
+    $$PWD/tools/ldatawidgetmapper.h \
+    $$PWD/tools/ltextcompleter.h \
+    $$PWD/tools/qsqlsyntaxhighlighter.h \
 #Utils
     $$PWD/utils/qsqlqueryhelper.h \
-    $$PWD/tools/qsqlsyntaxhighlighter.h \
     $$PWD/utils/eventinterceptors.h \
     $$PWD/utils/qfileutils.h \
     $$PWD/utils/qsimpletooltip.h \
+    $$PWD/utils/sqlfiltermanager.h \
+    $$PWD/utils/sqlutils.h \
+    $$PWD/utils/strutils.h \
 #Models
+    $$PWD/models/jointdbojbectmodel.h \
+    $$PWD/models/ldbobjecttablemodel.h \
+    $$PWD/models/queryparamtablemodel.h \
+    $$PWD/models/unisqltablemodel.h \
     $$PWD/models/simplecachedtablemodel.h \
     $$PWD/models/comboboxitemdelegate.h \
     $$PWD/models/lcachedtablemodel.h \
@@ -126,10 +129,12 @@ HEADERS  += \
     $$PWD/models/ldbobjectmodel.h \
     $$PWD/models/qactiveconnectionmodel.h \
     $$PWD/models/lstandardtreemodel.h \
-    $$PWD/tools/ldatawidgetmapper.h \
     $$PWD/models/sqlcolumnmodel.h \
     $$PWD/models/comboboxhashdelegate.h \
 #Base DB classes
+    $$PWD/objects/sdkplugin.h \
+    $$PWD/objects/dbmsplugin.h \
+    $$PWD/objects/dbselectableitem.h \
     $$PWD/objects/appconst.h \
     $$PWD/objects/appurl.h \
     $$PWD/objects/dbobjectitem.h \
@@ -144,14 +149,7 @@ HEADERS  += \
     $$PWD/objects/dbconstraintitem.h \
     $$PWD/objects/dbforeignkey.h \
     $$PWD/objects/dbprimarykey.h \
-    $$PWD/objects/dbuniqueconstraint.h \
-#SQLite
-#MySQL
-#Postgres
-    $$PWD/utils/sqlfiltermanager.h \
-    $$PWD/utils/sqlutils.h \
-    $$PWD/utils/strutils.h
-#Firebird
+    $$PWD/objects/dbuniqueconstraint.h
 
 FORMS    += \
     $$PWD/forms/connectioneditdialog.ui \

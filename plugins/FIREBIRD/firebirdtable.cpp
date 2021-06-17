@@ -1,5 +1,5 @@
 #include "firebirdtable.h"
-#include "sdk/utils/qsqlqueryhelper.h"
+#include "utils/qsqlqueryhelper.h"
 
 
 FirebirdTable::FirebirdTable()

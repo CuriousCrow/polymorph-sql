@@ -32,6 +32,8 @@ public:
   static bool saveFile(const QString &filepath, const QByteArray &data);
 
   static bool copyDirectory(const QString &fromDir, const QString &toDir, bool coverFileIfExist);
+
+  static QStringList filesOfDir(const QString &folderPath);
 };
 
 class QFilePath

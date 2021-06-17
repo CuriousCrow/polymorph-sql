@@ -2,7 +2,7 @@
 #define POSTGRESPRIMARYKEY_H
 
 #include <QObject>
-#include "sdk/objects/dbprimarykey.h"
+#include "objects/dbprimarykey.h"
 
 class PostgresPrimaryKey : public DBPrimaryKey
 {

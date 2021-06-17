@@ -296,6 +296,13 @@ bool QFileUtils::copyDirectory(const QString &fromDir, const QString &toDir, boo
   return true;
 }
 
+QStringList QFileUtils::filesOfDir(const QString &folderPath)
+{
+    QDir dir(folderPath);
+    dir.setFilter(QDir::Files | QDir::NoSymLinks);
+    return dir.entryList();
+}
+
 QFilePath::QFilePath(QString fullpath)
 {
   _fullPath = fullpath;

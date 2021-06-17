@@ -2,11 +2,13 @@
 #define MYSQLPLUGIN_H
 
 #include <QObject>
-#include "sdk/core/iocplugin.h"
+#include "core/iocplugin.h"
 
 class MysqlPlugin : public IocPlugin
 {
-  Q_OBJECT
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID IocPlugin_iid FILE "MysqlPlugin.json")
+    Q_INTERFACES(IocPlugin)
 public:
   MysqlPlugin(QObject *parent = nullptr);
 

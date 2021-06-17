@@ -1,7 +1,7 @@
 #include "mysqldatabase.h"
 #include "mysqltable.h"
-#include "sdk/objects/foldertreeitem.h"
-#include "sdk/objects/appconst.h"
+#include "objects/foldertreeitem.h"
+#include "objects/appconst.h"
 
 MysqlDatabase::MysqlDatabase()
   : DBDatabaseItem("")

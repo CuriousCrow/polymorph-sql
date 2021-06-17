@@ -1,7 +1,7 @@
 #ifndef POSTGRESFOLDERITEM_H
 #define POSTGRESFOLDERITEM_H
 
-#include "sdk/objects/foldertreeitem.h"
+#include "objects/foldertreeitem.h"
 #include <QObject>
 
 class PostgresFolderItem : public FolderTreeItem

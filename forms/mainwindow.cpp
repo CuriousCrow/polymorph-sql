@@ -18,10 +18,13 @@
 #include "sdk/core/core.h"
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/sdkplugin.h"
-#include "plugins/POSTGRES/postgresplugin.h"
-#include "plugins/SQLITE/sqliteplugin.h"
-#include "plugins/FIREBIRD/firebirdplugin.h"
-#include "plugins/MYSQL/mysqlplugin.h"
+#include "sdk/utils/qfileutils.h"
+
+//#include "plugins/POSTGRES/postgresplugin.h"
+//#include "plugins/SQLITE/sqliteplugin.h"
+//#include "plugins/FIREBIRD/firebirdplugin.h"
+//#include "plugins/MYSQL/mysqlplugin.h"
+
 #include <QPluginLoader>
 
 //#define SINGLEAPP
@@ -40,19 +43,21 @@ MainWindow::MainWindow(QWidget *parent) :
 #ifdef SINGLEAPP
   Core::registerPlugin(new PostgresPlugin());
   Core::registerPlugin(new SqlitePlugin());
-//  Core::registerPlugin(new FirebirdPlugin());
-//  Core::registerPlugin(new MysqlPlugin());
+  Core::registerPlugin(new FirebirdPlugin());
+  Core::registerPlugin(new MysqlPlugin());
 #else
-  Core::registerPlugin(new PostgresPlugin());
+  QStringList pluginFiles = QFileUtils::filesOfDir(QApplication::applicationDirPath() + "/plugins");
   QPluginLoader* pluginLoader = new QPluginLoader(this);
-  pluginLoader->setFileName("plugins/SqlitePlugin");
-  IocPlugin* plugin = static_cast<IocPlugin*>(pluginLoader->instance());
-  if (plugin) {
-      qDebug() << "Plugin is successfully loaded:" << plugin->title();
-      Core::registerPlugin(plugin);
-  }
-  else {
-      qDebug() << "Plugin not loaded:" << pluginLoader->errorString();
+  foreach(QString filename, pluginFiles) {
+      pluginLoader->setFileName("plugins/" + filename);
+      IocPlugin* plugin = dynamic_cast<IocPlugin*>(pluginLoader->instance());
+      if (plugin) {
+          qDebug() << "Plugin is successfully loaded:" << plugin->title();
+          Core::registerPlugin(plugin);
+      }
+      else {
+          qDebug() << "Plugin not loaded:" << pluginLoader->errorString();
+      }
   }
 #endif
 
@@ -401,7 +406,7 @@ DBObjectItem *MainWindow::itemByName(QString name)
 void MainWindow::refreshConnectionList()
 {
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
-    QueryEditorWindow* editor = static_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
+    QueryEditorWindow* editor = dynamic_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)
       editor->refreshConnectionList();
   }
@@ -410,7 +415,7 @@ void MainWindow::refreshConnectionList()
 void MainWindow::refreshQueryEditorAssistance()
 {
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
-    QueryEditorWindow* editor = static_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
+    QueryEditorWindow* editor = dynamic_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)
       editor->reloadKnowledgeModel();
   }

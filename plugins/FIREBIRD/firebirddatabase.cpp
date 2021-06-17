@@ -1,6 +1,6 @@
 #include "firebirddatabase.h"
 #include "firebirdtable.h"
-#include "sdk/objects/appconst.h"
+#include "objects/appconst.h"
 
 FirebirdDatabase::FirebirdDatabase()
   : DBDatabaseItem("")

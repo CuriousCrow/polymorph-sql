@@ -1,7 +1,7 @@
 #ifndef POSTGRESVIEWITEM_H
 #define POSTGRESVIEWITEM_H
 
-#include "sdk/objects/dbviewitem.h"
+#include "objects/dbviewitem.h"
 
 class PostgresViewItem : public DBViewItem
 {

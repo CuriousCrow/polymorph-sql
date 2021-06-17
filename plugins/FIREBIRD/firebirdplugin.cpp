@@ -1,5 +1,5 @@
 #include "firebirdplugin.h"
-#include "sdk/objects/appconst.h"
+#include "objects/appconst.h"
 #include "firebirdfolderitem.h"
 #include "firebirddatabase.h"
 #include "firebirdtable.h"

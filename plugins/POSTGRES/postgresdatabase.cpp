@@ -1,7 +1,7 @@
 #include "postgresdatabase.h"
 #include "postgrestable.h"
 #include "postgressequence.h"
-#include "sdk/objects/appconst.h"
+#include "objects/appconst.h"
 #include "postgresfunctionitem.h"
 #include "postgrestriggeritem.h"
 

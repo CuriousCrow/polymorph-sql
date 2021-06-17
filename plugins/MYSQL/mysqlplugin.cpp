@@ -1,12 +1,12 @@
 #include "mysqlplugin.h"
-#include "sdk/objects/appconst.h"
+#include "objects/appconst.h"
 #include "mysqldatabase.h"
 #include "mysqltable.h"
 #include "mysqlfolderitem.h"
-#include "sdk/objects/dbsequenceitem.h"
-#include "sdk/objects/dbviewitem.h"
-#include "sdk/objects/dbprocedureitem.h"
-#include "sdk/objects/dbtriggeritem.h"
+#include "objects/dbsequenceitem.h"
+#include "objects/dbviewitem.h"
+#include "objects/dbprocedureitem.h"
+#include "objects/dbtriggeritem.h"
 
 
 MysqlPlugin::MysqlPlugin(QObject *parent) : IocPlugin(parent)

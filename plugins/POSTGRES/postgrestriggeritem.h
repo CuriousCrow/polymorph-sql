@@ -2,7 +2,7 @@
 #define POSTGRESTRIGGERITEM_H
 
 #include <QObject>
-#include "sdk/objects/dbtriggeritem.h"
+#include "objects/dbtriggeritem.h"
 
 class PostgresTriggerItem : public DBTriggerItem
 {

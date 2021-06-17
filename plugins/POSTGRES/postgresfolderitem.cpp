@@ -1,9 +1,9 @@
 #include "postgresfolderitem.h"
 #include "postgresdatabase.h"
-#include "sdk/objects/appconst.h"
-#include "sdk/core/core.h"
-#include "sdk/core/iocplugin.h"
-#include "sdk/utils/qsqlqueryhelper.h"
+#include "objects/appconst.h"
+#include "core/core.h"
+#include "core/iocplugin.h"
+#include "utils/qsqlqueryhelper.h"
 
 PostgresFolderItem::PostgresFolderItem() : FolderTreeItem()
 {
@@ -32,7 +32,7 @@ void PostgresFolderItem::loadSequences()
     QString sql = "select sequence_name \"name\" from information_schema.sequences";
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
-      DBSequenceItem* sequenceItem = Core::instance()->dependencyForDriver<DBSequenceItem>(driverName());
+      DBSequenceItem* sequenceItem = _core->dependencyForDriver<DBSequenceItem>(driverName());
       sequenceItem->setParent(this);
       sequenceItem->setFieldValue(F_CAPTION, resultSet.value(F_NAME));
       sequenceItem->setParentUrl(objectUrl());
@@ -46,7 +46,7 @@ void PostgresFolderItem::loadTriggers()
                   "FROM information_schema.triggers order by 1";
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
-      DBTriggerItem* triggerItem = Core::instance()->dependencyForDriver<DBTriggerItem>(driverName());
+      DBTriggerItem* triggerItem = _core->dependencyForDriver<DBTriggerItem>(driverName());
       triggerItem->setParent(this);
       triggerItem->setFieldValue(F_CAPTION, resultSet.value(F_NAME));
       triggerItem->setParentUrl(objectUrl());
@@ -60,7 +60,7 @@ void PostgresFolderItem::loadProcedures()
                   "WHERE routine_type='FUNCTION' and specific_schema='public' order by 1";
     QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
-      DBProcedureItem* procedureItem = Core::instance()->dependencyForDriver<DBProcedureItem>(driverName());
+      DBProcedureItem* procedureItem = _core->dependencyForDriver<DBProcedureItem>(driverName());
       procedureItem->setParent(this);
       procedureItem->setFieldValue(F_CAPTION, resultSet.value(F_NAME));
       procedureItem->setParentUrl(objectUrl());
