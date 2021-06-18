@@ -7,8 +7,11 @@
 class PostgresPlugin : public IocPlugin
 {
   Q_OBJECT
+//Enable metadata only plugin lib compilation
+#ifndef SINGLEAPP
   Q_PLUGIN_METADATA(IID IocPlugin_iid FILE "PostgresPlugin.json")
   Q_INTERFACES(IocPlugin)
+#endif
 public:
   PostgresPlugin(QObject *parent = nullptr);
 

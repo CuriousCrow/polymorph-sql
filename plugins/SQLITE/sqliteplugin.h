@@ -7,8 +7,11 @@
 class SqlitePlugin : public IocPlugin
 {
   Q_OBJECT
+//Enable metadata only plugin lib compilation
+#ifndef SINGLEAPP
   Q_PLUGIN_METADATA(IID IocPlugin_iid FILE "SqlitePlugin.json")
   Q_INTERFACES(IocPlugin)
+#endif
 public:
   SqlitePlugin(QObject *parent = nullptr);
   virtual QList<DBObjectItem::ItemType> supportedTypes() override;

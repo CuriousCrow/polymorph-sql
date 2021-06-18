@@ -5,12 +5,14 @@
 #include "objects/dbmsplugin.h"
 #include "core/iocplugin.h"
 
-
 class FirebirdPlugin : public IocPlugin
 {
     Q_OBJECT
+//Enable metadata only plugin lib compilation
+#ifndef SINGLEAPP
     Q_PLUGIN_METADATA(IID IocPlugin_iid FILE "FirebirdPlugin.json")
     Q_INTERFACES(IocPlugin)
+#endif
 public:
   Q_INVOKABLE FirebirdPlugin(QObject *parent = nullptr);
   // DbmsPlugin interface

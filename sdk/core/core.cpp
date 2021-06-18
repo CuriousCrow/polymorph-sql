@@ -26,6 +26,7 @@ Core *Core::instance(QObject *parent)
 
 void Core::registerPlugin(IocPlugin *plugin)
 {
+  qDebug() << "Register plugin:" << plugin->title();
   Core* core = instance();
   plugin->registerPlugin(core);
   plugin->setParent(core);

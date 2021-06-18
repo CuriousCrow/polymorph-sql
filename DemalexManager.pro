@@ -16,6 +16,9 @@ CONFIG += -O0
 
 RC_ICONS = icons/cc_16.ico
 
+#Use this flag to compile all plugins inside main application
+DEFINES += SINGLEAPP
+
 SOURCES += main.cpp\
     widgets/blobeditor.cpp \
     forms/databaseexportform.cpp \
@@ -27,31 +30,6 @@ SOURCES += main.cpp\
     widgets/lqueryeditor.cpp \
     widgets/tablebrowserdelegate.cpp \
     forms/mainwindow.cpp
-#    plugins/FIREBIRD/firebirddatabase.cpp \
-#    plugins/FIREBIRD/firebirdfolderitem.cpp \
-#    plugins/FIREBIRD/firebirdplugin.cpp \
-#    plugins/FIREBIRD/firebirdtable.cpp \
-#    plugins/MYSQL/mysqldatabase.cpp \
-#    plugins/MYSQL/mysqlfolderitem.cpp \
-#    plugins/MYSQL/mysqlplugin.cpp \
-#    plugins/MYSQL/mysqltable.cpp \
-#    plugins/POSTGRES/postgresfunctionitem.cpp \
-#    plugins/POSTGRES/postgresplugin.cpp \
-#    plugins/POSTGRES/postgresviewitem.cpp \
-#    plugins/SQLITE/sqlitedatabase.cpp \
-#    plugins/SQLITE/sqlitefolderitem.cpp \
-#    plugins/SQLITE/sqliteplugin.cpp \
-#    plugins/SQLITE/sqlitetable.cpp \
-#    plugins/SQLITE/sqliteviewitem.cpp \
-#    plugins/POSTGRES/postgrestriggeritem.cpp \
-#    plugins/POSTGRES/postgrescheckconstraint.cpp \
-#    plugins/POSTGRES/postgresdatabase.cpp \
-#    plugins/POSTGRES/postgresforeignkey.cpp \
-#    plugins/POSTGRES/postgresprimarykey.cpp \
-#    plugins/POSTGRES/postgressequence.cpp \
-#    plugins/POSTGRES/postgrestable.cpp \
-#    plugins/POSTGRES/postgresuniqueconstraint.cpp \
-#    plugins/POSTGRES/postgresfolderitem.cpp
 
 HEADERS  += \
     forms/databaseexportform.h \
@@ -64,31 +42,6 @@ HEADERS  += \
     forms/tablebrowserwindow.h \
     forms/queryeditorwindow.h \
     widgets/lqueryeditor.h
-#    plugins/FIREBIRD/firebirddatabase.h \
-#    plugins/FIREBIRD/firebirdfolderitem.h \
-#    plugins/FIREBIRD/firebirdplugin.h \
-#    plugins/FIREBIRD/firebirdtable.h \
-#    plugins/MYSQL/mysqldatabase.h \
-#    plugins/MYSQL/mysqlfolderitem.h \
-#    plugins/MYSQL/mysqlplugin.h \
-#    plugins/MYSQL/mysqltable.h \
-#    plugins/POSTGRES/postgresplugin.h \
-#    plugins/POSTGRES/postgresviewitem.h \
-#    plugins/SQLITE/sqlitedatabase.h \
-#    plugins/SQLITE/sqlitefolderitem.h \
-#    plugins/SQLITE/sqliteplugin.h \
-#    plugins/SQLITE/sqlitetable.h \
-#    plugins/SQLITE/sqliteviewitem.h \
-#    plugins/POSTGRES/postgrestriggeritem.h \
-#    plugins/POSTGRES/postgrescheckconstraint.h \
-#    plugins/POSTGRES/postgresdatabase.h \
-#    plugins/POSTGRES/postgresforeignkey.h \
-#    plugins/POSTGRES/postgresfunctionitem.h \
-#    plugins/POSTGRES/postgresprimarykey.h \
-#    plugins/POSTGRES/postgressequence.h \
-#    plugins/POSTGRES/postgrestable.h \
-#    plugins/POSTGRES/postgresuniqueconstraint.h \
-#    plugins/POSTGRES/postgresfolderitem.h
 
 FORMS    += \
     widgets/itemviewer.ui \
@@ -104,3 +57,11 @@ RESOURCES += \
     icons.qrc
 
 include(sdk/sdk.pri)
+
+#Add your plugin pri-files here
+contains(DEFINES, SINGLEAPP) {
+    include(plugins/SQLITE/SqlitePlugin.pri)
+    include(plugins/MYSQL/MysqlPlugin.pri)
+    include(plugins/POSTGRES/PostgresPlugin.pri)
+    include(plugins/FIREBIRD/FirebirdPlugin.pri)
+}

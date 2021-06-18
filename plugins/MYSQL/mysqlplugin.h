@@ -7,8 +7,11 @@
 class MysqlPlugin : public IocPlugin
 {
     Q_OBJECT
+//Enable metadata only plugin lib compilation
+#ifndef SINGLEAPP
     Q_PLUGIN_METADATA(IID IocPlugin_iid FILE "MysqlPlugin.json")
     Q_INTERFACES(IocPlugin)
+#endif
 public:
   MysqlPlugin(QObject *parent = nullptr);
 

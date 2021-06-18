@@ -20,14 +20,14 @@
 #include "sdk/objects/sdkplugin.h"
 #include "sdk/utils/qfileutils.h"
 
-//#include "plugins/POSTGRES/postgresplugin.h"
-//#include "plugins/SQLITE/sqliteplugin.h"
-//#include "plugins/FIREBIRD/firebirdplugin.h"
-//#include "plugins/MYSQL/mysqlplugin.h"
-
+#ifdef SINGLEAPP
+#include "plugins/POSTGRES/postgresplugin.h"
+#include "plugins/SQLITE/sqliteplugin.h"
+#include "plugins/FIREBIRD/firebirdplugin.h"
+#include "plugins/MYSQL/mysqlplugin.h"
+#else
 #include <QPluginLoader>
-
-//#define SINGLEAPP
+#endif
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerPlugin(new SdkPlugin());
 
 #ifdef SINGLEAPP
+  qDebug() << "Single application mode";
   Core::registerPlugin(new PostgresPlugin());
   Core::registerPlugin(new SqlitePlugin());
   Core::registerPlugin(new FirebirdPlugin());
@@ -49,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
   QStringList pluginFiles = QFileUtils::filesOfDir(QApplication::applicationDirPath() + "/plugins");
   QPluginLoader* pluginLoader = new QPluginLoader(this);
   foreach(QString filename, pluginFiles) {
+      qDebug() << "Found plugin file:" << filename;
       pluginLoader->setFileName("plugins/" + filename);
       IocPlugin* plugin = dynamic_cast<IocPlugin*>(pluginLoader->instance());
       if (plugin) {

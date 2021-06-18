@@ -22,6 +22,7 @@ DependencyContainer::~DependencyContainer()
 
 DependencyMeta *DependencyContainer::registerDependency(DependencyMeta *meta)
 {
+    qDebug() << "Registering dependency:" << meta->name();
     QStringList classes = meta->ancessors();
     foreach(QString className, classes) {
         _metaByClass.insert(className, meta);
@@ -114,7 +115,7 @@ QObject *DependencyContainer::dependency(const QString &name)
     if (meta->mode() == InstanceMode::Singleton) {
         _singletonHash.insert(name, newObj);
     }
-    qDebug() << "Dependency" << name << "successfully instatiated";
+    qDebug() << "Dependency" << name << "successfully instatiated" << "\n";
     return newObj;
 }
 
@@ -137,10 +138,10 @@ InstanceMode DependencyMeta::mode() const
 
 QStringList DependencyMeta::ancessors() const
 {
-    qDebug() << "Bean" << name() << "implements:";
+//    qDebug() << "Bean" << name() << "implements:";
     QStringList list;
     addSuperClass(_metaObj, list);
-    qDebug() << "end";
+//    qDebug() << "end";
     return list;
 }
 
@@ -175,7 +176,7 @@ bool DependencyMeta::exactClassMatch(const QString &className) const
 void DependencyMeta::addSuperClass(const QMetaObject *metaObj, QStringList &list) const
 {
     list.append(metaObj->className());
-    qDebug() << metaObj->className();
+//    qDebug() << metaObj->className();
     if (metaObj->superClass()) {
         addSuperClass(metaObj->superClass(), list);
     }
