@@ -5,6 +5,7 @@
 #include "objects/dbmsplugin.h"
 #include "core/iocplugin.h"
 
+/** Plugin for Firebird database support */
 class FirebirdPlugin : public IocPlugin
 {
     Q_OBJECT

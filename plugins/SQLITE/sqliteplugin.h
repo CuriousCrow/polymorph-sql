@@ -4,6 +4,7 @@
 #include <QObject>
 #include "core/iocplugin.h"
 
+/** Plugin for Sqlite database support */
 class SqlitePlugin : public IocPlugin
 {
   Q_OBJECT

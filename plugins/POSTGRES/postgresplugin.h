@@ -4,6 +4,7 @@
 #include <QObject>
 #include "core/iocplugin.h"
 
+/** Plugin for PostgreSQL database support */
 class PostgresPlugin : public IocPlugin
 {
   Q_OBJECT

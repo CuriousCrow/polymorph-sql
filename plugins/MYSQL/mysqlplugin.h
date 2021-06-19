@@ -4,6 +4,7 @@
 #include <QObject>
 #include "core/iocplugin.h"
 
+/** Plugin for MySQL database support */
 class MysqlPlugin : public IocPlugin
 {
     Q_OBJECT
