@@ -72,22 +72,22 @@ DBObjectItem *DBDatabaseItem::folderByType(DBObjectItem::ItemType type)
 
 QString DBDatabaseItem::getViewListSql() const
 {
-
+    return "";
 }
 
 QString DBDatabaseItem::getSequenceListSql() const
 {
-
+    return "";
 }
 
 QString DBDatabaseItem::getTriggerListSql() const
 {
-
+    return "";
 }
 
 QString DBDatabaseItem::getProcedureListSql() const
 {
-
+    return "";
 }
 
 bool DBDatabaseItem::reloadChildren()
@@ -191,7 +191,7 @@ ActionResult DBDatabaseItem::dropDatabase()
 
 QString DBDatabaseItem::getAllObjectListSql() const
 {
-
+    return "";
 }
 
 QVariant DBDatabaseItem::colData(int column, int role) const

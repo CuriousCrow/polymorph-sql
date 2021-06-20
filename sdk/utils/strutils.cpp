@@ -56,7 +56,9 @@ QString StrUtils::replaceTag(QString inStr, QString tagName, QString templ)
     rx.setPattern(pattern.arg(tagName));
     int pos = 0;
     QStringList linksInTempl = dashValues(templ);
-    for(QRegularExpressionMatch match : rx.globalMatch(inStr)) {
+    QRegularExpressionMatchIterator i = rx.globalMatch(inStr);
+    while(i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
         qDebug() << "Regexp res:" << match.captured(1) << match.captured(2);
         QString replaceStr = templ;
         QHash<QString, QString> attrHash = attrsToHash(match.captured(1));
@@ -123,7 +125,9 @@ QStringList StrUtils::dashValues(QString inStr)
 {
     QStringList resVals;
     QRegularExpression rx("#([a-z/]+)#");
-    for(const QRegularExpressionMatch &match : rx.globalMatch(inStr)){
+    QRegularExpressionMatchIterator i = rx.globalMatch(inStr);
+    while(i.hasNext()) {
+      QRegularExpressionMatch match = i.next();
       resVals.append(match.captured(1));
     }
     return resVals;

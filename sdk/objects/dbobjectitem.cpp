@@ -134,7 +134,9 @@ QString DBObjectItem::filterUnmodifiedFields(QString pattern) const
   foreach(QString part, parts) {
     bool include = true;
 
-    for (QRegularExpressionMatch match : rxParam.globalMatch(part)) {
+    QRegularExpressionMatchIterator i = rxParam.globalMatch(part);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
         QString paramName = match.captured(1);
         if (!fieldModified(paramName)) {
             include = false;

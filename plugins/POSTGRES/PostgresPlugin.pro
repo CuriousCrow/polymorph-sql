@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql core5compat widgets
+QT       += core gui sql widgets
 
 
 CONFIG += plugin
@@ -12,6 +12,15 @@ CONFIG += c++11
 
 TARGET = PostgresPlugin
 TEMPLATE = lib
+
+CONFIG(debug,debug|release){
+    BUILDTYPE = debug
+}
+else {
+    BUILDTYPE = release
+}
+
+DESTDIR = ../../../build-DemalexGroup/$${BUILDTYPE}/plugins
 
 include(../../sdk/sdk.pri)
 

@@ -55,7 +55,9 @@ void QSqlSyntaxHighlighter::highlightKeywords(const QString &text)
 
         rx.setPattern(pattern.arg(keyword));
 
-        for(const QRegularExpressionMatch &match : rx.globalMatch(text)) {
+        QRegularExpressionMatchIterator i = rx.globalMatch(text);
+        while(i.hasNext()) {
+            QRegularExpressionMatch match = i.next();
             int capNum = (rx.captureCount() == 0) ? 0 : 1;
             //применение формата на найденную подстроку
             setFormat(match.capturedStart(capNum), match.capturedLength(capNum), format);
@@ -77,7 +79,9 @@ void QSqlSyntaxHighlighter::highlightFunctions(const QString &text)
 
     rx.setPattern(pattern.arg(function));
 
-    for(const QRegularExpressionMatch &match : rx.globalMatch(text)) {
+    QRegularExpressionMatchIterator i = rx.globalMatch(text);
+    while(i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
         int capNum = (rx.captureCount() == 0) ? 0 : 1;
         //применение формата на найденную подстроку
         setFormat(match.capturedStart(capNum), match.capturedLength(capNum), format);

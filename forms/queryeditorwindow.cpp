@@ -320,7 +320,9 @@ void QueryEditorWindow::on_aUpdateParams_triggered()
     QRegularExpression rxParam("#([A-Za-z]+)#");
     QString text = ui->teQueryEditor->toPlainText();
     QVariantMap paramMap;
-    for(const QRegularExpressionMatch &match : rxParam.globalMatch(text)) {
+    QRegularExpressionMatchIterator i = rxParam.globalMatch(text);
+    while(i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
         QString paramName = match.captured(1);
         qDebug() << paramName;
         paramMap.insert(paramName, "");

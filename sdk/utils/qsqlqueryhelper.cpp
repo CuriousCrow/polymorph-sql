@@ -76,7 +76,9 @@ QString QSqlQueryHelper::fillSqlPatternByProps(QString pattern, const QObject *o
   QRegularExpression rxParam = QRegularExpression("#([A-Za-z_]+)#");
   foreach(QString sqlPart, parts) {
     bool include = true;
-    for(const QRegularExpressionMatch &match : rxParam.globalMatch(sqlPart)) {
+    QRegularExpressionMatchIterator i = rxParam.globalMatch(sqlPart);
+    while(i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
         QString paramName = match.captured(1);
         if (object->property(paramName.toUtf8()).isValid()) {
             include = false;
@@ -88,7 +90,9 @@ QString QSqlQueryHelper::fillSqlPatternByProps(QString pattern, const QObject *o
   }
 
   QStringList fields;
-  for(const QRegularExpressionMatch &match : rxParam.globalMatch(pattern)) {
+  QRegularExpressionMatchIterator i = rxParam.globalMatch(pattern);
+  while(i.hasNext()) {
+      QRegularExpressionMatch match = i.next();
       fields.append(match.captured(1));
   }
   fields.removeDuplicates();

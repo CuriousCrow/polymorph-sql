@@ -79,7 +79,7 @@ QVariant QueryParamTableModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
-    if (role == Qt::DisplayRole | role == Qt::EditRole) {
+    if (role == Qt::DisplayRole || role == Qt::EditRole) {
         QString name = nameByRow(index.row());
         switch(index.column()) {
         case 0:
@@ -129,13 +129,13 @@ QVariant QueryParamTableModel::headerData(int section, Qt::Orientation orientati
 
 QString QueryParamTableModel::nameByRow(int row) const
 {
-    QList keys = _params.keys();
+    QStringList keys = _params.keys();
     return keys.value(row);
 }
 
 int QueryParamTableModel::rowByName(const QString &name) const
 {
-    const QList keys = _params.keys();
+    const QStringList keys = _params.keys();
     return keys.indexOf(name);
 }
 
