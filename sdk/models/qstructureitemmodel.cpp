@@ -6,6 +6,8 @@
 #include "../objects/appurl.h"
 #include "../utils/qsqlqueryhelper.h"
 
+#define TREEMODEL_DEBUG
+
 QStructureItemModel::QStructureItemModel(QObject *parent):
   LStandardTreeModel(parent)
 {
@@ -68,4 +70,17 @@ Qt::ItemFlags QStructureItemModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
   }
   return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
+}
+
+QVariant QStructureItemModel::data(const QModelIndex &index, int role) const
+{
+#ifdef TREEMODEL_DEBUG
+    if (!index.isValid())
+        return QVariant();
+    if (role == Qt::ToolTipRole) {
+        DBObjectItem* item = static_cast<DBObjectItem*>(itemByIndex(index));
+        return item->objectUrl().toString();
+    }
+#endif
+    return LStandardTreeModel::data(index, role);
 }
