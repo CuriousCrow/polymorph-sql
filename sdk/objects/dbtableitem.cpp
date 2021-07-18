@@ -86,6 +86,7 @@ bool DBTableItem::refresh()
 {
   reloadColumnsModel();
   reloadConstraintsModel();
+  submit();
   return true;
 }
 

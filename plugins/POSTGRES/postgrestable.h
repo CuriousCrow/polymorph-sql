@@ -24,8 +24,6 @@ public:
 public:
   virtual void reloadColumnsModel() Q_DECL_OVERRIDE;
   virtual void reloadConstraintsModel() Q_DECL_OVERRIDE;
-protected:
-  QString caption() const;
 private:
   QString createTableQuery(QString table) const;
   QString columnDef(const SqlColumn &col) const;

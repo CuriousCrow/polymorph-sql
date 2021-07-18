@@ -56,7 +56,7 @@ DBCheckConstraint *PostgresTable::newCheckConstraint()
 
 ActionResult PostgresTable::insertMe()
 {
-  return execSql(createTableQuery(caption()), connectionName());
+  return execSql(createTableQuery(identifier()), connectionName());
 }
 
 ActionResult PostgresTable::updateMe()
@@ -200,11 +200,6 @@ void PostgresTable::reloadConstraintsModel()
 
 }
 
-QString PostgresTable::caption() const
-{
-  return "\"" + fieldValue(F_CAPTION).toString() + "\"";
-}
-
 QString PostgresTable::createTableQuery(QString table) const
 {
   QString createPattern = "CREATE TABLE %1 (%2);";
@@ -265,5 +260,5 @@ QString PostgresTable::defaultDef(const SqlColumn &col) const
 
 QString PostgresTable::toDDL() const
 {
-  return createTableQuery(caption());
+  return createTableQuery(identifier());
 }
