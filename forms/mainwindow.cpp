@@ -149,10 +149,11 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       IocPlugin* dbms = Core::plugin(dbItem->driverName(), FeatureType::DbmsObjects);
       foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
         FolderTreeItem* folder = Core::instance()->dependencyForDriver<FolderTreeItem>(dbItem->driverName());
-//        folder->setCore(Core::instance());
+
         folder->setParent(dbItem);
-        folder->setParentUrl(dbItem->objectUrl());
+        //setChildrenType should be before setParentUrl to generate a correct objectUrl
         folder->setChildrenType(type);
+        folder->setParentUrl(dbItem->objectUrl());
         folder->reloadChildren();
       }
       ui->tvDatabaseStructure->reset();

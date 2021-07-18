@@ -78,6 +78,9 @@ LAbstractTreeItem *LStandardTreeModel::itemByIndex(QModelIndex index) const
 LAbstractTreeItem *LStandardTreeModel::itemByName(QString name) const
 {
   return findChild<LAbstractTreeItem*>(name);
+  // Alternative method to find
+//    QObject* itemObj = findChildByName(this, name);
+//    return static_cast<LAbstractTreeItem*>(itemObj);
 }
 
 QModelIndex LStandardTreeModel::indexByName(QString name)
@@ -210,3 +213,16 @@ bool LStandardTreeModel::removeRows(int row, int count, const QModelIndex &paren
   endRemoveRows();
   return true;
 }
+
+QObject *LStandardTreeModel::findChildByName(const QObject *parent, const QString &name) const
+{
+    foreach(QObject* child, parent->children()) {
+        if (child->objectName() == name)
+            return child;
+        QObject* childFound = findChildByName(child, name);
+        if (childFound)
+            return childFound;
+    }
+    return nullptr;
+}
+
