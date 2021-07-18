@@ -14,7 +14,7 @@ bool PostgresFunctionItem::refresh()
   QString sql = "SELECT data_type \"returnType\", external_language \"language\", routine_definition \"sourceCode\" FROM information_schema.routines "
                 "WHERE routine_type='FUNCTION' and specific_schema='public' "
                 "and routine_name='#caption#'";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_SOURCE_CODE, resultSet.value(F_SOURCE_CODE));
@@ -42,7 +42,7 @@ ActionResult PostgresFunctionItem::updateMe()
 ActionResult PostgresFunctionItem::deleteMe()
 {
   QString sql = "DROP FUNCTION \"#caption#\"";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }
 
@@ -53,6 +53,6 @@ QString PostgresFunctionItem::toDDL() const
         "RETURNS #returnType# "
         "LANGUAGE '#language#' "
         "AS $BODY$#sourceCode#$BODY$";
-    QString preparedSql = fillSqlPattern(sql);
+    QString preparedSql = fillSqlPatternWithFields(sql);
     return preparedSql;
 }

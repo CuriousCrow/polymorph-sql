@@ -17,7 +17,7 @@ int DBUniqueConstraint::type() const
 ActionResult DBUniqueConstraint::insertMe()
 {
   QString sql = "alter table #table# add constraint #caption# unique (#column#)";
-  QString preparedSql = fillPatternWithFields(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }
 

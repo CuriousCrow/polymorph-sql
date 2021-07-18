@@ -3,6 +3,8 @@
 
 #include "objects/dbtableitem.h"
 
+//TODO: MySQL uses  backtick (`) character for quotation
+
 class MysqlTableItem : public DBTableItem
 {
   Q_OBJECT

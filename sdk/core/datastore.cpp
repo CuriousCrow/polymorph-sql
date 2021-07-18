@@ -39,7 +39,7 @@ DataStore::DataStore(QObject *parent) : QObject(parent)
 void DataStore::initRegisteredDatabases()
 {
   QString sql = "select id id, name caption, driver driverName, local_path databaseName, "
-                "host_address hostName, username userName, password password from t_database";
+                "host_address hostName, username userName, password password, port port from t_database";
   QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);
   while (sqlResult.next()) {
     QSqlRecord rec = sqlResult.record();

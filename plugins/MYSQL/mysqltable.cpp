@@ -2,11 +2,16 @@
 #include "utils/qsqlqueryhelper.h"
 #include <QDebug>
 #include "objects/appurl.h"
+#include "objects/appconst.h"
 
 MysqlTableItem::MysqlTableItem()
   : DBTableItem()
 {
   _columnsModel = new SqlColumnModel();
+
+  _constraintsModel = new VariantMapTableModel();
+  _constraintsModel->registerColumn(F_TYPE, tr("Type"));
+  _constraintsModel->registerColumn(F_NAME, tr("Name"));
 }
 
 MysqlTableItem::~MysqlTableItem()
@@ -16,16 +21,19 @@ MysqlTableItem::~MysqlTableItem()
 
 ActionResult MysqlTableItem::insertMe()
 {
-  QSqlQueryHelper::execSql(createTableQuery(fieldValue("caption").toString()), connectionName());
-  return submit();
+  ActionResult result = execSql(createTableQuery(fieldValue(F_CAPTION).toString()), connectionName());
+  if (result.isSuccess())
+    submit();
+  return result;
 }
 
 ActionResult MysqlTableItem::updateMe()
 {
   qDebug() << "QDBMysqlTableItem::updateMe()";
   if (DBTableItem::updateMe().isSuccess())
-    return true;
+    return RES_OK_CODE;
 
+  ActionResult result;
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
   foreach (SqlColumn fromCol, changes.keys()) {
     SqlColumn toCol = changes[fromCol];
@@ -34,33 +42,36 @@ ActionResult MysqlTableItem::updateMe()
       qDebug() << "Add col:" << toCol;
       QString sql = "alter table #caption.new# add column %1";
       QString colDef = columnDef(toCol);
-      QString preparedSql = fillPatternWithFields(sql).arg(colDef);
-      QSqlQueryHelper::execSql(preparedSql, connectionName());
+      QString preparedSql = fillSqlPatternWithFields(sql).arg(colDef);
+      result = execSql(preparedSql, connectionName());
     }
     else if (toCol.type() == NoType) {
       //Удаление колонки
       qDebug() << "Drop col:" << fromCol;
       QString sql = "alter table #caption.old# drop column %1";
-      QString preparedSql = fillPatternWithFields(sql).arg(fromCol.name());
-      QSqlQueryHelper::execSql(preparedSql, connectionName());
+      QString preparedSql = fillSqlPatternWithFields(sql).arg(fromCol.name());
+      result = execSql(preparedSql, connectionName());
     }
     else {
       //Изменения колонки
       qDebug() << "Col modify:" << fromCol << "to" << toCol;
       QString sql = "alter table #caption.old# change column %1 %2";
-      QString preparedSql = fillPatternWithFields(sql).arg(fromCol.name()).arg(columnDef(toCol));
-      QSqlQueryHelper::execSql(preparedSql, connectionName());
+      QString preparedSql = fillSqlPatternWithFields(sql).arg(fromCol.name(), columnDef(toCol));
+      result = execSql(preparedSql, connectionName());
     }
+    if (!result.isSuccess())
+        break;
   }
   //Переименование таблицы
-  if (isModified() && field("caption").isModified()) {
+  if (result.isSuccess() && isModified() && field("caption").isModified()) {
     QString sql = "alter table #caption.old# rename to #caption.new#";
-    QString preparedSql = fillPatternWithFields(sql);
-    QSqlQueryHelper::execSql(preparedSql, connectionName());
+    QString preparedSql = fillSqlPatternWithFields(sql);
+    result = execSql(preparedSql, connectionName());
   }
-  submit();
+  if (result.isSuccess())
+    submit();
 
-  return true;
+  return result;
 }
 
 void MysqlTableItem::reloadColumnsModel()
@@ -70,7 +81,7 @@ void MysqlTableItem::reloadColumnsModel()
     return;
   _columnsModel->clear();
   QString sql = "SELECT table_schema, table_name, column_name, column_type, data_type, column_default, character_maximum_length, is_nullable, numeric_precision, numeric_scale, column_key, extra FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='#databaseName#' AND table_name = '#caption#'";
-  QString preparedSql = fillPatternWithFields(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
     SqlColumn col(query.value("column_name").toString(), colTypeFromString(query.value("data_type").toString()));
@@ -98,9 +109,9 @@ QString MysqlTableItem::createTableQuery(QString table) const
   }
   if (!pkColList.isEmpty()) {
     QString pkTemplate = "CONSTRAINT pk_#caption.new# PRIMARY KEY (%1)";
-    colDefList.append(fillPatternWithFields(pkTemplate).arg(pkColList.join(",")));
+    colDefList.append(fillSqlPatternWithFields(pkTemplate).arg(pkColList.join(",")));
   }
-  QString preparedSql = createPattern.arg(table).arg(colDefList.join(", "));
+  QString preparedSql = createPattern.arg(table, colDefList.join(", "));
   return preparedSql;
 }
 

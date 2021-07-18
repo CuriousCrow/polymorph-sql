@@ -17,7 +17,7 @@ int DBCheckConstraint::type() const
 ActionResult DBCheckConstraint::insertMe()
 {
   QString sql = "alter table #table# add constraint #caption# check (#expression#)";
-  QString preparedSql = fillPatternWithFields(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }
 

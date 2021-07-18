@@ -13,7 +13,7 @@ bool SqliteViewItem::refresh()
   QString sql =
       "select name, sql from sqlite_master where type = 'view' "
       "and name='#caption#'";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_QUERY_TEXT, resultSet.value("sql"));

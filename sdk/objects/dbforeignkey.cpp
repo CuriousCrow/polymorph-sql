@@ -22,7 +22,7 @@ ActionResult DBForeignKey::insertMe()
   QString sql = "alter table #table# add constraint #caption# "
                 "foreign key (#column#) references #reftable#(#refcolumn#) "
                 "on update #onUpdate# on delete #onDelete#";
-  QString preparedSql = fillPatternWithFields(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }
 

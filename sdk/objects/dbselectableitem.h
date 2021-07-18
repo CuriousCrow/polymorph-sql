@@ -15,6 +15,8 @@ public:
     virtual QVariant colData(int column, int role) const Q_DECL_OVERRIDE;
 public:
     virtual bool reloadChildren() Q_DECL_OVERRIDE;
+protected:
+    QString identifier() const;
 };
 
 #endif // DBSELECTABLEITEM_H

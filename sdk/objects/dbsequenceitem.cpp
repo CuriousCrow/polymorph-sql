@@ -77,7 +77,7 @@ ActionResult DBSequenceItem::updateMe()
 ActionResult DBSequenceItem::deleteMe()
 {
   QString sql = "DROP SEQUENCE \"#caption#\"";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }
 
@@ -85,6 +85,6 @@ QString DBSequenceItem::toDDL() const
 {
   QString sql = "CREATE SEQUENCE \"" + caption() + "\" INCREMENT #step# "
       "MINVALUE #minValue# MAXVALUE #maxValue# START WITH #startValue#";
-  QString preparedSql = fillPatternWithFields(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return preparedSql;
 }

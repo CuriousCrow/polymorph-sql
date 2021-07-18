@@ -14,7 +14,7 @@ bool PostgresUniqueConstraint::refresh()
 {
   QString sql = "select column_name \"column\" from information_schema.constraint_column_usage\n"
       "where constraint_name='#caption#'";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   QStringList columns;
   while (resultSet.next()) {

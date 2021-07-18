@@ -9,6 +9,7 @@ class SqliteDatabase : public DBDatabaseItem
 public:
     Q_INVOKABLE SqliteDatabase();
 public:
+    ActionResult insertMe() Q_DECL_OVERRIDE;
     virtual bool reloadChildren() Q_DECL_OVERRIDE;
     virtual QString getAllObjectListSql() const Q_DECL_OVERRIDE;
 };

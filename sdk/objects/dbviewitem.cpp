@@ -72,14 +72,14 @@ bool DBViewItem::setData(int column, QVariant value, int role)
 
 ActionResult DBViewItem::deleteMe()
 {
-  QString sql = "drop view \"#caption#\"";
-  QString preparedSql = fillSqlPattern(sql);
+  QString sql = "drop view %1";
+  QString preparedSql = sql.arg(identifier());
   return execSql(preparedSql, connectionName());
 }
 
 QString DBViewItem::toDDL() const
 {
-    QString sql = "create view \"#caption#\" as #queryText#";
-    QString preparedSql = fillPatternWithFields(sql);
+    QString sql = "create view %1 as #queryText#";
+    QString preparedSql = fillSqlPatternWithFields(sql.arg(identifier()));
     return preparedSql;
 }

@@ -69,6 +69,6 @@ ActionResult DBTriggerItem::updateMe()
 ActionResult DBTriggerItem::deleteMe()
 {
   QString sql = "drop trigger #caption#";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }

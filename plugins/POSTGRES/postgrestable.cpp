@@ -69,7 +69,7 @@ ActionResult PostgresTable::updateMe()
   if (fieldModified(F_CAPTION)) {
     qDebug() << "Rename table";
     QString sql = "ALTER TABLE \"#caption.old#\" RENAME TO \"#caption.new#\"";
-    QString preparedSql = fillPatternWithFields(sql);
+    QString preparedSql = fillSqlPatternWithFields(sql);
     res = execSql(preparedSql, connectionName());
     if (res.isSuccess())
       field(F_CAPTION).submit();
@@ -79,7 +79,7 @@ ActionResult PostgresTable::updateMe()
 
   res = DBTableItem::updateMe();
   if (res.isSuccess())
-    return ActionResult();
+    return RES_OK_CODE;
 
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
   qDebug() << "Changes size:" << changes.count();
@@ -91,7 +91,7 @@ ActionResult PostgresTable::updateMe()
       qDebug() << "Add col:" << toCol;
       QString sql = "ALTER TABLE \"#caption.new#\" ADD COLUMN %1";
       QString colDef = columnDef(toCol);
-      QString preparedSql = fillPatternWithFields(sql).arg(colDef);
+      QString preparedSql = fillSqlPatternWithFields(sql).arg(colDef);
       res = execSql(preparedSql, connectionName());
       if (!res.isSuccess())
         return res;
@@ -100,7 +100,7 @@ ActionResult PostgresTable::updateMe()
       //Удаление колонки
       qDebug() << "Drop col:" << fromCol;
       QString sql = "ALTER TABLE \"#caption.new#\" DROP COLUMN %1";
-      QString preparedSql = fillPatternWithFields(sql).arg(fromCol.name());
+      QString preparedSql = fillSqlPatternWithFields(sql).arg(fromCol.name());
       res = execSql(preparedSql, connectionName());
       if (!res.isSuccess())
         return res;
@@ -137,7 +137,7 @@ ActionResult PostgresTable::updateMe()
       }
 
       QString sql = "ALTER TABLE \"#caption.new#\" " + difs.join(",\n");
-      QString preparedSql = fillPatternWithFields(sql);
+      QString preparedSql = fillSqlPatternWithFields(sql);
       res = execSql(preparedSql, connectionName());
       if (!res.isSuccess())
         return res;
@@ -162,7 +162,7 @@ void PostgresTable::reloadColumnsModel()
       "left join information_schema.key_column_usage cu on tc.constraint_name=cu.constraint_name "
       "where tc.table_name='person' and tc.constraint_type='PRIMARY KEY') as pk on t.column_name=pk.column_name "
       "WHERE t.table_catalog='#databaseName#' AND t.table_name='#caption#'";
-  QString preparedSql = fillPatternWithFields(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
     SqlColumn col(query.value("column_name").toString(), colTypeFromString(query.value("data_type").toString()));
@@ -187,7 +187,7 @@ void PostgresTable::reloadConstraintsModel()
       "from INFORMATION_SCHEMA.table_constraints c2\n"
       "left join information_schema.key_column_usage c1 on c2.constraint_name=c1.constraint_name\n"
       "where c2.table_name='#caption#' and c2.constraint_name not like '%_not_null'\n";
-  QString preparedSql = fillPatternWithFields(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
   int fakeId = 1;
   while (query.next()) {
@@ -219,7 +219,7 @@ QString PostgresTable::createTableQuery(QString table) const
   }
   if (!pkColList.isEmpty()) {
     QString pkTemplate = "CONSTRAINT pk_#caption.new# PRIMARY KEY (%1)";
-    colDefList.append(fillPatternWithFields(pkTemplate).arg(pkColList.join(",")));
+    colDefList.append(fillSqlPatternWithFields(pkTemplate).arg(pkColList.join(",")));
   }
   QString preparedSql = createPattern.arg(table).arg(colDefList.join(", "));
   return preparedSql;

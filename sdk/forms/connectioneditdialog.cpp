@@ -59,6 +59,7 @@ void ConnectionEditDialog::objectToForm()
   ui->edtHostAddress->setText(_objItem->fieldValue(F_HOSTNAME).toString());
   ui->cmbDriverName->setCurrentText(_objItem->fieldValue(F_DRIVER_NAME).toString());
   ui->edtDatabaseName->setText(_objItem->fieldValue(F_DATABASE_NAME).toString());
+  ui->edtPort->setText(_objItem->fieldValue(F_PORT).toString());
 }
 
 void ConnectionEditDialog::formToObject()
@@ -69,6 +70,19 @@ void ConnectionEditDialog::formToObject()
   _objItem->setFieldValue(F_HOSTNAME, ui->edtHostAddress->text());
   _objItem->setFieldValue(F_DRIVER_NAME, ui->cmbDriverName->currentText());
   _objItem->setFieldValue(F_DATABASE_NAME, ui->edtDatabaseName->text());
+  QString strPort = ui->edtPort->text();
+  _objItem->setFieldValue(F_PORT, strPort.isEmpty() ? QVariant() : strPort.toInt());
+}
+
+void ConnectionEditDialog::tryUserAction()
+{
+    if (userAction() == AbstractDatabaseEditForm::Create) {
+      formToObject();
+      accept();
+    }
+    else {
+      AbstractDatabaseEditForm::tryUserAction();
+    }
 }
 
 void ConnectionEditDialog::on_btnCreate_clicked()

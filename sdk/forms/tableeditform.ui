@@ -14,7 +14,7 @@
    <string>Table editor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../icons.qrc">
+   <iconset resource="../../icons.qrc">
     <normaloff>:/icons/table.png</normaloff>:/icons/table.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -47,6 +47,9 @@
          <property name="editTriggers">
           <set>QAbstractItemView::AllEditTriggers</set>
          </property>
+         <attribute name="horizontalHeaderCascadingSectionResizes">
+          <bool>true</bool>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -57,7 +60,7 @@
             <string>Add</string>
            </property>
            <property name="icon">
-            <iconset resource="../icons.qrc">
+            <iconset resource="../../icons.qrc">
              <normaloff>:/icons/column_add.png</normaloff>:/icons/column_add.png</iconset>
            </property>
           </widget>
@@ -68,7 +71,7 @@
             <string>Drop</string>
            </property>
            <property name="icon">
-            <iconset resource="../icons.qrc">
+            <iconset resource="../../icons.qrc">
              <normaloff>:/icons/column_delete.png</normaloff>:/icons/column_delete.png</iconset>
            </property>
           </widget>
@@ -128,7 +131,7 @@
             <string>Add</string>
            </property>
            <property name="icon">
-            <iconset resource="../icons.qrc">
+            <iconset resource="../../icons.qrc">
              <normaloff>:/icons/constraint_add.png</normaloff>:/icons/constraint_add.png</iconset>
            </property>
            <property name="iconSize">
@@ -145,7 +148,7 @@
             <string>Drop</string>
            </property>
            <property name="icon">
-            <iconset resource="../icons.qrc">
+            <iconset resource="../../icons.qrc">
              <normaloff>:/icons/constraint_drop.png</normaloff>:/icons/constraint_drop.png</iconset>
            </property>
           </widget>
@@ -190,7 +193,7 @@
         <string>Apply</string>
        </property>
        <property name="icon">
-        <iconset resource="../icons.qrc">
+        <iconset resource="../../icons.qrc">
          <normaloff>:/icons/disk.png</normaloff>:/icons/disk.png</iconset>
        </property>
       </widget>
@@ -201,7 +204,7 @@
         <string>Close</string>
        </property>
        <property name="icon">
-        <iconset resource="../icons.qrc">
+        <iconset resource="../../icons.qrc">
          <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
        </property>
       </widget>
@@ -211,7 +214,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icons.qrc"/>
+  <include location="../../icons.qrc"/>
  </resources>
  <connections/>
 </ui>

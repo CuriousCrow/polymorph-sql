@@ -17,7 +17,7 @@ bool PostgresTriggerItem::refresh()
       "(select tgenabled from pg_trigger where tgname='#caption#') enabled "
       "FROM information_schema.triggers "
       "where trigger_name='#caption#'";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   clearEventFields();
   if (resultSet.next()) {
@@ -54,7 +54,7 @@ ActionResult PostgresTriggerItem::updateMe()
     QString sql =
         "ALTER TRIGGER \"#caption.old#\" ON \"#table#\" "
         "RENAME TO \"#caption.new#\"";
-    QString preparedSql = fillPatternWithFields(sql);
+    QString preparedSql = fillSqlPatternWithFields(sql);
     res = execSql(preparedSql, connectionName());
     if (!res.isSuccess())
       return res;
@@ -64,7 +64,7 @@ ActionResult PostgresTriggerItem::updateMe()
     qDebug() << "Set trigger" << caption() << "enabled:" << fieldValue(F_ENABLED);
     QString sql = "ALTER TABLE \"#table#\" %1 TRIGGER \"#caption#\"";
     sql = sql.arg(fieldValue(F_ENABLED).toBool() ? "ENABLE" : "DISABLE");
-    QString preparedSql = fillPatternWithFields(sql);
+    QString preparedSql = fillSqlPatternWithFields(sql);
     res = execSql(preparedSql, connectionName());
     if (!res.isSuccess())
       return res;
@@ -119,7 +119,7 @@ ActionResult PostgresTriggerItem::deleteMe()
 {
   refresh();
   QString sql = "drop trigger \"#caption#\" on \"#table#\"";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }
 
@@ -132,6 +132,6 @@ QString PostgresTriggerItem::toDDL() const
         "FOR EACH ROW "
         "EXECUTE PROCEDURE #function#()";
     sql = sql.arg(events().join(" OR "));
-    QString preparedSql = fillPatternWithFields(sql);
+    QString preparedSql = fillSqlPatternWithFields(sql);
     return preparedSql;
 }

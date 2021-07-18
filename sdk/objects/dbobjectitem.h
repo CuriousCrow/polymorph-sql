@@ -98,6 +98,8 @@ public:
   QVariant fieldOldValue(int colIdx) const;
   bool fieldModified(QString fieldName) const;
   void setFieldValue(QString fieldName, QVariant value);
+  void copyFieldTo(QString fieldName, DBObjectItem* targetObj);
+  void copyFieldsTo(DBObjectItem* targetObj);
 private:
   void setFieldValue(int colNumber, QVariant value);
 
@@ -110,9 +112,8 @@ protected:
   int fieldIndex(QString fieldName) const;
   QString databaseName() const;
   DBObjectField& field(QString fieldName);
-  QString fillSqlPattern(QString pattern) const;
-  QString fillSqlPattern(QString pattern, QMap<QString, QString> valueMap) const;
-  QString fillPatternWithFields(QString pattern) const;
+  QString fillSqlPatternWithFields(QString pattern) const;
+  QString fillSqlPatternWithFields(QString pattern, QMap<QString, QString> valueMap) const;
   QString fillWithModifiedFields(QString pattern) const;
   QString filterUnmodifiedFields(QString pattern) const;
   ActionResult execSql(QString sql, QString connectionName = QSqlDatabase::defaultConnection);

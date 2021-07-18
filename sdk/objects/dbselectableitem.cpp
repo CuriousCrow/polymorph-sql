@@ -1,9 +1,11 @@
 #include "dbselectableitem.h"
 #include <QIcon>
+#include <QSqlDriver>
 
 
 DBSelectableItem::DBSelectableItem(QString caption, QObject *parent) : DBObjectItem(caption, parent)
 {
+
 }
 
 int DBSelectableItem::colCount() const
@@ -31,4 +33,10 @@ QVariant DBSelectableItem::colData(int column, int role) const
 bool DBSelectableItem::reloadChildren()
 {
     return true;
+}
+
+QString DBSelectableItem::identifier() const
+{
+   QString objName = QSqlDatabase::database(connectionName()).driver()->escapeIdentifier(caption(), QSqlDriver::TableName);
+    return objName;
 }

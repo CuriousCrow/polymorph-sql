@@ -3,10 +3,13 @@
 #include "objects/foldertreeitem.h"
 #include "objects/appconst.h"
 
+#define MYSQL_PORT 3306
+
 MysqlDatabase::MysqlDatabase()
   : DBDatabaseItem("")
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_MYSQL);
+  setFieldValue(F_PORT, MYSQL_PORT);
 }
 
 MysqlDatabase::~MysqlDatabase()

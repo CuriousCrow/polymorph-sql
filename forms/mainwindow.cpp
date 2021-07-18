@@ -355,6 +355,11 @@ void MainWindow::showCreateItemEditor()
   pObj.insert(F_TYPE, folderItem->childrenType());
   pObj.insert(F_DRIVER_NAME, driverName);
   DBObjectItem* newItem = Core::instance()->dependency<DBObjectItem>(pObj);
+  if (!newItem) {
+    pObj.insert(F_DRIVER_NAME, "");
+    newItem = Core::instance()->dependency<DBObjectItem>(pObj);
+  }
+
   newItem->setParentUrl(folderItem->objectUrl());
   editForm->setObjItem(newItem);
   editForm->setUserAction(AbstractDatabaseEditForm::Create);
@@ -370,8 +375,26 @@ void MainWindow::saveDatabaseChanges()
   AbstractDatabaseEditForm::UserAction action = editForm->userAction();
   if (action == AbstractDatabaseEditForm::Create) {
     DBObjectItem* newItem = editForm->objItem();
-    DataStore::structureModel()->appendItem(newItem);
+    QString driver = newItem->fieldValue(F_DRIVER_NAME).toString();
+    QVariantHash p;
+    p.insert(F_DRIVER_NAME, driver);
+    //Creating Database item of selected driver
+    DBDatabaseItem* newDatabaseItem = Core::instance()->dependency<DBDatabaseItem>(p);
+    newItem->copyFieldsTo(newDatabaseItem);
+    delete newItem;
+
+    ActionResult insertResult = newDatabaseItem->insertMe();
+    if (!insertResult.isSuccess()) {
+        delete newDatabaseItem;
+        qWarning() << "Oups! Cant insert new database connection";
+        return;
+    }
+    newDatabaseItem->submit();
+    DataStore::structureModel()->appendItem(newDatabaseItem);
     refreshQueryEditorAssistance();
+  }
+  else if (action == AbstractDatabaseEditForm::Edit) {
+    //Nothing needs to be done
   }
   else {
     qWarning() << "Connection delete action is not possible from edit form";

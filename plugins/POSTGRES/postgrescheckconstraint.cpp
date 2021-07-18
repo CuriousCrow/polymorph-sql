@@ -14,7 +14,7 @@ bool PostgresCheckConstraint::refresh()
   QString sql = "select check_clause \"expression\"\n"
       "from information_schema.check_constraints\n"
       "where constraint_name='#caption#'";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_EXPRESSION, resultSet.value(F_EXPRESSION));

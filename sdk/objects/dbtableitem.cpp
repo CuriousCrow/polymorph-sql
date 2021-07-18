@@ -77,8 +77,8 @@ void DBTableItem::addDefaultColumn()
 
 ActionResult DBTableItem::deleteMe()
 {
-  QString sql = "drop table \"%1\"";
-  QString preparedSql = sql.arg(caption());
+  QString sql = "drop table %1";
+  QString preparedSql = sql.arg(identifier());
   return execSql(preparedSql, connectionName());
 }
 
@@ -135,7 +135,7 @@ QString DBTableItem::toDML() const
 {
   QString tablename = caption();
   QString sql = "select * from %1";
-  QString preparedSql = sql.arg(tablename);
+  QString preparedSql = sql.arg(identifier());
   QSqlQuery result = QSqlQueryHelper::execSql(preparedSql, _connectionName);
   QStringList dmlList;
   while(result.next()) {

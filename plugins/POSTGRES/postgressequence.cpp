@@ -13,7 +13,7 @@ bool PostgresSequence::refresh()
 {
   QString sql = "SELECT sequence_name \"caption\", start_value \"startValue\", minimum_value \"minValue\", maximum_value \"maxValue\", increment \"step\" "
                 "FROM information_schema.sequences where sequence_name='#caption#'";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_CAPTION, resultSet.value(F_CAPTION));
@@ -23,7 +23,7 @@ bool PostgresSequence::refresh()
     setFieldValue(F_START_VALUE, resultSet.value(F_START_VALUE).toInt());
 
     sql = "select * FROM \"#caption#\"";
-    preparedSql = fillSqlPattern(sql);
+    preparedSql = fillSqlPatternWithFields(sql);
     resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
     if (resultSet.next()) {
       setFieldValue(F_CURRENT_VALUE, resultSet.value(0).toInt());

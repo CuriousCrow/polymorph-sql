@@ -13,6 +13,7 @@ public:
     // FolderTreeItem interface
 protected:
     virtual void loadChildren() override;
+
 };
 
 #endif // MYSQLFOLDERITEM_H

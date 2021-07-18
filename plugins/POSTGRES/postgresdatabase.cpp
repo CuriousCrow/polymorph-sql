@@ -5,10 +5,12 @@
 #include "postgresfunctionitem.h"
 #include "postgrestriggeritem.h"
 
+#define POSTGRES_PORT 5432
 
 PostgresDatabase::PostgresDatabase() : DBDatabaseItem("")
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_POSTGRES);
+  setFieldValue(F_PORT, POSTGRES_PORT);
 }
 
 PostgresDatabase::~PostgresDatabase()

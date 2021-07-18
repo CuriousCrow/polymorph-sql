@@ -6,18 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>489</width>
-    <height>379</height>
+    <width>554</width>
+    <height>474</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Connection editor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../icons.qrc">
+   <iconset resource="../../icons.qrc">
     <normaloff>:/icons/database.png</normaloff>:/icons/database.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_7">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="loDriverName">
      <property name="spacing">
@@ -108,22 +108,43 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="loHostAddress">
-     <property name="spacing">
-      <number>3</number>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1">
      <item>
-      <widget class="QLabel" name="lblHostAddress">
-       <property name="text">
-        <string>Host address</string>
+      <layout class="QVBoxLayout" name="loHostAddress">
+       <property name="spacing">
+        <number>3</number>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-       </property>
-      </widget>
+       <item>
+        <widget class="QLabel" name="lblHostAddress">
+         <property name="text">
+          <string>Host address</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="edtHostAddress"/>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QLineEdit" name="edtHostAddress"/>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="lblPort">
+         <property name="text">
+          <string>Port</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="edtPort"/>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -172,6 +193,19 @@
     </layout>
    </item>
    <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="loBottomPanel">
      <item>
       <widget class="QPushButton" name="btnTryToConnect">
@@ -179,7 +213,7 @@
         <string>Test connection</string>
        </property>
        <property name="icon">
-        <iconset resource="../icons.qrc">
+        <iconset resource="../../icons.qrc">
          <normaloff>:/icons/commit.png</normaloff>:/icons/commit.png</iconset>
        </property>
       </widget>
@@ -190,7 +224,7 @@
         <string>Create</string>
        </property>
        <property name="icon">
-        <iconset resource="../icons.qrc">
+        <iconset resource="../../icons.qrc">
          <normaloff>:/icons/bullet_add.png</normaloff>:/icons/bullet_add.png</iconset>
        </property>
       </widget>
@@ -201,7 +235,7 @@
         <string>Drop</string>
        </property>
        <property name="icon">
-        <iconset resource="../icons.qrc">
+        <iconset resource="../../icons.qrc">
          <normaloff>:/icons/bullet_delete.png</normaloff>:/icons/bullet_delete.png</iconset>
        </property>
       </widget>
@@ -225,7 +259,7 @@
         <string>OK</string>
        </property>
        <property name="icon">
-        <iconset resource="../icons.qrc">
+        <iconset resource="../../icons.qrc">
          <normaloff>:/icons/tick.png</normaloff>:/icons/tick.png</iconset>
        </property>
       </widget>
@@ -236,7 +270,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon">
-        <iconset resource="../icons.qrc">
+        <iconset resource="../../icons.qrc">
          <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
        </property>
       </widget>
@@ -246,7 +280,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icons.qrc"/>
+  <include location="../../icons.qrc"/>
  </resources>
  <connections>
   <connection>

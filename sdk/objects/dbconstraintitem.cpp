@@ -23,7 +23,7 @@ int DBConstraintItem::type() const
 ActionResult DBConstraintItem::deleteMe()
 {
   QString sql = "alter table \"#table#\" drop constraint \"#caption#\"";
-  QString preparedSql = fillPatternWithFields(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }
 

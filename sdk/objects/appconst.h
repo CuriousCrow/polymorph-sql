@@ -13,6 +13,7 @@
 #define F_QUERY_TEXT "queryText"
 #define F_ID "id"
 #define F_HOSTNAME "hostName"
+#define F_PORT "port"
 #define F_USERNAME "userName"
 #define F_PASSWORD "password"
 #define F_DRIVER_NAME "driverName"

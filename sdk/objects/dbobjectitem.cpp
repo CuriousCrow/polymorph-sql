@@ -90,13 +90,7 @@ DBObjectField& DBObjectItem::field(QString fieldName)
   return fields[fieldIndex(fieldName)];
 }
 
-//TODO: Пробная замена на вызов fillPatternWithFields. Если ничего не сломается, можно будет заменить одним методом
-QString DBObjectItem::fillSqlPattern(QString pattern) const
-{
-    return fillPatternWithFields(pattern);
-}
-
-QString DBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> valueMap) const
+QString DBObjectItem::fillSqlPatternWithFields(QString pattern, QMap<QString, QString> valueMap) const
 {
   QString result = pattern;
   foreach(QString key, valueMap.keys()) {
@@ -105,7 +99,7 @@ QString DBObjectItem::fillSqlPattern(QString pattern, QMap<QString, QString> val
   return result;
 }
 
-QString DBObjectItem::fillPatternWithFields(QString pattern) const
+QString DBObjectItem::fillSqlPatternWithFields(QString pattern) const
 {
   QString result = pattern;
   foreach(DBObjectField field, fields) {
@@ -123,7 +117,7 @@ QString DBObjectItem::fillPatternWithFields(QString pattern) const
 QString DBObjectItem::fillWithModifiedFields(QString pattern) const
 {
   pattern = filterUnmodifiedFields(pattern);
-  return fillPatternWithFields(pattern);
+  return fillSqlPatternWithFields(pattern);
 }
 
 QString DBObjectItem::filterUnmodifiedFields(QString pattern) const
@@ -156,7 +150,7 @@ ActionResult DBObjectItem::execSql(QString sql, QString connectionName)
     return ActionResult(ERR_QUERY_ERROR, query.lastError().databaseText());
   }
   else {
-    return ActionResult(RES_OK_CODE);
+    return RES_OK_CODE;
   }
 }
 
@@ -206,6 +200,18 @@ void DBObjectItem::setFieldValue(QString fieldName, QVariant value)
     return;
   }
   setFieldValue(index, value);
+}
+
+void DBObjectItem::copyFieldTo(QString fieldName, DBObjectItem *targetObj)
+{
+    targetObj->setFieldValue(fieldName, fieldValue(fieldName));
+}
+
+void DBObjectItem::copyFieldsTo(DBObjectItem *targetObj)
+{
+    foreach(DBObjectField field, fields) {
+        targetObj->setFieldValue(field.name, field.value());
+    }
 }
 
 void DBObjectItem::setFieldValue(int colNumber, QVariant value)

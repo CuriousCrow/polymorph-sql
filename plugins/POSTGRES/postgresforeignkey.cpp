@@ -18,7 +18,7 @@ bool PostgresForeignKey::refresh()
       "left join information_schema.constraint_column_usage rc on kc.constraint_name=rc.constraint_name "
       "left join information_schema.referential_constraints ac on kc.constraint_name=ac.constraint_name "
       "where kc.constraint_name='#caption#'";
-  QString preparedSql = fillSqlPattern(sql);
+  QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_TABLE, resultSet.value(F_TABLE));

@@ -37,6 +37,8 @@ private:
 public:
   virtual void objectToForm() override;
   virtual void formToObject() override;
+protected:
+  virtual void tryUserAction() override;
 };
 
 #endif // CONNECTIONEDITDIALOG_H

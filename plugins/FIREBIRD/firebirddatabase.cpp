@@ -2,10 +2,13 @@
 #include "firebirdtable.h"
 #include "objects/appconst.h"
 
+#define FIREBIRD_PORT 3060
+
 FirebirdDatabase::FirebirdDatabase()
   : DBDatabaseItem("")
 {
   setFieldValue(F_DRIVER_NAME, DRIVER_FIREBIRD);
+  setFieldValue(F_PORT, FIREBIRD_PORT);
 }
 
 QString FirebirdDatabase::getAllObjectListSql() const

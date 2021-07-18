@@ -29,6 +29,8 @@ DBDatabaseItem::DBDatabaseItem(QString caption):
   registerField(F_DRIVER_NAME);
   //6
   registerField(F_DATABASE_NAME);
+  //7
+  registerField(F_PORT);
 }
 
 DBDatabaseItem::~DBDatabaseItem()
@@ -42,6 +44,8 @@ bool DBDatabaseItem::createDbConnection()
   db.setHostName(fieldValue(F_HOSTNAME).toString());
   db.setUserName(fieldValue(F_USERNAME).toString());
   db.setPassword(fieldValue(F_PASSWORD).toString());
+  if (!fieldValue(F_PORT).isNull())
+      db.setPort(fieldValue(F_PORT).toInt());
   qDebug() << "Trying to connect:" << info();
 
   //Trying to connect
@@ -108,9 +112,9 @@ AppUrl DBDatabaseItem::objectUrl()
 
 ActionResult DBDatabaseItem::insertMe()
 {
-  QString sql = "insert into t_database (NAME, DRIVER, LOCAL_PATH, HOST_ADDRESS, USERNAME, PASSWORD) "
-                "values ('#caption#','#driverName#', '#databaseName#', '#hostName#', '#userName#', '#password#')";
-  QSqlQuery sqlResult = QSqlQueryHelper::execSql(fillSqlPattern(sql));
+  QString sql = "insert into t_database (NAME, DRIVER, LOCAL_PATH, HOST_ADDRESS, USERNAME, PASSWORD, PORT) "
+                "values ('#caption#','#driverName#', '#databaseName#', '#hostName#', '#userName#', '#password#', #port#)";
+  QSqlQuery sqlResult = QSqlQueryHelper::execSql(fillSqlPatternWithFields(sql));
   if (sqlResult.lastError().isValid()){
     return ActionResult(ERR_QUERY_ERROR, sqlResult.lastError().databaseText());
   }
@@ -124,16 +128,16 @@ ActionResult DBDatabaseItem::updateMe()
 {
   QString sql = "update t_database set NAME='#caption#', DRIVER='#driverName#',"
                 "LOCAL_PATH='#databaseName#',HOST_ADDRESS='#hostName#',"
-                "USERNAME='#userName#',PASSWORD='#password#' where id=#id#";
+                "USERNAME='#userName#',PASSWORD='#password#', PORT=#port# where id=#id#";
 
-  return execSql(fillSqlPattern(sql));
+  return execSql(fillSqlPatternWithFields(sql));
 }
 
 ActionResult DBDatabaseItem::deleteMe()
 {
   qDebug() << "Connections:" << QSqlDatabase::connectionNames();
   QString sql = "delete from t_database where id=#id#";
-  return execSql(fillSqlPattern(sql));
+  return execSql(fillSqlPatternWithFields(sql));
 }
 
 ActionResult DBDatabaseItem::createDatabase()

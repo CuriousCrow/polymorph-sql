@@ -80,25 +80,25 @@ ActionResult SqliteTableItem::updateMe()
     newNames.append(colNames.value(oldName));
   }
   sql = "INSERT INTO tempTable (%1) SELECT %2 FROM #caption.old#";
-  QString preparedSql = fillPatternWithFields(sql).arg(newNames.join(", "), oldNames.join(", "));
+  QString preparedSql = fillSqlPatternWithFields(sql).arg(newNames.join(", "), oldNames.join(", "));
   res = execSql(preparedSql, connectionName());
   if (!res.isSuccess())
     return res;
 
   sql = "DROP TABLE #caption.old#";
-  preparedSql = fillPatternWithFields(sql);
+  preparedSql = fillSqlPatternWithFields(sql);
   res = execSql(preparedSql, connectionName());
   if (!res.isSuccess())
     return res;
 
   //Переименовываем новую таблицу обратно
   sql = "ALTER TABLE tempTable RENAME TO #caption.new#";
-  preparedSql = fillPatternWithFields(sql);
+  preparedSql = fillSqlPatternWithFields(sql);
   res = execSql(preparedSql, connectionName());
   if (!res.isSuccess())
     return res;
 
-  return ActionResult();
+  return RES_OK_CODE;
 }
 
 QString SqliteTableItem::createTableQuery(QString table) const
@@ -125,7 +125,7 @@ QString SqliteTableItem::createTableQuery(QString table) const
   }
   if (!pkColList.isEmpty()) {
     QString pkTemplate = "CONSTRAINT pk_#caption.new# PRIMARY KEY (%1)";
-    colDefList.append(fillPatternWithFields(pkTemplate).arg(pkColList.join(",")));
+    colDefList.append(fillSqlPatternWithFields(pkTemplate).arg(pkColList.join(",")));
   }
   QString preparedSql = createPattern.arg(table).arg(colDefList.join(", "));
   return preparedSql;
