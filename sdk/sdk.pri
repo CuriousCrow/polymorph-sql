@@ -163,3 +163,5 @@ FORMS    += \
     $$PWD/forms/vieweditdialog.ui \
     $$PWD/forms/tableeditform.ui
 
+RESOURCES += \
+    $$PWD/icons.qrc

@@ -14,7 +14,7 @@ TEMPLATE = app
 CONFIG ~= s/-O[0123s]//g
 CONFIG += -O0
 
-RC_ICONS = icons/cc_16.ico
+RC_ICONS = sdk/icons/cc_16.ico
 
 #Use this flag to compile all plugins inside main application
 #DEFINES += SINGLEAPP
@@ -54,7 +54,7 @@ FORMS    += \
     forms/queryeditorwindow.ui
 
 RESOURCES += \
-    icons.qrc
+    sdk/icons.qrc
 
 include(sdk/sdk.pri)
 
