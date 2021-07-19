@@ -74,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //
   DataStore* ds = DataStore::instance(this);
+  Core::instance()->registerSingletonObject(new DependencyMeta("ds", CLASSMETA(DataStore)), ds);
   QStructureItemModel* structureModel = ds->structureModel();
 
   QStringList modules = Core::instance()->supportedDrivers();

@@ -17,7 +17,7 @@ CONFIG += -O0
 RC_ICONS = icons/cc_16.ico
 
 #Use this flag to compile all plugins inside main application
-DEFINES += SINGLEAPP
+#DEFINES += SINGLEAPP
 
 SOURCES += main.cpp\
     widgets/blobeditor.cpp \

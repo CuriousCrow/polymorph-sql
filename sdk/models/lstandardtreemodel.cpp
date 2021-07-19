@@ -77,10 +77,9 @@ LAbstractTreeItem *LStandardTreeModel::itemByIndex(QModelIndex index) const
 
 LAbstractTreeItem *LStandardTreeModel::itemByName(QString name) const
 {
-  return findChild<LAbstractTreeItem*>(name);
-  // Alternative method to find
-//    QObject* itemObj = findChildByName(this, name);
-//    return static_cast<LAbstractTreeItem*>(itemObj);
+    // Alternative custom method to findChild<T>() (that doesn't work with plugin-created objects)
+    QObject* itemObj = findChildByName(this, name);
+    return static_cast<LAbstractTreeItem*>(itemObj);
 }
 
 QModelIndex LStandardTreeModel::indexByName(QString name)
@@ -94,10 +93,10 @@ QModelIndex LStandardTreeModel::indexByName(QString name)
   return createIndex(itemRow, 0, item);
 }
 
-//TODO: findChild doesnt work with Items from plugins
 QModelIndex LStandardTreeModel::indexByItem(LAbstractTreeItem *item)
 {
-  if (!item){  // || !findChild<LAbstractTreeItem*>(item->objectName())){
+  // Alternative custom method to findChild<T>() (that doesn't work with plugin-created objects)
+  if (!item || !findChildByName(this, item->objectName())){
     return QModelIndex();
   }
 
