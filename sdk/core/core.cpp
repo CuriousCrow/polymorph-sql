@@ -82,3 +82,17 @@ AbstractDatabaseEditForm *Core::objectForm(const QString &driver, DBObjectItem::
     p.remove(F_DRIVER_NAME);
     return dependency<AbstractDatabaseEditForm>(p);
 }
+
+DBObjectItem *Core::newObjInstance(const QString &driver, DBObjectItem::ItemType itemType)
+{
+    QString className = DBObjectItem::baseClassByType(itemType);
+    qDebug() << "New object instance" << driver << className;
+    QVariantHash p;
+    p.insert(F_DRIVER_NAME, driver);
+    p.insert(F_TYPE, itemType);
+    DBObjectItem* itemObj = static_cast<DBObjectItem*>(dependency(className, p));
+    if (itemObj)
+        return itemObj;
+    p.remove(F_DRIVER_NAME);
+    return static_cast<DBObjectItem*>(dependency(className, p));
+}

@@ -59,9 +59,7 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
           this, SLOT(reloadKnowledgeModel()));
 
   _activeConnectionModel = new QActiveConnectionModel(this);
-  _activeConnectionModel->setSourceModel(DataStore::structureModel());
-  ui->cmbDatabase->setModel(_activeConnectionModel);
-  ui->cmbDatabase->setModelColumn(0);
+  //initialization after injection (inject_by_ds())
 
 
   _helpTooltip = new QSimpleTooltip(this);
@@ -81,19 +79,26 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   connect(aliasInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
           this, SLOT(onAddAlias()));
 
-
   connect(ui->teQueryEditor, &LQueryEditor::wordClicked,
           this, &QueryEditorWindow::onFindObject);
 
   connect(ui->teQueryEditor, &LQueryEditor::infoMessage,
           this, &QueryEditorWindow::updateStatusMessage);
-
 }
 
 QueryEditorWindow::~QueryEditorWindow()
 {
   qDebug() << "Query editor destructor";
   delete ui;
+}
+
+void QueryEditorWindow::inject_by_ds(DataStore *ds)
+{
+  qDebug() << "QueryEditorWindow: Inject DataStore singleton";
+  _ds = ds;
+  _activeConnectionModel->setSourceModel(_ds->structureModel());
+  ui->cmbDatabase->setModel(_activeConnectionModel);
+  ui->cmbDatabase->setModelColumn(0);
 }
 
 void QueryEditorWindow::on_aExecuteQuery_triggered()
@@ -135,7 +140,7 @@ DBObjectItem *QueryEditorWindow::dbObject()
   QModelIndex proxyIndex = _activeConnectionModel->index(ui->cmbDatabase->currentIndex(), 0);
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
-  return static_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(sourceIndex));
+  return static_cast<DBObjectItem*>(_ds->structureModel()->itemByIndex(sourceIndex));
 }
 
 QString QueryEditorWindow::aliasSource(QString alias)
@@ -160,7 +165,7 @@ QString QueryEditorWindow::getActiveText()
   activeText = ui->paramsForm->applyParams(activeText);
   if (_lastExecutedQuery != activeText) {
     qDebug() << "New query registered in history:" << activeText;
-    DataStore::addQueryHistoryItem(ui->cmbDatabase->currentData().toInt(), activeText);
+    _ds->addQueryHistoryItem(ui->cmbDatabase->currentData().toInt(), activeText);
     _lastExecutedQuery = activeText;
   }
   return activeText;
@@ -272,7 +277,7 @@ void QueryEditorWindow::onCompleterRequested(const QString &contextText)
     QVariantMap dbObj = _objectsModel->rowByName(objName);
     if (!dbObj.isEmpty() && dbObj.value(F_TYPE).toString() == OBJTYPE_TABLE) {
       qDebug() << "Searching table:" << objName;
-      DBObjectItem* item = DataStore::itemByFolderAndName(dbObject(), FOLDER_TABLES, objName.toLower());
+      DBObjectItem* item = _ds->itemByFolderAndName(dbObject(), FOLDER_TABLES, objName.toLower());
       if (item && item->type() == DBObjectItem::Table) {
         qDebug() << "Table object found";
         DBTableItem* tableItem = static_cast<DBTableItem*>(item);

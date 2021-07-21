@@ -18,6 +18,8 @@ public:
   QList<IocPlugin*> plugins();
 
   AbstractDatabaseEditForm* objectForm(const QString &driver, DBObjectItem::ItemType itemType);
+  DBObjectItem* newObjInstance(const QString &driver, DBObjectItem::ItemType itemType);
+
 
   template<class T>
   T* dependencyForDriver(const QString &driver){

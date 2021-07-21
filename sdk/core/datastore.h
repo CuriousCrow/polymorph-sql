@@ -10,26 +10,24 @@ class DataStore : public QObject
 {
   Q_OBJECT
 public:
-  static DataStore* instance(QObject* parent = nullptr);
-  static QStructureItemModel* structureModel();
-  static QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
-  static DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
-  static int databaseIdFromItem(DBObjectItem* item);
-  static UniSqlTableModel* historyModel(int dbId);
-  static QByteArray loadTableState(int dbId, QString name);
-  static void saveTableState(int dbId, QString name, QByteArray data);
-  static bool addQueryHistoryItem(int dbId, QString query);
-  static bool clearQueryHistory(int dbId);
+  explicit DataStore(QObject *parent = nullptr);
+
+  QStructureItemModel* structureModel();
+  QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
+  DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
+  int databaseIdFromItem(DBObjectItem* item);
+  UniSqlTableModel* historyModel(int dbId);
+  QByteArray loadTableState(int dbId, QString name);
+  void saveTableState(int dbId, QString name, QByteArray data);
+  bool addQueryHistoryItem(int dbId, QString query);
+  bool clearQueryHistory(int dbId);
+
+  void initRegisteredDatabases();
 signals:
 
 public slots:
 
 private:
-  explicit DataStore(QObject *parent = nullptr);
-  static DataStore* _singleton;
-
-  void initRegisteredDatabases();
-
   QStructureItemModel* _structureModel;
   QSqlDatabase appDB;
   UniSqlTableModel* _queryHistoryModel;

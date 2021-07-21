@@ -100,6 +100,8 @@ public:
   void setFieldValue(QString fieldName, QVariant value);
   void copyFieldTo(QString fieldName, DBObjectItem* targetObj);
   void copyFieldsTo(DBObjectItem* targetObj);
+
+  static QString baseClassByType(ItemType type);
 private:
   void setFieldValue(int colNumber, QVariant value);
 

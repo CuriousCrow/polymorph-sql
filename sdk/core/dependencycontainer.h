@@ -11,6 +11,7 @@
 
 #define INJECT_PREFIX "inject_"
 #define INJECT(Type, Name) Type _##Name; Q_INVOKABLE void inject_##Name(QObject* obj){ _##Name = static_cast<Type>(obj); }
+#define INJECT_INITIALIZE(Type, Member, Name) Q_INVOKABLE void inject_##Member##_by_##Name(QObject* obj){ Member = static_cast<Type>(obj); }
 #define CLASS(Type) Type::staticMetaObject.className()
 #define CLASSMETA(Type) &Type::staticMetaObject
 
@@ -40,7 +41,7 @@ public:
     bool hasMatch(QVariantHash params) const;
     bool exactClassMatch(const QString &className) const;
 
-
+    QString toString() const;
 private:
     QString _name;
     InstanceMode _instanceMode;

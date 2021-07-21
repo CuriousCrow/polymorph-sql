@@ -10,7 +10,7 @@ QueryHistoryForm::QueryHistoryForm(QWidget *parent) :
   ui(new Ui::QueryHistoryForm)
 {
   ui->setupUi(this);
-  ui->cmbProjects->setModel(DataStore::structureModel());
+  ui->cmbProjects->setModel(_ds->structureModel());
 }
 
 QueryHistoryForm::~QueryHistoryForm()
@@ -52,7 +52,7 @@ void QueryHistoryForm::on_cmbProjects_currentIndexChanged(int index)
   _selectedQuery.clear();
   //TODO: Change to ui->cmbProjects->currentData().toInt()
   int dbId = ui->cmbProjects->model()->index(index, 0).data(Qt::UserRole).toInt();
-  ui->lvHistory->setModel(DataStore::instance()->historyModel(dbId));
+  ui->lvHistory->setModel(_ds->historyModel(dbId));
   ui->lvHistory->setModelColumn(2);
 }
 
@@ -66,6 +66,6 @@ void QueryHistoryForm::on_btnClearQueryHistory_clicked()
   if (ui->cmbProjects->currentIndex() < 0)
       return;
   int dbId = ui->cmbProjects->currentData().toInt();
-  DataStore::clearQueryHistory(dbId);
-  DataStore::instance()->historyModel(dbId);
+  _ds->clearQueryHistory(dbId);
+  _ds->historyModel(dbId);
 }

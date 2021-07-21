@@ -13,7 +13,7 @@ class CheckConstraintEditForm : public AbstractDatabaseEditForm
   Q_OBJECT
 
 public:
-  explicit CheckConstraintEditForm(QWidget *parent = nullptr);
+  Q_INVOKABLE CheckConstraintEditForm(QWidget *parent = nullptr);
   ~CheckConstraintEditForm() override;
 
 private slots:

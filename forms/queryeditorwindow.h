@@ -14,6 +14,7 @@
 #include "sdk/models/queryparamtablemodel.h"
 #include "sdk/forms/queryparamsform.h"
 #include "sdk/core/datastore.h"
+#include "core/dependencycontainer.h"
 
 #define STATUS_BAR_TIMEOUT 5000
 
@@ -26,8 +27,10 @@ class QueryEditorWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  explicit QueryEditorWindow(QWidget *parent = nullptr);
+  Q_INVOKABLE QueryEditorWindow(QWidget *parent = nullptr);
   ~QueryEditorWindow();
+
+  Q_INVOKABLE void inject_by_ds(DataStore* ds);
 public slots:
   void refreshConnectionList();
   void reloadKnowledgeModel();
@@ -53,6 +56,7 @@ private:
   Ui::QueryEditorWindow *ui;
   QActiveConnectionModel* _activeConnectionModel;
   QSqlQueryModel* _resultModel;
+  DataStore* _ds;
 //  LDBObjectModel* _compModel;
   JointDBOjbectModel* _knowledgeModel;
   LDBObjectTableModel* _objectsModel;

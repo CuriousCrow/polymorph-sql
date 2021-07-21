@@ -23,7 +23,7 @@ void UniqueConstraintEditForm::objectToForm()
   ui->edtName->setText(_objItem->caption());
 
   DBTableItem* targetObj =
-      static_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));
+      static_cast<DBTableItem*>(_ds->itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));
   SqlColumnModel* colModel = targetObj->columnsModel();
   ui->lvColumns->setModel(colModel);
   ui->lvColumns->setModelColumn(1);

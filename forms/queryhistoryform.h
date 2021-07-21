@@ -2,6 +2,8 @@
 #define QUERYHISTORYFORM_H
 
 #include <QDialog>
+#include "core/datastore.h"
+#include "core/dependencycontainer.h"
 
 namespace Ui {
 class QueryHistoryForm;
@@ -19,6 +21,8 @@ public:
   void loadHistory(int dbId);
 
   static QueryHistoryForm* instance(int dbId);
+
+  INJECT(DataStore*, ds)
 private slots:
   void on_lvHistory_doubleClicked(const QModelIndex &index);
 

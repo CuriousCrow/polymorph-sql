@@ -15,7 +15,7 @@ DatabaseExportForm::DatabaseExportForm(QWidget *parent) :
   ui(new Ui::DatabaseExportForm)
 {
   ui->setupUi(this);
-  ui->cmbDatabase->setModel(DataStore::structureModel());
+  ui->cmbDatabase->setModel(_ds->structureModel());
 }
 
 DatabaseExportForm::~DatabaseExportForm()

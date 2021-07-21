@@ -8,6 +8,8 @@
 #include "sdk/models/unisqltablemodel.h"
 #include <QSortFilterProxyModel>
 #include "sdk/objects/dbtableitem.h"
+#include "core/datastore.h"
+#include "core/dependencycontainer.h"
 
 namespace Ui {
 class TableBrowserWindow;
@@ -20,6 +22,8 @@ class TableBrowserWindow : public QMainWindow
 public:
   explicit TableBrowserWindow(QWidget *parent, DBSelectableItem* tableItem);
   ~TableBrowserWindow();
+
+  INJECT(DataStore*, ds)
 
 private slots:
   void on_aSubmit_triggered();

@@ -1,7 +1,6 @@
 #include "triggereditform.h"
 #include "ui_triggereditform.h"
 #include "../models/qstructureitemmodel.h"
-#include "../core/datastore.h"
 
 TriggerEditForm::TriggerEditForm() :
   AbstractDatabaseEditForm(nullptr),
@@ -20,11 +19,11 @@ TriggerEditForm::~TriggerEditForm()
 
 void TriggerEditForm::objectToForm()
 {
-  ui->cmbTargetTable->setModel(DataStore::structureModel());
-  ui->cmbTargetTable->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_TABLES));
+  ui->cmbTargetTable->setModel(_ds->structureModel());
+  ui->cmbTargetTable->setRootModelIndex(_ds->itemIdx(_objItem, FOLDER_TABLES));
 
-  ui->cmbFunction->setModel(DataStore::structureModel());
-  ui->cmbFunction->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_PROCEDURES));
+  ui->cmbFunction->setModel(_ds->structureModel());
+  ui->cmbFunction->setRootModelIndex(_ds->itemIdx(_objItem, FOLDER_PROCEDURES));
 
   ui->edtName->setText(_objItem->caption());
   if (userAction() == AbstractDatabaseEditForm::Edit) {

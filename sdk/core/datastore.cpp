@@ -9,8 +9,6 @@
 #include "core.h"
 
 
-DataStore* DataStore::_singleton = nullptr;
-
 DataStore::DataStore(QObject *parent) : QObject(parent)
 {
   qDebug() << QSqlDatabase::drivers();
@@ -28,7 +26,6 @@ DataStore::DataStore(QObject *parent) : QObject(parent)
   qDebug() << "Success!";
 
   _structureModel = new QStructureItemModel(this);
-  initRegisteredDatabases();
 
   //Query history model (one for all databases)
   _queryHistoryModel = new UniSqlTableModel(this);
@@ -59,16 +56,9 @@ void DataStore::initRegisteredDatabases()
   return;
 }
 
-DataStore *DataStore::instance(QObject* parent)
-{
-  if (!_singleton)
-    _singleton = new DataStore(parent);
-  return _singleton;
-}
-
 QStructureItemModel *DataStore::structureModel()
 {
-  return instance()->_structureModel;
+  return _structureModel;
 }
 
 QModelIndex DataStore::itemIdx(DBObjectItem *fromItem, QString folder, QString name)
@@ -98,11 +88,10 @@ int DataStore::databaseIdFromItem(DBObjectItem *item)
 
 UniSqlTableModel *DataStore::historyModel(int dbId)
 {
-  UniSqlTableModel* mHistory = instance()->_queryHistoryModel;
-  mHistory->filter()->clear();
-  mHistory->filter()->addEqualFilter(F_DATABASE_ID, dbId);
-  mHistory->select();
-  return mHistory;
+  _queryHistoryModel->filter()->clear();
+  _queryHistoryModel->filter()->addEqualFilter(F_DATABASE_ID, dbId);
+  _queryHistoryModel->select();
+  return _queryHistoryModel;
 }
 
 QByteArray DataStore::loadTableState(int dbId, QString name)

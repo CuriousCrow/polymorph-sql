@@ -16,6 +16,7 @@
 #include "sdk/forms/triggereditform.h"
 #include "sdk/objects/dbtableitem.h"
 #include "sdk/core/localeventnotifier.h"
+#include "core/datastore.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000
 
@@ -74,6 +75,8 @@ private slots:
 
 private:
   Ui::MainWindow *ui;
+  DataStore* _ds;
+  Core* _core;
   ConnectionEditDialog* _connectionEditDialog;
   QMenu* _itemContextMenu;
   QMenu* _folderContextMenu;

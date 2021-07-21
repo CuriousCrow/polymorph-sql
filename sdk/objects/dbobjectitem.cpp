@@ -214,6 +214,38 @@ void DBObjectItem::copyFieldsTo(DBObjectItem *targetObj)
     }
 }
 
+QString DBObjectItem::baseClassByType(DBObjectItem::ItemType type)
+{
+    switch (type) {
+    case DBObjectItem::Database:
+        return "DBDatabaseItem";
+    case DBObjectItem::Table:
+        return "DBTableItem";
+    case DBObjectItem::View:
+        return "DBViewItem";
+    case DBObjectItem::Sequence:
+        return "DBSequenceItem";
+    case DBObjectItem::Procedure:
+        return "DBProcedureItem";
+    case DBObjectItem::Folder:
+        return "DBFolderItem";
+    case DBObjectItem::Trigger:
+        return "DBTriggerItem";
+    case DBObjectItem::PrimaryKey:
+        return "DBPrimaryKey";
+    case DBObjectItem::ForeignKey:
+        return "DBForeignKey";
+    case DBObjectItem::UniqueConstraint:
+        return "DBUniqueConstraint";
+    case DBObjectItem::CheckConstraint:
+        return "DBCheckConstraint";
+    case DBObjectItem::SystemTable:
+        return "DBTableItem";
+    default:
+        return "DBObjectItem";
+    }
+}
+
 void DBObjectItem::setFieldValue(int colNumber, QVariant value)
 {
   if (colNumber >= fields.count()) {

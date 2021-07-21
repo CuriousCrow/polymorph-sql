@@ -9,11 +9,6 @@
 #include "dbtriggeritem.h"
 #include "dbviewitem.h"
 
-#define DRIVER_FIREBIRD "QIBASE"
-#define DRIVER_SQLITE "QSQLITE"
-#define DRIVER_POSTGRES "QPSQL"
-#define DRIVER_MYSQL "QMYSQL"
-
 class DBDatabaseItem : public DBObjectItem
 {
   Q_OBJECT

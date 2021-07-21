@@ -4,6 +4,25 @@
 #include "../core/iocplugin.h"
 #include <QObject>
 
+#define B_TABLE "baseTableObject"
+#define B_VIEW "baseViewObject"
+#define B_TRIGGER "baseTriggerObject"
+#define B_PROCEDURE "baseProcedureObject"
+#define B_SEQUENCE "baseSequenceObject"
+#define B_PRIMARY_KEY "basePrimaryKey"
+
+#define B_TABLE_FORM "baseTableForm"
+#define B_VIEW_FORM "baseViewForm"
+#define B_PROCEDURE_FORM "baseProcedureForm"
+#define B_SEQUENCE_FORM "baseSequenceForm"
+#define B_TRIGGER_FORM "baseTriggerForm"
+#define B_CONNECTION_FORM "baseConnectionForm"
+#define B_FOREIGN_KEY_FORM "baseForeignKeyForm"
+#define B_CHECK_FORM "baseCheckForm"
+#define B_PRIMARY_KEY_FORM "basePrimaryKeyForm"
+#define B_UNIQUE_FORM "baseUniqueForm"
+
+
 class SdkPlugin : public IocPlugin
 {
     Q_OBJECT

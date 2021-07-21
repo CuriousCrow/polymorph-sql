@@ -9,6 +9,10 @@
 #include "uniqueconstrainteditform.h"
 #include "checkconstrainteditform.h"
 
+#define CHK_PREFIX "chk_"
+#define PK_PREFIX "pk_"
+#define UQ_PREFIX "uq_"
+#define FK_PREFIX "fk_"
 
 TableEditForm::TableEditForm() :
   AbstractDatabaseEditForm(nullptr),
@@ -103,77 +107,46 @@ void TableEditForm::on_btnDropConstraint_clicked()
 
 void TableEditForm::onShowPrimaryKeyEditor()
 {
-  qDebug() << "Show unique constraint editor";
-  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
-  UniqueConstraintEditForm* primaryKeyForm = new UniqueConstraintEditForm(this);
-  primaryKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
-  DBConstraintItem* newPkObj = tableItem->newPrimaryKey();
-  newPkObj->setFieldValue(F_TABLE, tableItem->caption());
-  newPkObj->setParentUrl(tableItem->objectUrl());
-  primaryKeyForm->setObjItem(newPkObj);
-  primaryKeyForm->objectToForm();
-  primaryKeyForm->setWindowTitle("New primary key");
-  connect(primaryKeyForm, &ForeignKeyForm::accepted,
-          this, &TableEditForm::onNewConstraintApply);
-  connect(primaryKeyForm, &ForeignKeyForm::rejected,
-          this, &TableEditForm::onNewConstraintCancel);
-  primaryKeyForm->show();
+  qDebug() << "Show primary key constraint editor";
+  onShowConstraintEditor(PK_PREFIX, DBObjectItem::PrimaryKey);
 }
 
 void TableEditForm::onShowForeignKeyEditor()
 {
   qDebug() << "Show foreign key editor";
-  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
-  ForeignKeyForm* foreignKeyForm = new ForeignKeyForm(this);
-  foreignKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
-  DBForeignKey* newFkObj = tableItem->newForeignKey();
-  newFkObj->setFieldValue(F_TABLE, tableItem->caption());
-  newFkObj->setParentUrl(tableItem->objectUrl());
-  foreignKeyForm->setObjItem(newFkObj);
-  foreignKeyForm->objectToForm();
-  connect(foreignKeyForm, &ForeignKeyForm::accepted,
-          this, &TableEditForm::onNewConstraintApply);
-  connect(foreignKeyForm, &ForeignKeyForm::rejected,
-          this, &TableEditForm::onNewConstraintCancel);
-  foreignKeyForm->show();
+  onShowConstraintEditor(FK_PREFIX, DBObjectItem::ForeignKey);
 }
 
 void TableEditForm::onShowUniqueConstraintEditor()
 {
   qDebug() << "Show unique constraint editor";
-  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
-  UniqueConstraintEditForm* uniqueKeyForm = new UniqueConstraintEditForm(this);
-  uniqueKeyForm->setUserAction(AbstractDatabaseEditForm::Create);
-  DBUniqueConstraint* newFkObj = tableItem->newUniqueConstraint();
-  newFkObj->setFieldValue(F_TABLE, tableItem->caption());
-  newFkObj->setParentUrl(tableItem->objectUrl());
-  uniqueKeyForm->setObjItem(newFkObj);
-  uniqueKeyForm->objectToForm();
-  uniqueKeyForm->setWindowTitle("New unique constraint");
-  connect(uniqueKeyForm, &ForeignKeyForm::accepted,
-          this, &TableEditForm::onNewConstraintApply);
-  connect(uniqueKeyForm, &ForeignKeyForm::rejected,
-          this, &TableEditForm::onNewConstraintCancel);
-  uniqueKeyForm->show();
+  onShowConstraintEditor(UQ_PREFIX, DBObjectItem::UniqueConstraint);
 }
 
 void TableEditForm::onShowCheckConstraintEditor()
 {
   qDebug() << "Show check constraint editor";
-  DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
-  CheckConstraintEditForm* checkConstraintForm = new CheckConstraintEditForm(this);
-  checkConstraintForm->setUserAction(AbstractDatabaseEditForm::Create);
-  DBCheckConstraint* newCheckObj = tableItem->newCheckConstraint();
-  newCheckObj->setFieldValue(F_TABLE, tableItem->caption());
-  newCheckObj->setParentUrl(tableItem->objectUrl());
-  checkConstraintForm->setObjItem(newCheckObj);
-  checkConstraintForm->objectToForm();
-  checkConstraintForm->setWindowTitle("New check constraint");
-  connect(checkConstraintForm, &ForeignKeyForm::accepted,
-          this, &TableEditForm::onNewConstraintApply);
-  connect(checkConstraintForm, &ForeignKeyForm::rejected,
-          this, &TableEditForm::onNewConstraintCancel);
-  checkConstraintForm->show();
+  onShowConstraintEditor(CHK_PREFIX, DBObjectItem::CheckConstraint);
+}
+
+void TableEditForm::onShowConstraintEditor(QString namePrefix, DBObjectItem::ItemType objType)
+{
+    qDebug() << "Show constraint editor";
+    DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
+    AbstractDatabaseEditForm* constraintForm = _core->objectForm(tableItem->driverName(), objType);
+    constraintForm->setUserAction(AbstractDatabaseEditForm::Create);
+    DBObjectItem* newItemObj = _core->newObjInstance(tableItem->driverName(), objType);
+    newItemObj->setFieldValue(F_CAPTION, namePrefix + tableItem->caption());
+    newItemObj->setFieldValue(F_TABLE, tableItem->caption());
+    newItemObj->setParentUrl(tableItem->objectUrl());
+    constraintForm->setObjItem(newItemObj);
+    constraintForm->objectToForm();
+    constraintForm->setWindowTitle("New constraint");
+    connect(constraintForm, &ForeignKeyForm::accepted,
+            this, &TableEditForm::onNewConstraintApply);
+    connect(constraintForm, &ForeignKeyForm::rejected,
+            this, &TableEditForm::onNewConstraintCancel);
+    constraintForm->show();
 }
 
 void TableEditForm::onNewConstraintApply()

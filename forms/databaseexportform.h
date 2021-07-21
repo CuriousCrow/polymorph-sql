@@ -2,6 +2,8 @@
 #define DATABASEEXPORTFORM_H
 
 #include <QDialog>
+#include "core/datastore.h"
+#include "core/dependencycontainer.h"
 
 namespace Ui {
 class DatabaseExportForm;
@@ -14,6 +16,8 @@ class DatabaseExportForm : public QDialog
 public:
   explicit DatabaseExportForm(QWidget *parent = nullptr);
   ~DatabaseExportForm();
+
+  INJECT(DataStore*, ds)
 
   static DatabaseExportForm* instance();
 private slots:

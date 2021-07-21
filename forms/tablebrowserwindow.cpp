@@ -76,8 +76,8 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent, DBSelectableItem* tableI
 
 TableBrowserWindow::~TableBrowserWindow()
 {
-  int dbId = DataStore::databaseIdFromItem(_tableItem);
-  DataStore::saveTableState(dbId, _tableName, ui->tableView->horizontalHeader()->saveState());
+  int dbId = _ds->databaseIdFromItem(_tableItem);
+  _ds->saveTableState(dbId, _tableName, ui->tableView->horizontalHeader()->saveState());
   qDebug() << "TableBrowserWindow" << objectName() << "destroyed";
   delete ui;
 }
@@ -279,8 +279,8 @@ void TableBrowserWindow::refreshTable()
 
 void TableBrowserWindow::loadColumnsState()
 {
-  int dbId = DataStore::databaseIdFromItem(_tableItem);
-  QByteArray tableStateData = DataStore::loadTableState(dbId, _tableName);
+  int dbId = _ds->databaseIdFromItem(_tableItem);
+  QByteArray tableStateData = _ds->loadTableState(dbId, _tableName);
   if (!tableStateData.isEmpty())
     ui->tableView->horizontalHeader()->restoreState(tableStateData);
 }

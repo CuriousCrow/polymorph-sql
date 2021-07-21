@@ -5,6 +5,7 @@
 
 DependencyContainer::DependencyContainer(QObject *parent) : QObject(parent)
 {
+    qDebug() << "Dependency container constructor";
 }
 
 DependencyContainer::~DependencyContainer()
@@ -22,7 +23,7 @@ DependencyContainer::~DependencyContainer()
 
 DependencyMeta *DependencyContainer::registerDependency(DependencyMeta *meta)
 {
-    qDebug() << "Registering dependency:" << meta->name();
+    qDebug() << QString("Registering dependency: %1").arg(meta->toString());
     QStringList classes = meta->ancessors();
     foreach(QString className, classes) {
         _metaByClass.insert(className, meta);
@@ -77,7 +78,7 @@ QObject *DependencyContainer::dependency(const QString &name)
 {
     qDebug() << "Dependency request:" << name;
     if (!_metaByName.contains(name)) {
-        qCritical() << "Meta object" << name << "not registered in the dependency container";
+        qCritical() << QString("Dependency %1 not registered in the dependency container").arg(name);
         return nullptr;
     }
     DependencyMeta* meta = _metaByName.value(name);
@@ -85,9 +86,30 @@ QObject *DependencyContainer::dependency(const QString &name)
 
     //Если одиночка, то поискать в уже созданных
     if (meta->mode() == InstanceMode::Singleton) {
-        if (_singletonHash.contains(name))
+        if (_singletonHash.contains(name)) {
+            qDebug() << QString("Singleton object found: %1").arg(name);
             return _singletonHash.value(name);
+        }
     }
+    if (metaObj->constructorCount() == 0) {
+        qCritical() << QString("No constructor for type %1 is available. Please, mark at least one constructor with Q_INVOKABLE macro").arg(metaObj->className());
+        return nullptr;
+    }
+
+    //Check for default constructor
+    bool hasDefaultConstructor = false;
+    for(int i=0; i<metaObj->constructorCount(); i++) {
+        if (metaObj->constructor(i).parameterCount() == 0) {
+            hasDefaultConstructor = true;
+            break;
+        }
+    }
+    if (!hasDefaultConstructor) {
+        qWarning() << QString("No default constructor for class %1 or it has not been marked with Q_INVOKABLE macro")
+                      .arg(metaObj->className());
+        return nullptr;
+    }
+
     QObject* newObj = metaObj->newInstance();
     if (!newObj) {
         qWarning() << "Cant instantiate object:" << name;
@@ -95,19 +117,34 @@ QObject *DependencyContainer::dependency(const QString &name)
     }
     qDebug() << "Bean created of metaobject:" << name;
     for(int i=0; i<metaObj->methodCount(); i++) {
-        QString methodName = metaObj->method(i).name();
+        QMetaMethod method = metaObj->method(i);
+        QString methodName = method.name();
         if (methodName.contains(INJECT_PREFIX)) {
-            qDebug() << "Method:" << methodName;
-            QString dependencyName = methodName;
-            dependencyName.remove(INJECT_PREFIX);
-            QObject* dependencyObj = dependency(dependencyName);
-            if (!dependencyObj) {
-                qWarning() << "Can't get dependency of name" << dependencyName;
+            qDebug() << "Inject method detected:" << methodName;
+            QString injectCommand = methodName;
+            QStringList injectTokens = injectCommand.split("_", Qt::SkipEmptyParts);
+            //Not injectMethod
+            if (injectTokens.size() < 2)
+                continue;
+            QString beanName;
+            if (injectTokens.contains("by"))
+                beanName = injectTokens[injectTokens.indexOf("by") + 1];
+            else
+                beanName = injectTokens[1];
+            QObject* dependencyObj = dependency(beanName);
+            if (!dependencyObj)
+                continue;
+            QString argType = QString::fromLatin1(method.parameterTypes().at(0)).remove("*").trimmed();
+
+            if (!dependencyObj->inherits(argType.toLatin1())) {
+                QString errStr = "Bean %1: Inject method %2 expects arg type %3 descedant. Found bean (%4) instead";
+                qCritical() << errStr.arg(name).arg(methodName).arg(argType).arg(beanName).arg(dependencyObj->metaObject()->className());
                 continue;
             }
-            qDebug() << "Invoke inject bean method:" << methodName;
-            bool injectResult = metaObj->invokeMethod(newObj, methodName.toLocal8Bit(), Qt::DirectConnection, Q_ARG(QObject*, dependencyObj));
-            qDebug() << "Inject method result:" << injectResult;
+
+            bool injectResult = method.invoke(newObj, Qt::DirectConnection, QGenericArgument(method.parameterTypes().at(0), &dependencyObj));
+
+            qDebug() << QString("Inject method %1 result: %2").arg(methodName).arg(injectResult);
         }
 
     }
@@ -171,6 +208,16 @@ bool DependencyMeta::hasMatch(QVariantHash params) const
 bool DependencyMeta::exactClassMatch(const QString &className) const
 {
     return contains(PRM_CLASS) && value(PRM_CLASS).toString() == className;
+}
+
+QString DependencyMeta::toString() const
+{
+    QString pattern = "%1=%2";
+    QStringList params;
+    params.append(pattern.arg("name", name()));
+    params.append(pattern.arg("class", metaObj()->className()));
+    params.append(pattern.arg("instanceMode", _instanceMode == InstanceMode::Singleton ? "Singleton" : "Prototype"));
+    return params.join(", ");
 }
 
 void DependencyMeta::addSuperClass(const QMetaObject *metaObj, QStringList &list) const

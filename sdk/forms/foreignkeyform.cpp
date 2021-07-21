@@ -22,11 +22,11 @@ ForeignKeyForm::~ForeignKeyForm()
 
 void ForeignKeyForm::objectToForm()
 {
-  ui->cmbReferenceTable->setModel(DataStore::structureModel());
-  ui->cmbReferenceTable->setRootModelIndex(DataStore::itemIdx(_objItem, FOLDER_TABLES));
+  ui->cmbReferenceTable->setModel(_ds->structureModel());
+  ui->cmbReferenceTable->setRootModelIndex(_ds->itemIdx(_objItem, FOLDER_TABLES));
 
   DBTableItem* targetObj =
-      static_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));
+      static_cast<DBTableItem*>(_ds->itemByFolderAndName(_objItem, FOLDER_TABLES, _objItem->fieldValue(F_TABLE).toString()));
   ui->cmbTargetColumn->setModel(targetObj->columnsModel());
   ui->cmbTargetColumn->setModelColumn(1);
 
@@ -63,7 +63,7 @@ void ForeignKeyForm::on_btnCancel_clicked()
 void ForeignKeyForm::on_cmbReferenceTable_currentTextChanged(const QString &refTable)
 {
   DBTableItem* refObj =
-      static_cast<DBTableItem*>(DataStore::itemByFolderAndName(_objItem, FOLDER_TABLES, refTable));
+      static_cast<DBTableItem*>(_ds->itemByFolderAndName(_objItem, FOLDER_TABLES, refTable));
   if (refObj) {
     qDebug() << "Reference table found";
     refObj->reloadColumnsModel();
