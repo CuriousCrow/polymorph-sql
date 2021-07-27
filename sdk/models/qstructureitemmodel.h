@@ -18,8 +18,10 @@ public:
 
   QModelIndex indexByUrl(const AppUrl &url);
   DBObjectItem* itemByUrl(const AppUrl &url);
+  DBObjectItem* itemByIdx(const QModelIndex &idx);
 
   bool deleteChildren(QModelIndex parent);
+  bool deleteChildren(DBObjectItem* parentItem);
 signals:
   void itemAboutToBeRemoved(QString itemUrl);
 private slots:

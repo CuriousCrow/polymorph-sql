@@ -15,12 +15,16 @@ DatabaseExportForm::DatabaseExportForm(QWidget *parent) :
   ui(new Ui::DatabaseExportForm)
 {
   ui->setupUi(this);
-  ui->cmbDatabase->setModel(_ds->structureModel());
 }
 
 DatabaseExportForm::~DatabaseExportForm()
 {
-  delete ui;
+    delete ui;
+}
+
+void DatabaseExportForm::inject_ds(DataStore *ds)
+{
+  ui->cmbDatabase->setModel(ds->structureModel());
 }
 
 DatabaseExportForm *DatabaseExportForm::instance()

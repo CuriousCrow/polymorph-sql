@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QTabWidget>
 #include "../models/qstructureitemmodel.h"
 #include "../models/unisqltablemodel.h"
 
@@ -12,6 +13,8 @@ class DataStore : public QObject
 public:
   explicit DataStore(QObject *parent = nullptr);
 
+  void setTabWidget(QTabWidget* tabWidget);
+  QTabWidget* tabWidget();
   QStructureItemModel* structureModel();
   QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
   DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
@@ -29,6 +32,7 @@ public slots:
 
 private:
   QStructureItemModel* _structureModel;
+  QTabWidget* _tabWidget;
   QSqlDatabase appDB;
   UniSqlTableModel* _queryHistoryModel;
 };

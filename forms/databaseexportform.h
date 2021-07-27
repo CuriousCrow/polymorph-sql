@@ -14,10 +14,10 @@ class DatabaseExportForm : public QDialog
   Q_OBJECT
 
 public:
-  explicit DatabaseExportForm(QWidget *parent = nullptr);
+  Q_INVOKABLE DatabaseExportForm(QWidget *parent = nullptr);
   ~DatabaseExportForm();
 
-  INJECT(DataStore*, ds)
+  Q_INVOKABLE void inject_ds(DataStore* ds);
 
   static DatabaseExportForm* instance();
 private slots:

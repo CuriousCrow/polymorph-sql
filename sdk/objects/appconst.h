@@ -104,5 +104,6 @@
 #define B_QUERY_EDITOR "queryEditor"
 #define B_CORE "core"
 #define B_DATA_STORE "ds"
+#define B_CONTEXT "context"
 
 #endif // APPCONST_H

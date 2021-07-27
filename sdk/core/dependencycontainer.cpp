@@ -32,6 +32,11 @@ DependencyMeta *DependencyContainer::registerDependency(DependencyMeta *meta)
     return meta;
 }
 
+DependencyMeta *DependencyContainer::registerDependency(QString name, const QMetaObject *metaObj, InstanceMode mode)
+{
+    return registerDependency(new DependencyMeta(name, metaObj, mode));
+}
+
 DependencyMeta *DependencyContainer::registerSingletonObject(DependencyMeta *meta, QObject *object)
 {
     if (meta->mode() != InstanceMode::Singleton) {

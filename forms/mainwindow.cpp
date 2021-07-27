@@ -19,6 +19,16 @@
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/sdkplugin.h"
 #include "sdk/utils/qfileutils.h"
+#include "testmodule.h"
+#include "showdatabaseexporteditoraction.h"
+#include "dropitemobjectaction.h"
+#include "exportddltoclipboardaction.h"
+#include "exportdmltoclipboardaction.h"
+#include "showitemeditoraction.h"
+#include "reloadfolderitemsaction.h"
+#include "showcreateformaction.h"
+#include "showsettingsformaction.h"
+#include "addnewqueryeditoraction.h"
 
 #ifdef SINGLEAPP
 #include "plugins/POSTGRES/postgresplugin.h"
@@ -41,8 +51,26 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //DataStore singleton
   _ds = new DataStore(this);
+  _ds->setTabWidget(ui->tabWidget);
   _core->registerSingletonObject(new DependencyMeta(B_DATA_STORE, CLASSMETA(DataStore)), _ds);
   _core->registerDependency(new DependencyMeta(B_QUERY_EDITOR, CLASSMETA(QueryEditorWindow), InstanceMode::Prototype));
+
+  QStringList menuPath;
+  menuPath << "Functions";
+
+  _context = new BaseUserContext(this);
+  _core->registerSingletonObject(new DependencyMeta(B_CONTEXT, CLASSMETA(BaseUserContext)), _context);
+  _core->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
+  _core->registerDependency("databaseExportAction", CLASSMETA(ShowDatabaseExportEditorAction), InstanceMode::Singleton);
+  _core->registerDependency("dropItemAction", CLASSMETA(DropItemObjectAction), InstanceMode::Singleton);
+  _core->registerDependency("exportDDLToClipboard", CLASSMETA(ExportDDLToClipboardAction), InstanceMode::Singleton);
+  _core->registerDependency("exportDMLToClipboard", CLASSMETA(ExportDMLToClipboardAction), InstanceMode::Singleton);
+  _core->registerDependency("showItemEditForm", CLASSMETA(ShowItemEditorAction), InstanceMode::Singleton);
+  _core->registerDependency("reloadFolderItems", CLASSMETA(ReloadFolderItemsAction), InstanceMode::Singleton);
+  _core->registerDependency("showItemCreateForm", CLASSMETA(ShowCreateFormAction), InstanceMode::Singleton);
+  _core->registerDependency("generalSettingsForm", CLASSMETA(SettingsForm), InstanceMode::Singleton);
+  _core->registerDependency("showSettingsForm", CLASSMETA(ShowSettingsFormAction), InstanceMode::Singleton);
+  _core->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
 
   QStructureItemModel* structureModel = _ds->structureModel();
 
@@ -92,17 +120,6 @@ MainWindow::MainWindow(QWidget *parent) :
   }
 
   _itemContextMenu = new QMenu(ui->tvDatabaseStructure);
-  connect(_itemContextMenu, SIGNAL(aboutToShow()),
-          this, SLOT(updateStructureContextMenu()));
-  _editAction = _itemContextMenu->addAction("Edit object", this, SLOT(showEditorForCurrentItem()));
-  _dropAction = _itemContextMenu->addAction("Drop object", this, SLOT(dropCurrentDatabaseObject()));
-  _exportAction = _itemContextMenu->addAction("Export DDL", this, SLOT(exportCurrrentDatabaseObject()));
-  _exportDataAction = _itemContextMenu->addAction("Export data", this, SLOT(exportCurrentDatabaseObjectData()));
-
-  _folderContextMenu = new QMenu(ui->tvDatabaseStructure);
-  _folderContextMenu->addAction("Create object", this, SLOT(showCreateItemEditor()));
-  _reloadAction = _folderContextMenu->addAction("Refresh", this, SLOT(reloadItemChildren()));
-
 
   //Создаем окно редактирования соединений с БД
   _connectionEditDialog = new ConnectionEditDialog(this);
@@ -112,6 +129,39 @@ MainWindow::MainWindow(QWidget *parent) :
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(removeTabByIndex(int)));
+
+  connect(ui->tvDatabaseStructure->selectionModel(), &QItemSelectionModel::currentChanged,
+          this, &MainWindow::onCurrentItemChanged);
+
+  //Action processing
+  QStringList beanNames = _core->namesByClass(CLASS(BaseContextAction));
+  qDebug() << "Registered actions:" << beanNames;
+  foreach(QString name, beanNames) {
+    BaseContextAction* action = _core->dependency<BaseContextAction>(name);
+    //Main menu
+    if (action->inherits("MainMenuItem")) {
+        QMenu* parentMenu = nullptr;
+        QStringList pathList = (dynamic_cast<MainMenuItem*>(action))->menuPath();
+        foreach(QString section, pathList){
+            if (parentMenu) {
+                parentMenu = parentMenu->addMenu(section);
+            }
+            else {
+                parentMenu = ui->menuBar->addMenu(section);
+            }
+        }
+        if (parentMenu) {
+          parentMenu->addAction(action);
+        }
+        else {
+          ui->menuBar->addAction(action);
+        }
+    }
+//    Items context menu
+    if (action->inherits("BaseItemPopupAction")) {
+        _itemContextMenu->addAction(action);
+    }
+  }
 }
 
 MainWindow::~MainWindow()
@@ -239,25 +289,11 @@ void MainWindow::on_aRemoveDatabase_triggered()
 
 void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
 {
+  if (!index.isValid())
+      return;
   //Show context menu by right mouse click
   if (QApplication::mouseButtons().testFlag(Qt::RightButton)){
-    DBObjectItem::ItemType type = static_cast<DBObjectItem::ItemType>(itemByIndex(index)->type());
-
-    _exportDataAction->setEnabled(type == DBObjectItem::Table);
-
-    switch (type) {
-    case DBObjectItem::View:
-    case DBObjectItem::Trigger:
-    case DBObjectItem::Table:
-      _itemContextMenu->popup(QCursor::pos());
-      break;
-    case DBObjectItem::Folder:
-      _folderContextMenu->popup(QCursor::pos());
-      break;
-    default:
-      _itemContextMenu->popup(QCursor::pos());
-      break;
-    }
+    _itemContextMenu->popup(QCursor::pos());
   }
 }
 
@@ -305,74 +341,6 @@ void MainWindow::dropCurrentDatabaseObject()
     break;
   }
   //TODO: Implementation for other DB objects
-}
-
-void MainWindow::exportCurrrentDatabaseObject()
-{
-  //TODO: Test implementation
-  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
-  DBObjectItem* curObj = itemByIndex(curIdx);
-  curObj->refresh();
-  QGuiApplication::clipboard()->setText(curObj->toDDL());
-}
-
-void MainWindow::exportCurrentDatabaseObjectData()
-{
-  //TODO: Test implementation
-  qDebug() << "DML export";
-  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
-  DBObjectItem* curObj = itemByIndex(curIdx);
-  curObj->refresh();
-  QGuiApplication::clipboard()->setText(curObj->toDML());
-}
-
-void MainWindow::reloadItemChildren()
-{
-  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
-  _ds->structureModel()->deleteChildren(curIdx);
-  FolderTreeItem* folderItem = static_cast<FolderTreeItem*>(itemByIndex(curIdx));
-
-  qDebug() << "Folder" << folderItem->caption() << "refresh request";
-
-  folderItem->reloadChildren();
-
-  emit _ds->structureModel()->dataChanged(curIdx, curIdx);
-}
-
-void MainWindow::updateStructureContextMenu()
-{
-  DBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  _editAction->setText(item->isEditable() ? tr("Edit object") : tr("View object"));
-}
-
-void MainWindow::showCreateItemEditor()
-{
-  qDebug() << "Create window";
-  DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-
-  if (currentItem->type() != DBObjectItem::Folder) {
-    qWarning() << "Create item action: Not folder item";
-    return;
-  }
-  FolderTreeItem* folderItem = static_cast<FolderTreeItem*>(currentItem);
-  QString driverName = folderItem->driverName();
-  AbstractDatabaseEditForm* editForm = Core::instance()->objectForm(driverName, folderItem->childrenType());
-  QVariantHash pObj;
-  pObj.insert(F_TYPE, folderItem->childrenType());
-  pObj.insert(F_DRIVER_NAME, driverName);
-  DBObjectItem* newItem = Core::instance()->dependency<DBObjectItem>(pObj);
-  if (!newItem) {
-    pObj.insert(F_DRIVER_NAME, "");
-    newItem = Core::instance()->dependency<DBObjectItem>(pObj);
-  }
-
-  newItem->setParentUrl(folderItem->objectUrl());
-  editForm->setObjItem(newItem);
-  editForm->setUserAction(AbstractDatabaseEditForm::Create);
-  editForm->objectToForm();
-  qDebug() << "Before show";
-  editForm->show();
-  qDebug() << "After show";
 }
 
 void MainWindow::saveDatabaseChanges()
@@ -490,20 +458,9 @@ void MainWindow::localEvent(LocalEvent *event)
   }
 }
 
-void MainWindow::on_aOpenSqlEditor_triggered()
+void MainWindow::onCurrentItemChanged(const QModelIndex &index)
 {
-  //Создаем вкладку с редактором SQL-запросов
-  QueryEditorWindow* newQueryEditor = _core->dependency<QueryEditorWindow>(B_QUERY_EDITOR);
-  ui->tabWidget->addTab(newQueryEditor, tr("Query"));
-}
-
-void MainWindow::on_aSettings_triggered()
-{
-  SettingsForm::instance()->show();
-}
-
-void MainWindow::on_aExportDatabase_triggered()
-{
-  qDebug() << "Export database form";
-  DatabaseExportForm::instance()->show();
+    DBObjectItem* curItem = _ds->structureModel()->itemByIdx(index);
+    qDebug() << "Current item:" << curItem;
+    _context->setCurrentItem(curItem);
 }

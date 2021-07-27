@@ -32,7 +32,7 @@ void QStructureItemModel::appendItem(DBObjectItem *item, QModelIndex parent)
 {
   addItem(item, parent);
   if (parent.isValid()) {
-    DBObjectItem* parentItem = static_cast<DBObjectItem*>(itemByIndex(parent));
+    DBObjectItem* parentItem = itemByIdx(parent);
     Q_ASSERT(parentItem);
     item->setParentUrl(parentItem->objectUrl());
   }
@@ -45,12 +45,22 @@ QModelIndex QStructureItemModel::indexByUrl(const AppUrl &url)
 
 DBObjectItem *QStructureItemModel::itemByUrl(const AppUrl &url)
 {
-  return static_cast<DBObjectItem*>(itemByName(url.toString()));
+    return static_cast<DBObjectItem*>(itemByName(url.toString()));
+}
+
+DBObjectItem *QStructureItemModel::itemByIdx(const QModelIndex &idx)
+{
+    return static_cast<DBObjectItem*>(itemByIndex(idx));
 }
 
 bool QStructureItemModel::deleteChildren(QModelIndex parent)
 {
-  return removeRows(0, rowCount(parent), parent);
+    return removeRows(0, rowCount(parent), parent);
+}
+
+bool QStructureItemModel::deleteChildren(DBObjectItem *parentItem)
+{
+    return deleteChildren(indexByItem(parentItem));
 }
 
 void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)

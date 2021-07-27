@@ -20,6 +20,16 @@ RC_ICONS = sdk/icons/cc_16.ico
 #DEFINES += SINGLEAPP
 
 SOURCES += main.cpp\
+    addnewqueryeditoraction.cpp \
+    dropitemobjectaction.cpp \
+    exportddltoclipboardaction.cpp \
+    exportdmltoclipboardaction.cpp \
+    reloadfolderitemsaction.cpp \
+    showcreateformaction.cpp \
+    showdatabaseexporteditoraction.cpp \
+#    testmodule.cpp \
+    showitemeditoraction.cpp \
+    showsettingsformaction.cpp \
     widgets/blobeditor.cpp \
     forms/databaseexportform.cpp \
     widgets/itemviewer.cpp \
@@ -32,7 +42,17 @@ SOURCES += main.cpp\
     forms/mainwindow.cpp
 
 HEADERS  += \
+    addnewqueryeditoraction.h \
+    dropitemobjectaction.h \
+    exportddltoclipboardaction.h \
+    exportdmltoclipboardaction.h \
     forms/databaseexportform.h \
+    reloadfolderitemsaction.h \
+    showcreateformaction.h \
+    showdatabaseexporteditoraction.h \
+#    testmodule.h \
+    showitemeditoraction.h \
+    showsettingsformaction.h \
     widgets/blobeditor.h \
     widgets/itemviewer.h \
     forms/mainwindow.h \

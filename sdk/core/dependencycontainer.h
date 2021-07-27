@@ -56,6 +56,7 @@ public:
     explicit DependencyContainer(QObject *parent = nullptr);
     virtual ~DependencyContainer();
     DependencyMeta* registerDependency(DependencyMeta* meta);
+    DependencyMeta* registerDependency(QString name, const QMetaObject* metaObj, InstanceMode mode = Singleton);
     DependencyMeta* registerSingletonObject(DependencyMeta* meta, QObject* object);
     void removeSingleton(QString name);
 

@@ -12,7 +12,7 @@ class SettingsForm : public QWidget
   Q_OBJECT
 
 public:
-  explicit SettingsForm(QWidget *parent = nullptr);
+  Q_INVOKABLE SettingsForm(QWidget *parent = nullptr);
   ~SettingsForm();
 
   static SettingsForm* instance();

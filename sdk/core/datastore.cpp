@@ -33,6 +33,16 @@ DataStore::DataStore(QObject *parent) : QObject(parent)
   _queryHistoryModel->orderBy(F_ID, Qt::DescendingOrder);
 }
 
+void DataStore::setTabWidget(QTabWidget *tabWidget)
+{
+  _tabWidget = tabWidget;
+}
+
+QTabWidget *DataStore::tabWidget()
+{
+  return _tabWidget;
+}
+
 void DataStore::initRegisteredDatabases()
 {
   QString sql = "select id id, name caption, driver driverName, local_path databaseName, "

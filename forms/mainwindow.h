@@ -16,6 +16,7 @@
 #include "sdk/forms/triggereditform.h"
 #include "sdk/objects/dbtableitem.h"
 #include "sdk/core/localeventnotifier.h"
+#include "core/baseusercontext.h"
 #include "core/datastore.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000
@@ -53,44 +54,23 @@ private slots:
 
   void dropCurrentDatabaseObject();
 
-  void exportCurrrentDatabaseObject();
-
-  void exportCurrentDatabaseObjectData();
-
-  void reloadItemChildren();
-
-  void updateStructureContextMenu();
-
-  void showCreateItemEditor();
-
   void saveDatabaseChanges();
 
   void saveObjectChanges();
 
-  void on_aOpenSqlEditor_triggered();
-
-  void on_aSettings_triggered();
-
-  void on_aExportDatabase_triggered();
+  void onCurrentItemChanged(const QModelIndex &index);
 
 private:
   Ui::MainWindow *ui;
   DataStore* _ds;
   Core* _core;
+  BaseUserContext* _context;
   ConnectionEditDialog* _connectionEditDialog;
   QMenu* _itemContextMenu;
-  QMenu* _folderContextMenu;
-  QAction* _editAction;
-  QAction* _dropAction;
-  QAction* _exportAction;
-  QAction* _exportDataAction;
-  QAction* _reloadAction;
   void addDatabase();
   DBObjectItem* itemByIndex(QModelIndex index);
   DBObjectItem* itemByName(QString name);
 protected:
-  //Dummy source change
-
   //Update connection comboboxes
   void refreshConnectionList();
   //Update object list for completer

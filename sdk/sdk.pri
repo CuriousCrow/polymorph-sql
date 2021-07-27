@@ -10,6 +10,10 @@ CONFIG(debug, debug|release) {
 
 SOURCES += \
 #Core
+    $$PWD/core/abstractcontextaction.cpp \
+    $$PWD/core/abstractusercontext.cpp \
+    $$PWD/core/basecontextaction.cpp \
+    $$PWD/core/baseusercontext.cpp \
     $$PWD/core/core.cpp \
     $$PWD/core/datastore.cpp \
     $$PWD/core/localeventnotifier.cpp \
@@ -81,6 +85,10 @@ SOURCES += \
 HEADERS  += \
     $$PWD/abstractplugin.h \
 #Core
+    $$PWD/core/abstractcontextaction.h \
+    $$PWD/core/abstractusercontext.h \
+    $$PWD/core/basecontextaction.h \
+    $$PWD/core/baseusercontext.h \
     $$PWD/core/core.h \
     $$PWD/core/datastore.h \
     $$PWD/core/localeventnotifier.h \
