@@ -11,6 +11,7 @@
 const QEvent::Type ShowObjectEvent = static_cast<QEvent::Type>(QEvent::User + 1);
 const QEvent::Type CloseObjectEvent = static_cast<QEvent::Type>(QEvent::User + 2);
 const QEvent::Type InfoMessageEvent = static_cast<QEvent::Type>(QEvent::User + 3);
+const QEvent::Type ItemDeleteEvent = static_cast<QEvent::Type>(QEvent::User + 4);
 
 
 class LocalEvent : public QEvent
@@ -41,11 +42,7 @@ protected:
 class LocalEventNotifier
 {
 public:
-//  static LocalEventNotifier* instance();
   static void postLocalEvent(QEvent::Type type, QString url, QVariantMap params = QVariantMap());
-private:
-//  LocalEventNotifier();
-//  static LocalEventNotifier* _singleton;
 };
 
 #endif // LOCALEVENTNOTIFIER_H

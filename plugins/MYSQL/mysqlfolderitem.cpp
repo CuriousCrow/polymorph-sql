@@ -41,19 +41,19 @@ void MysqlFolderItem::loadChildren()
         DBObjectItem* childItem = nullptr;
         switch (childrenType()) {
         case DBObjectItem::Table:
-            childItem = Core::instance()->dependencyForDriver<DBTableItem>(driverName());
+            childItem = _core->dependencyForDriver<DBTableItem>(driverName());
             break;
         case DBObjectItem::View:
-            childItem = Core::instance()->dependencyForDriver<DBViewItem>(driverName());
+            childItem = _core->dependencyForDriver<DBViewItem>(driverName());
             break;
         case DBObjectItem::Sequence:
-            childItem = Core::instance()->dependencyForDriver<DBSequenceItem>(driverName());
+            childItem = _core->dependencyForDriver<DBSequenceItem>(driverName());
             break;
         case DBObjectItem::Procedure:
-            childItem = Core::instance()->dependencyForDriver<DBProcedureItem>(driverName());
+            childItem = _core->dependencyForDriver<DBProcedureItem>(driverName());
             break;
         case DBObjectItem::Trigger:
-            childItem = Core::instance()->dependencyForDriver<DBTriggerItem>(driverName());
+            childItem = _core->dependencyForDriver<DBTriggerItem>(driverName());
             break;
         default:
             break;

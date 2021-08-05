@@ -456,6 +456,13 @@ void MainWindow::localEvent(LocalEvent *event)
     QString message = event->param(PARAM_MESSAGE).toString();
     ui->statusBar->showMessage(message, MAIN_STATUS_BAR_TIMEOUT);
   }
+  else if (event->type() == ItemDeleteEvent) {
+    qDebug() << "Removing item from structure model";
+    removeTabsByItemUrl(event->url());
+    _ds->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
+                                     ui->tvDatabaseStructure->currentIndex().parent());
+    refreshQueryEditorAssistance();
+  }
 }
 
 void MainWindow::onCurrentItemChanged(const QModelIndex &index)

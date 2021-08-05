@@ -1,5 +1,6 @@
 #include "dropitemobjectaction.h"
 #include <QDebug>
+#include "core/localeventnotifier.h"
 
 DropItemObjectAction::DropItemObjectAction() : BaseItemPopupAction(nullptr)
 {
@@ -18,4 +19,5 @@ void DropItemObjectAction::doAction()
     if (!result.isSuccess()) {
         qDebug() << "Ne shmogla";
     }
+    LocalEventNotifier::postLocalEvent(ItemDeleteEvent, obj->objectUrl().toString());
 }

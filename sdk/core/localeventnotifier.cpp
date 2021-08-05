@@ -3,15 +3,6 @@
 #include <QWidget>
 #include <QDebug>
 
-//LocalEventNotifier* LocalEventNotifier::_singleton = nullptr;
-
-//LocalEventNotifier *LocalEventNotifier::instance()
-//{
-//  if (!_singleton)
-//    _singleton = new LocalEventNotifier();
-//  return _singleton;
-//}
-
 void LocalEventNotifier::postLocalEvent(QEvent::Type type, QString url, QVariantMap params)
 {
   LocalEvent event(type, url, params);
@@ -22,10 +13,6 @@ void LocalEventNotifier::postLocalEvent(QEvent::Type type, QString url, QVariant
     }
   }
 }
-
-//LocalEventNotifier::LocalEventNotifier()
-//{
-//}
 
 LocalEvent::LocalEvent(QEvent::Type type, QString url, QVariantMap params)
   : QEvent(type), _params(params), _url(url)
