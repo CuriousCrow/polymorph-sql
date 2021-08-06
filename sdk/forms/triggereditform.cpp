@@ -48,7 +48,7 @@ void TriggerEditForm::formToObject()
   _objItem->setFieldValue(F_CAPTION, ui->edtName->text());
   _objItem->setFieldValue(F_ENABLED, ui->chkEnabled->isChecked());
   _objItem->setFieldValue(F_TIMING, ui->cmbBeforeAfter->currentText());
-  _objItem->setFieldValue(F_FUNCTION, ui->cmbFunction->currentText() + "()");
+  _objItem->setFieldValue(F_FUNCTION, ui->cmbFunction->currentText());
   _objItem->setFieldValue(F_TABLE, ui->cmbTargetTable->currentText());
   _objItem->setFieldValue(F_EVENT_INSERT, ui->chkInsertEvent->isChecked());
   _objItem->setFieldValue(F_EVENT_UPDATE, ui->chkUpdateEvent->isChecked());
