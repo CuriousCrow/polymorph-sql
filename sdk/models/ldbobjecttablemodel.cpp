@@ -25,11 +25,21 @@ void LDBObjectTableModel::registerColumn(QString name)
 
 void LDBObjectTableModel::setQuery(QString sql)
 {
-  _sqlQuery = sql;
+    _sqlQuery = sql;
+}
+
+void LDBObjectTableModel::clear()
+{
+    beginResetModel();
+    _rowIndex.clear();
+    _dataMap.clear();
+    endResetModel();
 }
 
 void LDBObjectTableModel::reload(QString connectionName)
 {
+  clear();
+
   beginResetModel();
   QSqlQuery result = QSqlQueryHelper::execSql(_sqlQuery, connectionName);
   while(result.next()) {

@@ -14,6 +14,7 @@ public:
   QVariant fixedValue(QString name);
   void registerColumn(QString name);
   void setQuery(QString sql);
+  void clear();
   void reload(QString connectionName = QSqlDatabase::defaultConnection);
 
   QString nameByRow(int row) const;
