@@ -8,7 +8,7 @@
 #include "sdk/forms/connectioneditdialog.h"
 #include <QMenu>
 #include "sdk/models/lstructureitemmodel.h"
-#include "queryeditorwindow.h"
+#include "sdk/forms/queryeditorwindow.h"
 #include "sdk/forms/tableeditform.h"
 #include "sdk/forms/sequenceeditform.h"
 #include "sdk/forms/procedureeditform.h"
@@ -16,9 +16,9 @@
 #include "sdk/forms/triggereditform.h"
 #include "sdk/objects/dbtableitem.h"
 #include "sdk/core/localeventnotifier.h"
-#include "core/baseusercontext.h"
-#include "core/datastore.h"
-#include "core/lknowledgebase.h"
+#include "sdk/core/baseusercontext.h"
+#include "sdk/core/datastore.h"
+#include "sdk/core/lknowledgebase.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000
 

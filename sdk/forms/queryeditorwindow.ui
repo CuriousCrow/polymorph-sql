@@ -191,11 +191,16 @@
   <customwidget>
    <class>QueryParamsForm</class>
    <extends>QWidget</extends>
-   <header>sdk/forms/queryparamsform.h</header>
+   <header>forms/queryparamsform.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
   <include location="../icons.qrc"/>
  </resources>
  <connections/>

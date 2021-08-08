@@ -3,20 +3,20 @@
 
 #include <QMainWindow>
 #include <QSqlQueryModel>
-#include "sdk/models/lstructureitemmodel.h"
-#include "sdk/tools/lsqlsyntaxhighlighter.h"
-#include "sdk/tools/ltextcompleter.h"
-#include "sdk/models/lactiveconnectionmodel.h"
-#include "sdk/models/ldbobjectmodel.h"
-#include "sdk/utils/lsimpletooltip.h"
-#include "sdk/models/ldbobjecttablemodel.h"
-#include "sdk/models/jointdbojbectmodel.h"
-#include "sdk/models/queryparamtablemodel.h"
-#include "sdk/forms/queryparamsform.h"
-#include "sdk/core/datastore.h"
-#include "sdk/core/lknowledgebase.h"
+#include "models/lstructureitemmodel.h"
+#include "tools/lsqlsyntaxhighlighter.h"
+#include "tools/ltextcompleter.h"
+#include "models/lactiveconnectionmodel.h"
+#include "models/ldbobjectmodel.h"
+#include "utils/lsimpletooltip.h"
+#include "models/ldbobjecttablemodel.h"
+#include "models/jointdbojbectmodel.h"
+#include "models/queryparamtablemodel.h"
+#include "forms/queryparamsform.h"
+#include "core/datastore.h"
+#include "core/lknowledgebase.h"
 #include "core/dependencycontainer.h"
-#include "sdk/core/sqlhelplookupprovider.h"
+#include "core/sqlhelplookupprovider.h"
 
 #define STATUS_BAR_TIMEOUT 5000
 

@@ -17,61 +17,21 @@ CONFIG += -O0
 RC_ICONS = sdk/icons/cc_16.ico
 
 #Use this flag to compile all plugins inside main application
-#DEFINES += SINGLEAPP
+DEFINES += SINGLEAPP
 
 SOURCES += main.cpp\
-    addnewqueryeditoraction.cpp \
-    dropitemobjectaction.cpp \
-    exportddltoclipboardaction.cpp \
-    exportdmltoclipboardaction.cpp \
-    reloadfolderitemsaction.cpp \
-    showcreateformaction.cpp \
-    showdatabaseexporteditoraction.cpp \
-#    testmodule.cpp \
-    showitemeditoraction.cpp \
-    showsettingsformaction.cpp \
-    widgets/blobeditor.cpp \
-    forms/databaseexportform.cpp \
-    widgets/itemviewer.cpp \
-    forms/queryhistoryform.cpp \
-    forms/settingsform.cpp \
+    forms/mainwindow.cpp \
     forms/tablebrowserwindow.cpp \
-    forms/queryeditorwindow.cpp \
-    widgets/lqueryeditor.cpp \
-    widgets/tablebrowserdelegate.cpp \
-    forms/mainwindow.cpp
+    widgets/tablebrowserdelegate.cpp
 
 HEADERS  += \
-    addnewqueryeditoraction.h \
-    dropitemobjectaction.h \
-    exportddltoclipboardaction.h \
-    exportdmltoclipboardaction.h \
-    forms/databaseexportform.h \
-    reloadfolderitemsaction.h \
-    showcreateformaction.h \
-    showdatabaseexporteditoraction.h \
-#    testmodule.h \
-    showitemeditoraction.h \
-    showsettingsformaction.h \
-    widgets/blobeditor.h \
-    widgets/itemviewer.h \
     forms/mainwindow.h \
-    forms/queryhistoryform.h \
-    forms/settingsform.h \
-    widgets/tablebrowserdelegate.h \
     forms/tablebrowserwindow.h \
-    forms/queryeditorwindow.h \
-    widgets/lqueryeditor.h
+    widgets/tablebrowserdelegate.h
 
 FORMS    += \
-    widgets/itemviewer.ui \
-    widgets/blobeditor.ui \
-    forms/databaseexportform.ui \
     forms/mainwindow.ui \
-    forms/queryhistoryform.ui \
-    forms/settingsform.ui \
-    forms/tablebrowserwindow.ui \
-    forms/queryeditorwindow.ui
+    forms/tablebrowserwindow.ui
 
 RESOURCES += \
     sdk/icons.qrc

@@ -7,9 +7,9 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include "widgets/lqueryeditor.h"
-#include "sdk/core/maphelplookupprovider.h"
-#include "sdk/core/localeventnotifier.h"
-#include "sdk/objects/appconst.h"
+#include "core/maphelplookupprovider.h"
+#include "core/localeventnotifier.h"
+#include "objects/appconst.h"
 #include "queryhistoryform.h"
 
 #include <QComboBox>

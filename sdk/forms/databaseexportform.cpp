@@ -4,9 +4,9 @@
 #include <QFileDialog>
 
 #include "core/datastore.h"
-#include "sdk/objects/appconst.h"
+#include "objects/appconst.h"
 #include "utils/fileutils.h"
-#include "sdk/models/lstructureitemmodel.h"
+#include "models/lstructureitemmodel.h"
 
 DatabaseExportForm* DatabaseExportForm::_singleton = nullptr;
 

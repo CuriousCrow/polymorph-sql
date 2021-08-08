@@ -35,6 +35,14 @@ SOURCES += \
     $$PWD/forms/uniqueconstrainteditform.cpp \
     $$PWD/forms/vieweditdialog.cpp \
     $$PWD/forms/connectioneditdialog.cpp \
+    $$PWD/forms/databaseexportform.cpp \
+    $$PWD/forms/queryhistoryform.cpp \
+    $$PWD/forms/settingsform.cpp \
+    $$PWD/forms/queryeditorwindow.cpp \
+#Widgets
+    $$PWD/widgets/blobeditor.cpp \
+    $$PWD/widgets/itemviewer.cpp \
+    $$PWD/widgets/lqueryeditor.cpp \
 #Tools
     $$PWD/tools/lsqlsyntaxhighlighter.cpp \
     $$PWD/tools/ltextcompleter.cpp \
@@ -64,6 +72,16 @@ SOURCES += \
     $$PWD/models/lstandardtreemodel.cpp \
     $$PWD/models/sqlcolumnmodel.cpp \
     $$PWD/models/comboboxhashdelegate.cpp \
+#Actions
+    $$PWD/actions/addnewqueryeditoraction.cpp \
+    $$PWD/actions/dropitemobjectaction.cpp \
+    $$PWD/actions/exportddltoclipboardaction.cpp \
+    $$PWD/actions/exportdmltoclipboardaction.cpp \
+    $$PWD/actions/reloadfolderitemsaction.cpp \
+    $$PWD/actions/showcreateformaction.cpp \
+    $$PWD/actions/showdatabaseexporteditoraction.cpp \
+    $$PWD/actions/showitemeditoraction.cpp \
+    $$PWD/actions/showsettingsformaction.cpp \
 #Base DB classes
     $$PWD/objects/dbselectableitem.cpp \
     $$PWD/objects/sdkplugin.cpp \
@@ -110,6 +128,14 @@ HEADERS  += \
     $$PWD/forms/uniqueconstrainteditform.h \
     $$PWD/forms/vieweditdialog.h \
     $$PWD/forms/connectioneditdialog.h \
+    $$PWD/forms/queryhistoryform.h \
+    $$PWD/forms/settingsform.h \
+    $$PWD/forms/databaseexportform.h \
+    $$PWD/forms/queryeditorwindow.h \
+#Widgets
+    $$PWD/widgets/blobeditor.h \
+    $$PWD/widgets/itemviewer.h \
+    $$PWD/widgets/lqueryeditor.h \
 #Tools
     $$PWD/tools/ldatawidgetmapper.h \
     $$PWD/tools/ltextcompleter.h \
@@ -139,6 +165,16 @@ HEADERS  += \
     $$PWD/models/lstandardtreemodel.h \
     $$PWD/models/sqlcolumnmodel.h \
     $$PWD/models/comboboxhashdelegate.h \
+#Actions
+    $$PWD/actions/addnewqueryeditoraction.h \
+    $$PWD/actions/dropitemobjectaction.h \
+    $$PWD/actions/exportddltoclipboardaction.h \
+    $$PWD/actions/exportdmltoclipboardaction.h \
+    $$PWD/actions/reloadfolderitemsaction.h \
+    $$PWD/actions/showcreateformaction.h \
+    $$PWD/actions/showdatabaseexporteditoraction.h \
+    $$PWD/actions/showitemeditoraction.h \
+    $$PWD/actions/showsettingsformaction.h \
 #Base DB classes
     $$PWD/objects/sdkplugin.h \
     $$PWD/objects/dbmsplugin.h \
@@ -169,7 +205,13 @@ FORMS    += \
     $$PWD/forms/triggereditform.ui \
     $$PWD/forms/uniqueconstrainteditform.ui \
     $$PWD/forms/vieweditdialog.ui \
-    $$PWD/forms/tableeditform.ui
+    $$PWD/forms/tableeditform.ui \
+    $$PWD/forms/queryhistoryform.ui \
+    $$PWD/forms/settingsform.ui \
+    $$PWD/forms/databaseexportform.ui \
+    $$PWD/forms/queryeditorwindow.ui \
+    $$PWD/widgets/itemviewer.ui \
+    $$PWD/widgets/blobeditor.ui
 
 RESOURCES += \
     $$PWD/icons.qrc

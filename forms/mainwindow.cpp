@@ -5,10 +5,10 @@
 #include <QSqlField>
 #include <QMessageBox>
 #include <QClipboard>
-#include "databaseexportform.h"
+#include "sdk/forms/databaseexportform.h"
 #include "sdk/objects/appurl.h"
 #include "tablebrowserwindow.h"
-#include "settingsform.h"
+#include "sdk/forms/settingsform.h"
 #include "sdk/objects/dbdatabaseitem.h"
 #include "sdk/objects/dbobjectitem.h"
 #include "sdk/objects/foldertreeitem.h"
@@ -20,15 +20,15 @@
 #include "sdk/objects/sdkplugin.h"
 #include "sdk/utils/fileutils.h"
 #include "testmodule.h"
-#include "showdatabaseexporteditoraction.h"
-#include "dropitemobjectaction.h"
-#include "exportddltoclipboardaction.h"
-#include "exportdmltoclipboardaction.h"
-#include "showitemeditoraction.h"
-#include "reloadfolderitemsaction.h"
-#include "showcreateformaction.h"
-#include "showsettingsformaction.h"
-#include "addnewqueryeditoraction.h"
+#include "sdk/actions/showdatabaseexporteditoraction.h"
+#include "sdk/actions/dropitemobjectaction.h"
+#include "sdk/actions/exportddltoclipboardaction.h"
+#include "sdk/actions/exportdmltoclipboardaction.h"
+#include "sdk/actions/showitemeditoraction.h"
+#include "sdk/actions/reloadfolderitemsaction.h"
+#include "sdk/actions/showcreateformaction.h"
+#include "sdk/actions/showsettingsformaction.h"
+#include "sdk/actions/addnewqueryeditoraction.h"
 
 #ifdef SINGLEAPP
 #include "plugins/POSTGRES/postgresplugin.h"
@@ -85,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerPlugin(new FirebirdPlugin());
   Core::registerPlugin(new MysqlPlugin());
 #else
-  QStringList pluginFiles = QFileUtils::filesOfDir(QApplication::applicationDirPath() + "/plugins");
+  QStringList pluginFiles = FileUtils::filesOfDir(QApplication::applicationDirPath() + "/plugins");
   QPluginLoader* pluginLoader = new QPluginLoader(this);
   foreach(QString filename, pluginFiles) {
       qDebug() << "Found plugin file:" << filename;
