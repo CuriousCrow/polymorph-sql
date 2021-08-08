@@ -5,7 +5,6 @@
 #include <QSqlField>
 #include <QSqlRecord>
 #include "appconst.h"
-#include "../core/qknowledgebase.h"
 
 
 DBTableItem::DBTableItem():
@@ -60,7 +59,7 @@ DBCheckConstraint *DBTableItem::newCheckConstraint()
 int DBTableItem::colTypeFromString(QString name)
 {
 //  qDebug() << "ColTypeFromString:" << name.toUpper();
-  return QKnowledgeBase::kb()->typeByName(driverName().toUpper(), name.toUpper());
+  return _kb->typeByName(driverName().toUpper(), name.toUpper());
 }
 
 void DBTableItem::addDefaultColumn()

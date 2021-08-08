@@ -2,15 +2,15 @@
 #include <QDebug>
 #include "../objects/appconst.h"
 
-QKnowledgeBase* QKnowledgeBase::_kb = nullptr;
+//QKnowledgeBase* QKnowledgeBase::_kb = nullptr;
 
-QKnowledgeBase *QKnowledgeBase::kb(QObject *parent)
-{
-  if (!_kb){
-    _kb = new QKnowledgeBase(parent);
-  }
-  return _kb;
-}
+//QKnowledgeBase *QKnowledgeBase::kb(QObject *parent)
+//{
+//  if (!_kb){
+//    _kb = new QKnowledgeBase(parent);
+//  }
+//  return _kb;
+//}
 
 void QKnowledgeBase::loadModels(const QStringList &drivers)
 {

@@ -13,7 +13,6 @@ LTextCompleter::LTextCompleter(QObject *parent): QCompleter(parent)
 LTextCompleter::LTextCompleter(QAbstractItemModel *model, QObject *parent):
   QCompleter(model, parent)
 {
-  qDebug() << model->rowCount();
 }
 
 LTextCompleter::LTextCompleter(const QStringList &completions, QObject *parent):

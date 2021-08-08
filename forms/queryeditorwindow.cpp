@@ -8,10 +8,8 @@
 #include <QStandardItem>
 #include "widgets/lqueryeditor.h"
 #include "sdk/core/maphelplookupprovider.h"
-#include "sdk/core/sqlhelplookupprovider.h"
 #include "sdk/core/localeventnotifier.h"
 #include "sdk/objects/appconst.h"
-#include "sdk/core/qknowledgebase.h"
 #include "queryhistoryform.h"
 
 #include <QComboBox>
@@ -59,13 +57,10 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
           this, SLOT(reloadKnowledgeModel()));
 
   _activeConnectionModel = new QActiveConnectionModel(this);
-  //initialization after injection (inject_by_ds())
-
 
   _helpTooltip = new QSimpleTooltip(this);
   _helpTooltip->setOpenExternalLinks(true);
   _helpTooltip->setWidget(ui->teQueryEditor);
-  _helpTooltip->setLookupProvider(new SqlHelpLookupProvider(this));
 
   LKeySequenceInterceptor* keyInterceptor = new LKeySequenceInterceptor(this);
   keyInterceptor->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_Q));
@@ -99,6 +94,11 @@ void QueryEditorWindow::inject_by_ds(DataStore *ds)
   _activeConnectionModel->setSourceModel(_ds->structureModel());
   ui->cmbDatabase->setModel(_activeConnectionModel);
   ui->cmbDatabase->setModelColumn(0);
+}
+
+void QueryEditorWindow::inject_helpLookupProvider(SqlHelpLookupProvider *lookupProvider)
+{
+  _helpTooltip->setLookupProvider(lookupProvider);
 }
 
 void QueryEditorWindow::on_aExecuteQuery_triggered()
@@ -190,10 +190,9 @@ void QueryEditorWindow::reloadKnowledgeModel()
   _objectsModel->setQuery(dbObj->getAllObjectListSql());
   _objectsModel->reload(dbObj->connectionName());
 
-  QKnowledgeBase* kb = QKnowledgeBase::kb();
   _knowledgeModel->addModel(FOLDER_OBJECTS, _objectsModel);
-  _knowledgeModel->addModel(FOLDER_KEYWORDS, kb->modelByType(OBJTYPE_KEYWORD, dbObj->driverName()));
-  _knowledgeModel->addModel(FOLDER_FUNCTIONS, kb->modelByType(OBJTYPE_FUNCTION, dbObj->driverName()));
+  _knowledgeModel->addModel(FOLDER_KEYWORDS, _kb->modelByType(OBJTYPE_KEYWORD, dbObj->driverName()));
+  _knowledgeModel->addModel(FOLDER_FUNCTIONS, _kb->modelByType(OBJTYPE_FUNCTION, dbObj->driverName()));
 }
 
 void QueryEditorWindow::on_aCommit_triggered()

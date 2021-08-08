@@ -18,6 +18,7 @@
 #include "sdk/core/localeventnotifier.h"
 #include "core/baseusercontext.h"
 #include "core/datastore.h"
+#include "core/qknowledgebase.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000
 
@@ -64,6 +65,7 @@ private:
   Ui::MainWindow *ui;
   DataStore* _ds;
   Core* _core;
+  QKnowledgeBase* _kb;
   BaseUserContext* _context;
   ConnectionEditDialog* _connectionEditDialog;
   QMenu* _itemContextMenu;

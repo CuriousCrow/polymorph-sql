@@ -4,7 +4,6 @@
 #include <QDebug>
 #include "../objects/appconst.h"
 #include "../objects/dbuniqueconstraint.h"
-#include "../core/qknowledgebase.h"
 #include "foreignkeyform.h"
 #include "uniqueconstrainteditform.h"
 #include "checkconstrainteditform.h"
@@ -43,7 +42,7 @@ void TableEditForm::objectToForm()
   DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   tableItem->reloadColumnsModel();
 
-  _colTypeDelegate->setItemsHash(QKnowledgeBase::kb()->typesHash(_objItem->driverName()));
+  _colTypeDelegate->setItemsHash(_kb->typesHash(_objItem->driverName()));
   ui->tableView->setModel(tableItem->columnsModel());
 
   tableItem->reloadConstraintsModel();

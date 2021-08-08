@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "abstractdatabaseitemform.h"
+#include "core/dependencycontainer.h"
+#include "core/qknowledgebase.h"
 
 namespace Ui {
 class ProcedureEditForm;
@@ -16,6 +18,7 @@ public:
   Q_INVOKABLE ProcedureEditForm();
   ~ProcedureEditForm();
 
+  INJECT(QKnowledgeBase*, kb)
 private:
   Ui::ProcedureEditForm *ui;
   void reloadTypes();

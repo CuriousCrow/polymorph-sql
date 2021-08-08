@@ -9,6 +9,9 @@ class SqliteTableItem : public DBTableItem
 public:
     Q_INVOKABLE SqliteTableItem();
     virtual ~SqliteTableItem() override;
+
+    INJECT_INITIALIZE(SqlColumnModel*, _columnsModel, baseColumnModel)
+
     virtual void reloadColumnsModel() Q_DECL_OVERRIDE;
     // DBObjectItem interface
 public:

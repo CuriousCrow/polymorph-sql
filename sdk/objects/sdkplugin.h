@@ -22,6 +22,11 @@
 #define B_PRIMARY_KEY_FORM "basePrimaryKeyForm"
 #define B_UNIQUE_FORM "baseUniqueForm"
 
+#define B_KNOWLEDGE_BASE "kb"
+#define B_HELPLOOKUP_PROVIDER "helpLookupProvider"
+#define B_SQL_SYNTAX_HIGHLIGHTER "sqlSyntaxHighlighter"
+
+#define B_BASE_COLUMN_MODEL "baseColumnModel"
 
 class SdkPlugin : public IocPlugin
 {

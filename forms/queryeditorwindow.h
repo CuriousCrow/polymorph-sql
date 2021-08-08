@@ -14,7 +14,9 @@
 #include "sdk/models/queryparamtablemodel.h"
 #include "sdk/forms/queryparamsform.h"
 #include "sdk/core/datastore.h"
+#include "sdk/core/qknowledgebase.h"
 #include "core/dependencycontainer.h"
+#include "sdk/core/sqlhelplookupprovider.h"
 
 #define STATUS_BAR_TIMEOUT 5000
 
@@ -30,7 +32,9 @@ public:
   Q_INVOKABLE QueryEditorWindow(QWidget *parent = nullptr);
   ~QueryEditorWindow();
 
+  INJECT(QKnowledgeBase*, kb)
   Q_INVOKABLE void inject_by_ds(DataStore* ds);
+  Q_INVOKABLE void inject_helpLookupProvider(SqlHelpLookupProvider* lookupProvider);
 public slots:
   void refreshConnectionList();
   void reloadKnowledgeModel();

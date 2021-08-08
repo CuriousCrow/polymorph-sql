@@ -1,6 +1,5 @@
 #include "sqlcolumnmodel.h"
 #include <QDebug>
-#include "../core/qknowledgebase.h"
 
 SqlColumnModel::SqlColumnModel(QObject *parent) : QAbstractTableModel(parent)
 {
@@ -9,7 +8,7 @@ SqlColumnModel::SqlColumnModel(QObject *parent) : QAbstractTableModel(parent)
 
 QString SqlColumnModel::columnTypeCaption(int type) const
 {
-  return QKnowledgeBase::kb()->typeName(type);
+  return _kb->typeName(type);
 }
 
 void SqlColumnModel::addSqlColumn(SqlColumn col, bool init)

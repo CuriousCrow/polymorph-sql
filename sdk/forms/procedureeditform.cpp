@@ -2,7 +2,6 @@
 #include "ui_procedureeditform.h"
 
 #include "../objects/appconst.h"
-#include "../core/qknowledgebase.h"
 
 ProcedureEditForm::ProcedureEditForm() :
   AbstractDatabaseEditForm(nullptr),
@@ -19,7 +18,7 @@ ProcedureEditForm::~ProcedureEditForm()
 
 void ProcedureEditForm::reloadTypes()
 {
-  QHash<int, QString> types = QKnowledgeBase::kb()->typesHash(_objItem->driverName());
+  QHash<int, QString> types = _kb->typesHash(_objItem->driverName());
   ui->cmbResultType->clear();
   ui->cmbResultType->addItem("void");
   ui->cmbResultType->addItem("trigger");

@@ -59,7 +59,9 @@ MainWindow::MainWindow(QWidget *parent) :
   menuPath << "Functions";
 
   _context = new BaseUserContext(this);
+  _kb = new QKnowledgeBase(this);
   _core->registerSingletonObject(new DependencyMeta(B_CONTEXT, CLASSMETA(BaseUserContext)), _context);
+  _core->registerSingletonObject(new DependencyMeta(B_KNOWLEDGE_BASE, CLASSMETA(QKnowledgeBase)), _kb);
   _core->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
   _core->registerDependency("databaseExportAction", CLASSMETA(ShowDatabaseExportEditorAction), InstanceMode::Singleton);
   _core->registerDependency("dropItemAction", CLASSMETA(DropItemObjectAction), InstanceMode::Singleton);
@@ -110,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent) :
   }
 
   QStringList modules = Core::instance()->supportedDrivers();
-  QKnowledgeBase::kb(this)->loadModels(modules);
+  _kb->loadModels(modules);
 
   //Showing first column only
   //TODO: create utility methods for hiding columns

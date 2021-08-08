@@ -11,6 +11,8 @@ public:
   Q_INVOKABLE PostgresTable();
   virtual ~PostgresTable() Q_DECL_OVERRIDE;
 
+  INJECT_INITIALIZE(SqlColumnModel*, _columnsModel, baseColumnModel)
+
   virtual DBForeignKey* newForeignKey() Q_DECL_OVERRIDE;
   virtual DBPrimaryKey* newPrimaryKey() Q_DECL_OVERRIDE;
   virtual DBUniqueConstraint* newUniqueConstraint() Q_DECL_OVERRIDE;

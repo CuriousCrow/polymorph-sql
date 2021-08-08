@@ -4,11 +4,12 @@
 #include <QDialog>
 #include <QMenu>
 #include "abstractdatabaseitemform.h"
-#include "../models/tablerowmodel.h"
-#include "../objects/dbtableitem.h"
-#include "../models/comboboxhashdelegate.h"
+#include "models/tablerowmodel.h"
+#include "objects/dbtableitem.h"
+#include "models/comboboxhashdelegate.h"
 #include "core/core.h"
 #include "core/dependencycontainer.h"
+#include "core/qknowledgebase.h"
 
 namespace Ui {
 class TableEditForm;
@@ -23,6 +24,7 @@ public:
   ~TableEditForm();
 
   INJECT(Core*, core)
+  INJECT(QKnowledgeBase*, kb)
 private:
   Ui::TableEditForm *ui;
   // AbstractDatabaseEditForm interface

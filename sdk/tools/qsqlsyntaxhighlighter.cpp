@@ -1,23 +1,12 @@
 #include "qsqlsyntaxhighlighter.h"
 #include <QTextCharFormat>
 #include <QDebug>
-#include "../core/qknowledgebase.h"
 #include <QSqlTableModel>
 #include "models/lsqltablemodel.h"
 
 QSqlSyntaxHighlighter::QSqlSyntaxHighlighter(QObject *parent):
   QSyntaxHighlighter(parent)
 {
-  //TODO: Keywords should be loaded depending on database type
-  LSqlTableModel* mKeywords = QKnowledgeBase::kb()->mKeywords;
-  for (int i=0; i<mKeywords->rowCount(); i++){
-    _sqlKeyWords << mKeywords->data(mKeywords->index(i, mKeywords->fieldIndex("NAME"))).toString().toUpper();
-  }
-  LSqlTableModel* mFunctions = QKnowledgeBase::kb()->mFunctions;
-  int nameCol = mFunctions->fieldIndex("NAME");
-  for (int i=0; i<mFunctions->rowCount(); i++) {
-    _sqlFunctions << mFunctions->data(mFunctions->index(i, nameCol)).toString().toLower();
-  }
 }
 
 QSqlSyntaxHighlighter::~QSqlSyntaxHighlighter()
@@ -31,7 +20,21 @@ QStringList QSqlSyntaxHighlighter::keyWords()
 
 QStringList QSqlSyntaxHighlighter::functions()
 {
-  return _sqlFunctions;
+    return _sqlFunctions;
+}
+
+void QSqlSyntaxHighlighter::inject_by_kb(QKnowledgeBase *kb)
+{
+    //TODO: Keywords should be loaded depending on database type
+    LSqlTableModel* mKeywords = kb->mKeywords;
+    for (int i=0; i<mKeywords->rowCount(); i++){
+      _sqlKeyWords << mKeywords->data(mKeywords->index(i, mKeywords->fieldIndex("NAME"))).toString().toUpper();
+    }
+    LSqlTableModel* mFunctions = kb->mFunctions;
+    int nameCol = mFunctions->fieldIndex("NAME");
+    for (int i=0; i<mFunctions->rowCount(); i++) {
+      _sqlFunctions << mFunctions->data(mFunctions->index(i, nameCol)).toString().toLower();
+    }
 }
 
 void QSqlSyntaxHighlighter::highlightBlock(const QString &text)

@@ -4,8 +4,6 @@
 
 SqlHelpLookupProvider::SqlHelpLookupProvider(QObject *parent) : QObject(parent)
 {
-  _helpModels.append(QKnowledgeBase::kb()->mKeywords);
-  _helpModels.append(QKnowledgeBase::kb()->mFunctions);
 }
 
 QString SqlHelpLookupProvider::lookup(QString keyword)
@@ -24,4 +22,10 @@ QString SqlHelpLookupProvider::lookup(QString keyword)
     }
   }
   return p1.arg(desc) + (link.isEmpty() ? "" : p2.arg(link));
+}
+
+void SqlHelpLookupProvider::inject_by_kb(QKnowledgeBase *kb)
+{
+    _helpModels.append(kb->mKeywords);
+    _helpModels.append(kb->mFunctions);
 }

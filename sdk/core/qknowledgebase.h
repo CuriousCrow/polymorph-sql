@@ -11,10 +11,10 @@ class QKnowledgeBase : public QObject
 {
   Q_OBJECT
 public:
-  explicit QKnowledgeBase(QObject *parent = nullptr);
+  Q_INVOKABLE QKnowledgeBase(QObject *parent = nullptr);
   ~QKnowledgeBase();
 
-  static QKnowledgeBase* kb(QObject* parent = nullptr);
+//  static QKnowledgeBase* kb(QObject* parent = nullptr);
   LSqlTableModel* mKeywords;
   LSqlTableModel* mFunctions;
   LSqlTableModel* mTypes;
@@ -27,7 +27,7 @@ public:
   QString typeName(int type);
   int typeByName(QString dbms, QString name);
 private:
-  static QKnowledgeBase* _kb;
+//  static QKnowledgeBase* _kb;
   QHash<QString, LDBObjectTableModel*> _modelHash;
 signals:
 

@@ -3,16 +3,19 @@
 
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
+#include "../core/qknowledgebase.h"
 
 class QSqlSyntaxHighlighter : public QSyntaxHighlighter
 {
   Q_OBJECT
 public:
-  QSqlSyntaxHighlighter(QObject *parent);
+  Q_INVOKABLE QSqlSyntaxHighlighter(QObject *parent = nullptr);
   ~QSqlSyntaxHighlighter();
 
   QStringList keyWords();
   QStringList functions();
+
+  Q_INVOKABLE void inject_by_kb(QKnowledgeBase* kb);
 
   // QSyntaxHighlighter interface
 protected:

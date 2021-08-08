@@ -5,7 +5,6 @@
 FirebirdTable::FirebirdTable()
   : DBTableItem()
 {
-  _columnsModel = new SqlColumnModel();
   _constraintsModel = new VariantMapTableModel();
 }
 

@@ -13,8 +13,6 @@
 PostgresTable::PostgresTable()
   : DBTableItem()
 {
-  _columnsModel = new SqlColumnModel();
-
   _constraintsModel = new VariantMapTableModel();
   _constraintsModel->registerColumn(F_TYPE, tr("Type"));
   _constraintsModel->registerColumn(F_NAME, tr("Name"));

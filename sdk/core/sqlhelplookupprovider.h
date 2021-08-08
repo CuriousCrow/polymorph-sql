@@ -4,12 +4,16 @@
 #include "qknowledgebase.h"
 #include "../utils/qsimpletooltip.h"
 #include "../models/lsqltablemodel.h"
+#include "core/dependencycontainer.h"
 
 class SqlHelpLookupProvider : public QObject, public HelpLookupProvider
 {
+    Q_OBJECT
 public:
-    SqlHelpLookupProvider(QObject* parent = nullptr);
+    Q_INVOKABLE SqlHelpLookupProvider(QObject* parent = nullptr);
     virtual QString lookup(QString keyword);
+
+    Q_INVOKABLE void inject_by_kb(QKnowledgeBase* kb);
 private:
     QList<LSqlTableModel*> _helpModels;
 };

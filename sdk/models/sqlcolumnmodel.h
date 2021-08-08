@@ -3,6 +3,8 @@
 
 #include <QAbstractTableModel>
 #include <QColor>
+#include "core/dependencycontainer.h"
+#include "core/qknowledgebase.h"
 
 #define NoType 0
 #define COL_IDX_TYPE 2
@@ -74,7 +76,10 @@ public:
     CreateTable = 2,
     DropTable = 3
   };
-  SqlColumnModel(QObject *parent = Q_NULLPTR);
+  Q_INVOKABLE SqlColumnModel(QObject *parent = Q_NULLPTR);
+
+  INJECT(QKnowledgeBase*, kb)
+
 //  virtual ColumnTypes supportedColumnTypes() = 0;
   virtual QString columnTypeCaption(int type) const;
   void addSqlColumn(SqlColumn col, bool init = false);
