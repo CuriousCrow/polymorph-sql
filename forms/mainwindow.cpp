@@ -87,6 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
   }
 
   QStringList modules = Core::instance()->supportedDrivers();
+  qDebug() << "Drivers supported:" << modules;
   _kb->loadModels(modules);
 
   //Showing first column only

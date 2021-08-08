@@ -35,6 +35,7 @@ public:
   INJECT(LKnowledgeBase*, kb)
   Q_INVOKABLE void inject_by_ds(DataStore* ds);
   Q_INVOKABLE void inject_helpLookupProvider(SqlHelpLookupProvider* lookupProvider);
+  Q_INVOKABLE void inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter* syntaxHighlighter);
 public slots:
   void refreshConnectionList();
   void reloadKnowledgeModel();
@@ -61,7 +62,6 @@ private:
   LActiveConnectionModel* _activeConnectionModel;
   QSqlQueryModel* _resultModel;
   DataStore* _ds;
-//  LDBObjectModel* _compModel;
   JointDBOjbectModel* _knowledgeModel;
   LDBObjectTableModel* _objectsModel;
   LSqlSyntaxHighlighter* _highlighter;

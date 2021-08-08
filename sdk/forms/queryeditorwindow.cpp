@@ -50,9 +50,6 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   connect(_completer, SIGNAL(completerRequested(QString)),
           this, SLOT(onCompleterRequested(QString)));
 
-  _highlighter = new LSqlSyntaxHighlighter(this);
-  _highlighter->setDocument(ui->teQueryEditor->document());
-
   connect(ui->cmbDatabase, SIGNAL(currentIndexChanged(int)),
           this, SLOT(reloadKnowledgeModel()));
 
@@ -98,7 +95,13 @@ void QueryEditorWindow::inject_by_ds(DataStore *ds)
 
 void QueryEditorWindow::inject_helpLookupProvider(SqlHelpLookupProvider *lookupProvider)
 {
-  _helpTooltip->setLookupProvider(lookupProvider);
+    _helpTooltip->setLookupProvider(lookupProvider);
+}
+
+void QueryEditorWindow::inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter *syntaxHighlighter)
+{
+    _highlighter = syntaxHighlighter;
+    _highlighter->setDocument(ui->teQueryEditor->document());
 }
 
 void QueryEditorWindow::on_aExecuteQuery_triggered()
