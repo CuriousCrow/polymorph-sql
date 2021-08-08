@@ -19,16 +19,8 @@
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/sdkplugin.h"
 #include "sdk/utils/fileutils.h"
+#include "sdk/core/basecontextaction.h"
 #include "testmodule.h"
-#include "sdk/actions/showdatabaseexporteditoraction.h"
-#include "sdk/actions/dropitemobjectaction.h"
-#include "sdk/actions/exportddltoclipboardaction.h"
-#include "sdk/actions/exportdmltoclipboardaction.h"
-#include "sdk/actions/showitemeditoraction.h"
-#include "sdk/actions/reloadfolderitemsaction.h"
-#include "sdk/actions/showcreateformaction.h"
-#include "sdk/actions/showsettingsformaction.h"
-#include "sdk/actions/addnewqueryeditoraction.h"
 
 #ifdef SINGLEAPP
 #include "plugins/POSTGRES/postgresplugin.h"
@@ -62,17 +54,6 @@ MainWindow::MainWindow(QWidget *parent) :
   _kb = new LKnowledgeBase(this);
   _core->registerSingletonObject(new DependencyMeta(B_CONTEXT, CLASSMETA(BaseUserContext)), _context);
   _core->registerSingletonObject(new DependencyMeta(B_KNOWLEDGE_BASE, CLASSMETA(LKnowledgeBase)), _kb);
-  _core->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
-  _core->registerDependency("databaseExportAction", CLASSMETA(ShowDatabaseExportEditorAction), InstanceMode::Singleton);
-  _core->registerDependency("dropItemAction", CLASSMETA(DropItemObjectAction), InstanceMode::Singleton);
-  _core->registerDependency("exportDDLToClipboard", CLASSMETA(ExportDDLToClipboardAction), InstanceMode::Singleton);
-  _core->registerDependency("exportDMLToClipboard", CLASSMETA(ExportDMLToClipboardAction), InstanceMode::Singleton);
-  _core->registerDependency("showItemEditForm", CLASSMETA(ShowItemEditorAction), InstanceMode::Singleton);
-  _core->registerDependency("reloadFolderItems", CLASSMETA(ReloadFolderItemsAction), InstanceMode::Singleton);
-  _core->registerDependency("showItemCreateForm", CLASSMETA(ShowCreateFormAction), InstanceMode::Singleton);
-  _core->registerDependency("generalSettingsForm", CLASSMETA(SettingsForm), InstanceMode::Singleton);
-  _core->registerDependency("showSettingsForm", CLASSMETA(ShowSettingsFormAction), InstanceMode::Singleton);
-  _core->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
 
   LStructureItemModel* structureModel = _ds->structureModel();
 

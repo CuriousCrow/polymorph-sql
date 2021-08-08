@@ -8,15 +8,27 @@
 #include "dbobjectitem.h"
 #include "appconst.h"
 
-#include "../forms/tableeditform.h"
-#include "../forms/procedureeditform.h"
-#include "../forms/sequenceeditform.h"
-#include "../forms/triggereditform.h"
-#include "../forms/vieweditdialog.h"
-#include "../forms/checkconstrainteditform.h"
-#include "../forms/connectioneditdialog.h"
-#include "../forms/foreignkeyform.h"
-#include "../forms/uniqueconstrainteditform.h"
+#include "forms/tableeditform.h"
+#include "forms/procedureeditform.h"
+#include "forms/sequenceeditform.h"
+#include "forms/triggereditform.h"
+#include "forms/vieweditdialog.h"
+#include "forms/checkconstrainteditform.h"
+#include "forms/connectioneditdialog.h"
+#include "forms/foreignkeyform.h"
+#include "forms/uniqueconstrainteditform.h"
+#include "forms/settingsform.h"
+#include "forms/databaseexportform.h"
+
+#include "actions/addnewqueryeditoraction.h"
+#include "actions/dropitemobjectaction.h"
+#include "actions/exportddltoclipboardaction.h"
+#include "actions/exportdmltoclipboardaction.h"
+#include "actions/reloadfolderitemsaction.h"
+#include "actions/showcreateformaction.h"
+#include "actions/showdatabaseexporteditoraction.h"
+#include "actions/showitemeditoraction.h"
+#include "actions/showsettingsformaction.h"
 
 #include "core/lknowledgebase.h"
 #include "core/sqlhelplookupprovider.h"
@@ -121,5 +133,18 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
                           ->setParam(F_TYPE, DBObjectItem::PrimaryKey);
     c->registerDependency(B_UNIQUE_FORM, CLASSMETA(UniqueConstraintEditForm), InstanceMode::Prototype)
                           ->setParam(F_TYPE, DBObjectItem::UniqueConstraint);
+    //Forms
+    c->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
+    c->registerDependency("generalSettingsForm", CLASSMETA(SettingsForm), InstanceMode::Singleton);
+    //Actions
+    c->registerDependency("databaseExportAction", CLASSMETA(ShowDatabaseExportEditorAction), InstanceMode::Singleton);
+    c->registerDependency("dropItemAction", CLASSMETA(DropItemObjectAction), InstanceMode::Singleton);
+    c->registerDependency("exportDDLToClipboard", CLASSMETA(ExportDDLToClipboardAction), InstanceMode::Singleton);
+    c->registerDependency("exportDMLToClipboard", CLASSMETA(ExportDMLToClipboardAction), InstanceMode::Singleton);
+    c->registerDependency("showItemEditForm", CLASSMETA(ShowItemEditorAction), InstanceMode::Singleton);
+    c->registerDependency("reloadFolderItems", CLASSMETA(ReloadFolderItemsAction), InstanceMode::Singleton);
+    c->registerDependency("showItemCreateForm", CLASSMETA(ShowCreateFormAction), InstanceMode::Singleton);
+    c->registerDependency("showSettingsForm", CLASSMETA(ShowSettingsFormAction), InstanceMode::Singleton);
+    c->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
     return true;
 }
