@@ -1,5 +1,5 @@
-#ifndef QKNOWLEDGEBASE_H
-#define QKNOWLEDGEBASE_H
+#ifndef LKNOWLEDGEBASE_H
+#define LKNOWLEDGEBASE_H
 
 #include <QObject>
 #include <QSqlDatabase>
@@ -7,14 +7,13 @@
 #include "../models/lsqltablemodel.h"
 #include "../models/ldbobjecttablemodel.h"
 
-class QKnowledgeBase : public QObject
+class LKnowledgeBase : public QObject
 {
   Q_OBJECT
 public:
-  Q_INVOKABLE QKnowledgeBase(QObject *parent = nullptr);
-  ~QKnowledgeBase();
+  Q_INVOKABLE LKnowledgeBase(QObject *parent = nullptr);
+  ~LKnowledgeBase();
 
-//  static QKnowledgeBase* kb(QObject* parent = nullptr);
   LSqlTableModel* mKeywords;
   LSqlTableModel* mFunctions;
   LSqlTableModel* mTypes;
@@ -27,11 +26,10 @@ public:
   QString typeName(int type);
   int typeByName(QString dbms, QString name);
 private:
-//  static QKnowledgeBase* _kb;
   QHash<QString, LDBObjectTableModel*> _modelHash;
 signals:
 
 public slots:
 };
 
-#endif // QKNOWLEDGEBASE_H
+#endif // LKNOWLEDGEBASE_H

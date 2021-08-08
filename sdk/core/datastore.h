@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QTabWidget>
-#include "../models/qstructureitemmodel.h"
-#include "../models/unisqltablemodel.h"
+#include "models/lstructureitemmodel.h"
+#include "models/unisqltablemodel.h"
 
 class DataStore : public QObject
 {
@@ -15,7 +15,7 @@ public:
 
   void setTabWidget(QTabWidget* tabWidget);
   QTabWidget* tabWidget();
-  QStructureItemModel* structureModel();
+  LStructureItemModel* structureModel();
   QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
   DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
   int databaseIdFromItem(DBObjectItem* item);
@@ -31,7 +31,7 @@ signals:
 public slots:
 
 private:
-  QStructureItemModel* _structureModel;
+  LStructureItemModel* _structureModel;
   QTabWidget* _tabWidget;
   QSqlDatabase appDB;
   UniSqlTableModel* _queryHistoryModel;

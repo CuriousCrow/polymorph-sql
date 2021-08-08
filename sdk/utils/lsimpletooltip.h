@@ -1,5 +1,5 @@
-#ifndef QSIMPLETOOLTIP_H
-#define QSIMPLETOOLTIP_H
+#ifndef LSIMPLETOOLTIP_H
+#define LSIMPLETOOLTIP_H
 
 #include <QObject>
 #include <QLabel>
@@ -12,10 +12,10 @@ public:
   virtual QString lookup(QString keyword) = 0;
 };
 
-class QSimpleTooltip : public QLabel
+class LSimpleTooltip : public QLabel
 {
 public:
-  QSimpleTooltip(QWidget* parent);
+  LSimpleTooltip(QWidget* parent);
   void setWidget(QWidget* widget);
   void setDuration(int sec);
   void setLookupProvider(HelpLookupProvider* provider);
@@ -35,4 +35,4 @@ public slots:
   void popup(QString keyword, QPoint globalPos);
 };
 
-#endif // QSIMPLETOOLTIP_H
+#endif // LSIMPLETOOLTIP_H

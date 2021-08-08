@@ -3,18 +3,18 @@
 
 #include <QMainWindow>
 #include <QSqlQueryModel>
-#include "sdk/models/qstructureitemmodel.h"
-#include "sdk/tools/qsqlsyntaxhighlighter.h"
+#include "sdk/models/lstructureitemmodel.h"
+#include "sdk/tools/lsqlsyntaxhighlighter.h"
 #include "sdk/tools/ltextcompleter.h"
-#include "sdk/models/qactiveconnectionmodel.h"
+#include "sdk/models/lactiveconnectionmodel.h"
 #include "sdk/models/ldbobjectmodel.h"
-#include "sdk/utils/qsimpletooltip.h"
+#include "sdk/utils/lsimpletooltip.h"
 #include "sdk/models/ldbobjecttablemodel.h"
 #include "sdk/models/jointdbojbectmodel.h"
 #include "sdk/models/queryparamtablemodel.h"
 #include "sdk/forms/queryparamsform.h"
 #include "sdk/core/datastore.h"
-#include "sdk/core/qknowledgebase.h"
+#include "sdk/core/lknowledgebase.h"
 #include "core/dependencycontainer.h"
 #include "sdk/core/sqlhelplookupprovider.h"
 
@@ -32,7 +32,7 @@ public:
   Q_INVOKABLE QueryEditorWindow(QWidget *parent = nullptr);
   ~QueryEditorWindow();
 
-  INJECT(QKnowledgeBase*, kb)
+  INJECT(LKnowledgeBase*, kb)
   Q_INVOKABLE void inject_by_ds(DataStore* ds);
   Q_INVOKABLE void inject_helpLookupProvider(SqlHelpLookupProvider* lookupProvider);
 public slots:
@@ -58,15 +58,15 @@ private slots:
 
 private:
   Ui::QueryEditorWindow *ui;
-  QActiveConnectionModel* _activeConnectionModel;
+  LActiveConnectionModel* _activeConnectionModel;
   QSqlQueryModel* _resultModel;
   DataStore* _ds;
 //  LDBObjectModel* _compModel;
   JointDBOjbectModel* _knowledgeModel;
   LDBObjectTableModel* _objectsModel;
-  QSqlSyntaxHighlighter* _highlighter;
+  LSqlSyntaxHighlighter* _highlighter;
   LTextCompleter* _completer;
-  QSimpleTooltip* _helpTooltip;
+  LSimpleTooltip* _helpTooltip;
   QString connectionName();
   QString dbUrl();
   DBObjectItem* dbObject();

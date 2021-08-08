@@ -1,5 +1,5 @@
 #include "postgrescheckconstraint.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "objects/appconst.h"
 
 
@@ -15,7 +15,7 @@ bool PostgresCheckConstraint::refresh()
       "from information_schema.check_constraints\n"
       "where constraint_name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_EXPRESSION, resultSet.value(F_EXPRESSION));
     submit();

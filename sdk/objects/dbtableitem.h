@@ -4,7 +4,7 @@
 #include "dbselectableitem.h"
 #include "models/sqlcolumnmodel.h"
 #include "models/variantmaptablemodel.h"
-#include "core/qknowledgebase.h"
+#include "core/lknowledgebase.h"
 #include "dbforeignkey.h"
 #include "dbuniqueconstraint.h"
 #include "dbcheckconstraint.h"
@@ -17,7 +17,7 @@ public:
   Q_INVOKABLE DBTableItem();
   virtual ~DBTableItem() Q_DECL_OVERRIDE;
 
-  INJECT(QKnowledgeBase*, kb)
+  INJECT(LKnowledgeBase*, kb)
 
   virtual void reloadColumnsModel();
   virtual void reloadConstraintsModel();

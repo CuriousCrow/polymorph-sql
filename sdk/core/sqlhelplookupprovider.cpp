@@ -1,5 +1,5 @@
 #include "sqlhelplookupprovider.h"
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 
 
 SqlHelpLookupProvider::SqlHelpLookupProvider(QObject *parent) : QObject(parent)
@@ -24,7 +24,7 @@ QString SqlHelpLookupProvider::lookup(QString keyword)
   return p1.arg(desc) + (link.isEmpty() ? "" : p2.arg(link));
 }
 
-void SqlHelpLookupProvider::inject_by_kb(QKnowledgeBase *kb)
+void SqlHelpLookupProvider::inject_by_kb(LKnowledgeBase *kb)
 {
     _helpModels.append(kb->mKeywords);
     _helpModels.append(kb->mFunctions);

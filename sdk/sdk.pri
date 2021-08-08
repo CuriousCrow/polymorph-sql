@@ -22,7 +22,7 @@ SOURCES += \
     $$PWD/core/appsettings.cpp \
     $$PWD/core/iocplugin.cpp \
     $$PWD/core/dependencycontainer.cpp \
-    $$PWD/core/qknowledgebase.cpp \
+    $$PWD/core/lknowledgebase.cpp \
 #Forms
     $$PWD/forms/queryparamsform.cpp \
     $$PWD/forms/abstractdatabaseitemform.cpp \
@@ -36,14 +36,14 @@ SOURCES += \
     $$PWD/forms/vieweditdialog.cpp \
     $$PWD/forms/connectioneditdialog.cpp \
 #Tools
-    $$PWD/tools/qsqlsyntaxhighlighter.cpp \
+    $$PWD/tools/lsqlsyntaxhighlighter.cpp \
     $$PWD/tools/ltextcompleter.cpp \
     $$PWD/tools/ldatawidgetmapper.cpp \
 #Utils
-    $$PWD/utils/qsqlqueryhelper.cpp \
+    $$PWD/utils/sqlqueryhelper.cpp \
     $$PWD/utils/eventinterceptors.cpp \
-    $$PWD/utils/qfileutils.cpp \
-    $$PWD/utils/qsimpletooltip.cpp \
+    $$PWD/utils/fileutils.cpp \
+    $$PWD/utils/lsimpletooltip.cpp \
     $$PWD/utils/sqlfiltermanager.cpp \
     $$PWD/utils/sqlutils.cpp \
     $$PWD/utils/strutils.cpp \
@@ -56,11 +56,11 @@ SOURCES += \
     $$PWD/models/comboboxitemdelegate.cpp \
     $$PWD/models/lcachedtablemodel.cpp \
     $$PWD/models/lsqltablemodel.cpp \
-    $$PWD/models/qstructureitemmodel.cpp \
+    $$PWD/models/lstructureitemmodel.cpp \
     $$PWD/models/tablerowmodel.cpp \
     $$PWD/models/variantmaptablemodel.cpp \
     $$PWD/models/ldbobjectmodel.cpp \
-    $$PWD/models/qactiveconnectionmodel.cpp \
+    $$PWD/models/lactiveconnectionmodel.cpp \
     $$PWD/models/lstandardtreemodel.cpp \
     $$PWD/models/sqlcolumnmodel.cpp \
     $$PWD/models/comboboxhashdelegate.cpp \
@@ -97,7 +97,7 @@ HEADERS  += \
     $$PWD/core/appsettings.h \
     $$PWD/core/iocplugin.h \
     $$PWD/core/dependencycontainer.h \
-    $$PWD/core/qknowledgebase.h \
+    $$PWD/core/lknowledgebase.h \
 #Forms
     $$PWD/forms/queryparamsform.h \
     $$PWD/forms/abstractdatabaseitemform.h \
@@ -113,12 +113,12 @@ HEADERS  += \
 #Tools
     $$PWD/tools/ldatawidgetmapper.h \
     $$PWD/tools/ltextcompleter.h \
-    $$PWD/tools/qsqlsyntaxhighlighter.h \
+    $$PWD/tools/lsqlsyntaxhighlighter.h \
 #Utils
-    $$PWD/utils/qsqlqueryhelper.h \
+    $$PWD/utils/sqlqueryhelper.h \
     $$PWD/utils/eventinterceptors.h \
-    $$PWD/utils/qfileutils.h \
-    $$PWD/utils/qsimpletooltip.h \
+    $$PWD/utils/fileutils.h \
+    $$PWD/utils/lsimpletooltip.h \
     $$PWD/utils/sqlfiltermanager.h \
     $$PWD/utils/sqlutils.h \
     $$PWD/utils/strutils.h \
@@ -131,11 +131,11 @@ HEADERS  += \
     $$PWD/models/comboboxitemdelegate.h \
     $$PWD/models/lcachedtablemodel.h \
     $$PWD/models/lsqltablemodel.h \
-    $$PWD/models/qstructureitemmodel.h \
+    $$PWD/models/lstructureitemmodel.h \
     $$PWD/models/tablerowmodel.h \
     $$PWD/models/variantmaptablemodel.h \
     $$PWD/models/ldbobjectmodel.h \
-    $$PWD/models/qactiveconnectionmodel.h \
+    $$PWD/models/lactiveconnectionmodel.h \
     $$PWD/models/lstandardtreemodel.h \
     $$PWD/models/sqlcolumnmodel.h \
     $$PWD/models/comboboxhashdelegate.h \

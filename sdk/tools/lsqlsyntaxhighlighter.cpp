@@ -1,29 +1,29 @@
-#include "qsqlsyntaxhighlighter.h"
+#include "lsqlsyntaxhighlighter.h"
 #include <QTextCharFormat>
 #include <QDebug>
 #include <QSqlTableModel>
 #include "models/lsqltablemodel.h"
 
-QSqlSyntaxHighlighter::QSqlSyntaxHighlighter(QObject *parent):
+LSqlSyntaxHighlighter::LSqlSyntaxHighlighter(QObject *parent):
   QSyntaxHighlighter(parent)
 {
 }
 
-QSqlSyntaxHighlighter::~QSqlSyntaxHighlighter()
+LSqlSyntaxHighlighter::~LSqlSyntaxHighlighter()
 {
 }
 
-QStringList QSqlSyntaxHighlighter::keyWords()
+QStringList LSqlSyntaxHighlighter::keyWords()
 {
   return _sqlKeyWords;
 }
 
-QStringList QSqlSyntaxHighlighter::functions()
+QStringList LSqlSyntaxHighlighter::functions()
 {
     return _sqlFunctions;
 }
 
-void QSqlSyntaxHighlighter::inject_by_kb(QKnowledgeBase *kb)
+void LSqlSyntaxHighlighter::inject_by_kb(LKnowledgeBase *kb)
 {
     //TODO: Keywords should be loaded depending on database type
     LSqlTableModel* mKeywords = kb->mKeywords;
@@ -37,13 +37,13 @@ void QSqlSyntaxHighlighter::inject_by_kb(QKnowledgeBase *kb)
     }
 }
 
-void QSqlSyntaxHighlighter::highlightBlock(const QString &text)
+void LSqlSyntaxHighlighter::highlightBlock(const QString &text)
 {
   highlightKeywords(text);
   highlightFunctions(text);
 }
 
-void QSqlSyntaxHighlighter::highlightKeywords(const QString &text)
+void LSqlSyntaxHighlighter::highlightKeywords(const QString &text)
 {
     QTextCharFormat format;
     format.setFontWeight(QFont::Bold);
@@ -68,7 +68,7 @@ void QSqlSyntaxHighlighter::highlightKeywords(const QString &text)
     }
 }
 
-void QSqlSyntaxHighlighter::highlightFunctions(const QString &text)
+void LSqlSyntaxHighlighter::highlightFunctions(const QString &text)
 {
   QTextCharFormat format;
   format.setFontItalic(true);

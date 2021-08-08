@@ -1,5 +1,5 @@
 #include "postgresforeignkey.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "objects/appconst.h"
 
 PostgresForeignKey::PostgresForeignKey()
@@ -19,7 +19,7 @@ bool PostgresForeignKey::refresh()
       "left join information_schema.referential_constraints ac on kc.constraint_name=ac.constraint_name "
       "where kc.constraint_name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_TABLE, resultSet.value(F_TABLE));
     setFieldValue(F_COLUMN, resultSet.value(F_COLUMN));

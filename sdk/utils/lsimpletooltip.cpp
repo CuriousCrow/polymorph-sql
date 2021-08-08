@@ -1,4 +1,4 @@
-#include "qsimpletooltip.h"
+#include "lsimpletooltip.h"
 #include <QStylePainter>
 #include <QStyleOptionFrame>
 #include <QEvent>
@@ -6,7 +6,7 @@
 #include <QKeyEvent>
 
 
-QSimpleTooltip::QSimpleTooltip(QWidget *parent) : QLabel(parent, Qt::Popup)
+LSimpleTooltip::LSimpleTooltip(QWidget *parent) : QLabel(parent, Qt::Popup)
 {
   _showTimer = new QTimer(this);
   connect(_showTimer, SIGNAL(timeout()), this, SLOT(hide()));
@@ -14,7 +14,7 @@ QSimpleTooltip::QSimpleTooltip(QWidget *parent) : QLabel(parent, Qt::Popup)
   hide();
 }
 
-void QSimpleTooltip::popup(QString keyword, QPoint globalPos)
+void LSimpleTooltip::popup(QString keyword, QPoint globalPos)
 {
   if (_secDuration > 0)
     _showTimer->start(_secDuration * 1000);
@@ -28,22 +28,22 @@ void QSimpleTooltip::popup(QString keyword, QPoint globalPos)
   show();
 }
 
-void QSimpleTooltip::setWidget(QWidget *widget)
+void LSimpleTooltip::setWidget(QWidget *widget)
 {
   widget->installEventFilter(this);
 }
 
-void QSimpleTooltip::setDuration(int sec)
+void LSimpleTooltip::setDuration(int sec)
 {
   _secDuration = sec;
 }
 
-void QSimpleTooltip::setLookupProvider(HelpLookupProvider *provider)
+void LSimpleTooltip::setLookupProvider(HelpLookupProvider *provider)
 {
   _lookupProvider = provider;
 }
 
-void QSimpleTooltip::paintEvent(QPaintEvent *event)
+void LSimpleTooltip::paintEvent(QPaintEvent *event)
 {
   QStylePainter p(this);
   QStyleOptionFrame opt;
@@ -54,7 +54,7 @@ void QSimpleTooltip::paintEvent(QPaintEvent *event)
   QLabel::paintEvent(event);
 }
 
-bool QSimpleTooltip::eventFilter(QObject *watched, QEvent *event)
+bool LSimpleTooltip::eventFilter(QObject *watched, QEvent *event)
 {
   Q_UNUSED(watched)
   Q_UNUSED(event)
@@ -62,7 +62,7 @@ bool QSimpleTooltip::eventFilter(QObject *watched, QEvent *event)
   return false;
 }
 
-bool QSimpleTooltip::event(QEvent *event)
+bool LSimpleTooltip::event(QEvent *event)
 {
 //  qDebug() << "Tooltip event:" << event->type();
   if (event->type() == QEvent::MouseButtonRelease) {

@@ -1,17 +1,17 @@
-#ifndef QSTRUCTUREITEMMODEL_H
-#define QSTRUCTUREITEMMODEL_H
+#ifndef LSTRUCTUREITEMMODEL_H
+#define LSTRUCTUREITEMMODEL_H
 
 #include "lstandardtreemodel.h"
-#include "../objects/dbobjectitem.h"
-#include "../objects/dbdatabaseitem.h"
+#include "objects/dbobjectitem.h"
+#include "objects/dbdatabaseitem.h"
 #include <QSqlDatabase>
 
-class QStructureItemModel : public LStandardTreeModel
+class LStructureItemModel : public LStandardTreeModel
 {
   Q_OBJECT
 public:
-  explicit QStructureItemModel(QObject *parent = nullptr);
-  ~QStructureItemModel();
+  explicit LStructureItemModel(QObject *parent = nullptr);
+  ~LStructureItemModel();
 
   void appendItem(DBObjectItem* item, DBObjectItem* parent = nullptr);
   void appendItem(DBObjectItem* item, QModelIndex parent);
@@ -33,4 +33,4 @@ public:
   virtual QVariant data(const QModelIndex &index, int role) const;
 };
 
-#endif // QSTRUCTUREITEMMODEL_H
+#endif // LSTRUCTUREITEMMODEL_H

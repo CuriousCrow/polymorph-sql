@@ -1,25 +1,25 @@
-#include "qstructureitemmodel.h"
+#include "lstructureitemmodel.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 #include <QDebug>
-#include "../objects/appurl.h"
-#include "../utils/qsqlqueryhelper.h"
+#include "objects/appurl.h"
+#include "utils/sqlqueryhelper.h"
 
 #define TREEMODEL_DEBUG
 
-QStructureItemModel::QStructureItemModel(QObject *parent):
+LStructureItemModel::LStructureItemModel(QObject *parent):
   LStandardTreeModel(parent)
 {
   connect(this, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
           SLOT(onAboutToBeRemoved(QModelIndex,int,int)));
 }
 
-QStructureItemModel::~QStructureItemModel()
+LStructureItemModel::~LStructureItemModel()
 {
 }
 
-void QStructureItemModel::appendItem(DBObjectItem *item, DBObjectItem *parent)
+void LStructureItemModel::appendItem(DBObjectItem *item, DBObjectItem *parent)
 {
   addItem(item, parent);
   if (parent)
@@ -28,7 +28,7 @@ void QStructureItemModel::appendItem(DBObjectItem *item, DBObjectItem *parent)
     item->setParentUrl(AppUrl());
 }
 
-void QStructureItemModel::appendItem(DBObjectItem *item, QModelIndex parent)
+void LStructureItemModel::appendItem(DBObjectItem *item, QModelIndex parent)
 {
   addItem(item, parent);
   if (parent.isValid()) {
@@ -38,32 +38,32 @@ void QStructureItemModel::appendItem(DBObjectItem *item, QModelIndex parent)
   }
 }
 
-QModelIndex QStructureItemModel::indexByUrl(const AppUrl &url)
+QModelIndex LStructureItemModel::indexByUrl(const AppUrl &url)
 {
   return indexByName(url.toString());
 }
 
-DBObjectItem *QStructureItemModel::itemByUrl(const AppUrl &url)
+DBObjectItem *LStructureItemModel::itemByUrl(const AppUrl &url)
 {
     return static_cast<DBObjectItem*>(itemByName(url.toString()));
 }
 
-DBObjectItem *QStructureItemModel::itemByIdx(const QModelIndex &idx)
+DBObjectItem *LStructureItemModel::itemByIdx(const QModelIndex &idx)
 {
     return static_cast<DBObjectItem*>(itemByIndex(idx));
 }
 
-bool QStructureItemModel::deleteChildren(QModelIndex parent)
+bool LStructureItemModel::deleteChildren(QModelIndex parent)
 {
     return removeRows(0, rowCount(parent), parent);
 }
 
-bool QStructureItemModel::deleteChildren(DBObjectItem *parentItem)
+bool LStructureItemModel::deleteChildren(DBObjectItem *parentItem)
 {
     return deleteChildren(indexByItem(parentItem));
 }
 
-void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)
+void LStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int first, int last)
 {
   for (int row=first; row<last; row++){
     DBObjectItem* item = static_cast<DBObjectItem*>(itemByIndex(index(row, 0, parent)));
@@ -72,7 +72,7 @@ void QStructureItemModel::onAboutToBeRemoved(const QModelIndex &parent, int firs
 }
 
 
-Qt::ItemFlags QStructureItemModel::flags(const QModelIndex &index) const
+Qt::ItemFlags LStructureItemModel::flags(const QModelIndex &index) const
 {
   DBObjectItem* item = static_cast<DBObjectItem*>(itemByIndex(index));
   if ((item->type() == DBObjectItem::Database)
@@ -82,7 +82,7 @@ Qt::ItemFlags QStructureItemModel::flags(const QModelIndex &index) const
   return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
-QVariant QStructureItemModel::data(const QModelIndex &index, int role) const
+QVariant LStructureItemModel::data(const QModelIndex &index, int role) const
 {
 #ifdef TREEMODEL_DEBUG
     if (!index.isValid())

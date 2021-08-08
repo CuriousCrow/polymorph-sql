@@ -2,7 +2,7 @@
 #define DBDATABASEITEM_H
 
 #include "dbobjectitem.h"
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "dbtableitem.h"
 #include "dbprocedureitem.h"
 #include "dbsequenceitem.h"

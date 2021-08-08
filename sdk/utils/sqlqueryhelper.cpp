@@ -1,20 +1,20 @@
-#include "qsqlqueryhelper.h"
+#include "sqlqueryhelper.h"
 #include <QMetaProperty>
 #include <QRegularExpression>
 #include <QSqlRecord>
-//#include "lstandardtreemodel.h"
 
-QSqlQueryHelper::QSqlQueryHelper()
+
+SqlQueryHelper::SqlQueryHelper()
 {
 
 }
 
-QSqlQueryHelper::~QSqlQueryHelper()
+SqlQueryHelper::~SqlQueryHelper()
 {
 
 }
 
-QSqlQuery QSqlQueryHelper::execSql(QString sql, QString connectionName)
+QSqlQuery SqlQueryHelper::execSql(QString sql, QString connectionName)
 {
 #ifdef DEBUG_SQL
   qDebug() << QString("SQL(%1): %2").arg(connectionName, sql);
@@ -28,7 +28,7 @@ QSqlQuery QSqlQueryHelper::execSql(QString sql, QString connectionName)
   return sqlResult;
 }
 
-bool QSqlQueryHelper::execSql(QSqlQuery &query)
+bool SqlQueryHelper::execSql(QSqlQuery &query)
 {
   bool resOk = query.exec();
   if (true) {
@@ -39,7 +39,7 @@ bool QSqlQueryHelper::execSql(QSqlQuery &query)
   return resOk;
 }
 
-QSqlQuery QSqlQueryHelper::prepareQuery(QString sql,  QString connectionName)
+QSqlQuery SqlQueryHelper::prepareQuery(QString sql,  QString connectionName)
 {
   QSqlQuery query(QSqlDatabase::database(connectionName));
   bool resOk = query.prepare(sql);
@@ -49,27 +49,27 @@ QSqlQuery QSqlQueryHelper::prepareQuery(QString sql,  QString connectionName)
   return query;
 }
 
-QString QSqlQueryHelper::databaseName(QString connection)
+QString SqlQueryHelper::databaseName(QString connection)
 {
   QSqlDatabase dbCon = QSqlDatabase::database(connection, false);
   return dbCon.isValid() ? dbCon.databaseName() : "";
 }
 
-QString QSqlQueryHelper::driverName(QString connection)
+QString SqlQueryHelper::driverName(QString connection)
 {
   QSqlDatabase dbCon = QSqlDatabase::database(connection, false);
   Q_ASSERT(dbCon.isValid());
   return dbCon.driverName();
 }
 
-QSqlRecord QSqlQueryHelper::tableRowInfo(QString table, QString connectionName)
+QSqlRecord SqlQueryHelper::tableRowInfo(QString table, QString connectionName)
 {
   QSqlRecord rec = QSqlDatabase::database(connectionName).record(table);
   qDebug() << "Table info:" << rec;
   return rec;
 }
 
-QString QSqlQueryHelper::fillSqlPatternByProps(QString pattern, const QObject *object)
+QString SqlQueryHelper::fillSqlPatternByProps(QString pattern, const QObject *object)
 {
   QString resSql;
   QStringList parts = pattern.split(QRegularExpression("[\\{\\}]"), Qt::SkipEmptyParts);
@@ -103,7 +103,7 @@ QString QSqlQueryHelper::fillSqlPatternByProps(QString pattern, const QObject *o
   return result;
 }
 
-void QSqlQueryHelper::fillObjectFromRecord(QObject *object, QSqlRecord &rec)
+void SqlQueryHelper::fillObjectFromRecord(QObject *object, QSqlRecord &rec)
 {  
   for (int i=0; i<rec.count(); i++){
 

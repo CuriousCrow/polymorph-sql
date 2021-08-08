@@ -1,6 +1,6 @@
 #include "dbsequenceitem.h"
 #include "appconst.h"
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QIcon>
 
 

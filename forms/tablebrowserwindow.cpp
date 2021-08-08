@@ -6,7 +6,7 @@
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/appurl.h"
 #include "sdk/objects/appconst.h"
-#include "sdk/utils/qfileutils.h"
+#include "sdk/utils/fileutils.h"
 #include "sdk/utils/eventinterceptors.h"
 #include "sdk/core/datastore.h"
 #include "widgets/tablebrowserdelegate.h"
@@ -228,7 +228,7 @@ void TableBrowserWindow::on_aLoadFromFile_triggered()
   QString filepath = QFileDialog::getOpenFileName(this, tr("Open file"));
   if (filepath.isEmpty())
     return;
-  QByteArray data = QFileUtils::loadFile(filepath);
+  QByteArray data = FileUtils::loadFile(filepath);
   _proxyModel->setData(ui->tableView->currentIndex(), data);
 }
 

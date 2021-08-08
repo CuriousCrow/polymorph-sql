@@ -3,7 +3,7 @@
 #include <QMouseEvent>
 #include <QMimeData>
 #include <QDebug>
-#include "utils/qfileutils.h"
+#include "utils/fileutils.h"
 
 
 LQueryEditor::LQueryEditor(QWidget *parent) : QPlainTextEdit(parent)
@@ -46,7 +46,7 @@ void LQueryEditor::dropEvent(QDropEvent *event)
         if (url.isLocalFile() && (url.path().endsWith(".sql") || url.path().endsWith(".txt"))) {
             QString path = url.toLocalFile();
             qInfo() << "SqlEditor: Loading dropped file" << path;
-            setPlainText(QFileUtils::fileToString(path, true));
+            setPlainText(FileUtils::fileToString(path, true));
         }
         else {
             emit infoMessage("Trying to drop unsupported file type");

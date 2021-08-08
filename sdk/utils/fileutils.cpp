@@ -1,10 +1,10 @@
-#include "qfileutils.h"
+#include "fileutils.h"
 
-QFileUtils::QFileUtils()
+FileUtils::FileUtils()
 {
 }
 
-QString QFileUtils::fileToString(QString filepath, bool isUtf8)
+QString FileUtils::fileToString(QString filepath, bool isUtf8)
 {
   QFile file(filepath);
   if (!file.exists()){
@@ -24,7 +24,7 @@ QString QFileUtils::fileToString(QString filepath, bool isUtf8)
   return result;
 }
 
-QByteArray QFileUtils::loadFile(QString filepath)
+QByteArray FileUtils::loadFile(QString filepath)
 {
   QByteArray result;
   QFile file(filepath);
@@ -41,7 +41,7 @@ QByteArray QFileUtils::loadFile(QString filepath)
   return result;
 }
 
-bool QFileUtils::stringToFile(QString str, QString filepath, bool isUtf)
+bool FileUtils::stringToFile(QString str, QString filepath, bool isUtf)
 {
   QFile file(filepath);
   bool result = file.open(QIODevice::WriteOnly);
@@ -56,7 +56,7 @@ bool QFileUtils::stringToFile(QString str, QString filepath, bool isUtf)
   return result;
 }
 
-QString QFileUtils::transliterate(QString &inStr)
+QString FileUtils::transliterate(QString &inStr)
 {
     QString result = inStr;
     result = result.replace("А","A", Qt::CaseInsensitive);
@@ -92,25 +92,25 @@ QString QFileUtils::transliterate(QString &inStr)
     return result;
 }
 
-bool QFileUtils::forcePath(const QString &path)
+bool FileUtils::forcePath(const QString &path)
 {
   QDir dir;
   return dir.mkpath(path);
 }
 
-QString QFileUtils::extractDirPath(const QString &fullPath)
+QString FileUtils::extractDirPath(const QString &fullPath)
 {
   QFileInfo info(fullPath);
   return info.absolutePath();
 }
 
-QString QFileUtils::extractFileName(const QString &fullPath)
+QString FileUtils::extractFileName(const QString &fullPath)
 {
   QFileInfo info(fullPath);
   return info.fileName();
 }
 
-QString QFileUtils::mimeFromExtension(QString filename)
+QString FileUtils::mimeFromExtension(QString filename)
 {
   QString ext = filename.section(".", -1, -1);
   if (ext == "txt") {
@@ -250,7 +250,7 @@ QString QFileUtils::mimeFromExtension(QString filename)
   }
 }
 
-bool QFileUtils::saveFile(const QString &filepath, const QByteArray &data)
+bool FileUtils::saveFile(const QString &filepath, const QByteArray &data)
 {
   QFile file(filepath);
   if (!file.open(QFile::WriteOnly))
@@ -259,7 +259,7 @@ bool QFileUtils::saveFile(const QString &filepath, const QByteArray &data)
   return true;
 }
 
-bool QFileUtils::copyDirectory(const QString &fromDir, const QString &toDir, bool coverFileIfExist)
+bool FileUtils::copyDirectory(const QString &fromDir, const QString &toDir, bool coverFileIfExist)
 {
   qDebug() << "Copying directory:" << fromDir << "->" << toDir;
 
@@ -296,57 +296,57 @@ bool QFileUtils::copyDirectory(const QString &fromDir, const QString &toDir, boo
   return true;
 }
 
-QStringList QFileUtils::filesOfDir(const QString &folderPath)
+QStringList FileUtils::filesOfDir(const QString &folderPath)
 {
     QDir dir(folderPath);
     dir.setFilter(QDir::Files | QDir::NoSymLinks);
     return dir.entryList();
 }
 
-QFilePath::QFilePath(QString fullpath)
+FilePath::FilePath(QString fullpath)
 {
   _fullPath = fullpath;
-  _extension = QFilePath::extension(fullpath);
-  _filename = QFilePath::filename(fullpath);
-  _folderPath = QFilePath::folderPath(fullpath);
+  _extension = FilePath::extension(fullpath);
+  _filename = FilePath::filename(fullpath);
+  _folderPath = FilePath::folderPath(fullpath);
 }
 
-QString QFilePath::extension()
+QString FilePath::extension()
 {
   return _extension;
 }
 
-QString QFilePath::folderPath()
+QString FilePath::folderPath()
 {
   return _folderPath;
 }
 
-QString QFilePath::filename()
+QString FilePath::filename()
 {
   return _filename;
 }
 
-bool QFilePath::isFolder()
+bool FilePath::isFolder()
 {
   return !_filename.isEmpty();
 }
 
-QString QFilePath::extension(const QString &path)
+QString FilePath::extension(const QString &path)
 {
-  return QFilePath::isFolder(path) ? "" : path.section(".", -1, -1);
+  return FilePath::isFolder(path) ? "" : path.section(".", -1, -1);
 }
 
-QString QFilePath::folderPath(const QString &path)
+QString FilePath::folderPath(const QString &path)
 {
-  return QFilePath::isFolder(path) ? path : path.section("/", 0, -2);
+  return FilePath::isFolder(path) ? path : path.section("/", 0, -2);
 }
 
-QString QFilePath::filename(const QString &path)
+QString FilePath::filename(const QString &path)
 {
-  return QFilePath::isFolder(path) ? "" : path.section("/", -1, -1);
+  return FilePath::isFolder(path) ? "" : path.section("/", -1, -1);
 }
 
-bool QFilePath::isFolder(const QString &path)
+bool FilePath::isFolder(const QString &path)
 {
   return !path.contains('.');
 }

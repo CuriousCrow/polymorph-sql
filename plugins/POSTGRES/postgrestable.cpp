@@ -1,7 +1,7 @@
 #include "postgrestable.h"
 #include <QSqlQuery>
 #include <QDebug>
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "models/sqlcolumnmodel.h"
 #include "objects/appconst.h"
 #include "objects/dbforeignkey.h"
@@ -161,7 +161,7 @@ void PostgresTable::reloadColumnsModel()
       "where tc.table_name='person' and tc.constraint_type='PRIMARY KEY') as pk on t.column_name=pk.column_name "
       "WHERE t.table_catalog='#databaseName#' AND t.table_name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
     SqlColumn col(query.value("column_name").toString(), colTypeFromString(query.value("data_type").toString()));
     col.setDefaultValue(query.value("column_default"));
@@ -186,7 +186,7 @@ void PostgresTable::reloadConstraintsModel()
       "left join information_schema.key_column_usage c1 on c2.constraint_name=c1.constraint_name\n"
       "where c2.table_name='#caption#' and c2.constraint_name not like '%_not_null'\n";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
   int fakeId = 1;
   while (query.next()) {
     QVariantMap item;

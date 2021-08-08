@@ -12,13 +12,13 @@
 #include "sdk/objects/dbdatabaseitem.h"
 #include "sdk/objects/dbobjectitem.h"
 #include "sdk/objects/foldertreeitem.h"
-#include "sdk/core/qknowledgebase.h"
+#include "sdk/core/lknowledgebase.h"
 #include "sdk/core/appsettings.h"
 #include "sdk/core/datastore.h"
 #include "sdk/core/core.h"
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/sdkplugin.h"
-#include "sdk/utils/qfileutils.h"
+#include "sdk/utils/fileutils.h"
 #include "testmodule.h"
 #include "showdatabaseexporteditoraction.h"
 #include "dropitemobjectaction.h"
@@ -59,9 +59,9 @@ MainWindow::MainWindow(QWidget *parent) :
   menuPath << "Functions";
 
   _context = new BaseUserContext(this);
-  _kb = new QKnowledgeBase(this);
+  _kb = new LKnowledgeBase(this);
   _core->registerSingletonObject(new DependencyMeta(B_CONTEXT, CLASSMETA(BaseUserContext)), _context);
-  _core->registerSingletonObject(new DependencyMeta(B_KNOWLEDGE_BASE, CLASSMETA(QKnowledgeBase)), _kb);
+  _core->registerSingletonObject(new DependencyMeta(B_KNOWLEDGE_BASE, CLASSMETA(LKnowledgeBase)), _kb);
   _core->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
   _core->registerDependency("databaseExportAction", CLASSMETA(ShowDatabaseExportEditorAction), InstanceMode::Singleton);
   _core->registerDependency("dropItemAction", CLASSMETA(DropItemObjectAction), InstanceMode::Singleton);
@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
   _core->registerDependency("showSettingsForm", CLASSMETA(ShowSettingsFormAction), InstanceMode::Singleton);
   _core->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
 
-  QStructureItemModel* structureModel = _ds->structureModel();
+  LStructureItemModel* structureModel = _ds->structureModel();
 
   Core::registerPlugin(new SdkPlugin());
 

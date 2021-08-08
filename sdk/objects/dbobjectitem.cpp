@@ -3,7 +3,7 @@
 
 #include <QMetaProperty>
 #include <QRegularExpression>
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "appconst.h"
 
 
@@ -82,7 +82,7 @@ int DBObjectItem::fieldIndex(QString fieldName) const
 
 QString DBObjectItem::databaseName() const
 {
-  return QSqlQueryHelper::databaseName(connectionName());
+  return SqlQueryHelper::databaseName(connectionName());
 }
 
 DBObjectField& DBObjectItem::field(QString fieldName)
@@ -145,7 +145,7 @@ QString DBObjectItem::filterUnmodifiedFields(QString pattern) const
 
 ActionResult DBObjectItem::execSql(QString sql, QString connectionName)
 {
-  QSqlQuery query = QSqlQueryHelper::execSql(sql, connectionName);
+  QSqlQuery query = SqlQueryHelper::execSql(sql, connectionName);
   if (query.lastError().isValid()) {
     return ActionResult(ERR_QUERY_ERROR, query.lastError().databaseText());
   }

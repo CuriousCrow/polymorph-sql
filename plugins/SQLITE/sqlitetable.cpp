@@ -1,6 +1,6 @@
 #include "sqlitetable.h"
 #include <QStringList>
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QDebug>
 #include <QSqlRecord>
 #include <QSqlField>
@@ -23,7 +23,7 @@ SqliteTableItem::~SqliteTableItem()
 void SqliteTableItem::reloadColumnsModel()
 {
   _columnsModel->clear();
-  QSqlRecord sqlColumns = QSqlQueryHelper::tableRowInfo(
+  QSqlRecord sqlColumns = SqlQueryHelper::tableRowInfo(
         this->caption(),
         connectionName());
   for (int i=0; i<sqlColumns.count(); i++) {
@@ -67,7 +67,7 @@ ActionResult SqliteTableItem::updateMe()
 
   //Создание новой таблицы
   QString sql = createTableQuery("tempTable");
-  QSqlQueryHelper::execSql(sql, connectionName());
+  SqlQueryHelper::execSql(sql, connectionName());
 
   //Перенос данных сохранившихся колонок в новую таблицу
   QHash<QString, QString> colNames = _columnsModel->permanentColNames();

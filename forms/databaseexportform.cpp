@@ -5,8 +5,8 @@
 
 #include "core/datastore.h"
 #include "sdk/objects/appconst.h"
-#include "utils/qfileutils.h"
-#include "sdk/models/qstructureitemmodel.h"
+#include "utils/fileutils.h"
+#include "sdk/models/lstructureitemmodel.h"
 
 DatabaseExportForm* DatabaseExportForm::_singleton = nullptr;
 
@@ -48,7 +48,7 @@ void DatabaseExportForm::on_btnStart_clicked()
     return;
 
   int row = ui->cmbDatabase->currentIndex();
-  QStructureItemModel* model = static_cast<QStructureItemModel*>(ui->cmbDatabase->model());
+  LStructureItemModel* model = static_cast<LStructureItemModel*>(ui->cmbDatabase->model());
   DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(model->itemByIndex(model->index(row, 0)));
   if (!dbItem->hasChildren()) {
     qDebug() << "Database is not connected";
@@ -144,6 +144,6 @@ void DatabaseExportForm::on_btnStart_clicked()
     }
     backupScript.append("");
   }
-  QFileUtils::stringToFile(backupScript.join(FILE_DELIMITER), filePath);
+  FileUtils::stringToFile(backupScript.join(FILE_DELIMITER), filePath);
   accept();
 }

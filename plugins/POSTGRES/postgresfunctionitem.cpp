@@ -1,6 +1,6 @@
 #include "postgresfunctionitem.h"
 #include "objects/appconst.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 
 
 PostgresFunctionItem::PostgresFunctionItem()
@@ -15,7 +15,7 @@ bool PostgresFunctionItem::refresh()
                 "WHERE routine_type='FUNCTION' and specific_schema='public' "
                 "and routine_name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_SOURCE_CODE, resultSet.value(F_SOURCE_CODE));
     setFieldValue(F_LANGUAGE, resultSet.value(F_LANGUAGE));

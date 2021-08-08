@@ -1,21 +1,21 @@
-#ifndef QSQLSYNTAXHIGHLIGHTER_H
-#define QSQLSYNTAXHIGHLIGHTER_H
+#ifndef LSQLSYNTAXHIGHLIGHTER_H
+#define LSQLSYNTAXHIGHLIGHTER_H
 
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
-#include "../core/qknowledgebase.h"
+#include "core/lknowledgebase.h"
 
-class QSqlSyntaxHighlighter : public QSyntaxHighlighter
+class LSqlSyntaxHighlighter : public QSyntaxHighlighter
 {
   Q_OBJECT
 public:
-  Q_INVOKABLE QSqlSyntaxHighlighter(QObject *parent = nullptr);
-  ~QSqlSyntaxHighlighter();
+  Q_INVOKABLE LSqlSyntaxHighlighter(QObject *parent = nullptr);
+  ~LSqlSyntaxHighlighter();
 
   QStringList keyWords();
   QStringList functions();
 
-  Q_INVOKABLE void inject_by_kb(QKnowledgeBase* kb);
+  Q_INVOKABLE void inject_by_kb(LKnowledgeBase* kb);
 
   // QSyntaxHighlighter interface
 protected:
@@ -27,4 +27,4 @@ private:
   QStringList _sqlFunctions;
 };
 
-#endif // QSQLSYNTAXHIGHLIGHTER_H
+#endif // LSQLSYNTAXHIGHLIGHTER_H

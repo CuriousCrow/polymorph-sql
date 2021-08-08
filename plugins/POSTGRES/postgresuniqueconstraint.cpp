@@ -1,5 +1,5 @@
 #include "postgresuniqueconstraint.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "objects/appconst.h"
 
 
@@ -15,7 +15,7 @@ bool PostgresUniqueConstraint::refresh()
   QString sql = "select column_name \"column\" from information_schema.constraint_column_usage\n"
       "where constraint_name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(preparedSql, connectionName());
   QStringList columns;
   while (resultSet.next()) {
     columns.append(resultSet.value(F_COLUMN).toString());

@@ -4,8 +4,8 @@
 #include <QDebug>
 #include <QApplication>
 #include <QSqlRecord>
-#include "../objects/appconst.h"
-#include "../utils/qsqlqueryhelper.h"
+#include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
 #include "core.h"
 
 
@@ -25,7 +25,7 @@ DataStore::DataStore(QObject *parent) : QObject(parent)
   }
   qDebug() << "Success!";
 
-  _structureModel = new QStructureItemModel(this);
+  _structureModel = new LStructureItemModel(this);
 
   //Query history model (one for all databases)
   _queryHistoryModel = new UniSqlTableModel(this);
@@ -47,7 +47,7 @@ void DataStore::initRegisteredDatabases()
 {
   QString sql = "select id id, name caption, driver driverName, local_path databaseName, "
                 "host_address hostName, username userName, password password, port port from t_database";
-  QSqlQuery sqlResult = QSqlQueryHelper::execSql(sql);
+  QSqlQuery sqlResult = SqlQueryHelper::execSql(sql);
   while (sqlResult.next()) {
     QSqlRecord rec = sqlResult.record();
     QString caption = rec.value(F_CAPTION).toString();
@@ -66,7 +66,7 @@ void DataStore::initRegisteredDatabases()
   return;
 }
 
-QStructureItemModel *DataStore::structureModel()
+LStructureItemModel *DataStore::structureModel()
 {
   return _structureModel;
 }
@@ -110,7 +110,7 @@ QByteArray DataStore::loadTableState(int dbId, QString name)
   QString sql = "select state from t_table_columns where database_id=%1 and tablename='%2'";
   QString preparedSql = sql.arg(dbId).arg(name);
 
-  QSqlQuery result = QSqlQueryHelper::execSql(preparedSql);
+  QSqlQuery result = SqlQueryHelper::execSql(preparedSql);
   return result.next() ? result.value(F_STATE).toByteArray() : QByteArray();
 }
 
@@ -120,28 +120,28 @@ void DataStore::saveTableState(int dbId, QString name, QByteArray data)
   QString sql = "insert into t_table_columns(database_id, tablename, state) "
                 "values (:db, :tablename, :data) "
                 "on conflict (database_id, tablename) do update set state=excluded.state";
-  QSqlQuery query = QSqlQueryHelper::prepareQuery(sql);
+  QSqlQuery query = SqlQueryHelper::prepareQuery(sql);
   query.bindValue(":db", dbId);
   query.bindValue(":tablename", name);
   query.bindValue(":data", data);
-  QSqlQueryHelper::execSql(query);
+  SqlQueryHelper::execSql(query);
 }
 
 bool DataStore::addQueryHistoryItem(int dbId, QString query)
 {
   QString sql = "insert into t_query_history(database_id, query) values (:db, :query)";
-  QSqlQuery preparedSql = QSqlQueryHelper::prepareQuery(sql);
+  QSqlQuery preparedSql = SqlQueryHelper::prepareQuery(sql);
   preparedSql.bindValue(":db", dbId);
   preparedSql.bindValue(":query", query);
-  bool resultOk = QSqlQueryHelper::execSql(preparedSql);
+  bool resultOk = SqlQueryHelper::execSql(preparedSql);
   return resultOk;
 }
 
 bool DataStore::clearQueryHistory(int dbId)
 {
   QString sql = "delete from t_query_history where database_id=:db";
-  QSqlQuery preparedSql = QSqlQueryHelper::prepareQuery(sql);
+  QSqlQuery preparedSql = SqlQueryHelper::prepareQuery(sql);
   preparedSql.bindValue(":db", dbId);
-  bool resultOk = QSqlQueryHelper::execSql(preparedSql);
+  bool resultOk = SqlQueryHelper::execSql(preparedSql);
   return resultOk;
 }

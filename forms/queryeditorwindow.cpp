@@ -50,15 +50,15 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   connect(_completer, SIGNAL(completerRequested(QString)),
           this, SLOT(onCompleterRequested(QString)));
 
-  _highlighter = new QSqlSyntaxHighlighter(this);
+  _highlighter = new LSqlSyntaxHighlighter(this);
   _highlighter->setDocument(ui->teQueryEditor->document());
 
   connect(ui->cmbDatabase, SIGNAL(currentIndexChanged(int)),
           this, SLOT(reloadKnowledgeModel()));
 
-  _activeConnectionModel = new QActiveConnectionModel(this);
+  _activeConnectionModel = new LActiveConnectionModel(this);
 
-  _helpTooltip = new QSimpleTooltip(this);
+  _helpTooltip = new LSimpleTooltip(this);
   _helpTooltip->setOpenExternalLinks(true);
   _helpTooltip->setWidget(ui->teQueryEditor);
 
@@ -108,7 +108,7 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
       return;
   }
 
-  QSqlQuery query = QSqlQueryHelper::execSql(getActiveText(), connectionName());
+  QSqlQuery query = SqlQueryHelper::execSql(getActiveText(), connectionName());
   if (!query.lastError().isValid()){
     _resultModel->setQuery(query);
     ui->tabWidget->setCurrentWidget(ui->tabResult);

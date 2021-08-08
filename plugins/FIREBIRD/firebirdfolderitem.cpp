@@ -1,5 +1,5 @@
 #include "firebirdfolderitem.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "core/core.h"
 #include "objects/dbprocedureitem.h"
 #include "objects/dbtriggeritem.h"
@@ -34,7 +34,7 @@ void FirebirdFolderItem::loadChildren()
         return;
     }
 
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
         DBObjectItem* childItem = nullptr;
         switch (childrenType()) {

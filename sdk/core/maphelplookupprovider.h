@@ -2,7 +2,7 @@
 #define MAPHELPLOOKUPPROVIDER_H
 
 #include <QMap>
-#include "../utils/qsimpletooltip.h"
+#include "utils/lsimpletooltip.h"
 
 class MapHelpLookupProvider : public QObject, public HelpLookupProvider
 {

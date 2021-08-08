@@ -1,7 +1,7 @@
 #include "dbtableitem.h"
 #include "appurl.h"
 #include <QIcon>
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QSqlField>
 #include <QSqlRecord>
 #include "appconst.h"
@@ -136,7 +136,7 @@ QString DBTableItem::toDML() const
   QString tablename = caption();
   QString sql = "select * from %1";
   QString preparedSql = sql.arg(identifier());
-  QSqlQuery result = QSqlQueryHelper::execSql(preparedSql, _connectionName);
+  QSqlQuery result = SqlQueryHelper::execSql(preparedSql, _connectionName);
   QStringList dmlList;
   while(result.next()) {
     QString insertSql = result.driver()->sqlStatement(QSqlDriver::InsertStatement, tablename, result.record(), false);

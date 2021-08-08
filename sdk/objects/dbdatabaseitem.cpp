@@ -114,7 +114,7 @@ ActionResult DBDatabaseItem::insertMe()
 {
   QString sql = "insert into t_database (NAME, DRIVER, LOCAL_PATH, HOST_ADDRESS, USERNAME, PASSWORD, PORT) "
                 "values ('#caption#','#driverName#', '#databaseName#', '#hostName#', '#userName#', '#password#', #port#)";
-  QSqlQuery sqlResult = QSqlQueryHelper::execSql(fillSqlPatternWithFields(sql));
+  QSqlQuery sqlResult = SqlQueryHelper::execSql(fillSqlPatternWithFields(sql));
   if (sqlResult.lastError().isValid()){
     return ActionResult(ERR_QUERY_ERROR, sqlResult.lastError().databaseText());
   }

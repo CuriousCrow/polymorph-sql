@@ -1,5 +1,5 @@
-#ifndef QFILEUTILS_H
-#define QFILEUTILS_H
+#ifndef FILEUTILS_H
+#define FILEUTILS_H
 
 #include <QFile>
 #include <QDir>
@@ -8,10 +8,10 @@
 #include <QTextStream>
 #include <QTextCodec>
 
-class QFileUtils
+class FileUtils
 {
 public:
-  QFileUtils();
+  FileUtils();
   //Загрука файла в строку
   static QString fileToString(QString filepath, bool isUtf8 = true);
   //
@@ -36,10 +36,10 @@ public:
   static QStringList filesOfDir(const QString &folderPath);
 };
 
-class QFilePath
+class FilePath
 {
 public:
-  QFilePath(QString fullpath);
+  FilePath(QString fullpath);
   QString extension();
   QString folderPath();
   QString filename();

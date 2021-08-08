@@ -1,9 +1,9 @@
 #ifndef SQLHELPLOOKUPPROVIDER_H
 #define SQLHELPLOOKUPPROVIDER_H
 
-#include "qknowledgebase.h"
-#include "../utils/qsimpletooltip.h"
-#include "../models/lsqltablemodel.h"
+#include "lknowledgebase.h"
+#include "utils/lsimpletooltip.h"
+#include "models/lsqltablemodel.h"
 #include "core/dependencycontainer.h"
 
 class SqlHelpLookupProvider : public QObject, public HelpLookupProvider
@@ -13,7 +13,7 @@ public:
     Q_INVOKABLE SqlHelpLookupProvider(QObject* parent = nullptr);
     virtual QString lookup(QString keyword);
 
-    Q_INVOKABLE void inject_by_kb(QKnowledgeBase* kb);
+    Q_INVOKABLE void inject_by_kb(LKnowledgeBase* kb);
 private:
     QList<LSqlTableModel*> _helpModels;
 };

@@ -9,7 +9,7 @@
 #include "models/comboboxhashdelegate.h"
 #include "core/core.h"
 #include "core/dependencycontainer.h"
-#include "core/qknowledgebase.h"
+#include "core/lknowledgebase.h"
 
 namespace Ui {
 class TableEditForm;
@@ -24,7 +24,7 @@ public:
   ~TableEditForm();
 
   INJECT(Core*, core)
-  INJECT(QKnowledgeBase*, kb)
+  INJECT(LKnowledgeBase*, kb)
 private:
   Ui::TableEditForm *ui;
   // AbstractDatabaseEditForm interface

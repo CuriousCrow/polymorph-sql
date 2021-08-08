@@ -1,18 +1,8 @@
-#include "qknowledgebase.h"
+#include "lknowledgebase.h"
 #include <QDebug>
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 
-//QKnowledgeBase* QKnowledgeBase::_kb = nullptr;
-
-//QKnowledgeBase *QKnowledgeBase::kb(QObject *parent)
-//{
-//  if (!_kb){
-//    _kb = new QKnowledgeBase(parent);
-//  }
-//  return _kb;
-//}
-
-void QKnowledgeBase::loadModels(const QStringList &drivers)
+void LKnowledgeBase::loadModels(const QStringList &drivers)
 {
   foreach(QString driver, drivers) {
     qDebug() << "Load module base:" << driver;
@@ -23,13 +13,13 @@ void QKnowledgeBase::loadModels(const QStringList &drivers)
   loadModelByType(T_FUNCTIONS, OBJTYPE_FUNCTION);
 }
 
-LDBObjectTableModel *QKnowledgeBase::modelByType(QString type, QString driver)
+LDBObjectTableModel *LKnowledgeBase::modelByType(QString type, QString driver)
 {
   QString name = type + driver;
   return _modelHash.value(name);
 }
 
-void QKnowledgeBase::loadModelByType(QString table, QString type, QString driver)
+void LKnowledgeBase::loadModelByType(QString table, QString type, QString driver)
 {
   QString name = type + driver;
   QString sqlPattern = "select * from %1 where %2";
@@ -52,7 +42,7 @@ void QKnowledgeBase::loadModelByType(QString table, QString type, QString driver
   qDebug() << name << ":" << model->rowCount();
 }
 
-QHash<int, QString> QKnowledgeBase::typesHash(QString dbms)
+QHash<int, QString> LKnowledgeBase::typesHash(QString dbms)
 {
   QHash<int, QString> resHash;
 
@@ -64,7 +54,7 @@ QHash<int, QString> QKnowledgeBase::typesHash(QString dbms)
   return resHash;
 }
 
-QString QKnowledgeBase::typeName(int type)
+QString LKnowledgeBase::typeName(int type)
 {
   if (type <= 0)
     return "Undefined";
@@ -74,7 +64,7 @@ QString QKnowledgeBase::typeName(int type)
   return rec->value(F_NAME).toString();
 }
 
-int QKnowledgeBase::typeByName(QString dbms, QString name)
+int LKnowledgeBase::typeByName(QString dbms, QString name)
 {
   for(int row=0; row<mTypes->rowCount(); row++) {
     QSqlRecord rec = mTypes->record(row);
@@ -85,7 +75,7 @@ int QKnowledgeBase::typeByName(QString dbms, QString name)
   return 0;
 }
 
-QKnowledgeBase::QKnowledgeBase(QObject *parent) : QObject(parent)
+LKnowledgeBase::LKnowledgeBase(QObject *parent) : QObject(parent)
 {
   qDebug() << "Knowledge base created";
   mKeywords = new LSqlTableModel(this);
@@ -106,7 +96,7 @@ QKnowledgeBase::QKnowledgeBase(QObject *parent) : QObject(parent)
 
 
 
-QKnowledgeBase::~QKnowledgeBase()
+LKnowledgeBase::~LKnowledgeBase()
 {
   qDebug() << "Knoledge base destroyed";
 }

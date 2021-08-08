@@ -1,5 +1,5 @@
-#ifndef QSQLQUERYHELPER_H
-#define QSQLQUERYHELPER_H
+#ifndef SQLQUERYHELPER_H
+#define SQLQUERYHELPER_H
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -9,11 +9,11 @@
 
 #define DEBUG_SQL
 
-class QSqlQueryHelper
+class SqlQueryHelper
 {
 public:
-  QSqlQueryHelper();
-  ~QSqlQueryHelper();
+  SqlQueryHelper();
+  ~SqlQueryHelper();
   static QSqlQuery execSql(QString sql, QString connectionName = QSqlDatabase::defaultConnection);
   static bool execSql(QSqlQuery &query);
   static QSqlQuery prepareQuery(QString sql, QString connectionName = QSqlDatabase::defaultConnection);
@@ -24,4 +24,4 @@ public:
   static void fillObjectFromRecord(QObject* object, QSqlRecord& rec);
 };
 
-#endif // QSQLQUERYHELPER_H
+#endif // SQLQUERYHELPER_H

@@ -1,5 +1,5 @@
 #include "mysqlfolderitem.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "objects/appconst.h"
 #include "objects/dbtriggeritem.h"
 #include "objects/dbprocedureitem.h"
@@ -36,7 +36,7 @@ void MysqlFolderItem::loadChildren()
     if (sql.isEmpty())
         return;
 
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
         DBObjectItem* childItem = nullptr;
         switch (childrenType()) {

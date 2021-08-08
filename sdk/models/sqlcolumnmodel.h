@@ -4,7 +4,7 @@
 #include <QAbstractTableModel>
 #include <QColor>
 #include "core/dependencycontainer.h"
-#include "core/qknowledgebase.h"
+#include "core/lknowledgebase.h"
 
 #define NoType 0
 #define COL_IDX_TYPE 2
@@ -15,6 +15,7 @@ public:
   SqlColumn();
   SqlColumn(QString name, int type);
   SqlColumn(const SqlColumn &other);
+
   QString name() const;
   void setName(const QString &name);
 
@@ -78,9 +79,8 @@ public:
   };
   Q_INVOKABLE SqlColumnModel(QObject *parent = Q_NULLPTR);
 
-  INJECT(QKnowledgeBase*, kb)
+  INJECT(LKnowledgeBase*, kb)
 
-//  virtual ColumnTypes supportedColumnTypes() = 0;
   virtual QString columnTypeCaption(int type) const;
   void addSqlColumn(SqlColumn col, bool init = false);
   SqlColumn columnByIndex(int idx);
@@ -91,6 +91,7 @@ public:
   bool hasOnlyIntegerPK();
   bool isModified();
   void clear();
+
   // QAbstractItemModel interface
 public:
   virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

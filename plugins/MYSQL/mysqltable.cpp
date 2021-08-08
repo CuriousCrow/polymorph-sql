@@ -1,5 +1,5 @@
 #include "mysqltable.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QDebug>
 #include "objects/appurl.h"
 #include "objects/appconst.h"
@@ -80,7 +80,7 @@ void MysqlTableItem::reloadColumnsModel()
   _columnsModel->clear();
   QString sql = "SELECT table_schema, table_name, column_name, column_type, data_type, column_default, character_maximum_length, is_nullable, numeric_precision, numeric_scale, column_key, extra FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='#databaseName#' AND table_name = '#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
     SqlColumn col(query.value("column_name").toString(), colTypeFromString(query.value("data_type").toString()));
     col.setDefaultValue(query.value("column_default"));
