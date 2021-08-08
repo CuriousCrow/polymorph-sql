@@ -5,22 +5,19 @@
 #include <QSqlField>
 #include <QMessageBox>
 #include <QClipboard>
-#include "sdk/forms/databaseexportform.h"
 #include "sdk/objects/appurl.h"
-#include "tablebrowserwindow.h"
-#include "sdk/forms/settingsform.h"
+#include "sdk/forms/tablebrowserwindow.h"
 #include "sdk/objects/dbdatabaseitem.h"
 #include "sdk/objects/dbobjectitem.h"
 #include "sdk/objects/foldertreeitem.h"
-#include "sdk/core/lknowledgebase.h"
 #include "sdk/core/appsettings.h"
-#include "sdk/core/datastore.h"
-#include "sdk/core/core.h"
+#include "sdk/core/basecontextaction.h"
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/sdkplugin.h"
 #include "sdk/utils/fileutils.h"
-#include "sdk/core/basecontextaction.h"
 #include "testmodule.h"
+
+#include "sdk/forms/queryeditorwindow.h"
 
 #ifdef SINGLEAPP
 #include "plugins/POSTGRES/postgresplugin.h"
@@ -44,14 +41,11 @@ MainWindow::MainWindow(QWidget *parent) :
   //DataStore singleton
   _ds = new DataStore(this);
   _ds->setTabWidget(ui->tabWidget);
-  _core->registerSingletonObject(new DependencyMeta(B_DATA_STORE, CLASSMETA(DataStore)), _ds);
-  _core->registerDependency(new DependencyMeta(B_QUERY_EDITOR, CLASSMETA(QueryEditorWindow), InstanceMode::Prototype));
-
-  QStringList menuPath;
-  menuPath << "Functions";
 
   _context = new BaseUserContext(this);
   _kb = new LKnowledgeBase(this);
+
+  _core->registerSingletonObject(new DependencyMeta(B_DATA_STORE, CLASSMETA(DataStore)), _ds);
   _core->registerSingletonObject(new DependencyMeta(B_CONTEXT, CLASSMETA(BaseUserContext)), _context);
   _core->registerSingletonObject(new DependencyMeta(B_KNOWLEDGE_BASE, CLASSMETA(LKnowledgeBase)), _kb);
 
@@ -223,15 +217,6 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     showEditorForCurrentItem();
     break;
   }
-}
-
-void MainWindow::on_tvDatabaseStructure_clicked(const QModelIndex &index)
-{
-  DBObjectItem* curItem = static_cast<DBObjectItem*>(_ds->structureModel()->itemByIndex(index));
-  qDebug() << "Obj url:" << curItem->objectName();
-
-  ui->aEditDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
-  ui->aRemoveDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
 }
 
 void MainWindow::removeTabByIndex(int index)
@@ -453,4 +438,6 @@ void MainWindow::onCurrentItemChanged(const QModelIndex &index)
     DBObjectItem* curItem = _ds->structureModel()->itemByIdx(index);
     qDebug() << "Current item:" << curItem;
     _context->setCurrentItem(curItem);
+    ui->aEditDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
+    ui->aRemoveDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
 }

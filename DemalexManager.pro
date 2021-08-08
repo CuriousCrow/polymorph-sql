@@ -20,18 +20,13 @@ RC_ICONS = sdk/icons/cc_16.ico
 DEFINES += SINGLEAPP
 
 SOURCES += main.cpp\
-    forms/mainwindow.cpp \
-    forms/tablebrowserwindow.cpp \
-    widgets/tablebrowserdelegate.cpp
+    forms/mainwindow.cpp
 
 HEADERS  += \
-    forms/mainwindow.h \
-    forms/tablebrowserwindow.h \
-    widgets/tablebrowserdelegate.h
+    forms/mainwindow.h
 
 FORMS    += \
-    forms/mainwindow.ui \
-    forms/tablebrowserwindow.ui
+    forms/mainwindow.ui
 
 RESOURCES += \
     sdk/icons.qrc

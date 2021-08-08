@@ -4,20 +4,14 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
+#include <QMenu>
 #include "sdk/models/lsqltablemodel.h"
 #include "sdk/forms/connectioneditdialog.h"
-#include <QMenu>
 #include "sdk/models/lstructureitemmodel.h"
-#include "sdk/forms/queryeditorwindow.h"
-#include "sdk/forms/tableeditform.h"
-#include "sdk/forms/sequenceeditform.h"
-#include "sdk/forms/procedureeditform.h"
-#include "sdk/forms/vieweditdialog.h"
-#include "sdk/forms/triggereditform.h"
-#include "sdk/objects/dbtableitem.h"
 #include "sdk/core/localeventnotifier.h"
 #include "sdk/core/baseusercontext.h"
 #include "sdk/core/datastore.h"
+#include "sdk/core/core.h"
 #include "sdk/core/lknowledgebase.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000
@@ -40,8 +34,6 @@ private slots:
   void on_aEditDatabase_triggered();
 
   void on_tvDatabaseStructure_doubleClicked(const QModelIndex &index);
-
-  void on_tvDatabaseStructure_clicked(const QModelIndex &index);
 
   void removeTabByIndex(int index);
 

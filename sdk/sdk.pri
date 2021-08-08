@@ -39,10 +39,12 @@ SOURCES += \
     $$PWD/forms/queryhistoryform.cpp \
     $$PWD/forms/settingsform.cpp \
     $$PWD/forms/queryeditorwindow.cpp \
+    $$PWD/forms/tablebrowserwindow.cpp \
 #Widgets
     $$PWD/widgets/blobeditor.cpp \
     $$PWD/widgets/itemviewer.cpp \
     $$PWD/widgets/lqueryeditor.cpp \
+    $$PWD/widgets/tablebrowserdelegate.cpp \
 #Tools
     $$PWD/tools/lsqlsyntaxhighlighter.cpp \
     $$PWD/tools/ltextcompleter.cpp \
@@ -132,10 +134,12 @@ HEADERS  += \
     $$PWD/forms/settingsform.h \
     $$PWD/forms/databaseexportform.h \
     $$PWD/forms/queryeditorwindow.h \
+    $$PWD/forms/tablebrowserwindow.h \
 #Widgets
     $$PWD/widgets/blobeditor.h \
     $$PWD/widgets/itemviewer.h \
     $$PWD/widgets/lqueryeditor.h \
+    $$PWD/widgets/tablebrowserdelegate.h \
 #Tools
     $$PWD/tools/ldatawidgetmapper.h \
     $$PWD/tools/ltextcompleter.h \
@@ -211,7 +215,8 @@ FORMS    += \
     $$PWD/forms/databaseexportform.ui \
     $$PWD/forms/queryeditorwindow.ui \
     $$PWD/widgets/itemviewer.ui \
-    $$PWD/widgets/blobeditor.ui
+    $$PWD/widgets/blobeditor.ui \
+    $$PWD/forms/tablebrowserwindow.ui
 
 RESOURCES += \
     $$PWD/icons.qrc

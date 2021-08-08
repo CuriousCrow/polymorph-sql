@@ -14,6 +14,7 @@ public:
   explicit DataStore(QObject *parent = nullptr);
 
   void setTabWidget(QTabWidget* tabWidget);
+  //Access to main window tab widget
   QTabWidget* tabWidget();
   LStructureItemModel* structureModel();
   QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");

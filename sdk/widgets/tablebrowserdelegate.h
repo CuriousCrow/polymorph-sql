@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QStyledItemDelegate>
-#include "sdk/models/unisqltablemodel.h"
-#include "sdk/objects/dbtableitem.h"
+#include "models/unisqltablemodel.h"
+#include "objects/dbtableitem.h"
 
 class TableBrowserDelegate : public QStyledItemDelegate
 {

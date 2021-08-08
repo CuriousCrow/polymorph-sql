@@ -19,6 +19,7 @@
 #include "forms/uniqueconstrainteditform.h"
 #include "forms/settingsform.h"
 #include "forms/databaseexportform.h"
+#include "forms/queryeditorwindow.h"
 
 #include "actions/addnewqueryeditoraction.h"
 #include "actions/dropitemobjectaction.h"
@@ -136,6 +137,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     //Forms
     c->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
     c->registerDependency("generalSettingsForm", CLASSMETA(SettingsForm), InstanceMode::Singleton);
+    c->registerDependency(B_QUERY_EDITOR, CLASSMETA(QueryEditorWindow), InstanceMode::Prototype);
     //Actions
     c->registerDependency("databaseExportAction", CLASSMETA(ShowDatabaseExportEditorAction), InstanceMode::Singleton);
     c->registerDependency("dropItemAction", CLASSMETA(DropItemObjectAction), InstanceMode::Singleton);

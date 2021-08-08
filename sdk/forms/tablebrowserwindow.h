@@ -5,9 +5,9 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QMenu>
-#include "sdk/models/unisqltablemodel.h"
 #include <QSortFilterProxyModel>
-#include "sdk/objects/dbtableitem.h"
+#include "models/unisqltablemodel.h"
+#include "objects/dbtableitem.h"
 #include "core/datastore.h"
 #include "core/dependencycontainer.h"
 
@@ -20,7 +20,7 @@ class TableBrowserWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  explicit TableBrowserWindow(QWidget *parent, DBSelectableItem* tableItem);
+  Q_INVOKABLE TableBrowserWindow(QWidget *parent, DBSelectableItem* tableItem);
   ~TableBrowserWindow();
 
   INJECT(DataStore*, ds)
