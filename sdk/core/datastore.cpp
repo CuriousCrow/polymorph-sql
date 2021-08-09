@@ -127,6 +127,16 @@ void DataStore::saveTableState(int dbId, QString name, QByteArray data)
   SqlQueryHelper::execSql(query);
 }
 
+void DataStore::resetTableState(int dbId, QString name)
+{
+    qDebug() << "Reset table state:" << dbId << name;
+    QString sql = "delete from t_table_columns where database_id=:db and tablename=:tablename";
+    QSqlQuery query = SqlQueryHelper::prepareQuery(sql);
+    query.bindValue(":db", dbId);
+    query.bindValue(":tablename", name);
+    SqlQueryHelper::execSql(query);
+}
+
 bool DataStore::addQueryHistoryItem(int dbId, QString query)
 {
   QString sql = "insert into t_query_history(database_id, query) values (:db, :query)";

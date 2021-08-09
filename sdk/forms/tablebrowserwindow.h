@@ -64,11 +64,12 @@ private slots:
 
   void on_aLoadFromFile_triggered();
 
-  void on_aTest_triggered();
-
   void onColumnVisibilityActionToggled(bool checked);
 
   void onHeaderPressed();
+
+  void on_aResetState_triggered();
+
 private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;
@@ -79,9 +80,11 @@ private:
   QMenu* _mnuContext;
   QMenu* _mnuFilterList;
   QMenu* _mnuColumns;
+  bool _stateSavingEnabled = true;
   void refreshColumnsMenu();
   void refreshTable();
   void loadColumnsState();
+  void resetStateLater();
 };
 
 #endif // TABLEBROWSERWINDOW_H

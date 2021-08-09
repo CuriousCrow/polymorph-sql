@@ -21,8 +21,11 @@ public:
   DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
   int databaseIdFromItem(DBObjectItem* item);
   UniSqlTableModel* historyModel(int dbId);
+  //Table state
   QByteArray loadTableState(int dbId, QString name);
   void saveTableState(int dbId, QString name, QByteArray data);
+  void resetTableState(int dbId, QString name);
+
   bool addQueryHistoryItem(int dbId, QString query);
   bool clearQueryHistory(int dbId);
 
