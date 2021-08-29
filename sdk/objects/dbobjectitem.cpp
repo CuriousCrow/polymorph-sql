@@ -93,8 +93,10 @@ DBObjectField& DBObjectItem::field(QString fieldName)
 QString DBObjectItem::fillSqlPatternWithFields(QString pattern, QMap<QString, QString> valueMap) const
 {
   QString result = pattern;
-  foreach(QString key, valueMap.keys()) {
-    result = result.replace("#" + key + "#", valueMap.value(key));
+  QMapIterator<QString, QString> it(valueMap);
+  while(it.hasNext()) {
+    it.next();
+    result = result.replace("#" + it.key() + "#", it.value());
   }
   return result;
 }

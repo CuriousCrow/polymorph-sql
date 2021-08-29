@@ -143,7 +143,7 @@ QObject *DependencyContainer::dependency(const QString &name)
 
             if (!dependencyObj->inherits(argType.toLatin1())) {
                 QString errStr = "Bean %1: Inject method %2 expects arg type %3 descedant. Found bean (%4) instead";
-                qCritical() << errStr.arg(name).arg(methodName).arg(argType).arg(beanName).arg(dependencyObj->metaObject()->className());
+                qCritical() << errStr.arg(name, methodName, argType, beanName, dependencyObj->metaObject()->className());
                 continue;
             }
 

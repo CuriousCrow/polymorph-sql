@@ -13,7 +13,7 @@ LDBObjectModel::LDBObjectModel(QObject *parent) : QAbstractTableModel(parent)
 void LDBObjectModel::reload(QStringList keywords, QStringList functions, QString connName)
 {
   qDebug() << connName;
-  emit beginResetModel();
+  beginResetModel();
   _dataList.clear();
   foreach (QString keyword, keywords) {
     _dataList.append(DbObj(keyword, F_KEYWORD));
@@ -21,7 +21,7 @@ void LDBObjectModel::reload(QStringList keywords, QStringList functions, QString
   foreach (QString function, functions) {
     _dataList.append(DbObj(function, F_FUNCTION));
   }
-  emit endResetModel();
+  endResetModel();
 }
 
 DbObj LDBObjectModel::findByName(QString objName)

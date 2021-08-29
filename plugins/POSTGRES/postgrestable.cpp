@@ -81,7 +81,8 @@ ActionResult PostgresTable::updateMe()
 
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
   qDebug() << "Changes size:" << changes.count();
-  foreach (SqlColumn fromCol, changes.keys()) {
+  QList<SqlColumn> keys = changes.keys();
+  foreach (SqlColumn fromCol, keys) {
     SqlColumn toCol = changes[fromCol];
     //    qDebug() << "Changes:" << fromCol << toCol;
     if (fromCol.type() == NoType) {
@@ -110,7 +111,7 @@ ActionResult PostgresTable::updateMe()
       QString pattern;
       if (fromCol.type() != toCol.type() || fromCol.length() != toCol.length()) {
         pattern = "ALTER COLUMN %1 TYPE %2";
-        difs.append(pattern.arg(toCol.name()).arg(typeDef(toCol)));
+        difs.append(pattern.arg(toCol.name(), typeDef(toCol)));
       }
       if (fromCol.defaultValue() != toCol.defaultValue()) {
         if (toCol.defaultValue().toString().isEmpty())
@@ -118,7 +119,7 @@ ActionResult PostgresTable::updateMe()
         else {
           pattern = "ALTER COLUMN %1 SET DEFAULT %2";
         }
-        difs.append(pattern.arg(toCol.name()).arg(toCol.defaultValue().toString()));
+        difs.append(pattern.arg(toCol.name(), toCol.defaultValue().toString()));
       }
       if (fromCol.notNull() != toCol.notNull()) {
         pattern = "ALTER COLUMN %1 ";
@@ -127,7 +128,7 @@ ActionResult PostgresTable::updateMe()
       }
       if (fromCol.name() != toCol.name()) {
         pattern = "RENAME COLUMN \"%1\" TO \"%2\"";
-        difs.append(pattern.arg(fromCol.name()).arg(toCol.name()));
+        difs.append(pattern.arg(fromCol.name(), toCol.name()));
       }
       if (difs.isEmpty()) {
         qWarning() << "Column unchanged case! Ignore column.";
@@ -214,7 +215,7 @@ QString PostgresTable::createTableQuery(QString table) const
     QString pkTemplate = "CONSTRAINT pk_#caption.new# PRIMARY KEY (%1)";
     colDefList.append(fillSqlPatternWithFields(pkTemplate).arg(pkColList.join(",")));
   }
-  QString preparedSql = createPattern.arg(table).arg(colDefList.join(", "));
+  QString preparedSql = createPattern.arg(table, colDefList.join(", "));
   return preparedSql;
 }
 

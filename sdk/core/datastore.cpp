@@ -50,7 +50,6 @@ void DataStore::initRegisteredDatabases()
   QSqlQuery sqlResult = SqlQueryHelper::execSql(sql);
   while (sqlResult.next()) {
     QSqlRecord rec = sqlResult.record();
-    QString caption = rec.value(F_CAPTION).toString();
     QString driverName = rec.value(F_DRIVER_NAME).toString();
     IocPlugin* plugin = Core::plugin(driverName, FeatureType::DbmsObjects);
     if (!plugin) {

@@ -162,8 +162,9 @@ bool UniSqlTableModel::isDirty()
 
 bool UniSqlTableModel::submitAll(bool stopOnError)
 {
-  foreach(qlonglong id, _changesHash.keys()) {
-    if (!submitById(id) && stopOnError)
+  QHashIterator<qlonglong, QSqlRecord> it(_changesHash);
+  while(it.hasNext()) {
+    if (!submitById(it.next().key()) && stopOnError)
       return false;
   }
   return true;
@@ -285,10 +286,12 @@ bool UniSqlTableModel::deleteRowInTable(const QSqlRecord &values)
 bool UniSqlTableModel::revertAll()
 {
   beginResetModel();
-  foreach(qlonglong id, _changesHash.keys()) {
+  QHashIterator<qlonglong, QSqlRecord> it(_changesHash);
+  while(it.hasNext()) {
+    it.next();
     //Добавленные но не сохраненные строки
-    if (id < 0) {
-      _rowIndex.removeOne(id);
+    if (it.key() < 0) {
+      _rowIndex.removeOne(it.key());
     }
   }
   _changesHash.clear();
@@ -304,7 +307,7 @@ SqlFilterManager *UniSqlTableModel::filter()
 void UniSqlTableModel::orderBy(QString field, Qt::SortOrder direction)
 {
   QString orderByPattern = " ORDER BY %1 %2";
-  _orderBy = orderByPattern.arg(field).arg(direction == Qt::AscendingOrder ? "ASC" : "DESC");
+  _orderBy = orderByPattern.arg(field, direction == Qt::AscendingOrder ? "ASC" : "DESC");
 }
 
 QString UniSqlTableModel::tableName()

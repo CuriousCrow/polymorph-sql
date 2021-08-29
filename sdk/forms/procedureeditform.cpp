@@ -22,7 +22,8 @@ void ProcedureEditForm::reloadTypes()
   ui->cmbResultType->clear();
   ui->cmbResultType->addItem("void");
   ui->cmbResultType->addItem("trigger");
-  foreach (QString type, types.values()) {
+  QStringList values = types.values();
+  foreach (QString type, values) {
     ui->cmbResultType->addItem(type.toLower());
   }
 }

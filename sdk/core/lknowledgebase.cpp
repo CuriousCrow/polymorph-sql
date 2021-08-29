@@ -23,7 +23,7 @@ void LKnowledgeBase::loadModelByType(QString table, QString type, QString driver
 {
   QString name = type + driver;
   QString sqlPattern = "select * from %1 where %2";
-  QString preparedSql = sqlPattern.arg(table).arg(driver.isEmpty() ? "driver is null" : "driver='" + driver + "'");
+  QString preparedSql = sqlPattern.arg(table, driver.isEmpty() ? "driver is null" : "driver='" + driver + "'");
 
   LDBObjectTableModel* model = new LDBObjectTableModel(this);
   model->registerColumn(F_NAME);

@@ -39,7 +39,7 @@ bool AppUrl::isParent(const AppUrl &url) const
 QString AppUrl::toString() const
 {
   QString pattern = "%1://%2";
-  QString url = pattern.arg(_driver).arg(_database);
+  QString url = pattern.arg(_driver, _database);
   if (!_pathItems.isEmpty())
     url.append(URL_DELIMITER).append(_pathItems.join(URL_DELIMITER));
   return url;

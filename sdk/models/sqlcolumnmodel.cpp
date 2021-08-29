@@ -13,14 +13,14 @@ QString SqlColumnModel::columnTypeCaption(int type) const
 
 void SqlColumnModel::addSqlColumn(SqlColumn col, bool init)
 {
-  emit beginInsertRows(QModelIndex(), _idxList.count(), _idxList.count());
+  beginInsertRows(QModelIndex(), _idxList.count(), _idxList.count());
   qlonglong newId = getNextId();
   _idxList.append(newId);
   if (init)
     _dataHash.insert(newId, col);
   else
     _changes.insert(newId, col);
-  emit endInsertRows();
+  endInsertRows();
 }
 
 SqlColumn SqlColumnModel::columnByIndex(int idx)
@@ -32,16 +32,20 @@ SqlColumn SqlColumnModel::columnByIndex(int idx)
 int SqlColumnModel::rowByName(const QString name)
 {
   qlonglong resId = 0;
-  foreach (qlonglong id, _changes.keys()) {
-    if (_changes.value(id).name() == name) {
-      return _idxList.indexOf(id);
+  QHashIterator<qlonglong, SqlColumn> i(_changes);
+  while(i.hasNext()) {
+    i.next();
+    if (i.value().name() == name) {
+      return _idxList.indexOf(i.key());
     }
   }
   if (resId > 0)
     return _idxList.indexOf(resId);
-  foreach (qlonglong id, _dataHash.keys()) {
-    if (_dataHash.value(id).name() == name) {
-      return _idxList.indexOf(id);
+  QHashIterator<qlonglong, SqlColumn> it(_dataHash);
+  while(it.hasNext()) {
+    it.next();
+    if (it.value().name() == name) {
+      return _idxList.indexOf(it.key());
     }
   }
   return -1;
@@ -50,20 +54,22 @@ int SqlColumnModel::rowByName(const QString name)
 QHash<SqlColumn, SqlColumn> SqlColumnModel::columnChanges()
 {
   QHash<SqlColumn, SqlColumn> result;
-  foreach (qlonglong colId, _changes.keys()) {
-    if (_idxList.contains(colId)) {
+  QHashIterator<qlonglong, SqlColumn> it(_changes);
+  while(it.hasNext()) {
+    it.next();
+    if (_idxList.contains(it.key())) {
       //Modified column
-      if (_dataHash.contains(colId)) {
-        result.insert(_dataHash.value(colId), _changes.value(colId));
+      if (_dataHash.contains(it.key())) {
+        result.insert(_dataHash.value(it.key()), it.value());
       }
       //New column
       else {
-        result.insert(SqlColumn("Empty_" + QString::number(colId), 0), _changes.value(colId));
+        result.insert(SqlColumn("Empty_" + QString::number(it.key()), 0), it.value());
       }
     }
     //Removed column
     else {
-      result.insert(_dataHash.value(colId), SqlColumn("", 0));
+      result.insert(_dataHash.value(it.key()), SqlColumn("", 0));
     }
   }
   return result;
@@ -72,13 +78,15 @@ QHash<SqlColumn, SqlColumn> SqlColumnModel::columnChanges()
 QHash<QString, QString> SqlColumnModel::permanentColNames()
 {
   QHash<QString, QString> resHash;
-  foreach (qlonglong colId, _dataHash.keys()) {
-    if (_idxList.contains(colId)) {
-      if (_changes.contains(colId)) {
-        resHash.insert(_dataHash.value(colId).name(), _changes.value(colId).name());
+  QHashIterator<qlonglong, SqlColumn> it(_dataHash);
+  while(it.hasNext()) {
+    it.next();
+    if (_idxList.contains(it.key())) {
+      if (_changes.contains(it.key())) {
+        resHash.insert(it.value().name(), _changes.value(it.key()).name());
       }
       else {
-        resHash.insert(_dataHash.value(colId).name(), _dataHash.value(colId).name());
+        resHash.insert(it.value().name(), it.value().name());
       }
     }
   }
@@ -125,11 +133,11 @@ bool SqlColumnModel::isModified()
 
 void SqlColumnModel::clear()
 {
-  emit beginResetModel();
+  beginResetModel();
   _idxList.clear();
   _changes.clear();
   _dataHash.clear();
-  emit endResetModel();
+  endResetModel();
 }
 
 int SqlColumnModel::rowCount(const QModelIndex &parent) const
@@ -261,13 +269,13 @@ bool SqlColumnModel::insertRows(int row, int count, const QModelIndex &parent)
   if (row < 0 || row > rowCount() || count != 1)
     return false;
 
-  emit beginInsertRows(QModelIndex(), row, row);
+  beginInsertRows(QModelIndex(), row, row);
   QString newColname = tr("Column") + QString::number(rowCount() + 1);
   SqlColumn newCol(newColname, NoType);
   qlonglong newId = getNextId();
   _idxList.insert(row, newId);
   _changes.insert(newId, newCol);
-  emit endInsertRows();
+  endInsertRows();
   return true;
 }
 
@@ -277,11 +285,11 @@ bool SqlColumnModel::removeRows(int row, int count, const QModelIndex &parent)
   if (row < 0 || row >= rowCount() || count != 1)
     return false;
 
-  emit beginRemoveRows(QModelIndex(), row, row);
+  beginRemoveRows(QModelIndex(), row, row);
   qlonglong idToRemove = _idxList.at(row);
   _idxList.removeAt(row);
   _changes.insert(idToRemove, _dataHash[idToRemove]);
-  emit endRemoveRows();
+  endRemoveRows();
   return true;
 }
 

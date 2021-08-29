@@ -33,7 +33,8 @@ ActionResult MysqlTableItem::updateMe()
 
   ActionResult result;
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
-  foreach (SqlColumn fromCol, changes.keys()) {
+  QList<SqlColumn> keys = changes.keys();
+  foreach (SqlColumn fromCol, keys) {
     SqlColumn toCol = changes[fromCol];
     if (fromCol.type() == NoType) {
       //Добавление колонки

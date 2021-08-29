@@ -121,11 +121,11 @@ QString SqlFilter::toString() const
       foreach (QVariant val, _values) {
         vals.append(strVal(val));
       }
-      filterStr.append(pattern.arg(_field).arg(op).arg("(" + vals.join(",") + ")"));
+      filterStr.append(pattern.arg(_field, op, "(" + vals.join(",") + ")"));
     }
     else {
       QString op = positive ? "=" : "<>";
-      filterStr.append(pattern.arg(_field).arg(op).arg(strVal(_values.first())));
+      filterStr.append(pattern.arg(_field, op, strVal(_values.first())));
     }
     break;
   }
@@ -133,13 +133,13 @@ QString SqlFilter::toString() const
   case WhereOperator::IsNotNull: {
     bool positive = (_oper == WhereOperator::IsNull);
     QString op = positive ? "is" : "is not";
-    filterStr.append(pattern.arg(_field).arg(op).arg("NULL"));
+    filterStr.append(pattern.arg(_field, op, "NULL"));
     break;
   }
   case WhereOperator::MoreThan:
   case WhereOperator::LessThan: {
     QString op = (_oper == WhereOperator::MoreThan) ? ">" : "<";
-    filterStr.append(pattern.arg(_field).arg(op).arg(strVal(_values.first())));
+    filterStr.append(pattern.arg(_field, op, strVal(_values.first())));
     break;
   }
   case WhereOperator::Between:
