@@ -14,6 +14,7 @@
 #include "models/queryparamtablemodel.h"
 #include "forms/queryparamsform.h"
 #include "core/datastore.h"
+#include "core/core.h"
 #include "core/lknowledgebase.h"
 #include "core/dependencycontainer.h"
 #include "core/sqlhelplookupprovider.h"
@@ -33,6 +34,7 @@ public:
   ~QueryEditorWindow();
 
   INJECT(LKnowledgeBase*, kb)
+  INJECT(Core*, core)
   Q_INVOKABLE void inject_by_ds(DataStore* ds);
   Q_INVOKABLE void inject_helpLookupProvider(SqlHelpLookupProvider* lookupProvider);
   Q_INVOKABLE void inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter* syntaxHighlighter);

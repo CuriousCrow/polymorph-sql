@@ -9,6 +9,7 @@
 #include "widgets/lqueryeditor.h"
 #include "core/maphelplookupprovider.h"
 #include "core/localeventnotifier.h"
+#include "objects/sdkplugin.h"
 #include "objects/appconst.h"
 #include "queryhistoryform.h"
 
@@ -301,7 +302,8 @@ void QueryEditorWindow::on_aQueryHistory_triggered()
 {
   DBDatabaseItem* dbObj = dynamic_cast<DBDatabaseItem*>(dbObject());
   if (dbObj) {
-    QueryHistoryForm* historyForm = QueryHistoryForm::instance(dbObj->fieldValue(F_ID).toInt());
+    QueryHistoryForm* historyForm = _core->dependency<QueryHistoryForm>(B_QUERY_HISTORY_FORM);
+    historyForm->loadHistory(dbObj->fieldValue(F_ID).toInt());
     connect(historyForm, &QueryHistoryForm::accepted,
             this, &QueryEditorWindow::onHistoryClosed);
     historyForm->setModal(true);

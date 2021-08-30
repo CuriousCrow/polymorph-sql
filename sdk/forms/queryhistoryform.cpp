@@ -3,14 +3,11 @@
 
 #include "core/datastore.h"
 
-QueryHistoryForm* QueryHistoryForm::_singleton = nullptr;
-
 QueryHistoryForm::QueryHistoryForm(QWidget *parent) :
   QDialog(parent),
   ui(new Ui::QueryHistoryForm)
 {
   ui->setupUi(this);
-  ui->cmbProjects->setModel(_ds->structureModel());
 }
 
 QueryHistoryForm::~QueryHistoryForm()
@@ -29,16 +26,13 @@ void QueryHistoryForm::loadHistory(int dbId)
   if (row != ui->cmbProjects->currentIndex())
     ui->cmbProjects->setCurrentIndex(row);
   else
-    on_cmbProjects_currentIndexChanged(row);
+      on_cmbProjects_currentIndexChanged(row);
 }
 
-QueryHistoryForm *QueryHistoryForm::instance(int dbId)
+void QueryHistoryForm::inject_ds(DataStore *ds)
 {
-  if (!_singleton) {
-    _singleton = new QueryHistoryForm();
-  }
-  _singleton->loadHistory(dbId);
-  return _singleton;
+  _ds = ds;
+  ui->cmbProjects->setModel(_ds->structureModel());
 }
 
 void QueryHistoryForm::on_lvHistory_doubleClicked(const QModelIndex &index)

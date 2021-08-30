@@ -14,15 +14,13 @@ class QueryHistoryForm : public QDialog
   Q_OBJECT
 
 public:
-  explicit QueryHistoryForm(QWidget *parent = nullptr);
+  Q_INVOKABLE QueryHistoryForm(QWidget *parent = nullptr);
   ~QueryHistoryForm();
   QString selectedQuery() const;
 
   void loadHistory(int dbId);
 
-  static QueryHistoryForm* instance(int dbId);
-
-  INJECT(DataStore*, ds)
+  Q_INVOKABLE void inject_ds(DataStore* ds);
 private slots:
   void on_lvHistory_doubleClicked(const QModelIndex &index);
 
@@ -35,8 +33,7 @@ private slots:
 private:
   QString _selectedQuery;
   Ui::QueryHistoryForm *ui;
-  static QueryHistoryForm* _singleton;
-
+  DataStore* _ds;
 };
 
 #endif // QUERYHISTORYFORM_H

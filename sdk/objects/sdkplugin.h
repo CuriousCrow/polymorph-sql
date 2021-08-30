@@ -21,6 +21,7 @@
 #define B_CHECK_FORM "baseCheckForm"
 #define B_PRIMARY_KEY_FORM "basePrimaryKeyForm"
 #define B_UNIQUE_FORM "baseUniqueForm"
+#define B_QUERY_HISTORY_FORM "queryHistoryForm"
 
 #define B_KNOWLEDGE_BASE "kb"
 #define B_HELPLOOKUP_PROVIDER "helpLookupProvider"

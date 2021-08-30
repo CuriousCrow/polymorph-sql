@@ -20,6 +20,7 @@
 #include "forms/settingsform.h"
 #include "forms/databaseexportform.h"
 #include "forms/queryeditorwindow.h"
+#include "forms/queryhistoryform.h"
 
 #include "actions/addnewqueryeditoraction.h"
 #include "actions/dropitemobjectaction.h"
@@ -138,6 +139,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     c->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
     c->registerDependency("generalSettingsForm", CLASSMETA(SettingsForm), InstanceMode::Singleton);
     c->registerDependency(B_QUERY_EDITOR, CLASSMETA(QueryEditorWindow), InstanceMode::Prototype);
+    c->registerDependency(B_QUERY_HISTORY_FORM, CLASSMETA(QueryHistoryForm), InstanceMode::Singleton);
     //Actions
     c->registerDependency("databaseExportAction", CLASSMETA(ShowDatabaseExportEditorAction), InstanceMode::Singleton);
     c->registerDependency("dropItemAction", CLASSMETA(DropItemObjectAction), InstanceMode::Singleton);
