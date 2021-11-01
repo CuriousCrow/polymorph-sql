@@ -116,25 +116,25 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
 
     //Object Forms
     c->registerDependency(B_TABLE_FORM, CLASSMETA(TableEditForm), InstanceMode::Singleton)
-                           ->setParam(F_TYPE, DBObjectItem::Table);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Table);
     c->registerDependency(B_VIEW_FORM, CLASSMETA(ViewEditDialog), InstanceMode::Singleton)
-                          ->setParam(F_TYPE, DBObjectItem::View);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::View);
     c->registerDependency(B_PROCEDURE_FORM, CLASSMETA(ProcedureEditForm), InstanceMode::Singleton)
-                          ->setParam(F_TYPE, DBObjectItem::Procedure);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Procedure);
     c->registerDependency(B_SEQUENCE_FORM, CLASSMETA(SequenceEditForm), InstanceMode::Singleton)
-                          ->setParam(F_TYPE, DBObjectItem::Sequence);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Sequence);
     c->registerDependency(B_TRIGGER_FORM, CLASSMETA(TriggerEditForm), InstanceMode::Singleton)
-                          ->setParam(F_TYPE, DBObjectItem::Trigger);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Trigger);
     c->registerDependency(B_CONNECTION_FORM, CLASSMETA(ConnectionEditDialog), InstanceMode::Singleton)
-                          ->setParam(F_TYPE, DBObjectItem::Database);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Database);
     c->registerDependency(B_FOREIGN_KEY_FORM, CLASSMETA(ForeignKeyForm), InstanceMode::Prototype)
-                          ->setParam(F_TYPE, DBObjectItem::ForeignKey);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::ForeignKey);
     c->registerDependency(B_CHECK_FORM, CLASSMETA(CheckConstraintEditForm), InstanceMode::Prototype)
-                          ->setParam(F_TYPE, DBObjectItem::CheckConstraint);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::CheckConstraint);
     c->registerDependency(B_PRIMARY_KEY_FORM, CLASSMETA(UniqueConstraintEditForm), InstanceMode::Prototype)
-                          ->setParam(F_TYPE, DBObjectItem::PrimaryKey);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::PrimaryKey);
     c->registerDependency(B_UNIQUE_FORM, CLASSMETA(UniqueConstraintEditForm), InstanceMode::Prototype)
-                          ->setParam(F_TYPE, DBObjectItem::UniqueConstraint);
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::UniqueConstraint);
     //Forms
     c->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
     c->registerDependency("generalSettingsForm", CLASSMETA(SettingsForm), InstanceMode::Singleton);

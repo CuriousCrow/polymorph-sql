@@ -28,6 +28,7 @@ SOURCES += \
     firebirddatabase.cpp \
     firebirdfolderitem.cpp \
     firebirdplugin.cpp \
+    firebirdsequence.cpp \
     firebirdtable.cpp
 
 
@@ -35,6 +36,7 @@ HEADERS  += \
     firebirddatabase.h \
     firebirdfolderitem.h \
     firebirdplugin.h \
+    firebirdsequence.h \
     firebirdtable.h
 
 

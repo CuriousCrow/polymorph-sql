@@ -79,7 +79,7 @@ AbstractDatabaseEditForm *Core::objectForm(const QString &driver, DBObjectItem::
     AbstractDatabaseEditForm* form = dependency<AbstractDatabaseEditForm>(p);
     if (form)
         return form;
-    p.remove(F_DRIVER_NAME);
+    p.insert(F_DRIVER_NAME, DRIVER_BASE);
     return dependency<AbstractDatabaseEditForm>(p);
 }
 

@@ -3,6 +3,7 @@
 #include "firebirdfolderitem.h"
 #include "firebirddatabase.h"
 #include "firebirdtable.h"
+#include "firebirdsequence.h"
 
 
 FirebirdPlugin::FirebirdPlugin(QObject *parent) : IocPlugin(parent)
@@ -29,6 +30,9 @@ bool FirebirdPlugin::registerPlugin(DependencyContainer *c)
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Folder);
   c->registerDependency(new DependencyMeta("firebirdTableItem", CLASSMETA(FirebirdTable), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Table);
+  c->registerDependency(new DependencyMeta("firebirdSequenceItem", CLASSMETA(FirebirdSequence), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Sequence);
+
   return true;
 }
 

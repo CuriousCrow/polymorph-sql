@@ -26,6 +26,7 @@ SOURCES += \
 #Forms
     $$PWD/forms/queryparamsform.cpp \
     $$PWD/forms/abstractdatabaseitemform.cpp \
+    $$PWD/forms/simplesequenceeditform.cpp \
     $$PWD/forms/tableeditform.cpp \
     $$PWD/forms/checkconstrainteditform.cpp \
     $$PWD/forms/foreignkeyform.cpp \
@@ -121,6 +122,7 @@ HEADERS  += \
 #Forms
     $$PWD/forms/queryparamsform.h \
     $$PWD/forms/abstractdatabaseitemform.h \
+    $$PWD/forms/simplesequenceeditform.h \
     $$PWD/forms/tableeditform.h \
     $$PWD/forms/checkconstrainteditform.h \
     $$PWD/forms/foreignkeyform.h \
@@ -206,6 +208,7 @@ FORMS    += \
     $$PWD/forms/procedureeditform.ui \
     $$PWD/forms/queryparamsform.ui \
     $$PWD/forms/sequenceeditform.ui \
+    $$PWD/forms/simplesequenceeditform.ui \
     $$PWD/forms/triggereditform.ui \
     $$PWD/forms/uniqueconstrainteditform.ui \
     $$PWD/forms/vieweditdialog.ui \

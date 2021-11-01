@@ -270,9 +270,8 @@ void MainWindow::showEditorForCurrentItem()
 {
   qDebug() << "Request edit form";
   DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  QVariantHash p;
-  p.insert(F_TYPE, currentItem->type());
-  AbstractDatabaseEditForm* editForm = Core::instance()->dependency<AbstractDatabaseEditForm>(p);
+  AbstractDatabaseEditForm* editForm =
+          Core::instance()->objectForm(currentItem->driverName(),(DBObjectItem::ItemType)currentItem->type());
   if (!editForm) {
     QMessageBox::warning(this, TITLE_WARNING, "Edit form isn't supported yet");
     return;

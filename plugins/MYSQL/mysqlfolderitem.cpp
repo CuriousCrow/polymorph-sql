@@ -29,6 +29,9 @@ void MysqlFolderItem::loadChildren()
     case DBObjectItem::View:
         sql = "select table_name name from information_schema.tables where table_schema = '#databaseName#' and table_type = 'VIEW'";
         break;
+    case DBObjectItem::Sequence:
+        sql = "SELECT TABLE_NAME name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#databaseName#' and AUTO_INCREMENT is not null";
+        break;
     default:
         sql = "";
     }

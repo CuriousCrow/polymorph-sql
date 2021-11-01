@@ -20,9 +20,8 @@ void ShowItemEditorAction::doAction()
     if (!currentItem)
         return;
 
-    QVariantHash p;
-    p.insert(F_TYPE, currentItem->type());
-    AbstractDatabaseEditForm* editForm = _core->dependency<AbstractDatabaseEditForm>(p);
+    AbstractDatabaseEditForm* editForm =
+            _core->objectForm(currentItem->driverName(), (DBObjectItem::ItemType)currentItem->type());
     if (!editForm) {
       QMessageBox::warning(nullptr, TITLE_WARNING, "Edit form isn't supported yet");
       return;

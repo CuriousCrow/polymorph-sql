@@ -7,14 +7,16 @@ SOURCES += \
     $$PWD/mysqldatabase.cpp \
     $$PWD/mysqlfolderitem.cpp \
     $$PWD/mysqlplugin.cpp \
-    $$PWD/mysqltable.cpp
+    $$PWD/mysqltable.cpp \
+    $$PWD/mysqlsequence.cpp
 
 
 HEADERS  += \
     $$PWD/mysqldatabase.h \
     $$PWD/mysqlfolderitem.h \
     $$PWD/mysqlplugin.h \
-    $$PWD/mysqltable.h
+    $$PWD/mysqltable.h \
+    $$PWD/mysqlsequence.h
 
 
 #FORMS    += \
