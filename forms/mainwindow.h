@@ -68,7 +68,7 @@ protected:
   //Update connection comboboxes
   void refreshConnectionList();
   //Update object list for completer
-  void refreshQueryEditorAssistance();
+  void refreshQueryEditorAssistance(DBObjectItem* item);
 
   void showItemInfoWidget(DBObjectItem* dbItem);
   void openTableEditor(DBSelectableItem* tableItem);

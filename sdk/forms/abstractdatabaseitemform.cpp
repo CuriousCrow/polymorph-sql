@@ -4,7 +4,7 @@
 
 
 AbstractDatabaseEditForm::AbstractDatabaseEditForm(QWidget *parent, Qt::WindowFlags f)
-  : QDialog(parent, f)
+  : NotifiableDialog(parent, f)
 {
     setWindowModality(Qt::ApplicationModal);
 }

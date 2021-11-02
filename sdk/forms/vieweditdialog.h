@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QDataWidgetMapper>
-#include <QDebug>
 #include <QModelIndex>
 #include "abstractdatabaseitemform.h"
 
@@ -28,8 +27,12 @@ private slots:
 
   // AbstractDatabaseEditForm interface
 public:
-  void objectToForm();
-  void formToObject();
+  void objectToForm() override;
+  void formToObject() override;
+
+  // NotifiableDialog interface
+protected:
+  virtual void localEvent(LocalEvent *event) override;
 };
 
 #endif // VIEWEDITDIALOG_H

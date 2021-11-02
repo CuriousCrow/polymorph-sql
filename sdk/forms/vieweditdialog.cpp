@@ -2,6 +2,7 @@
 #include "ui_vieweditdialog.h"
 #include "../objects/appconst.h"
 #include <QMessageBox>
+#include <QDebug>
 
 ViewEditDialog::ViewEditDialog() :
   AbstractDatabaseEditForm(nullptr),
@@ -48,4 +49,9 @@ void ViewEditDialog::formToObject()
 {
   _objItem->setFieldValue(F_CAPTION, ui->edtName->text());
   _objItem->setFieldValue(F_QUERY_TEXT, ui->edtQueryText->toPlainText());
+}
+
+void ViewEditDialog::localEvent(LocalEvent *event)
+{
+  qDebug() << "View edit dialog event:" << event->type();
 }

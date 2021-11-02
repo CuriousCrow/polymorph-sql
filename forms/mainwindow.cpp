@@ -298,7 +298,7 @@ void MainWindow::dropCurrentDatabaseObject()
     if (res.isSuccess()) {
       _ds->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                                  ui->tvDatabaseStructure->currentIndex().parent());
-      refreshQueryEditorAssistance();
+      LocalEventNotifier::postLocalEvent(DbSchemaChangeEvent, "");
     }
     else {
       QMessageBox::warning(this, TITLE_ERROR, "Delete operation failed: " + res.description());
@@ -333,7 +333,7 @@ void MainWindow::saveDatabaseChanges()
     }
     newDatabaseItem->submit();
     _ds->structureModel()->appendItem(newDatabaseItem);
-    refreshQueryEditorAssistance();
+    LocalEventNotifier::postLocalEvent(DbSchemaChangeEvent, "");
   }
   else if (action == AbstractDatabaseEditForm::Edit) {
     //Nothing needs to be done
@@ -353,11 +353,11 @@ void MainWindow::saveObjectChanges()
       DBObjectItem* newItem = editForm->objItem();
       qDebug() << "appendItem():" << folderItem->objectName();
       _ds->structureModel()->appendItem(newItem, folderItem);
-      refreshQueryEditorAssistance();
     }
     else if (action == AbstractDatabaseEditForm::Edit) {
-      refreshQueryEditorAssistance();
+      //Nothing yet
     }
+    LocalEventNotifier::postLocalEvent(DbSchemaChangeEvent, "");
 }
 
 DBObjectItem *MainWindow::itemByIndex(QModelIndex index)
@@ -379,8 +379,8 @@ void MainWindow::refreshConnectionList()
   }
 }
 
-void MainWindow::refreshQueryEditorAssistance()
-{
+void MainWindow::refreshQueryEditorAssistance(DBObjectItem* item)
+{  
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
     QueryEditorWindow* editor = dynamic_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)
@@ -429,7 +429,11 @@ void MainWindow::localEvent(LocalEvent *event)
     removeTabsByItemUrl(event->url());
     _ds->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                                      ui->tvDatabaseStructure->currentIndex().parent());
-    refreshQueryEditorAssistance();
+    refreshQueryEditorAssistance(nullptr);
+  }
+  else if (event->type() == DbSchemaChangeEvent) {
+    //TODO: Update only query editors
+    refreshQueryEditorAssistance(nullptr);
   }
 }
 
