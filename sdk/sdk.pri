@@ -42,6 +42,7 @@ SOURCES += \
     $$PWD/forms/queryeditorwindow.cpp \
     $$PWD/forms/tablebrowserwindow.cpp \
 #Widgets
+  $$PWD/tools/simplesqlcompletersupport.cpp \
     $$PWD/widgets/blobeditor.cpp \
     $$PWD/widgets/itemviewer.cpp \
     $$PWD/widgets/lqueryeditor.cpp \
@@ -138,6 +139,7 @@ HEADERS  += \
     $$PWD/forms/queryeditorwindow.h \
     $$PWD/forms/tablebrowserwindow.h \
 #Widgets
+  $$PWD/tools/simplesqlcompletersupport.h \
     $$PWD/widgets/blobeditor.h \
     $$PWD/widgets/itemviewer.h \
     $$PWD/widgets/lqueryeditor.h \

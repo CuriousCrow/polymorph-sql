@@ -35,6 +35,7 @@
 #include "core/lknowledgebase.h"
 #include "core/sqlhelplookupprovider.h"
 #include "tools/lsqlsyntaxhighlighter.h"
+#include "tools/simplesqlcompletersupport.h"
 
 #include "models/sqlcolumnmodel.h"
 
@@ -110,6 +111,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     //Tools
     c->registerDependency(B_HELPLOOKUP_PROVIDER, CLASSMETA(SqlHelpLookupProvider), InstanceMode::Prototype);
     c->registerDependency(B_SQL_SYNTAX_HIGHLIGHTER, CLASSMETA(LSqlSyntaxHighlighter), InstanceMode::Singleton);
+    c->registerDependency(B_SQL_COMPLETER_SUPPORT, CLASSMETA(SimpleSqlCompleterSupport), InstanceMode::Prototype);
 
     //Models
     c->registerDependency(B_BASE_COLUMN_MODEL, CLASSMETA(SqlColumnModel), InstanceMode::Prototype);

@@ -26,6 +26,7 @@
 #define B_KNOWLEDGE_BASE "kb"
 #define B_HELPLOOKUP_PROVIDER "helpLookupProvider"
 #define B_SQL_SYNTAX_HIGHLIGHTER "sqlSyntaxHighlighter"
+#define B_SQL_COMPLETER_SUPPORT "sqlCompleterSupport"
 
 #define B_BASE_COLUMN_MODEL "baseColumnModel"
 

@@ -8,6 +8,7 @@
 #include "models/jointdbojbectmodel.h"
 #include "tools/ltextcompleter.h"
 #include "tools/lsqlsyntaxhighlighter.h"
+#include "tools/simplesqlcompletersupport.h"
 #include "abstractdatabaseitemform.h"
 
 namespace Ui {
@@ -22,16 +23,11 @@ public:
   Q_INVOKABLE ViewEditDialog();
   ~ViewEditDialog();
 
-  INJECT(DataStore*, ds);
-  Q_INVOKABLE void inject_kb_into_kb(LKnowledgeBase* kb);
+  Q_INVOKABLE void inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport* completerSupport);
 
 private:
   Ui::ViewEditDialog *ui;
-  LKnowledgeBase* _kb;
-  JointDBOjbectModel* _knowledgeModel;
-  LDBObjectTableModel* _objectsModel;
-  LSqlSyntaxHighlighter* _highlighter;
-  LTextCompleter* _completer;
+  SimpleSqlCompleterSupport* _completerSupport;
 
 private slots:
   void on_btnOk_clicked();

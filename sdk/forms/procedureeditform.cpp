@@ -1,6 +1,7 @@
 #include "procedureeditform.h"
 #include "ui_procedureeditform.h"
-
+#include <QTableView>
+#include <QHeaderView>
 #include "../objects/appconst.h"
 
 ProcedureEditForm::ProcedureEditForm() :
@@ -14,6 +15,13 @@ ProcedureEditForm::ProcedureEditForm() :
 ProcedureEditForm::~ProcedureEditForm()
 {
   delete ui;
+}
+
+void ProcedureEditForm::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
+{
+  _completerSupport = completerSupport;
+  _completerSupport->setParent(this);
+  _completerSupport->setWidget(ui->edtSourceCode);
 }
 
 void ProcedureEditForm::reloadTypes()
@@ -30,6 +38,8 @@ void ProcedureEditForm::reloadTypes()
 
 void ProcedureEditForm::objectToForm()
 {
+  _completerSupport->setItem(_objItem);
+
   reloadTypes();
   ui->edtName->setText(_objItem->caption());
   ui->edtSourceCode->setPlainText(_objItem->fieldValue(F_SOURCE_CODE).toString());

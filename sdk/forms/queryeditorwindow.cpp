@@ -26,30 +26,30 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   _resultModel = new QSqlQueryModel(this);
   ui->tvResultSet->setModel(_resultModel);
 
-  _knowledgeModel = new JointDBOjbectModel(this);
-  _knowledgeModel->registerColumn(F_NAME);
-  _knowledgeModel->registerColumn(F_TYPE);
-  _knowledgeModel->registerColumn(F_DESCRIPTION);
-  _knowledgeModel->registerColumn(F_DOC_LINK);
+//  _knowledgeModel = new JointDBOjbectModel(this);
+//  _knowledgeModel->registerColumn(F_NAME);
+//  _knowledgeModel->registerColumn(F_TYPE);
+//  _knowledgeModel->registerColumn(F_DESCRIPTION);
+//  _knowledgeModel->registerColumn(F_DOC_LINK);
 
-  _objectsModel = new LDBObjectTableModel(this);
-  _objectsModel->registerColumn(F_NAME);
-  _objectsModel->registerColumn(F_TYPE);
-  _objectsModel->registerColumn(F_DESCRIPTION);
-  _objectsModel->registerColumn(F_DOC_LINK);
-  _objectsModel->setFixedValue(F_DESCRIPTION, "");
-  _objectsModel->setFixedValue(F_DOC_LINK, "");
+//  _objectsModel = new LDBObjectTableModel(this);
+//  _objectsModel->registerColumn(F_NAME);
+//  _objectsModel->registerColumn(F_TYPE);
+//  _objectsModel->registerColumn(F_DESCRIPTION);
+//  _objectsModel->registerColumn(F_DOC_LINK);
+//  _objectsModel->setFixedValue(F_DESCRIPTION, "");
+//  _objectsModel->setFixedValue(F_DOC_LINK, "");
 
-  _completer = new LTextCompleter(_knowledgeModel, this);
-  QTableView* completerView = new QTableView(this);
-  completerView->horizontalHeader()->hide();
-  completerView->verticalHeader()->hide();
-  completerView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  _completer->setPopup(completerView);
-  _completer->setCaseSensitivity(Qt::CaseInsensitive);
-  _completer->setWidget(ui->teQueryEditor);
-  connect(_completer, SIGNAL(completerRequested(QString)),
-          this, SLOT(onCompleterRequested(QString)));
+//  _completer = new LTextCompleter(_knowledgeModel, this);
+//  QTableView* completerView = new QTableView(this);
+//  completerView->horizontalHeader()->hide();
+//  completerView->verticalHeader()->hide();
+//  completerView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//  _completer->setPopup(completerView);
+//  _completer->setCaseSensitivity(Qt::CaseInsensitive);
+//  _completer->setWidget(ui->teQueryEditor);
+//  connect(_completer, SIGNAL(completerRequested(QString)),
+//          this, SLOT(onCompleterRequested(QString)));
 
   connect(ui->cmbDatabase, SIGNAL(currentIndexChanged(int)),
           this, SLOT(reloadKnowledgeModel()));
@@ -105,6 +105,13 @@ void QueryEditorWindow::inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter *sy
     _highlighter->setDocument(ui->teQueryEditor->document());
 }
 
+void QueryEditorWindow::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
+{
+  _completerSupport = completerSupport;
+  _completerSupport->setParent(this);
+  _completerSupport->setWidget(ui->teQueryEditor);
+}
+
 void QueryEditorWindow::on_aExecuteQuery_triggered()
 {
   if (ui->cmbDatabase->currentIndex() < 0) {
@@ -139,26 +146,12 @@ QString QueryEditorWindow::dbUrl()
   return dbObject()->objectUrl().toString();
 }
 
-DBObjectItem *QueryEditorWindow::dbObject()
+DBDatabaseItem *QueryEditorWindow::dbObject()
 {
   QModelIndex proxyIndex = _activeConnectionModel->index(ui->cmbDatabase->currentIndex(), 0);
   QModelIndex sourceIndex = _activeConnectionModel->mapToSource(proxyIndex);
 
-  return static_cast<DBObjectItem*>(_ds->structureModel()->itemByIndex(sourceIndex));
-}
-
-QString QueryEditorWindow::aliasSource(QString alias)
-{
-  QString aliasPattern = "(?:from|join)\\s+([A-Za-z_]+)\\s+%1\\b";
-  QRegularExpression rx(aliasPattern.arg(alias));
-  rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
-  qDebug() << rx.pattern() << ui->teQueryEditor->toPlainText();
-  QRegularExpressionMatch match = rx.match(ui->teQueryEditor->toPlainText());
-  if (match.hasMatch()) {
-    qDebug() << match.captured() << match.captured(1) << match.captured(2);
-    return match.captured(1);
-  }
-  return alias;
+  return static_cast<DBDatabaseItem*>(_ds->structureModel()->itemByIndex(sourceIndex));
 }
 
 QString QueryEditorWindow::getActiveText()
@@ -188,15 +181,7 @@ QString QueryEditorWindow::generateAlias(QString tableName)
 
 void QueryEditorWindow::reloadKnowledgeModel()
 {
-  DBDatabaseItem* dbObj = static_cast<DBDatabaseItem*>(dbObject());
-  _knowledgeModel->clear();
-
-  _objectsModel->setQuery(dbObj->getAllObjectListSql());
-  _objectsModel->reload(dbObj->connectionName());
-
-  _knowledgeModel->addModel(FOLDER_OBJECTS, _objectsModel);
-  _knowledgeModel->addModel(FOLDER_KEYWORDS, _kb->modelByType(OBJTYPE_KEYWORD, dbObj->driverName()));
-  _knowledgeModel->addModel(FOLDER_FUNCTIONS, _kb->modelByType(OBJTYPE_FUNCTION, dbObj->driverName()));
+  _completerSupport->setDatabaseItem(dbObject());
 }
 
 void QueryEditorWindow::on_aCommit_triggered()
@@ -255,7 +240,7 @@ void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifie
 {
   if (!modifiers.testFlag(Qt::ControlModifier))
     return;
-  QVariantMap dbObj = _objectsModel->rowByName(word);
+  QVariantMap dbObj = _completerSupport->objectsModel()->rowByName(word);
   //If current word is a table/view name then open table browser
   if (!dbObj.isEmpty()) {
     if (dbObj.value(F_TYPE).toString() == OBJTYPE_TABLE) {
@@ -266,35 +251,6 @@ void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifie
       QString url = dbUrl() + DELIMITER + FOLDER_VIEWS + DELIMITER + word;
       LocalEventNotifier::postLocalEvent(ShowObjectEvent, url);
     }
-  }
-}
-
-void QueryEditorWindow::onCompleterRequested(const QString &contextText)
-{
-  qDebug() << "Completer requested:" << contextText;
-  if (contextText.contains(".")) {
-    QString objName = contextText;
-    objName = objName.section(".", 0, 0);
-    objName = aliasSource(objName);
-
-    QVariantMap dbObj = _objectsModel->rowByName(objName);
-    if (!dbObj.isEmpty() && dbObj.value(F_TYPE).toString() == OBJTYPE_TABLE) {
-      qDebug() << "Searching table:" << objName;
-      DBObjectItem* item = _ds->itemByFolderAndName(dbObject(), FOLDER_TABLES, objName.toLower());
-      if (item && item->type() == DBObjectItem::Table) {
-        qDebug() << "Table object found";
-        DBTableItem* tableItem = static_cast<DBTableItem*>(item);
-        tableItem->reloadColumnsModel();
-        _completer->setModel(tableItem->columnsModel());
-        _completer->setMinCompletionPrefixLength(0);
-        _completer->setCompletionColumn(1);
-      }
-    }
-  }
-  else {
-    _completer->setModel(_knowledgeModel);
-    _completer->setMinCompletionPrefixLength(1);
-    _completer->setCompletionColumn(0);
   }
 }
 

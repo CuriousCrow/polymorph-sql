@@ -19,31 +19,11 @@ ViewEditDialog::~ViewEditDialog()
   delete ui;
 }
 
-void ViewEditDialog::inject_kb_into_kb(LKnowledgeBase *kb)
+void ViewEditDialog::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
 {
-  _kb = kb;
-  _knowledgeModel = new JointDBOjbectModel(this);
-  _knowledgeModel->registerColumn(F_NAME);
-  _knowledgeModel->registerColumn(F_TYPE);
-  _knowledgeModel->registerColumn(F_DESCRIPTION);
-  _knowledgeModel->registerColumn(F_DOC_LINK);
-
-  _objectsModel = new LDBObjectTableModel(this);
-  _objectsModel->registerColumn(F_NAME);
-  _objectsModel->registerColumn(F_TYPE);
-  _objectsModel->registerColumn(F_DESCRIPTION);
-  _objectsModel->registerColumn(F_DOC_LINK);
-  _objectsModel->setFixedValue(F_DESCRIPTION, "");
-  _objectsModel->setFixedValue(F_DOC_LINK, "");
-
-  _completer = new LTextCompleter(_knowledgeModel, this);
-  QTableView* completerView = new QTableView(this);
-  completerView->horizontalHeader()->hide();
-  completerView->verticalHeader()->hide();
-  completerView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  _completer->setPopup(completerView);
-  _completer->setCaseSensitivity(Qt::CaseInsensitive);
-  _completer->setWidget(ui->edtQueryText);
+  completerSupport->setParent(this);
+  _completerSupport = completerSupport;
+  _completerSupport->setWidget(ui->edtQueryText);
 }
 
 void ViewEditDialog::on_btnOk_clicked()
@@ -69,14 +49,7 @@ void ViewEditDialog::onUserActionChanged()
 
 void ViewEditDialog::objectToForm()
 {
-  _knowledgeModel->clear();
-
-  DBDatabaseItem* dbObj = _ds->databaseItem(_objItem);
-  _knowledgeModel->addModel(FOLDER_KEYWORDS, _kb->modelByType(OBJTYPE_KEYWORD, dbObj->driverName()));
-  _knowledgeModel->addModel(FOLDER_FUNCTIONS, _kb->modelByType(OBJTYPE_FUNCTION, dbObj->driverName()));
-  _objectsModel->setQuery(dbObj->getAllObjectListSql());
-  _objectsModel->reload(dbObj->connectionName());
-  _knowledgeModel->addModel(FOLDER_OBJECTS, _objectsModel);
+  _completerSupport->setItem(_objItem);
 
   ui->edtName->setText(_objItem->caption());
   ui->edtQueryText->setPlainText(_objItem->fieldValue(F_QUERY_TEXT).toString());
