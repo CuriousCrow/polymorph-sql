@@ -86,6 +86,13 @@ DBObjectItem *DataStore::itemByFolderAndName(DBObjectItem *fromItem, QString fol
   return structureModel()->itemByUrl(folderUrl);
 }
 
+DBDatabaseItem *DataStore::databaseItem(DBObjectItem *item)
+{
+  AppUrl itemUrl = item->objectUrl();
+  AppUrl dbUrl(itemUrl.driver(), itemUrl.database());
+  return static_cast<DBDatabaseItem*>(structureModel()->itemByUrl(dbUrl));
+}
+
 int DataStore::databaseIdFromItem(DBObjectItem *item)
 {
   DBObjectItem* curItem = item;

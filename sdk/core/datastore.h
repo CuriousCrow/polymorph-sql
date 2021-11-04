@@ -19,6 +19,7 @@ public:
   LStructureItemModel* structureModel();
   QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
   DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
+  DBDatabaseItem* databaseItem(DBObjectItem* item);
   int databaseIdFromItem(DBObjectItem* item);
   UniSqlTableModel* historyModel(int dbId);
   //Table state

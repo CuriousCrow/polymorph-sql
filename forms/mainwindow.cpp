@@ -77,18 +77,17 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
   _ds->initRegisteredDatabases();
 
-  qDebug() << "Connect edit forms with handler slot";
+  QStringList modules = Core::instance()->supportedDrivers();
+  qDebug() << "Drivers supported:" << modules;
+  _kb->loadModels(modules);
 
+  qDebug() << "Connect edit forms with handler slot";
   QStringList formBeans = Core::instance()->namesByClass<AbstractDatabaseEditForm>();
   foreach(QString beanName, formBeans) {
       qDebug() << "Form:" << beanName;
       AbstractDatabaseEditForm* editForm = Core::instance()->dependency<AbstractDatabaseEditForm>(beanName);
       connect(editForm, &AbstractDatabaseEditForm::accepted, this, &MainWindow::saveObjectChanges);
   }
-
-  QStringList modules = Core::instance()->supportedDrivers();
-  qDebug() << "Drivers supported:" << modules;
-  _kb->loadModels(modules);
 
   //Showing first column only
   //TODO: create utility methods for hiding columns
