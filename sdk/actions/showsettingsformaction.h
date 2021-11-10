@@ -3,8 +3,10 @@
 
 #include "core/basecontextaction.h"
 #include <QObject>
+#include "core/extensionpoints.h"
+#include "core/extensions.h"
 
-class ShowSettingsFormAction : public BaseContextAction, public MainMenuItem
+class ShowSettingsFormAction : public BaseContextAction, public MainMenuItem, public AbstractExtension
 {
     Q_OBJECT
 public:
@@ -22,6 +24,10 @@ public slots:
     // MainMenuItem interface
 public:
     virtual QStringList menuPath() override;
+
+    // AbstractExtension interface
+public:
+    virtual bool supportsExtensionPoint(const ExtensionPoint &extensionPoint) const override;
 };
 
 #endif // SHOWSETTINGSFORMACTION_H

@@ -34,3 +34,9 @@ QStringList ShowDatabaseExportEditorAction::menuPath()
     path << "Tools";
     return path;
 }
+
+
+bool ShowDatabaseExportEditorAction::supportsExtensionPoint(const ExtensionPoint &extensionPoint) const
+{
+  return extensionPoint.name() == EP_MAINWINDOW_MAINMENU;
+}

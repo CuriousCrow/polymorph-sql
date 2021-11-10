@@ -27,3 +27,9 @@ void AddNewQueryEditorAction::doAction()
     QueryEditorWindow* newQueryEditor = _core->dependency<QueryEditorWindow>(B_QUERY_EDITOR);
     _ds->tabWidget()->addTab(newQueryEditor, tr("Query"));
 }
+
+
+bool AddNewQueryEditorAction::supportsExtensionPoint(const ExtensionPoint &extensionPoint) const
+{
+  return extensionPoint.name() == EP_MAINWINDOW_MAINMENU;
+}

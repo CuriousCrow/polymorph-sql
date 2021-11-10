@@ -42,6 +42,10 @@ private:
   QList<IocPlugin*> _plugins;
   QHash<QString, IocPlugin*> _modules;
   static Core* _singleton;
+
+  // DependencyContainer interface
+public:
+  virtual void newInstanceProccessing(QObject *obj) override;
 };
 
 #define DemalexCore_iid "ru.levolex.demalexcore"

@@ -27,3 +27,9 @@ QStringList ShowSettingsFormAction::menuPath()
     pathList << "Settings";
     return pathList;
 }
+
+
+bool ShowSettingsFormAction::supportsExtensionPoint(const ExtensionPoint &extensionPoint) const
+{
+  return extensionPoint.name() == EP_MAINWINDOW_MAINMENU;
+}

@@ -16,6 +16,7 @@ SOURCES += \
     $$PWD/core/baseusercontext.cpp \
     $$PWD/core/core.cpp \
     $$PWD/core/datastore.cpp \
+    $$PWD/core/extensions.cpp \
     $$PWD/core/localeventnotifier.cpp \
     $$PWD/core/maphelplookupprovider.cpp \
     $$PWD/core/sqlhelplookupprovider.cpp \
@@ -43,6 +44,7 @@ SOURCES += \
     $$PWD/forms/tablebrowserwindow.cpp \
 #Widgets
   $$PWD/tools/simplesqlcompletersupport.cpp \
+  $$PWD/tools/testclasses.cpp \
     $$PWD/widgets/blobeditor.cpp \
     $$PWD/widgets/itemviewer.cpp \
     $$PWD/widgets/lqueryeditor.cpp \
@@ -113,6 +115,8 @@ HEADERS  += \
     $$PWD/core/baseusercontext.h \
     $$PWD/core/core.h \
     $$PWD/core/datastore.h \
+  $$PWD/core/extensionpoints.h \
+    $$PWD/core/extensions.h \
     $$PWD/core/localeventnotifier.h \
     $$PWD/core/maphelplookupprovider.h \
     $$PWD/core/sqlhelplookupprovider.h \
@@ -140,6 +144,7 @@ HEADERS  += \
     $$PWD/forms/tablebrowserwindow.h \
 #Widgets
   $$PWD/tools/simplesqlcompletersupport.h \
+  $$PWD/tools/testclasses.h \
     $$PWD/widgets/blobeditor.h \
     $$PWD/widgets/itemviewer.h \
     $$PWD/widgets/lqueryeditor.h \

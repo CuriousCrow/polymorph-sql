@@ -5,8 +5,10 @@
 #include "core/datastore.h"
 #include "core/core.h"
 #include <QObject>
+#include "core/extensionpoints.h"
+#include "core/extensions.h"
 
-class AddNewQueryEditorAction : public BaseContextAction, public MainMenuItem
+class AddNewQueryEditorAction : public BaseContextAction, public MainMenuItem, public AbstractExtension
 {
     Q_OBJECT
 public:
@@ -25,6 +27,10 @@ public:
     // BaseContextAction interface
 public slots:
     virtual void doAction() override;
+
+    // AbstractExtension interface
+public:
+    virtual bool supportsExtensionPoint(const ExtensionPoint &extensionPoint) const override;
 };
 
 #endif // ADDNEWQUERYEDITORACTION_H

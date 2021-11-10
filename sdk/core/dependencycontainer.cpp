@@ -23,6 +23,11 @@ DependencyContainer::~DependencyContainer()
 
 DependencyMeta *DependencyContainer::registerDependency(DependencyMeta *meta)
 {
+    QString checkResult = dependencyCheck(meta);
+    if (!checkResult.isEmpty()) {
+      qDebug() << "Dependency check failed:" << meta << checkResult;
+      return meta;
+    }
     qDebug() << QString("Registering dependency: %1").arg(meta->toString());
     QStringList classes = meta->ancessors();
     foreach(QString className, classes) {
@@ -151,14 +156,34 @@ QObject *DependencyContainer::dependency(const QString &name)
 
             qDebug() << QString("Inject method %1 result: %2").arg(methodName).arg(injectResult);
         }
-
     }
+    newInstanceProccessing(newObj);
     //Добавить одиночку
     if (meta->mode() == InstanceMode::Singleton) {
         _singletonHash.insert(name, newObj);
     }
     qDebug() << "Dependency" << name << "successfully instatiated" << "\n";
     return newObj;
+}
+
+QString DependencyContainer::dependencyCheck(const DependencyMeta *meta)
+{
+  Q_UNUSED(meta)
+  //By default no dependency check
+  return "";
+}
+
+bool DependencyContainer::dependencyFilter(const DependencyMeta *meta)
+{
+  Q_UNUSED(meta)
+  //By default no filter
+  return true;
+}
+
+void DependencyContainer::newInstanceProccessing(QObject *obj)
+{
+  Q_UNUSED(obj)
+  //By default do nothing
 }
 
 

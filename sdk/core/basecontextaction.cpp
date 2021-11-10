@@ -1,5 +1,5 @@
 #include "basecontextaction.h"
-
+#include "core/extensionpoints.h"
 
 BaseContextAction::BaseContextAction(QObject *parent) : AbstractContextAction(parent)
 {
@@ -29,4 +29,10 @@ BaseItemPopupAction::BaseItemPopupAction(QObject *parent) : BaseContextAction(pa
 void BaseItemPopupAction::updateState()
 {
     setVisible(_supportedTypes.contains(context()->type()));
+}
+
+
+bool BaseItemPopupAction::supportsExtensionPoint(const ExtensionPoint &extensionPoint) const
+{
+  return extensionPoint.name() == EP_MAINWINDOW_STRUCTURE_POPUP;
 }

@@ -35,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  //Extension points
+  _extensionPoints.insert(ExtensionPoint(EP_MAINWINDOW_MAINMENU, CLASS(BaseContextAction), "Mainwindow main menu items", false));
+  _extensionPoints.insert(ExtensionPoint(EP_MAINWINDOW_STRUCTURE_POPUP, CLASS(BaseContextAction), "Mainwindow structure tree items popup menu", false));
+
   //Loading DBMS plugins
   _core = Core::instance(this);
 
@@ -110,35 +114,8 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->tvDatabaseStructure->selectionModel(), &QItemSelectionModel::currentChanged,
           this, &MainWindow::onCurrentItemChanged);
 
-  //Action processing
-  QStringList beanNames = _core->namesByClass(CLASS(BaseContextAction));
-  qDebug() << "Registered actions:" << beanNames;
-  foreach(QString name, beanNames) {
-    BaseContextAction* action = _core->dependency<BaseContextAction>(name);
-    //Main menu
-    if (action->inherits("MainMenuItem")) {
-        QMenu* parentMenu = nullptr;
-        QStringList pathList = (dynamic_cast<MainMenuItem*>(action))->menuPath();
-        foreach(QString section, pathList){
-            if (parentMenu) {
-                parentMenu = parentMenu->addMenu(section);
-            }
-            else {
-                parentMenu = ui->menuBar->addMenu(section);
-            }
-        }
-        if (parentMenu) {
-          parentMenu->addAction(action);
-        }
-        else {
-          ui->menuBar->addAction(action);
-        }
-    }
-//    Items context menu
-    if (action->inherits("BaseItemPopupAction")) {
-        _itemContextMenu->addAction(action);
-    }
-  }
+  //Inject all extensions for MainWindow
+  _core->newInstanceProccessing(this);
 }
 
 MainWindow::~MainWindow()
@@ -443,4 +420,42 @@ void MainWindow::onCurrentItemChanged(const QModelIndex &index)
     _context->setCurrentItem(curItem);
     ui->aEditDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
     ui->aRemoveDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
+}
+
+void MainWindow::injectExtension(ExtensionPoint ep, QObject *e)
+{
+  qDebug() << "Inject extensions for Mainwindow" << e->objectName();
+  if (e->inherits(CLASS(AbstractContextAction))) {
+    if (ep.name() == EP_MAINWINDOW_MAINMENU) {
+      BaseContextAction* action = static_cast<BaseContextAction*>(e);
+      //Main menu
+      if (action->inherits(I_MAINMENU_ITEM)) {
+          QMenu* parentMenu = nullptr;
+          QStringList pathList = (dynamic_cast<MainMenuItem*>(action))->menuPath();
+          foreach(QString section, pathList){
+              if (parentMenu) {
+                  parentMenu = parentMenu->addMenu(section);
+              }
+              else {
+                  parentMenu = ui->menuBar->addMenu(section);
+              }
+          }
+          if (parentMenu) {
+            parentMenu->addAction(action);
+          }
+          else {
+            ui->menuBar->addAction(action);
+          }
+      }
+    }
+    if (ep.name() == EP_MAINWINDOW_STRUCTURE_POPUP) {
+      BaseItemPopupAction* popupAction = dynamic_cast<BaseItemPopupAction*>(e);
+      if (popupAction) {
+        _itemContextMenu->addAction(popupAction);
+      }
+      else {
+        qWarning() << "Cannot inject extension object:" << e->objectName();
+      }
+    }
+  }
 }

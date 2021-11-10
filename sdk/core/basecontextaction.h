@@ -7,6 +7,9 @@
 #include "objects/dbobjectitem.h"
 #include "baseusercontext.h"
 #include "core/core.h"
+#include "core/extensions.h"
+
+#define I_MAINMENU_ITEM "MainMenuItem"
 
 class BaseContextAction : public AbstractContextAction
 {
@@ -20,7 +23,7 @@ public slots:
     virtual void doAction();
 };
 
-class BaseItemPopupAction : public BaseContextAction
+class BaseItemPopupAction : public BaseContextAction, public AbstractExtension
 {
     Q_OBJECT
 public:
@@ -31,6 +34,10 @@ protected:
     // AbstractContextAction interface
 protected slots:
     virtual void updateState() override;
+
+    // AbstractExtension interface
+public:
+    virtual bool supportsExtensionPoint(const ExtensionPoint &extensionPoint) const override;
 };
 
 class MainMenuItem

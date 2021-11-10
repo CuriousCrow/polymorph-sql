@@ -39,6 +39,8 @@
 
 #include "models/sqlcolumnmodel.h"
 
+#include "tools/testclasses.h"
+
 #define BASE_DRIVER ""
 
 SdkPlugin::SdkPlugin(QObject *parent) : IocPlugin(parent)
@@ -152,5 +154,10 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     c->registerDependency("showItemCreateForm", CLASSMETA(ShowCreateFormAction), InstanceMode::Singleton);
     c->registerDependency("showSettingsForm", CLASSMETA(ShowSettingsFormAction), InstanceMode::Singleton);
     c->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
+//    TestExtension* testExtension = new TestExtension();
+//    testExtension->setObjectName("Test extension object");
+//    c->registerSingletonObject(new DependencyMeta("testExtension", CLASSMETA(TestExtension)), testExtension);
+//    c->registerSingletonObject(new DependencyMeta("testItemPopup", CLASSMETA(TestPopupAction)), new TestPopupAction());
+
     return true;
 }

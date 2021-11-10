@@ -13,6 +13,8 @@
 #include "sdk/core/datastore.h"
 #include "sdk/core/core.h"
 #include "sdk/core/lknowledgebase.h"
+#include "core/extensionpoints.h"
+#include "core/extensions.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000
 
@@ -20,7 +22,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public NotifiableWindow
+class MainWindow : public NotifiableWindow, public Extensible
 {
   Q_OBJECT
 
@@ -75,7 +77,11 @@ protected:
 
   // NotifiableWindow interface
 protected:
-  void localEvent(LocalEvent *event);
+  void localEvent(LocalEvent *event) override;
+
+  // Extensible interface
+public:
+  virtual void injectExtension(ExtensionPoint ep, QObject *e) override;
 };
 
 #endif // MAINWINDOW_H

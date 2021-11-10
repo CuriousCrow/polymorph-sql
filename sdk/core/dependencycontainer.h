@@ -81,8 +81,10 @@ public:
         static_assert (std::is_base_of<QObject,T>::value, ERR_ONLY_QOBJECT);
         return static_cast<T*>(dependency(name));
     }
-signals:
-
+protected:
+    virtual QString dependencyCheck(const DependencyMeta* meta);
+    virtual bool dependencyFilter(const DependencyMeta* meta);
+    virtual void newInstanceProccessing(QObject* obj);
 private:
     QHash<QString, DependencyMeta*> _metaByName; //itemByName
     QMultiHash<QString, DependencyMeta*> _metaByClass;

@@ -6,8 +6,10 @@
 #include "core/baseusercontext.h"
 #include "core/core.h"
 #include <QObject>
+#include "core/extensionpoints.h"
+#include "core/extensions.h"
 
-class ShowDatabaseExportEditorAction : public BaseContextAction, public MainMenuItem
+class ShowDatabaseExportEditorAction : public BaseContextAction, public MainMenuItem, public AbstractExtension
 {
     Q_OBJECT
 public:
@@ -26,6 +28,10 @@ public slots:
     // MainMenuItem interface
 public:
     virtual QStringList menuPath() override;
+
+    // AbstractExtension interface
+public:
+    virtual bool supportsExtensionPoint(const ExtensionPoint &extensionPoint) const override;
 };
 
 #endif // SHOWDATABASEEXPORTEDITORACTION_H
