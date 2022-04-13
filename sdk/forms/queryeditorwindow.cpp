@@ -13,6 +13,8 @@
 #include "objects/appconst.h"
 #include "queryhistoryform.h"
 
+
+
 #include <QComboBox>
 
 #include <QStringListModel>
@@ -25,6 +27,11 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
 
   _resultModel = new QSqlQueryModel(this);
   ui->tvResultSet->setModel(_resultModel);
+
+  _keyInterceptor = new KeySequenceInterceptor(this);
+  _keyInterceptor->attachToWidget(ui->teQueryEditor);
+
+  _extensionPoints.insert(ExtensionPoint(EP_QUERYEDITOR_KEYSEQUENCE, CLASS(AbstractKeySequenceHandler), "Test key sequence handler", false));
 
 //  _knowledgeModel = new JointDBOjbectModel(this);
 //  _knowledgeModel->registerColumn(F_NAME);
@@ -293,4 +300,15 @@ void QueryEditorWindow::on_aUpdateParams_triggered()
         paramMap.insert(paramName, "");
     }
     ui->paramsForm->setParams(paramMap);
+}
+
+void QueryEditorWindow::injectExtension(ExtensionPoint ep, QObject *e)
+{
+  qDebug() << "Inject QueryEditor extension:" << e->objectName();
+  if (e->inherits(CLASS(AbstractKeySequenceHandler))) {
+    if (ep.name() == EP_QUERYEDITOR_KEYSEQUENCE) {
+      AbstractKeySequenceHandler* keyHander = static_cast<AbstractKeySequenceHandler*>(e);
+      _keyInterceptor->registerHandler(keyHander);
+    }
+  }
 }

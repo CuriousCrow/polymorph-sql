@@ -105,9 +105,9 @@ QString DBObjectItem::fillSqlPatternWithFields(QString pattern) const
 {
   QString result = pattern;
   foreach(DBObjectField field, fields) {
-    result = result.replace("#" + field.name + ".new#", field.value().toString());
-    result = result.replace("#" + field.name + ".old#", field.oldValue().toString());
-    result = result.replace("#" + field.name + "#", field.value().toString());
+    result = result.replace("#" + field.name + ".new#", varToStr(field.value()));
+    result = result.replace("#" + field.name + ".old#", varToStr(field.oldValue()));
+    result = result.replace("#" + field.name + "#", varToStr(field.value()));
   }
   //Only for already existing objects
   if (!_connectionName.isEmpty()) {
@@ -255,6 +255,16 @@ void DBObjectItem::setFieldValue(int colNumber, QVariant value)
     return;
   }
   fields[colNumber].setValue(value);
+}
+
+QString DBObjectItem::varToStr(QVariant variant) const
+{
+  if (variant.isNull()) {
+    return "null";
+  }
+  else {
+    return variant.toString();
+  }
 }
 
 bool DBObjectItem::setData(int column, QVariant value, int role)

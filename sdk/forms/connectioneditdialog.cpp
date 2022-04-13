@@ -7,6 +7,7 @@
 #include <QStringListModel>
 #include "../core/core.h"
 #include "../objects/appconst.h"
+#include "../utils/messagedialogs.h"
 
 ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
   AbstractDatabaseEditForm(parent),
@@ -42,7 +43,12 @@ void ConnectionEditDialog::on_btnBrowseLocalAddress_clicked()
 
 void ConnectionEditDialog::on_btnTryToConnect_clicked()
 {
-
+  formToObject();
+  DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(_objItem);
+  dbItem->setParentUrl(AppUrl());
+  if (dbItem->createDbConnection()) {
+    MessageDialogs::info(tr("Database successfully connected"));
+  }
 }
 
 void ConnectionEditDialog::on_btnCancel_clicked()
@@ -91,9 +97,9 @@ void ConnectionEditDialog::on_btnCreate_clicked()
   DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(_objItem);
   ActionResult res = dbItem->createDatabase();
   if (res.isSuccess())
-    QMessageBox::information(this, "Information", "Database successfully created");
+    QMessageBox::information(this, TITLE_INFO, tr("Database successfully created"));
   else
-    QMessageBox::critical(this, "Error", res.description());
+    QMessageBox::critical(this, TITLE_ERROR, res.description());
 }
 
 void ConnectionEditDialog::on_btnDrop_clicked()
@@ -102,9 +108,9 @@ void ConnectionEditDialog::on_btnDrop_clicked()
   DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(_objItem);
   ActionResult res = dbItem->dropDatabase();
   if (res.isSuccess())
-    QMessageBox::information(this, "Information", "Database successfully dropped");
+    QMessageBox::information(this, TITLE_INFO, tr("Database successfully dropped"));
   else
-    QMessageBox::critical(this, "Error", res.description());
+    QMessageBox::critical(this, TITLE_ERROR, res.description());
 }
 
 void ConnectionEditDialog::onUserActionChanged()

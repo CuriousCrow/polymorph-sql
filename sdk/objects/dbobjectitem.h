@@ -104,6 +104,7 @@ public:
   static QString baseClassByType(ItemType type);
 private:
   void setFieldValue(int colNumber, QVariant value);
+  QString varToStr(QVariant variant) const;
 
 protected:
   QString _connectionName;

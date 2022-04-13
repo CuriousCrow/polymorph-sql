@@ -31,6 +31,7 @@
 #include "actions/showdatabaseexporteditoraction.h"
 #include "actions/showitemeditoraction.h"
 #include "actions/showsettingsformaction.h"
+#include "actions/queryeditorkeysequences.h"
 
 #include "core/lknowledgebase.h"
 #include "core/sqlhelplookupprovider.h"
@@ -154,6 +155,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     c->registerDependency("showItemCreateForm", CLASSMETA(ShowCreateFormAction), InstanceMode::Singleton);
     c->registerDependency("showSettingsForm", CLASSMETA(ShowSettingsFormAction), InstanceMode::Singleton);
     c->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
+    c->registerDependency("testQueryEditorKey", CLASSMETA(QETestHandler), InstanceMode::Prototype);
 //    TestExtension* testExtension = new TestExtension();
 //    testExtension->setObjectName("Test extension object");
 //    c->registerSingletonObject(new DependencyMeta("testExtension", CLASSMETA(TestExtension)), testExtension);

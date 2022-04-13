@@ -15,10 +15,13 @@
 #include "forms/queryparamsform.h"
 #include "core/datastore.h"
 #include "core/core.h"
+#include "core/extensions.h"
+#include "core/extensionpoints.h"
 #include "core/lknowledgebase.h"
 #include "core/dependencycontainer.h"
 #include "core/sqlhelplookupprovider.h"
 #include "tools/simplesqlcompletersupport.h"
+#include "actions/queryeditorkeysequences.h"
 
 #define STATUS_BAR_TIMEOUT 5000
 
@@ -26,7 +29,7 @@ namespace Ui {
 class QueryEditorWindow;
 }
 
-class QueryEditorWindow : public QMainWindow
+class QueryEditorWindow : public QMainWindow, public Extensible
 {
   Q_OBJECT
 
@@ -75,6 +78,12 @@ private:
   QString getActiveText();
   QString generateAlias(QString tableName);
   QString _lastExecutedQuery;
+
+  KeySequenceInterceptor* _keyInterceptor;
+
+  // Extensible interface
+public:
+  virtual void injectExtension(ExtensionPoint ep, QObject *e) override;
 };
 
 #endif // QUERYEDITORWINDOW_H

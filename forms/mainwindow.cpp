@@ -48,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
   _context = new BaseUserContext(this);
   _kb = new LKnowledgeBase(this);
-
   _core->registerSingletonObject(new DependencyMeta(B_DATA_STORE, CLASSMETA(DataStore)), _ds);
   _core->registerSingletonObject(new DependencyMeta(B_CONTEXT, CLASSMETA(BaseUserContext)), _context);
   _core->registerSingletonObject(new DependencyMeta(B_KNOWLEDGE_BASE, CLASSMETA(LKnowledgeBase)), _kb);

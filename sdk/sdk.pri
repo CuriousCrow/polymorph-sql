@@ -10,6 +10,7 @@ CONFIG(debug, debug|release) {
 
 SOURCES += \
 #Core
+  $$PWD/actions/queryeditorkeysequences.cpp \
     $$PWD/core/abstractcontextaction.cpp \
     $$PWD/core/abstractusercontext.cpp \
     $$PWD/core/basecontextaction.cpp \
@@ -43,8 +44,10 @@ SOURCES += \
     $$PWD/forms/queryeditorwindow.cpp \
     $$PWD/forms/tablebrowserwindow.cpp \
 #Widgets
+  $$PWD/tools/keysequenceinterceptor.cpp \
   $$PWD/tools/simplesqlcompletersupport.cpp \
   $$PWD/tools/testclasses.cpp \
+  $$PWD/utils/messagedialogs.cpp \
     $$PWD/widgets/blobeditor.cpp \
     $$PWD/widgets/itemviewer.cpp \
     $$PWD/widgets/lqueryeditor.cpp \
@@ -109,6 +112,7 @@ SOURCES += \
 HEADERS  += \
     $$PWD/abstractplugin.h \
 #Core
+  $$PWD/actions/queryeditorkeysequences.h \
     $$PWD/core/abstractcontextaction.h \
     $$PWD/core/abstractusercontext.h \
     $$PWD/core/basecontextaction.h \
@@ -143,8 +147,10 @@ HEADERS  += \
     $$PWD/forms/queryeditorwindow.h \
     $$PWD/forms/tablebrowserwindow.h \
 #Widgets
+  $$PWD/tools/keysequenceinterceptor.h \
   $$PWD/tools/simplesqlcompletersupport.h \
   $$PWD/tools/testclasses.h \
+  $$PWD/utils/messagedialogs.h \
     $$PWD/widgets/blobeditor.h \
     $$PWD/widgets/itemviewer.h \
     $$PWD/widgets/lqueryeditor.h \
