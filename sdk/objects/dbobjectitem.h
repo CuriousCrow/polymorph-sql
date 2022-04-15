@@ -66,6 +66,8 @@ public:
   DBObjectItem(QString caption, QObject* parent = nullptr);
   virtual ~DBObjectItem();
   QString connectionName() const;
+
+  void updateUrl();
   void setParentUrl(const AppUrl &url);
   QString driverName() const;
   void deleteChildren();

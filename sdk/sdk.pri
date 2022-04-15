@@ -11,6 +11,7 @@ CONFIG(debug, debug|release) {
 SOURCES += \
 #Core
   $$PWD/actions/queryeditorkeysequences.cpp \
+  $$PWD/actions/switchconnectedaction.cpp \
     $$PWD/core/abstractcontextaction.cpp \
     $$PWD/core/abstractusercontext.cpp \
     $$PWD/core/basecontextaction.cpp \
@@ -113,6 +114,7 @@ HEADERS  += \
     $$PWD/abstractplugin.h \
 #Core
   $$PWD/actions/queryeditorkeysequences.h \
+  $$PWD/actions/switchconnectedaction.h \
     $$PWD/core/abstractcontextaction.h \
     $$PWD/core/abstractusercontext.h \
     $$PWD/core/basecontextaction.h \

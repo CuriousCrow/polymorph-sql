@@ -193,6 +193,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     showEditorForCurrentItem();
     break;
   }
+  emit _context->contextChanged();
 }
 
 void MainWindow::removeTabByIndex(int index)
@@ -409,6 +410,10 @@ void MainWindow::localEvent(LocalEvent *event)
   else if (event->type() == DbSchemaChangeEvent) {
     //TODO: Update only query editors
     refreshQueryEditorAssistance(nullptr);
+  }
+  else if (event->type() == SwitchConnectedEvent) {
+    qDebug() << "Switch connection event";
+    on_tvDatabaseStructure_doubleClicked(ui->tvDatabaseStructure->currentIndex());
   }
 }
 

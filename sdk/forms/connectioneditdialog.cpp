@@ -87,6 +87,7 @@ void ConnectionEditDialog::tryUserAction()
       accept();
     }
     else {
+
       AbstractDatabaseEditForm::tryUserAction();
     }
 }

@@ -33,13 +33,16 @@ void AbstractDatabaseEditForm::tryUserAction()
   }
   else if (userAction() == AbstractDatabaseEditForm::Edit) {
     res = _objItem->updateMe();
+    if (res.isSuccess() && _objItem->fieldModified(F_CAPTION)) {
+      _objItem->updateUrl();
+    }
   }
   if (res.isSuccess()) {
     _objItem->submit();
     accept();
   }
   else if (res.resCode() == ERR_NOT_IMPLEMENTED) {
-    QMessageBox::warning(this, TITLE_ERROR, "Feature not implemented yet");
+    QMessageBox::warning(this, TITLE_ERROR, tr("Feature not implemented yet"));
   }
   else {
     QMessageBox::warning(this, TITLE_ERROR, "Operation failed\r\n" + res.description());

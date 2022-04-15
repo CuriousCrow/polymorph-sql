@@ -14,6 +14,7 @@ const QEvent::Type CloseObjectEvent = static_cast<QEvent::Type>(QEvent::User + 2
 const QEvent::Type InfoMessageEvent = static_cast<QEvent::Type>(QEvent::User + 3);
 const QEvent::Type ItemDeleteEvent = static_cast<QEvent::Type>(QEvent::User + 4);
 const QEvent::Type DbSchemaChangeEvent = static_cast<QEvent::Type>(QEvent::User + 5);
+const QEvent::Type SwitchConnectedEvent = static_cast<QEvent::Type>(QEvent::User + 6);
 
 
 class LocalEvent : public QEvent

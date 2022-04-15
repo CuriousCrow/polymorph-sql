@@ -23,9 +23,8 @@ QString DBObjectItem::connectionName() const
   return _connectionName;
 }
 
-void DBObjectItem::setParentUrl(const AppUrl &url)
+void DBObjectItem::updateUrl()
 {
-  _parentUrl = url;
   AppUrl newUrl = objectUrl();
   _connectionName = newUrl.connection();
   _driverName = newUrl.driver();
@@ -33,6 +32,12 @@ void DBObjectItem::setParentUrl(const AppUrl &url)
   for (int i=0; i<children().count(); i++){
     static_cast<DBObjectItem*>(children().at(i))->setParentUrl(newUrl);
   }
+}
+
+void DBObjectItem::setParentUrl(const AppUrl &url)
+{
+  _parentUrl = url;
+  updateUrl();
 }
 
 QString DBObjectItem::driverName() const

@@ -27,6 +27,7 @@
 #include "actions/exportddltoclipboardaction.h"
 #include "actions/exportdmltoclipboardaction.h"
 #include "actions/reloadfolderitemsaction.h"
+#include "actions/switchconnectedaction.h"
 #include "actions/showcreateformaction.h"
 #include "actions/showdatabaseexporteditoraction.h"
 #include "actions/showitemeditoraction.h"
@@ -152,6 +153,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     c->registerDependency("exportDMLToClipboard", CLASSMETA(ExportDMLToClipboardAction), InstanceMode::Singleton);
     c->registerDependency("showItemEditForm", CLASSMETA(ShowItemEditorAction), InstanceMode::Singleton);
     c->registerDependency("reloadFolderItems", CLASSMETA(ReloadFolderItemsAction), InstanceMode::Singleton);
+    c->registerDependency("switchConnection", CLASSMETA(SwitchConnectedAction), InstanceMode::Singleton);
     c->registerDependency("showItemCreateForm", CLASSMETA(ShowCreateFormAction), InstanceMode::Singleton);
     c->registerDependency("showSettingsForm", CLASSMETA(ShowSettingsFormAction), InstanceMode::Singleton);
     c->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
