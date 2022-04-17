@@ -6,11 +6,13 @@
 DependencyContainer::DependencyContainer(QObject *parent) : QObject(parent)
 {
     qDebug() << "Dependency container constructor";
+    _propertyProvider = new VariantHashPropertyStore();
 }
 
 DependencyContainer::~DependencyContainer()
 {
     qDebug() << "Dependency container destructor";
+    delete _propertyProvider;
 
     while(!_singletonHash.isEmpty()) {
         QStringList keys = _singletonHash.keys();
@@ -29,6 +31,10 @@ DependencyMeta *DependencyContainer::registerDependency(DependencyMeta *meta)
       return meta;
     }
     qDebug() << QString("Registering dependency: %1").arg(meta->toString());
+//    if (contains(meta->name())) {
+//        qDebug() << QString("Overriding previous %1 dependency").arg(meta->name());
+//        removeDependency(meta->name());
+//    }
     QStringList classes = meta->ancessors();
     foreach(QString className, classes) {
         _metaByClass.insert(className, meta);
@@ -48,13 +54,64 @@ DependencyMeta *DependencyContainer::registerSingletonObject(DependencyMeta *met
         qWarning() << "RegisterSingletonObject method only with singleton mode";
         return nullptr;
     }
+    object->setObjectName(meta->name());
     _singletonHash.insert(meta->name(), object);
     return registerDependency(meta);
+}
+
+bool DependencyContainer::contains(const QString &name)
+{
+    return _metaByName.contains(name);
 }
 
 void DependencyContainer::removeSingleton(QString name)
 {
     _singletonHash.remove(name);
+}
+
+void DependencyContainer::removeDependency(QString name)
+{
+    DependencyMeta* meta = _metaByName.value(name);
+    QStringList classes = meta->ancessors();
+    foreach(QString className, classes) {
+        _metaByClass.remove(className, meta);
+    }
+    delete _metaByName.take(name);
+    _singletonHash.remove(name);
+}
+
+void DependencyContainer::setPropertyProvider(AbstractPropertyStore *propertyProvider)
+{
+    delete _propertyProvider;
+    _propertyProvider = propertyProvider;
+}
+
+void DependencyContainer::setErrorOnInjectFail(bool value)
+{
+    _errorOnInjectFail = value;
+}
+
+void DependencyContainer::setPropertyValue(QString propName, QVariant propValue)
+{
+    _propertyProvider->setValue(propName, propValue);
+}
+
+QStringList DependencyContainer::allMetaInfo()
+{
+    QStringList lines;
+    foreach(DependencyMeta* meta, _metaByName) {
+        lines.append(meta->toString());
+    }
+    return lines;
+}
+
+QStringList DependencyContainer::allSingletonInfo()
+{
+    QStringList lines;
+    foreach(QObject* obj, _singletonHash.values()){
+        lines.append(QString("%1: %2").arg(obj->objectName(), obj->metaObject()->className()));
+    }
+    return lines;
 }
 
 QStringList DependencyContainer::namesByClass(QString className)
@@ -94,7 +151,7 @@ QObject *DependencyContainer::dependency(const QString &name)
     DependencyMeta* meta = _metaByName.value(name);
     const QMetaObject* metaObj = meta->metaObj();
 
-    //Если одиночка, то поискать в уже созданных
+    //If Singleton mode, check if already created
     if (meta->mode() == InstanceMode::Singleton) {
         if (_singletonHash.contains(name)) {
             qDebug() << QString("Singleton object found: %1").arg(name);
@@ -142,13 +199,15 @@ QObject *DependencyContainer::dependency(const QString &name)
             else
                 beanName = injectTokens[1];
             QObject* dependencyObj = dependency(beanName);
-            if (!dependencyObj)
+            if (!dependencyObj) {
+                Q_ASSERT_X(!_errorOnInjectFail, "DependencyContainer::dependency()", "Field injection failed. Fix the bug or disable errorOnInjectFail flag.");
                 continue;
+            }
             QString argType = QString::fromLatin1(method.parameterTypes().at(0)).remove("*").trimmed();
 
             if (!dependencyObj->inherits(argType.toLatin1())) {
                 QString errStr = "Bean %1: Inject method %2 expects arg type %3 descedant. Found bean (%4) instead";
-                qCritical() << errStr.arg(name, methodName, argType, beanName, dependencyObj->metaObject()->className());
+                qCritical() << errStr.arg(name).arg(methodName).arg(argType).arg(beanName).arg(dependencyObj->metaObject()->className());
                 continue;
             }
 
@@ -156,9 +215,10 @@ QObject *DependencyContainer::dependency(const QString &name)
 
             qDebug() << QString("Inject method %1 result: %2").arg(methodName).arg(injectResult);
         }
+
     }
     newInstanceProccessing(newObj);
-    //Добавить одиночку
+    //Save singleton object
     if (meta->mode() == InstanceMode::Singleton) {
         _singletonHash.insert(name, newObj);
     }
@@ -184,6 +244,33 @@ void DependencyContainer::newInstanceProccessing(QObject *obj)
 {
   Q_UNUSED(obj)
   //By default do nothing
+}
+
+void DependencyContainer::injectProperties(QObject* obj, const QString &name)
+{
+    Q_ASSERT_X(obj, "DependencyContainer::injectProperties", "Trying to inject properties to NULLPTR");
+
+    for(int i=0; i<obj->metaObject()->propertyCount(); i++) {
+        QString propName = obj->metaObject()->property(i).name();
+        if (propName == "objectName")
+            continue;
+        //Trying to inject bean-specific properties
+        if (!injectProperty(obj, name + "." + propName, propName))
+            injectProperty(obj, propName);
+    }
+}
+
+bool DependencyContainer::injectProperty(QObject *obj, QString propName, QString objPropName)
+{
+    if (objPropName.isEmpty())
+        objPropName = propName;
+    if (_propertyProvider->contains(propName)) {
+        QVariant propValue = _propertyProvider->value(propName);
+        qDebug() << "Injecting property:" << propName << "=" << propValue;
+        obj->setProperty(objPropName.toLatin1(), propValue);
+        return true;
+    }
+    return false;
 }
 
 
@@ -257,4 +344,32 @@ void DependencyMeta::addSuperClass(const QMetaObject *metaObj, QStringList &list
     if (metaObj->superClass()) {
         addSuperClass(metaObj->superClass(), list);
     }
+}
+
+void VariantHashPropertyStore::init(const QVariantHash &props)
+{
+    Q_UNUSED(props)
+}
+
+void VariantHashPropertyStore::setValue(QString propName, QVariant propValue)
+{
+    _propHash.insert(propName, propValue);
+}
+
+bool VariantHashPropertyStore::contains(QString propName)
+{
+    return _propHash.contains(propName);
+}
+
+QVariant VariantHashPropertyStore::value(QString propName)
+{
+    return _propHash.value(propName);
+}
+
+void VariantHashPropertyStore::reset()
+{
+}
+
+AbstractPropertyStore::~AbstractPropertyStore()
+{
 }

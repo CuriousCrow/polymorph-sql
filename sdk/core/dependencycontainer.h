@@ -42,11 +42,37 @@ public:
     bool exactClassMatch(const QString &className) const;
 
     QString toString() const;
+
 private:
     QString _name;
     InstanceMode _instanceMode;
     const QMetaObject* _metaObj;
     void addSuperClass(const QMetaObject *metaObj, QStringList &list) const;
+};
+
+class AbstractPropertyStore
+{
+public:
+    virtual ~AbstractPropertyStore();
+
+    virtual void init(const QVariantHash &props) = 0;
+    virtual void setValue(QString propName, QVariant propValue) = 0;
+    virtual bool contains(QString propName) = 0;
+    virtual QVariant value(QString propName) = 0;
+    virtual void reset() = 0;
+};
+
+class VariantHashPropertyStore : public AbstractPropertyStore
+{
+    // AbstractPropertyProvider interface
+public:
+    virtual void init(const QVariantHash &props) override;
+    virtual void setValue(QString propName, QVariant propValue) override;
+    virtual bool contains(QString propName) override;
+    virtual QVariant value(QString propName) override;
+    virtual void reset() override;
+private:
+    QVariantHash _propHash;
 };
 
 class DependencyContainer : public QObject
@@ -55,11 +81,21 @@ class DependencyContainer : public QObject
 public:
     explicit DependencyContainer(QObject *parent = nullptr);
     virtual ~DependencyContainer();
+    //Registering
     DependencyMeta* registerDependency(DependencyMeta* meta);
     DependencyMeta* registerDependency(QString name, const QMetaObject* metaObj, InstanceMode mode = Singleton);
     DependencyMeta* registerSingletonObject(DependencyMeta* meta, QObject* object);
+    //Management
+    bool contains(const QString &name);
     void removeSingleton(QString name);
-
+    void removeDependency(QString name);
+    //Container settings
+    void setPropertyProvider(AbstractPropertyStore *propertyProvider);
+    void setErrorOnInjectFail(bool value);
+    void setPropertyValue(QString propName, QVariant propValue);
+    //Dependency info
+    QStringList allMetaInfo();
+    QStringList allSingletonInfo();
     QStringList namesByClass(QString className);
 
     QObject* dependency(const QString &className, const QVariantHash &params);
@@ -86,10 +122,13 @@ protected:
     virtual bool dependencyFilter(const DependencyMeta* meta);
     virtual void newInstanceProccessing(QObject* obj);
 private:
+    void injectProperties(QObject* obj, const QString &name = "");
+    bool injectProperty(QObject* obj, QString propName, QString objPropName = "");
     QHash<QString, DependencyMeta*> _metaByName; //itemByName
     QMultiHash<QString, DependencyMeta*> _metaByClass;
-
     QHash<QString, QObject*> _singletonHash; //all instaciated singletons
+    AbstractPropertyStore* _propertyProvider;
+    bool _errorOnInjectFail = true;
 };
 
 #define DependencyContainer_iid "ru.levolex.dependencycontainer"
