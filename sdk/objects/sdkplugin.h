@@ -22,6 +22,7 @@
 #define B_PRIMARY_KEY_FORM "basePrimaryKeyForm"
 #define B_UNIQUE_FORM "baseUniqueForm"
 #define B_QUERY_HISTORY_FORM "queryHistoryForm"
+#define B_TABLE_BROWSER_FORM "tableBrowserForm"
 
 #define B_KNOWLEDGE_BASE "kb"
 #define B_HELPLOOKUP_PROVIDER "helpLookupProvider"
@@ -29,6 +30,8 @@
 #define B_SQL_COMPLETER_SUPPORT "sqlCompleterSupport"
 
 #define B_BASE_COLUMN_MODEL "baseColumnModel"
+
+#define B_TABLE_FILTER_REMOVE_ACTION "removeTableFilter"
 
 class SdkPlugin : public IocPlugin
 {

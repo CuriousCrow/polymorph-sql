@@ -10,18 +10,22 @@
 #include "objects/dbtableitem.h"
 #include "core/datastore.h"
 #include "core/dependencycontainer.h"
+#include "core/extensionpoints.h"
+#include "core/extensions.h"
 
 namespace Ui {
 class TableBrowserWindow;
 }
 
-class TableBrowserWindow : public QMainWindow
+class TableBrowserWindow : public QMainWindow, public Extensible
 {
   Q_OBJECT
 
 public:
-  Q_INVOKABLE TableBrowserWindow(QWidget *parent, DBSelectableItem* tableItem);
+  Q_INVOKABLE TableBrowserWindow(QWidget *parent = Q_NULLPTR);
   ~TableBrowserWindow();
+
+  void init(DBSelectableItem* tableItem);
 
   INJECT(DataStore*, ds)
 
@@ -85,6 +89,10 @@ private:
   void refreshTable();
   void loadColumnsState();
   void resetStateLater();
+
+  // Extensible interface
+public:
+  virtual void injectExtension(ExtensionPoint ep, QObject *e) override;
 };
 
 #endif // TABLEBROWSERWINDOW_H

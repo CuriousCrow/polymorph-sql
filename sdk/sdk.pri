@@ -11,6 +11,7 @@ CONFIG(debug, debug|release) {
 SOURCES += \
 #Core
   $$PWD/actions/queryeditorkeysequences.cpp \
+  $$PWD/actions/removetablefilteraction.cpp \
   $$PWD/actions/switchconnectedaction.cpp \
     $$PWD/core/abstractcontextaction.cpp \
     $$PWD/core/abstractusercontext.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
     $$PWD/core/dependencycontainer.cpp \
     $$PWD/core/lknowledgebase.cpp \
 #Forms
+  $$PWD/extensions/unisqltablemodelaction.cpp \
     $$PWD/forms/queryparamsform.cpp \
     $$PWD/forms/abstractdatabaseitemform.cpp \
     $$PWD/forms/simplesequenceeditform.cpp \
@@ -114,6 +116,7 @@ HEADERS  += \
     $$PWD/abstractplugin.h \
 #Core
   $$PWD/actions/queryeditorkeysequences.h \
+  $$PWD/actions/removetablefilteraction.h \
   $$PWD/actions/switchconnectedaction.h \
     $$PWD/core/abstractcontextaction.h \
     $$PWD/core/abstractusercontext.h \
@@ -131,6 +134,7 @@ HEADERS  += \
     $$PWD/core/dependencycontainer.h \
     $$PWD/core/lknowledgebase.h \
 #Forms
+  $$PWD/extensions/unisqltablemodelaction.h \
     $$PWD/forms/queryparamsform.h \
     $$PWD/forms/abstractdatabaseitemform.h \
     $$PWD/forms/simplesequenceeditform.h \

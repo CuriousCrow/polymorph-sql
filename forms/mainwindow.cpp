@@ -379,9 +379,12 @@ void MainWindow::showItemInfoWidget(DBObjectItem *dbItem)
 void MainWindow::openTableEditor(DBSelectableItem *tableItem)
 {
   QString itemUrl = tableItem->objectUrl().toString();
-  QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
+  TableBrowserWindow* tableWidget = ui->tabWidget->findChild<TableBrowserWindow*>(itemUrl);
   if (!tableWidget){
-    tableWidget = new TableBrowserWindow(this, tableItem);
+    QVariantHash p;
+    tableWidget = Core::instance()->dependency<TableBrowserWindow>(p);
+    tableWidget->init(tableItem);
+        //new TableBrowserWindow(this, tableItem);
     ui->tabWidget->addTab(tableWidget, tableItem->caption());
   }
   ui->tabWidget->setCurrentWidget(tableWidget);

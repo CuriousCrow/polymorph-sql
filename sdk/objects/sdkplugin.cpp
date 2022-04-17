@@ -21,6 +21,7 @@
 #include "forms/databaseexportform.h"
 #include "forms/queryeditorwindow.h"
 #include "forms/queryhistoryform.h"
+#include "forms/tablebrowserwindow.h"
 
 #include "actions/addnewqueryeditoraction.h"
 #include "actions/dropitemobjectaction.h"
@@ -33,6 +34,7 @@
 #include "actions/showitemeditoraction.h"
 #include "actions/showsettingsformaction.h"
 #include "actions/queryeditorkeysequences.h"
+#include "actions/removetablefilteraction.h"
 
 #include "core/lknowledgebase.h"
 #include "core/sqlhelplookupprovider.h"
@@ -145,6 +147,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     c->registerDependency("databaseExportForm", CLASSMETA(DatabaseExportForm), InstanceMode::Singleton);
     c->registerDependency("generalSettingsForm", CLASSMETA(SettingsForm), InstanceMode::Singleton);
     c->registerDependency(B_QUERY_EDITOR, CLASSMETA(QueryEditorWindow), InstanceMode::Prototype);
+    c->registerDependency(B_TABLE_BROWSER_FORM, CLASSMETA(TableBrowserWindow), InstanceMode::Prototype);
     c->registerDependency(B_QUERY_HISTORY_FORM, CLASSMETA(QueryHistoryForm), InstanceMode::Singleton);
     //Actions
     c->registerDependency("databaseExportAction", CLASSMETA(ShowDatabaseExportEditorAction), InstanceMode::Singleton);
@@ -158,6 +161,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     c->registerDependency("showSettingsForm", CLASSMETA(ShowSettingsFormAction), InstanceMode::Singleton);
     c->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
     c->registerDependency("testQueryEditorKey", CLASSMETA(QETestHandler), InstanceMode::Prototype);
+    c->registerDependency(B_TABLE_FILTER_REMOVE_ACTION, CLASSMETA(RemoveTableFilterAction), InstanceMode::Prototype);
 //    TestExtension* testExtension = new TestExtension();
 //    testExtension->setObjectName("Test extension object");
 //    c->registerSingletonObject(new DependencyMeta("testExtension", CLASSMETA(TestExtension)), testExtension);
