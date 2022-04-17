@@ -10,16 +10,17 @@
 #include "utils/eventinterceptors.h"
 #include "core/datastore.h"
 #include "widgets/tablebrowserdelegate.h"
-#include "extensions/unisqltablemodelaction.h"
+#include "extensions/unisqltablefilteraction.h"
 
-TableBrowserWindow::TableBrowserWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::TableBrowserWindow)
+TableBrowserWindow::TableBrowserWindow(DBSelectableItem* tableItem) :
+    QMainWindow(),
+    ui(new Ui::TableBrowserWindow),
+    _tableItem(tableItem)
 {
     qDebug() << "Connections:" << QSqlDatabase::connectionNames();
     ui->setupUi(this);
 
-    _extensionPoints.insert(ExtensionPoint(EP_TABLEBROWSER_FILTER_POPUP, CLASS(UniSqlTableModelAction), "Popup actions in filter list view", false));
+    _extensionPoints.insert(ExtensionPoint(EP_TABLEBROWSER_FILTER_POPUP, CLASS(UniSqlTableFilterAction), "Popup actions in filter list view", false));
 
     _mnuContext = new QMenu(this);
     _mnuContext->addAction(ui->aSetNull);
@@ -33,52 +34,47 @@ TableBrowserWindow::TableBrowserWindow(QWidget *parent) :
     _mnuContext->addAction(ui->aFilterIsNotNull);
 
     _mnuFilterList = new QMenu(this);
-    _mnuFilterList->addAction(ui->aRemoveFilter);
 
     _mnuColumns = new QMenu(this);
-}
 
-void TableBrowserWindow::init(DBSelectableItem *tableItem)
-{
-  _tableItem = tableItem;
-  _tableItem->refresh();
+    _tableItem->refresh();
 
-  ui->tableView->setEditTriggers(_tableItem->type() == DBObjectItem::Table
-                                 ? (QAbstractItemView::SelectedClicked | QAbstractItemView::DoubleClicked)
-                                 : QAbstractItemView::NoEditTriggers);
+    ui->tableView->setEditTriggers(_tableItem->type() == DBObjectItem::Table
+                                   ? (QAbstractItemView::SelectedClicked | QAbstractItemView::DoubleClicked)
+                                   : QAbstractItemView::NoEditTriggers);
 
-  AppUrl url = _tableItem->objectUrl();
-  setObjectName(url.toString());
-  _connectionName = url.connection();
-  _tableName = _tableItem->caption();
-  _sourceModel = new UniSqlTableModel(this, QSqlDatabase::database(_connectionName));
-  connect(_sourceModel, &UniSqlTableModel::error, this, &TableBrowserWindow::onError);
+    AppUrl url = _tableItem->objectUrl();
+    setObjectName(url.toString());
+    _connectionName = url.connection();
+    _tableName = _tableItem->caption();
+    _sourceModel = new UniSqlTableModel(this, QSqlDatabase::database(_connectionName));
+    connect(_sourceModel, &UniSqlTableModel::error, this, &TableBrowserWindow::onError);
 
 
-  loadColumnsState();
+    loadColumnsState();
 
-  refreshTable();
+    refreshTable();
 
-  _proxyModel = new QSortFilterProxyModel(this);
-  _proxyModel->setSourceModel(_sourceModel);
-  ui->tableView->setModel(_proxyModel);
-  ui->tableView->setItemDelegate(new TableBrowserDelegate(_tableItem, this));
-  ui->tableView->horizontalHeader()->setSortIndicatorShown(true);
+    _proxyModel = new QSortFilterProxyModel(this);
+    _proxyModel->setSourceModel(_sourceModel);
+    ui->tableView->setModel(_proxyModel);
+    ui->tableView->setItemDelegate(new TableBrowserDelegate(_tableItem, this));
+    ui->tableView->horizontalHeader()->setSortIndicatorShown(true);
 
-  qDebug() << "TableBrowserWindow" << objectName() << "created";
+    qDebug() << "TableBrowserWindow" << objectName() << "created";
 
-  ui->tableView->horizontalHeader()->setSectionsMovable(true);
+    ui->tableView->horizontalHeader()->setSectionsMovable(true);
 
-  ui->lvFilters->setModel(_sourceModel->filter());
+    ui->lvFilters->setModel(_sourceModel->filter());
 
-  connect(ui->tableView->selectionModel(), &QItemSelectionModel::currentChanged,
-          this, &TableBrowserWindow::onCurrentItemChanged);
+    connect(ui->tableView->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &TableBrowserWindow::onCurrentItemChanged);
 
-  SimpleEventInterceptor* columnMenuInterceptor = new SimpleEventInterceptor(this);
-  columnMenuInterceptor->addEventType(QEvent::ContextMenu);
-  ui->tableView->horizontalHeader()->installEventFilter(columnMenuInterceptor);
-  connect(columnMenuInterceptor, &SimpleEventInterceptor::onEvent,
-          this, &TableBrowserWindow::onHeaderPressed);
+    SimpleEventInterceptor* columnMenuInterceptor = new SimpleEventInterceptor(this);
+    columnMenuInterceptor->addEventType(QEvent::ContextMenu);
+    ui->tableView->horizontalHeader()->installEventFilter(columnMenuInterceptor);
+    connect(columnMenuInterceptor, &SimpleEventInterceptor::onEvent,
+            this, &TableBrowserWindow::onHeaderPressed);
 }
 
 TableBrowserWindow::~TableBrowserWindow()
@@ -212,13 +208,6 @@ void TableBrowserWindow::on_aFilterIsNotNull_triggered()
     _sourceModel->select();
 }
 
-void TableBrowserWindow::on_aRemoveFilter_triggered()
-{
-    int row = ui->lvFilters->currentIndex().row();
-    _sourceModel->filter()->removeFilter(row);
-    _sourceModel->select();
-}
-
 void TableBrowserWindow::on_lvFilters_pressed(const QModelIndex &index)
 {
     Q_UNUSED(index)
@@ -303,8 +292,9 @@ void TableBrowserWindow::injectExtension(ExtensionPoint ep, QObject *e)
   Q_UNUSED(ep)
   qDebug() << "Inject TableBrowserWindow extension:" << e->objectName();
 
-  if (e->inherits(CLASS(UniSqlTableModelAction))) {
-    UniSqlTableModelAction* action = static_cast<UniSqlTableModelAction*>(e);
+  if (e->inherits(CLASS(UniSqlTableFilterAction))) {
+    UniSqlTableFilterAction* action = static_cast<UniSqlTableFilterAction*>(e);
+    action->setView(ui->lvFilters);
     _mnuFilterList->addAction(action);
   }
 }

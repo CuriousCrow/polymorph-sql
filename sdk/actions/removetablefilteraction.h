@@ -3,10 +3,10 @@
 
 #include <QAction>
 #include <QObject>
-#include "extensions/unisqltablemodelaction.h"
+#include "extensions/unisqltablefilteraction.h"
 #include "core/extensions.h"
 
-class RemoveTableFilterAction : public UniSqlTableModelAction, public AbstractExtension
+class RemoveTableFilterAction : public UniSqlTableFilterAction, public AbstractExtension
 {
   Q_OBJECT
 public:

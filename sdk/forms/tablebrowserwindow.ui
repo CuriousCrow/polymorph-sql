@@ -176,11 +176,6 @@
     <string>IS NOT NULL</string>
    </property>
   </action>
-  <action name="aRemoveFilter">
-   <property name="text">
-    <string>Remove filter</string>
-   </property>
-  </action>
   <action name="aLoadFromFile">
    <property name="text">
     <string>Load from file</string>

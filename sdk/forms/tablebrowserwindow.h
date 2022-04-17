@@ -22,10 +22,8 @@ class TableBrowserWindow : public QMainWindow, public Extensible
   Q_OBJECT
 
 public:
-  Q_INVOKABLE TableBrowserWindow(QWidget *parent = Q_NULLPTR);
+  Q_INVOKABLE TableBrowserWindow(DBSelectableItem* tableItem);
   ~TableBrowserWindow();
-
-  void init(DBSelectableItem* tableItem);
 
   INJECT(DataStore*, ds)
 
@@ -59,8 +57,6 @@ private slots:
   void on_aFilterIsNull_triggered();
 
   void on_aFilterIsNotNull_triggered();
-
-  void on_aRemoveFilter_triggered();
 
   void on_lvFilters_pressed(const QModelIndex &index);
 

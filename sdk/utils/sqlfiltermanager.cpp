@@ -55,6 +55,7 @@ void SqlFilterManager::removeFilter(int idx)
   beginRemoveRows(QModelIndex(), idx, idx);
   _filters.removeAt(idx);
   endRemoveRows();
+  emit filterChanged();
 }
 
 void SqlFilterManager::clear()

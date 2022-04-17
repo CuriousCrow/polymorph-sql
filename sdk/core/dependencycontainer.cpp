@@ -177,7 +177,7 @@ QObject *DependencyContainer::dependency(const QString &name, const QObject *arg
         else if (ctor.parameterCount() > 0) {
             QString argType = QString::fromLatin1(ctor.parameterTypes().at(0)).remove("*").trimmed();
             paramType = ctor.parameterTypes().at(0);
-            if (arg->metaObject()->className() == argType) {
+            if (arg->inherits(argType.toLatin1())) {
                 hasMatchConstructor = true;
                 break;
             }

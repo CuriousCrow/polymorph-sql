@@ -2,9 +2,9 @@
 #include <QDebug>
 #include "core/extensionpoints.h"
 
-RemoveTableFilterAction::RemoveTableFilterAction() : UniSqlTableModelAction()
+RemoveTableFilterAction::RemoveTableFilterAction() : UniSqlTableFilterAction()
 {
-  setText(tr("Remove filter 2"));
+  setText(tr("Remove filter"));
   setObjectName("RemoveTableFilterAction instance");
   connect(this, &RemoveTableFilterAction::triggered, this, &RemoveTableFilterAction::doAction);
 }
@@ -19,6 +19,9 @@ bool RemoveTableFilterAction::supportsExtensionPoint(const ExtensionPoint &exten
 }
 
 void RemoveTableFilterAction::doAction()
-{
-  qDebug() << "Hello from RemoveTableFilterAction";
+{ 
+  int row = _listView->currentIndex().row();
+  if (row >= 0) {
+    _filterModel->removeFilter(row);
+  }
 }

@@ -49,6 +49,8 @@ public:
   void removeFilter(int idx);
   void clear();
   QString whereClause();
+signals:
+  void filterChanged();
 private:
   QList<SqlFilter> _filters;
   void addFilter(SqlFilter &filter);

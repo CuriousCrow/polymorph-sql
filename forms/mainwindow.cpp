@@ -382,9 +382,7 @@ void MainWindow::openTableEditor(DBSelectableItem *tableItem)
   TableBrowserWindow* tableWidget = ui->tabWidget->findChild<TableBrowserWindow*>(itemUrl);
   if (!tableWidget){
     QVariantHash p;
-    tableWidget = Core::instance()->dependency<TableBrowserWindow>(p);
-    tableWidget->init(tableItem);
-        //new TableBrowserWindow(this, tableItem);
+    tableWidget = Core::instance()->dependency<TableBrowserWindow>(p, tableItem);
     ui->tabWidget->addTab(tableWidget, tableItem->caption());
   }
   ui->tabWidget->setCurrentWidget(tableWidget);

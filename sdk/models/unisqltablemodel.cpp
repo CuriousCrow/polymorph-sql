@@ -10,6 +10,8 @@ UniSqlTableModel::UniSqlTableModel(QObject *parent, QSqlDatabase db)
   _db = db.isValid() ? db : QSqlDatabase::database();
   _query = QSqlQuery(_db);
   _filterManager = new SqlFilterManager(this);
+  connect(_filterManager, &SqlFilterManager::filterChanged,
+          this, &UniSqlTableModel::select);
 }
 
 bool UniSqlTableModel::setTable(QString tableName)
