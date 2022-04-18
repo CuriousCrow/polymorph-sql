@@ -190,7 +190,7 @@ QObject *DependencyContainer::dependency(const QString &name, const QObject *arg
     }
 
     QObject* newObj = metaObj->newInstance(QGenericArgument(paramType, &arg));
-    newObj->setObjectName(meta->name());
+//    newObj->setObjectName(meta->name());
     injectProperties(newObj, name);
     if (!newObj) {
         qWarning() << "Cant instantiate object:" << name;
