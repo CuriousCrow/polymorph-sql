@@ -18,12 +18,12 @@ DBTableItem::~DBTableItem()
 
 void DBTableItem::reloadColumnsModel()
 {
-  //Необходимо переопределять для каждой отдельной СУБД
+  //Must be overrided for single one DBMS
 }
 
 void DBTableItem::reloadConstraintsModel()
 {
-  //Необходимо переопределить для каждой отдельной СУБД
+  //Must be overrided for single one DBMS
 }
 
 SqlColumnModel *DBTableItem::columnsModel()
@@ -122,7 +122,7 @@ ActionResult DBTableItem::updateMe()
     }
     //    qDebug() << "Table" << fieldValue("caption").toString() << "modified";
     //    qDebug() << _columnsModel->columnChanges();
-    return ActionResult(RES_BASE_ERROR, "Раньше возвращалось false. Надо проверить");
+    return ActionResult(RES_BASE_ERROR, tr("Once returned 'false'. Should be verified"));
   }
 }
 

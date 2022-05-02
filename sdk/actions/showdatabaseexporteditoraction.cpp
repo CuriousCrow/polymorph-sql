@@ -3,7 +3,7 @@
 
 ShowDatabaseExportEditorAction::ShowDatabaseExportEditorAction() : BaseContextAction(nullptr)
 {
-    setText("Export database");
+    setText(tr("Export database"));
     setProperty("menuPath", "Tools");
 }
 

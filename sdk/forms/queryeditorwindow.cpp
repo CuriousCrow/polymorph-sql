@@ -122,7 +122,7 @@ void QueryEditorWindow::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterS
 void QueryEditorWindow::on_aExecuteQuery_triggered()
 {
   if (ui->cmbDatabase->currentIndex() < 0) {
-      updateStatusMessage("Database need to be selected");
+      updateStatusMessage(tr("Database need to be selected"));
       return;
   }
 

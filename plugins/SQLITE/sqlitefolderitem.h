@@ -4,6 +4,7 @@
 #include "objects/foldertreeitem.h"
 #include <QObject>
 
+/** Sqlite folder item */
 class SqliteFolderItem : public FolderTreeItem
 {
     Q_OBJECT

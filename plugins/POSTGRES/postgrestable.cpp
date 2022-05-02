@@ -86,7 +86,7 @@ ActionResult PostgresTable::updateMe()
     SqlColumn toCol = changes[fromCol];
     //    qDebug() << "Changes:" << fromCol << toCol;
     if (fromCol.type() == NoType) {
-      //Добавление колонки
+      //Add column
       qDebug() << "Add col:" << toCol;
       QString sql = "ALTER TABLE \"#caption.new#\" ADD COLUMN %1";
       QString colDef = columnDef(toCol);
@@ -96,7 +96,7 @@ ActionResult PostgresTable::updateMe()
         return res;
     }
     else if (toCol.type() == NoType) {
-      //Удаление колонки
+      //Drop column
       qDebug() << "Drop col:" << fromCol;
       QString sql = "ALTER TABLE \"#caption.new#\" DROP COLUMN %1";
       QString preparedSql = fillSqlPatternWithFields(sql).arg(fromCol.name());
@@ -105,7 +105,7 @@ ActionResult PostgresTable::updateMe()
         return res;
     }
     else {
-      //Изменения колонки
+      //Change column
       qDebug() << "Col modify:" << fromCol << "to" << toCol;
       QStringList difs;
       QString pattern;
@@ -147,7 +147,7 @@ ActionResult PostgresTable::updateMe()
 
 void PostgresTable::reloadColumnsModel()
 {
-  //Новая, еще не вставленная таблица
+  //New table (not yet commited)
   if (connectionName().isEmpty())
     return;
   _columnsModel->clear();
@@ -177,7 +177,7 @@ void PostgresTable::reloadColumnsModel()
 
 void PostgresTable::reloadConstraintsModel()
 {
-  //Новая, еще не вставленная таблица
+  //New table (not yet commited)
   if (connectionName().isEmpty())
     return;
   _constraintsModel->clear();

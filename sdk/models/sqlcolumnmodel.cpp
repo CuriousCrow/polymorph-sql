@@ -111,7 +111,7 @@ SqlColumnModel::EditType SqlColumnModel::editType()
 
 bool SqlColumnModel::hasOnlyIntegerPK()
 {
-//        //TODO: Надо разобраться
+//        //TODO: should be fugured out
 //  int pkCount = 0;
 //  int intPkCount = 0;
 //  for(int i=0; i<rowCount(); i++) {

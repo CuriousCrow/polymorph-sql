@@ -62,7 +62,7 @@ void LSqlSyntaxHighlighter::highlightKeywords(const QString &text)
         while(i.hasNext()) {
             QRegularExpressionMatch match = i.next();
             int capNum = (rx.captureCount() == 0) ? 0 : 1;
-            //применение формата на найденную подстроку
+            //apply format on found string
             setFormat(match.capturedStart(capNum), match.capturedLength(capNum), format);
         }
     }
@@ -86,7 +86,7 @@ void LSqlSyntaxHighlighter::highlightFunctions(const QString &text)
     while(i.hasNext()) {
         QRegularExpressionMatch match = i.next();
         int capNum = (rx.captureCount() == 0) ? 0 : 1;
-        //применение формата на найденную подстроку
+        //apply format on found string
         setFormat(match.capturedStart(capNum), match.capturedLength(capNum), format);
     }
   }

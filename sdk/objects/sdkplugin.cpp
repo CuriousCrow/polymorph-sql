@@ -67,7 +67,7 @@ QList<DBObjectItem::ItemType> SdkPlugin::supportedTypes()
 
 QString SdkPlugin::title()
 {
-    return "Base SDK database support";
+    return tr("Base SDK database support");
 }
 
 QString SdkPlugin::author()

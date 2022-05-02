@@ -65,11 +65,11 @@ ActionResult SqliteTableItem::updateMe()
   if (res.isSuccess())
     return res;
 
-  //Создание новой таблицы
+  //Create new table
   QString sql = createTableQuery("tempTable");
   SqlQueryHelper::execSql(sql, connectionName());
 
-  //Перенос данных сохранившихся колонок в новую таблицу
+  //Move remained columns into new table
   QHash<QString, QString> colNames = _columnsModel->permanentColNames();
   QStringList oldNames;
   QStringList newNames;
@@ -92,7 +92,7 @@ ActionResult SqliteTableItem::updateMe()
   if (!res.isSuccess())
     return res;
 
-  //Переименовываем новую таблицу обратно
+  //Rename temporary table back
   sql = "ALTER TABLE tempTable RENAME TO #caption.new#";
   preparedSql = fillSqlPatternWithFields(sql);
   res = execSql(preparedSql, connectionName());

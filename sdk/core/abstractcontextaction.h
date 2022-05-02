@@ -9,6 +9,7 @@
 
 class AbstractContextAction : public QAction
 {
+  Q_OBJECT
 public:
     AbstractContextAction(QObject* parent = nullptr);
     void setContext(AbstractUserContext* context);

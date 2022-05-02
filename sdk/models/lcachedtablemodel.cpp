@@ -17,7 +17,7 @@ void LCachedTableModel::addRec(LVariantRec rec)
   QString idxField = _fieldNames.at(_idColIdx);
   QVariant id = rec.value(idxField);
 
-  //Если поле идентификатора не заполнено, генерируем значение
+  //Generate id if empty
   if (!id.isValid()) {
     id = _defIdGen++;
     rec.setValue(idxField, id);
@@ -111,12 +111,12 @@ void LCachedTableModel::revert()
 {
   beginResetModel();
   foreach (QVariant id, _changes.keys()) {
-    //Удаленная строка
+    //Removed row
     if (!_idList.contains(id)) {
-      //Возвращаем в индекс
+      //Return to index
       _idList.append(id);
     }
-    //Добавленная строка
+    //Added row
     if (!_rows.contains(id)) {
       _idList.removeOne(id);
     }

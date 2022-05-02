@@ -197,7 +197,7 @@ bool UniSqlTableModel::submitById(qlonglong id)
 
       int row = _rowIndex.indexOf(id);
       _rowIndex.replace(row, newId);
-      //Если за счет триггеров данные вставляемой строки изменились
+      //If inserted row data changed by trigger
       emit dataChanged(index(row, 0), index(row, rowCount()-1));
       emit headerDataChanged(Qt::Vertical, row, row);
     }
@@ -260,7 +260,7 @@ bool UniSqlTableModel::updateRowInTable(const QSqlRecord &oldValues, const QSqlR
 bool UniSqlTableModel::insertRowInTable(const QSqlRecord &values)
 {
   QSqlRecord vals(values);
-  //Удаляем поля со значением NULL
+  //Remove fields with NULL-values
   for(int idx=values.count()-1; idx >= 0; idx--) {
     if (!values.field(idx).defaultValue().isNull() && values.field(idx).value().isNull())
       vals.remove(idx);
@@ -291,7 +291,7 @@ bool UniSqlTableModel::revertAll()
   QHashIterator<qlonglong, QSqlRecord> it(_changesHash);
   while(it.hasNext()) {
     it.next();
-    //Добавленные но не сохраненные строки
+    //Added but not submitted rows
     if (it.key() < 0) {
       _rowIndex.removeOne(it.key());
     }

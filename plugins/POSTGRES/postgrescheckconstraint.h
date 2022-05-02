@@ -4,6 +4,7 @@
 #include <QObject>
 #include "objects/dbcheckconstraint.h"
 
+/** PostgreSQL Check constraint item */
 class PostgresCheckConstraint : public DBCheckConstraint
 {
   Q_OBJECT

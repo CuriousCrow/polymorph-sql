@@ -3,6 +3,7 @@
 
 #include "objects/dbdatabaseitem.h"
 
+/** PostgreSQL database item */
 class PostgresDatabase : public DBDatabaseItem
 {
   Q_OBJECT

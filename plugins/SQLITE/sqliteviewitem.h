@@ -4,6 +4,7 @@
 #include <QObject>
 #include "objects/dbviewitem.h"
 
+/** SQLite view item */
 class SqliteViewItem : public DBViewItem
 {
   Q_OBJECT

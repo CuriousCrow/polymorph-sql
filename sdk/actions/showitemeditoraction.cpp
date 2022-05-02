@@ -4,7 +4,7 @@
 
 ShowItemEditorAction::ShowItemEditorAction() : BaseItemPopupAction()
 {
-    setText("Edit object");
+    setText(tr("Edit object"));
     _supportedTypes.insert(DBObjectItem::Table);
     _supportedTypes.insert(DBObjectItem::View);
     _supportedTypes.insert(DBObjectItem::Procedure);
@@ -23,7 +23,7 @@ void ShowItemEditorAction::doAction()
     AbstractDatabaseEditForm* editForm =
             _core->objectForm(currentItem->driverName(), (DBObjectItem::ItemType)currentItem->type());
     if (!editForm) {
-      QMessageBox::warning(nullptr, TITLE_WARNING, "Edit form isn't supported yet");
+      QMessageBox::warning(nullptr, TITLE_WARNING, tr("Edit form isn't supported yet"));
       return;
     }
     currentItem->refresh();

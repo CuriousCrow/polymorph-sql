@@ -6,6 +6,7 @@
 
 class QueryParamTableModel : public QAbstractTableModel
 {
+  Q_OBJECT
 public:
     QueryParamTableModel(QObject* parent = nullptr);
     void setParams(QVariantMap params);

@@ -37,7 +37,7 @@ TableEditForm::~TableEditForm()
 void TableEditForm::objectToForm()
 {
   QString tableName = _objItem->caption();
-  setWindowTitle("Table editor: " + tableName);
+  setWindowTitle(tr("Table editor: ") + tableName);
   ui->lineEdit->setText(tableName);
   DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   tableItem->reloadColumnsModel();
@@ -77,7 +77,7 @@ void TableEditForm::on_btnDelete_clicked()
     static_cast<DBTableItem*>(_objItem)->columnsModel()->removeRow(selectedRow);
   }
   else {
-    QMessageBox::warning(this, tr(TITLE_WARNING), "Please, select the column you want to drop");
+    QMessageBox::warning(this, tr(TITLE_WARNING), tr("Please, select the column you want to drop"));
   }
 }
 
@@ -140,7 +140,7 @@ void TableEditForm::onShowConstraintEditor(QString namePrefix, DBObjectItem::Ite
     newItemObj->setParentUrl(tableItem->objectUrl());
     constraintForm->setObjItem(newItemObj);
     constraintForm->objectToForm();
-    constraintForm->setWindowTitle("New constraint");
+    constraintForm->setWindowTitle(tr("New constraint"));
     connect(constraintForm, &ForeignKeyForm::accepted,
             this, &TableEditForm::onNewConstraintApply);
     connect(constraintForm, &ForeignKeyForm::rejected,
@@ -171,22 +171,22 @@ void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
   DBObjectItem* obj;
   if (constType == "FOREIGN KEY") {
     form = new ForeignKeyForm(this);
-    form->setWindowTitle("Foreign key editor: " + constName);
+    form->setWindowTitle(tr("Foreign key editor: ") + constName);
     obj = tableItem->newForeignKey();
   }
   else if (constType == "PRIMARY KEY") {
     form = new UniqueConstraintEditForm(this);
-    form->setWindowTitle("Primary key editor: " + constName);
+    form->setWindowTitle(tr("Primary key editor: ") + constName);
     obj = tableItem->newPrimaryKey();
   }
   else if (constType == "UNIQUE") {
     form = new UniqueConstraintEditForm(this);
-    form->setWindowTitle("Unique constraint editor: " + constName);
+    form->setWindowTitle(tr("Unique constraint editor: ") + constName);
     obj = tableItem->newUniqueConstraint();
   }
   else if (constType == "CHECK") {
     form = new CheckConstraintEditForm(this);
-    form->setWindowTitle("Check constraint editor: " + constName);
+    form->setWindowTitle(tr("Check constraint editor: ") + constName);
     obj = tableItem->newCheckConstraint();
   }
   else {

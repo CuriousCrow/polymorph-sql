@@ -49,14 +49,14 @@ void LQueryEditor::dropEvent(QDropEvent *event)
             setPlainText(FileUtils::fileToString(path, true));
         }
         else {
-            emit infoMessage("Trying to drop unsupported file type");
+            emit infoMessage(tr("Trying to drop unsupported file type"));
         }
     }
     else if (event->mimeData()->hasText()) {
         setPlainText(event->mimeData()->text());
     }
     else {
-        emit infoMessage("Trying to drop unsupported mime type");
+        emit infoMessage(tr("Trying to drop unsupported mime type"));
     }
 }
 

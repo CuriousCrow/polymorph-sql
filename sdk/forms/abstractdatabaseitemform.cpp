@@ -45,7 +45,7 @@ void AbstractDatabaseEditForm::tryUserAction()
     QMessageBox::warning(this, TITLE_ERROR, tr("Feature not implemented yet"));
   }
   else {
-    QMessageBox::warning(this, TITLE_ERROR, "Operation failed\r\n" + res.description());
+    QMessageBox::warning(this, TITLE_ERROR, tr("Operation failed\r\n") + res.description());
   }
 }
 

@@ -2,7 +2,7 @@
 
 AbstractContextAction::AbstractContextAction(QObject* parent) : QAction(parent)
 {
-    setText("Copy");
+    setText(tr("Copy"));
 }
 
 void AbstractContextAction::setContext(AbstractUserContext *context)

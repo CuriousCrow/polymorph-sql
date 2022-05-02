@@ -66,7 +66,7 @@ QVariant JointDBOjbectModel::data(const QModelIndex &index, int role) const
   if (!index.isValid())
     return QVariant();
   if (role == Qt::DisplayRole || role == Qt::EditRole){
-    //На всякий случай
+    //Just in case
     if (_models.isEmpty())
       return QVariant();
     int rest = index.row();

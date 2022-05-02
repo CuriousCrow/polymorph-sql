@@ -4,6 +4,7 @@
 #include <QObject>
 #include "objects/dbprimarykey.h"
 
+/** PostgreSQL Primary Key */
 class PostgresPrimaryKey : public DBPrimaryKey
 {
   Q_OBJECT

@@ -4,6 +4,7 @@
 #include <QObject>
 #include "objects/dbsequenceitem.h"
 
+/** PostgreSQL sequence item */
 class PostgresSequence : public DBSequenceItem
 {
   Q_OBJECT

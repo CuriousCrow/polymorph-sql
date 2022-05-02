@@ -4,6 +4,7 @@
 #include "objects/foldertreeitem.h"
 #include <QObject>
 
+/** PostgreSQL folder item */
 class PostgresFolderItem : public FolderTreeItem
 {
     Q_OBJECT

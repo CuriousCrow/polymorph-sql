@@ -4,7 +4,7 @@
 
 DropItemObjectAction::DropItemObjectAction() : BaseItemPopupAction(nullptr)
 {
-    setText("Delete");
+    setText(tr("Delete"));
     _supportedTypes.insert(DBObjectItem::View);
     _supportedTypes.insert(DBObjectItem::Table);
     _supportedTypes.insert(DBObjectItem::Procedure);
@@ -17,7 +17,7 @@ void DropItemObjectAction::doAction()
     DBObjectItem* obj = context()->currentItem();
     ActionResult result = obj->deleteMe();
     if (!result.isSuccess()) {
-        qDebug() << "Ne shmogla";
+        qDebug() << "Delete item failed";
     }
     LocalEventNotifier::postLocalEvent(ItemDeleteEvent, obj->objectUrl().toString());
 }

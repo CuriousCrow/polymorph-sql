@@ -16,7 +16,7 @@ FirebirdTable::~FirebirdTable()
 
 void FirebirdTable::reloadColumnsModel()
 {
-  //Новая, еще не вставленная таблица
+  //New but not inserted table
   if (connectionName().isEmpty())
     return;
   _columnsModel->clear();

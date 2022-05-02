@@ -37,7 +37,7 @@ ActionResult MysqlTableItem::updateMe()
   foreach (SqlColumn fromCol, keys) {
     SqlColumn toCol = changes[fromCol];
     if (fromCol.type() == NoType) {
-      //Добавление колонки
+      //Add column
       qDebug() << "Add col:" << toCol;
       QString sql = "alter table #caption.new# add column %1";
       QString colDef = columnDef(toCol);
@@ -45,14 +45,14 @@ ActionResult MysqlTableItem::updateMe()
       result = execSql(preparedSql, connectionName());
     }
     else if (toCol.type() == NoType) {
-      //Удаление колонки
+      //Drop column
       qDebug() << "Drop col:" << fromCol;
       QString sql = "alter table #caption.old# drop column %1";
       QString preparedSql = fillSqlPatternWithFields(sql).arg(fromCol.name());
       result = execSql(preparedSql, connectionName());
     }
     else {
-      //Изменения колонки
+      //Change column
       qDebug() << "Col modify:" << fromCol << "to" << toCol;
       QString sql = "alter table #caption.old# change column %1 %2";
       QString preparedSql = fillSqlPatternWithFields(sql).arg(fromCol.name(), columnDef(toCol));
@@ -61,7 +61,7 @@ ActionResult MysqlTableItem::updateMe()
     if (!result.isSuccess())
         break;
   }
-  //Переименование таблицы
+  //Rename table
   if (result.isSuccess() && isModified() && field("caption").isModified()) {
     QString sql = "alter table #caption.old# rename to #caption.new#";
     QString preparedSql = fillSqlPatternWithFields(sql);
@@ -75,7 +75,7 @@ ActionResult MysqlTableItem::updateMe()
 
 void MysqlTableItem::reloadColumnsModel()
 {
-  //Новая, еще не вставленная таблица
+  //New table (not yet added)
   if (connectionName().isEmpty())
     return;
   _columnsModel->clear();

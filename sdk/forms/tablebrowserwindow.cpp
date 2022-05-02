@@ -246,7 +246,7 @@ void TableBrowserWindow::refreshColumnsMenu()
 {
     _mnuColumns->clear();
     qDebug() << "Refresh columns menu";
-    _mnuColumns->addSection("Columns");
+    _mnuColumns->addSection(tr("Columns"));
     for(int col=0; col<_sourceModel->columnCount(); col++) {
         QString title = _sourceModel->headerData(col, Qt::Horizontal).toString();
         QAction* colAct = _mnuColumns->addAction(title);

@@ -4,6 +4,7 @@
 #include "objects/dbtableitem.h"
 #include <QSqlField>
 
+/** PostgreSQL table item */
 class PostgresTable : public DBTableItem
 {
   Q_OBJECT
