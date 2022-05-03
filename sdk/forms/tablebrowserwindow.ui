@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TableBrowserWindow</class>
+ <widget class="QMainWindow" name="TableBrowserWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QTableView" name="tableView">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="sortingEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="3,1">
+        <item>
+         <widget class="QListView" name="lvFilters">
+          <property name="maximumSize">
+           <size>
+            <width>16777214</width>
+            <height>16777214</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="ItemViewer" name="itemViewer">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>150</height>
+           </size>
+          </property>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="aAddRow"/>
+   <addaction name="aDeleteRow"/>
+   <addaction name="aSubmit"/>
+   <addaction name="aRevert"/>
+   <addaction name="separator"/>
+   <addaction name="aRefresh"/>
+   <addaction name="aResetFilters"/>
+   <addaction name="separator"/>
+   <addaction name="aResetState"/>
+  </widget>
+  <action name="aAddRow">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/table_row_add.png</normaloff>:/icons/table_row_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add row</string>
+   </property>
+   <property name="toolTip">
+    <string>Add row</string>
+   </property>
+  </action>
+  <action name="aDeleteRow">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/table_row_delete.png</normaloff>:/icons/table_row_delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete row</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete row</string>
+   </property>
+  </action>
+  <action name="aSubmit">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/commit.png</normaloff>:/icons/commit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Submit changes</string>
+   </property>
+   <property name="toolTip">
+    <string>Submit changes</string>
+   </property>
+  </action>
+  <action name="aRevert">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/rollback.png</normaloff>:/icons/rollback.png</iconset>
+   </property>
+   <property name="text">
+    <string>Revert changes</string>
+   </property>
+   <property name="toolTip">
+    <string>Revert changes</string>
+   </property>
+  </action>
+  <action name="aRefresh">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>Refresh data</string>
+   </property>
+  </action>
+  <action name="aSetNull">
+   <property name="text">
+    <string>Set NULL</string>
+   </property>
+  </action>
+  <action name="aEqualFilter">
+   <property name="text">
+    <string>EQUAL (=)</string>
+   </property>
+  </action>
+  <action name="aResetFilters">
+   <property name="text">
+    <string>Reset</string>
+   </property>
+  </action>
+  <action name="aNotEqualFilter">
+   <property name="text">
+    <string>NOT EQUAL (&lt;&gt;)</string>
+   </property>
+  </action>
+  <action name="aGreaterThanFilter">
+   <property name="text">
+    <string>GREATER THAN (&gt;)</string>
+   </property>
+  </action>
+  <action name="aLessThanFilter">
+   <property name="text">
+    <string>LESS THAN (&lt;)</string>
+   </property>
+  </action>
+  <action name="aFilterIsNull">
+   <property name="text">
+    <string>IS NULL</string>
+   </property>
+  </action>
+  <action name="aFilterIsNotNull">
+   <property name="text">
+    <string>IS NOT NULL</string>
+   </property>
+  </action>
+  <action name="aLoadFromFile">
+   <property name="text">
+    <string>Load from file</string>
+   </property>
+  </action>
+  <action name="aResetState">
+   <property name="text">
+    <string>Reset state</string>
+   </property>
+   <property name="toolTip">
+    <string>Reset columns state</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ItemViewer</class>
+   <extends>QStackedWidget</extends>
+   <header>widgets/itemviewer.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

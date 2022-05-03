@@ -1,5 +1,6 @@
 #include "core.h"
 #include <QDebug>
+#include "extensions.h"
 
 #define COREBEAN "core"
 
@@ -79,6 +80,48 @@ AbstractDatabaseEditForm *Core::objectForm(const QString &driver, DBObjectItem::
     AbstractDatabaseEditForm* form = dependency<AbstractDatabaseEditForm>(p);
     if (form)
         return form;
-    p.remove(F_DRIVER_NAME);
+    p.insert(F_DRIVER_NAME, DRIVER_BASE);
     return dependency<AbstractDatabaseEditForm>(p);
+}
+
+DBObjectItem *Core::newObjInstance(const QString &driver, DBObjectItem::ItemType itemType)
+{
+    QString className = DBObjectItem::baseClassByType(itemType);
+    qDebug() << "New object instance" << driver << className;
+    QVariantHash p;
+    p.insert(F_DRIVER_NAME, driver);
+    p.insert(F_TYPE, itemType);
+    DBObjectItem* itemObj = static_cast<DBObjectItem*>(dependency(className, p));
+    if (itemObj)
+        return itemObj;
+    p.remove(F_DRIVER_NAME);
+    return static_cast<DBObjectItem*>(dependency(className, p));
+}
+
+
+void Core::newInstanceProccessing(QObject *obj)
+{
+  //Extension injection for Extensible dependencies
+  if (obj->inherits(EXTENSIBLE_CLASS)) {
+    qDebug() << "Extensible object detected:" << obj->objectName();
+    Extensible* extensibleObj = dynamic_cast<Extensible*>(obj);
+    QSet<ExtensionPoint> extPoints = extensibleObj->extensionPoints();
+    foreach(ExtensionPoint extPoint, extPoints) {
+      qDebug() << "Search extension for extension point:" << extPoint.name();
+      QStringList extensionNames = namesByClass(extPoint.extensionClass());
+      foreach(QString name, extensionNames) {
+        QObject* plainObj = dependency(name);
+        if (plainObj->inherits(EXTENSION_CLASS)) {
+          AbstractExtension* extensionObj = dynamic_cast<AbstractExtension*>(plainObj);
+          if (extensionObj && extensionObj->supportsExtensionPoint(extPoint)) {
+            extensibleObj->injectExtension(extPoint, plainObj);
+          }
+        }
+        else {
+          qWarning() << plainObj->objectName() << "does not implement AbstractExtension";
+        }
+
+      }
+    }
+  }
 }

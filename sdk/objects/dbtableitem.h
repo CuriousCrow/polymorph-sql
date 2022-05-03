@@ -2,8 +2,9 @@
 #define DBTABLEITEM_H
 
 #include "dbselectableitem.h"
-#include "../models/sqlcolumnmodel.h"
-#include "../models/variantmaptablemodel.h"
+#include "models/sqlcolumnmodel.h"
+#include "models/variantmaptablemodel.h"
+#include "core/lknowledgebase.h"
 #include "dbforeignkey.h"
 #include "dbuniqueconstraint.h"
 #include "dbcheckconstraint.h"
@@ -15,6 +16,9 @@ class DBTableItem : public DBSelectableItem
 public:
   Q_INVOKABLE DBTableItem();
   virtual ~DBTableItem() Q_DECL_OVERRIDE;
+
+  INJECT(LKnowledgeBase*, kb)
+
   virtual void reloadColumnsModel();
   virtual void reloadConstraintsModel();
 
@@ -29,8 +33,7 @@ public:
   DBForeignKey* loadForeignKey(QString name);
 
   int colTypeFromString(QString name);
-  void addDefaultColumn();
-//  QHash<int, QString> getColumnTypesHash();
+  void addDefaultColumn();  
 
   // DBObjectItem interface
 public:

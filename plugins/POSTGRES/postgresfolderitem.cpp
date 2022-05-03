@@ -3,7 +3,7 @@
 #include "objects/appconst.h"
 #include "core/core.h"
 #include "core/iocplugin.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 
 PostgresFolderItem::PostgresFolderItem() : FolderTreeItem()
 {
@@ -30,7 +30,7 @@ void PostgresFolderItem::loadSequences()
 {
     qDebug() << DRIVER_POSTGRES << "loading sequences";
     QString sql = "select sequence_name \"name\" from information_schema.sequences";
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
       DBSequenceItem* sequenceItem = _core->dependencyForDriver<DBSequenceItem>(driverName());
       sequenceItem->setParent(this);
@@ -44,7 +44,7 @@ void PostgresFolderItem::loadTriggers()
     qDebug() << DRIVER_POSTGRES << "loading triggers";
     QString sql = "SELECT distinct(trigger_name) \"name\" "
                   "FROM information_schema.triggers order by 1";
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
       DBTriggerItem* triggerItem = _core->dependencyForDriver<DBTriggerItem>(driverName());
       triggerItem->setParent(this);
@@ -58,7 +58,7 @@ void PostgresFolderItem::loadProcedures()
     qDebug() << DRIVER_POSTGRES << "loading procedures";
     QString sql = "SELECT distinct(routine_name) \"name\" FROM information_schema.routines "
                   "WHERE routine_type='FUNCTION' and specific_schema='public' order by 1";
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()) {
       DBProcedureItem* procedureItem = _core->dependencyForDriver<DBProcedureItem>(driverName());
       procedureItem->setParent(this);

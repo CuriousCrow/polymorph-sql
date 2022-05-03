@@ -2,9 +2,10 @@
 #define ABSTRACTDATABASEITEMFORM_H
 
 #include <QDialog>
+#include "../core/localeventnotifier.h"
 #include "../objects/dbobjectitem.h"
 
-class AbstractDatabaseEditForm : public QDialog
+class AbstractDatabaseEditForm : public NotifiableDialog
 {
   Q_OBJECT
 public:

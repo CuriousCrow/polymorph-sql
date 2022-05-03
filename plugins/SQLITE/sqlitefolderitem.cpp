@@ -3,7 +3,7 @@
 #include "objects/dbsequenceitem.h"
 #include "objects/appconst.h"
 #include "core/core.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 
 
 SqliteFolderItem::SqliteFolderItem() : FolderTreeItem()
@@ -31,7 +31,7 @@ void SqliteFolderItem::loadChildren()
 void SqliteFolderItem::loadSequences()
 {
   QString sql = "SELECT name, seq currentValue FROM sqlite_sequence";
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
   while (resultSet.next()) {
     DBSequenceItem* sequenceItem = _core->dependencyForDriver<DBSequenceItem>(driverName());
     sequenceItem->setFieldValue(F_CAPTION, resultSet.value(F_NAME));
@@ -44,7 +44,7 @@ void SqliteFolderItem::loadSequences()
 void SqliteFolderItem::loadTriggers()
 {
   QString sql = "select name name from sqlite_master where type = 'trigger'";
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
   while (resultSet.next()) {
     DBTriggerItem* triggerItem = _core->dependencyForDriver<DBTriggerItem>(driverName());
     triggerItem->setParent(this);

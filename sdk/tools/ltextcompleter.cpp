@@ -13,7 +13,6 @@ LTextCompleter::LTextCompleter(QObject *parent): QCompleter(parent)
 LTextCompleter::LTextCompleter(QAbstractItemModel *model, QObject *parent):
   QCompleter(model, parent)
 {
-  qDebug() << model->rowCount();
 }
 
 LTextCompleter::LTextCompleter(const QStringList &completions, QObject *parent):
@@ -29,7 +28,7 @@ bool LTextCompleter::tryToComplete(QString prefix, bool replaceIfOneOption)
 {
   if (prefix.length() >= _minCompletionPrefixLength){
     setCompletionPrefix(prefix);
-    //Если есть только один вариант, то сразу его подставляем
+    //Use single one option
     if (replaceIfOneOption && completionCount() == 1) {
       QTextCursor cursor = textCursor();
       cursor.movePosition(QTextCursor::StartOfWord);
@@ -41,7 +40,7 @@ bool LTextCompleter::tryToComplete(QString prefix, bool replaceIfOneOption)
     }
     QRect rect = QRect(cursorRect().bottomLeft(), QSize(_popupWidth, 5));
     complete(rect);
-    //Если вариантов несколько, выделяем первый
+    //Select first option
     if (completionCount() > 0) {
       QAbstractItemModel* popupModel = popup()->model();
       popup()->setCurrentIndex(popupModel->index(0, completionColumn()));

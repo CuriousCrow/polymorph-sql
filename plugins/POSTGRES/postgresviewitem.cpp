@@ -1,5 +1,5 @@
 #include "postgresviewitem.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "objects/appconst.h"
 #include <QDebug>
 
@@ -16,7 +16,7 @@ bool PostgresViewItem::refresh()
       "from INFORMATION_SCHEMA.views where table_schema='public' "
       "and table_name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_QUERY_TEXT, resultSet.value(F_QUERY_TEXT));
     submit();

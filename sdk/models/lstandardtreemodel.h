@@ -42,6 +42,10 @@ public:
   virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   virtual bool removeRows(int row, int count, const QModelIndex &parent);
+
+private:
+  //User written alternative to QObject::findChild method
+  QObject* findChildByName(const QObject* parent, const QString &name) const;
 };
 
 #endif // LSTANDARDTREEMODEL_H

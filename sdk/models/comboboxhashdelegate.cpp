@@ -27,8 +27,10 @@ QWidget *ComboboxHashDelegate::createEditor(QWidget *parent, const QStyleOptionV
   Q_UNUSED(index)
   qDebug() << "create delegate editor";
   QComboBox* combobox = new QComboBox(parent);
-  foreach (int key, _itemsHash.keys()) {
-    combobox->addItem(_itemsHash.value(key), key);
+  QHashIterator<int, QString> i(_itemsHash);
+  while(i.hasNext()) {
+    i.next();
+    combobox->addItem(i.value(), i.key());
   }
   return combobox;
 }

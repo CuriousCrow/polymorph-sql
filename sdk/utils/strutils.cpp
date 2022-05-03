@@ -10,8 +10,10 @@ StrUtils::StrUtils(){}
 
 QString StrUtils::fillValues(QString templ, QMap<QString, QString> valuesMap)
 {
-    foreach (QString key, valuesMap.keys()) {
-        QString val = valuesMap.value(key);
+    QMapIterator<QString, QString> it(valuesMap);
+    while(it.hasNext()) {
+        QString key = it.next().key();
+        QString val = it.value();
         if (val.isEmpty()) {
             val = "NULL";
         }
@@ -77,9 +79,10 @@ QString StrUtils::replaceTag(QString inStr, QString tagName, QString templ)
                 replaceStr = replaceStr.replace("#" + link + "#", "неизв.");
             }
         }
-
-        foreach (QString name, attrHash.keys()) {
-            replaceStr = replaceStr.replace("#" + name + "#", attrHash.value(name));
+        QHashIterator<QString, QString> it(attrHash);
+        while(it.hasNext()) {
+            it.next();
+            replaceStr = replaceStr.replace("#" + it.key() + "#", it.value());
         }
         QString cap = match.captured();
         int capLength = cap.length();

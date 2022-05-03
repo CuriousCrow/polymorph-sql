@@ -4,6 +4,7 @@
 #include <QObject>
 #include "objects/dbuniqueconstraint.h"
 
+/** PostgreSQL Unique constraint item */
 class PostgresUniqueConstraint : public DBUniqueConstraint
 {
   Q_OBJECT

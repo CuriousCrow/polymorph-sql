@@ -2,17 +2,12 @@
 #define DBDATABASEITEM_H
 
 #include "dbobjectitem.h"
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "dbtableitem.h"
 #include "dbprocedureitem.h"
 #include "dbsequenceitem.h"
 #include "dbtriggeritem.h"
 #include "dbviewitem.h"
-
-#define DRIVER_FIREBIRD "QIBASE"
-#define DRIVER_SQLITE "QSQLITE"
-#define DRIVER_POSTGRES "QPSQL"
-#define DRIVER_MYSQL "QMYSQL"
 
 class DBDatabaseItem : public DBObjectItem
 {

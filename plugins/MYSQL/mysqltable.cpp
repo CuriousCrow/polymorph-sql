@@ -1,5 +1,5 @@
 #include "mysqltable.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QDebug>
 #include "objects/appurl.h"
 #include "objects/appconst.h"
@@ -7,8 +7,6 @@
 MysqlTableItem::MysqlTableItem()
   : DBTableItem()
 {
-  _columnsModel = new SqlColumnModel();
-
   _constraintsModel = new VariantMapTableModel();
   _constraintsModel->registerColumn(F_TYPE, tr("Type"));
   _constraintsModel->registerColumn(F_NAME, tr("Name"));
@@ -35,10 +33,11 @@ ActionResult MysqlTableItem::updateMe()
 
   ActionResult result;
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
-  foreach (SqlColumn fromCol, changes.keys()) {
+  QList<SqlColumn> keys = changes.keys();
+  foreach (SqlColumn fromCol, keys) {
     SqlColumn toCol = changes[fromCol];
     if (fromCol.type() == NoType) {
-      //Добавление колонки
+      //Add column
       qDebug() << "Add col:" << toCol;
       QString sql = "alter table #caption.new# add column %1";
       QString colDef = columnDef(toCol);
@@ -46,14 +45,14 @@ ActionResult MysqlTableItem::updateMe()
       result = execSql(preparedSql, connectionName());
     }
     else if (toCol.type() == NoType) {
-      //Удаление колонки
+      //Drop column
       qDebug() << "Drop col:" << fromCol;
       QString sql = "alter table #caption.old# drop column %1";
       QString preparedSql = fillSqlPatternWithFields(sql).arg(fromCol.name());
       result = execSql(preparedSql, connectionName());
     }
     else {
-      //Изменения колонки
+      //Change column
       qDebug() << "Col modify:" << fromCol << "to" << toCol;
       QString sql = "alter table #caption.old# change column %1 %2";
       QString preparedSql = fillSqlPatternWithFields(sql).arg(fromCol.name(), columnDef(toCol));
@@ -62,7 +61,7 @@ ActionResult MysqlTableItem::updateMe()
     if (!result.isSuccess())
         break;
   }
-  //Переименование таблицы
+  //Rename table
   if (result.isSuccess() && isModified() && field("caption").isModified()) {
     QString sql = "alter table #caption.old# rename to #caption.new#";
     QString preparedSql = fillSqlPatternWithFields(sql);
@@ -76,13 +75,13 @@ ActionResult MysqlTableItem::updateMe()
 
 void MysqlTableItem::reloadColumnsModel()
 {
-  //Новая, еще не вставленная таблица
+  //New table (not yet added)
   if (connectionName().isEmpty())
     return;
   _columnsModel->clear();
   QString sql = "SELECT table_schema, table_name, column_name, column_type, data_type, column_default, character_maximum_length, is_nullable, numeric_precision, numeric_scale, column_key, extra FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='#databaseName#' AND table_name = '#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
     SqlColumn col(query.value("column_name").toString(), colTypeFromString(query.value("data_type").toString()));
     col.setDefaultValue(query.value("column_default"));

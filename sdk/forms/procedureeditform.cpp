@@ -1,8 +1,8 @@
 #include "procedureeditform.h"
 #include "ui_procedureeditform.h"
-
+#include <QTableView>
+#include <QHeaderView>
 #include "../objects/appconst.h"
-#include "../core/qknowledgebase.h"
 
 ProcedureEditForm::ProcedureEditForm() :
   AbstractDatabaseEditForm(nullptr),
@@ -17,19 +17,29 @@ ProcedureEditForm::~ProcedureEditForm()
   delete ui;
 }
 
+void ProcedureEditForm::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
+{
+  _completerSupport = completerSupport;
+  _completerSupport->setParent(this);
+  _completerSupport->setWidget(ui->edtSourceCode);
+}
+
 void ProcedureEditForm::reloadTypes()
 {
-  QHash<int, QString> types = QKnowledgeBase::kb()->typesHash(_objItem->driverName());
+  QHash<int, QString> types = _kb->typesHash(_objItem->driverName());
   ui->cmbResultType->clear();
   ui->cmbResultType->addItem("void");
   ui->cmbResultType->addItem("trigger");
-  foreach (QString type, types.values()) {
+  QStringList values = types.values();
+  foreach (QString type, values) {
     ui->cmbResultType->addItem(type.toLower());
   }
 }
 
 void ProcedureEditForm::objectToForm()
 {
+  _completerSupport->setItem(_objItem);
+
   reloadTypes();
   ui->edtName->setText(_objItem->caption());
   ui->edtSourceCode->setPlainText(_objItem->fieldValue(F_SOURCE_CODE).toString());

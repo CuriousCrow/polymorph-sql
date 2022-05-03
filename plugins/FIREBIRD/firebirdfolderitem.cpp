@@ -1,5 +1,5 @@
 #include "firebirdfolderitem.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "core/core.h"
 #include "objects/dbprocedureitem.h"
 #include "objects/dbtriggeritem.h"
@@ -34,18 +34,18 @@ void FirebirdFolderItem::loadChildren()
         return;
     }
 
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
         DBObjectItem* childItem = nullptr;
         switch (childrenType()) {
         case DBObjectItem::Sequence:
-            childItem = Core::instance()->dependencyForDriver<DBSequenceItem>(driverName());
+            childItem = _core->dependencyForDriver<DBSequenceItem>(driverName());
             break;
         case DBObjectItem::Procedure:
-            childItem = Core::instance()->dependencyForDriver<DBProcedureItem>(driverName());
+            childItem = _core->dependencyForDriver<DBProcedureItem>(driverName());
             break;
         case DBObjectItem::Trigger:
-            childItem = Core::instance()->dependencyForDriver<DBTriggerItem>(driverName());
+            childItem = _core->dependencyForDriver<DBTriggerItem>(driverName());
             break;
         default:
             break;

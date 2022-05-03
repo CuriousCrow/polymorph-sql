@@ -1,11 +1,10 @@
 #include "firebirdtable.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 
 
 FirebirdTable::FirebirdTable()
   : DBTableItem()
 {
-  _columnsModel = new SqlColumnModel();
   _constraintsModel = new VariantMapTableModel();
 }
 
@@ -17,7 +16,7 @@ FirebirdTable::~FirebirdTable()
 
 void FirebirdTable::reloadColumnsModel()
 {
-  //Новая, еще не вставленная таблица
+  //New but not inserted table
   if (connectionName().isEmpty())
     return;
   _columnsModel->clear();
@@ -43,7 +42,7 @@ void FirebirdTable::reloadColumnsModel()
                 "LEFT JOIN RDB$FIELDS f ON r.RDB$FIELD_SOURCE = f.RDB$FIELD_NAME "
                 "WHERE r.RDB$RELATION_NAME='#caption#' ORDER BY r.RDB$FIELD_POSITION;";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery query = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
     SqlColumn col(query.value("ccaption").toString().trimmed(),
                   colTypeFromString(query.value("ctype").toString().trimmed()));

@@ -4,9 +4,12 @@
 #include <QDialog>
 #include <QMenu>
 #include "abstractdatabaseitemform.h"
-#include "../models/tablerowmodel.h"
-#include "../objects/dbtableitem.h"
-#include "../models/comboboxhashdelegate.h"
+#include "models/tablerowmodel.h"
+#include "objects/dbtableitem.h"
+#include "models/comboboxhashdelegate.h"
+#include "core/core.h"
+#include "core/dependencycontainer.h"
+#include "core/lknowledgebase.h"
 
 namespace Ui {
 class TableEditForm;
@@ -20,6 +23,8 @@ public:
   Q_INVOKABLE TableEditForm();
   ~TableEditForm();
 
+  INJECT(Core*, core)
+  INJECT(LKnowledgeBase*, kb)
 private:
   Ui::TableEditForm *ui;
   // AbstractDatabaseEditForm interface
@@ -37,6 +42,8 @@ private slots:
   void onShowForeignKeyEditor();
   void onShowUniqueConstraintEditor();
   void onShowCheckConstraintEditor();
+
+  void onShowConstraintEditor(QString namePrefix, DBObjectItem::ItemType objType);
 
   void onNewConstraintApply();
   void onNewConstraintCancel();

@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "abstractdatabaseitemform.h"
+#include "core/datastore.h"
+#include "core/dependencycontainer.h"
 
 namespace Ui {
 class UniqueConstraintEditForm;
@@ -13,9 +15,10 @@ class UniqueConstraintEditForm : public AbstractDatabaseEditForm
   Q_OBJECT
 
 public:
-  explicit UniqueConstraintEditForm(QWidget *parent = nullptr);
+  Q_INVOKABLE UniqueConstraintEditForm(QWidget *parent = nullptr);
   ~UniqueConstraintEditForm() override;
 
+  INJECT(DataStore*, ds)
 private:
   Ui::UniqueConstraintEditForm *ui;
 

@@ -3,8 +3,12 @@
 
 #include <QDialog>
 #include <QDataWidgetMapper>
-#include <QDebug>
 #include <QModelIndex>
+#include "core/datastore.h"
+#include "models/jointdbojbectmodel.h"
+#include "tools/ltextcompleter.h"
+#include "tools/lsqlsyntaxhighlighter.h"
+#include "tools/simplesqlcompletersupport.h"
 #include "abstractdatabaseitemform.h"
 
 namespace Ui {
@@ -19,8 +23,12 @@ public:
   Q_INVOKABLE ViewEditDialog();
   ~ViewEditDialog();
 
+  Q_INVOKABLE void inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport* completerSupport);
+
 private:
   Ui::ViewEditDialog *ui;
+  SimpleSqlCompleterSupport* _completerSupport;
+
 private slots:
   void on_btnOk_clicked();
   void on_btnCancel_clicked();
@@ -28,8 +36,12 @@ private slots:
 
   // AbstractDatabaseEditForm interface
 public:
-  void objectToForm();
-  void formToObject();
+  void objectToForm() override;
+  void formToObject() override;
+
+  // NotifiableDialog interface
+protected:
+  virtual void localEvent(LocalEvent *event) override;
 };
 
 #endif // VIEWEDITDIALOG_H

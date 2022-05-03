@@ -5,12 +5,16 @@
 #include <QObject>
 #include <QVariant>
 #include <QMainWindow>
+#include <QDialog>
 
 #define PARAM_MESSAGE "msg"
 
 const QEvent::Type ShowObjectEvent = static_cast<QEvent::Type>(QEvent::User + 1);
 const QEvent::Type CloseObjectEvent = static_cast<QEvent::Type>(QEvent::User + 2);
 const QEvent::Type InfoMessageEvent = static_cast<QEvent::Type>(QEvent::User + 3);
+const QEvent::Type ItemDeleteEvent = static_cast<QEvent::Type>(QEvent::User + 4);
+const QEvent::Type DbSchemaChangeEvent = static_cast<QEvent::Type>(QEvent::User + 5);
+const QEvent::Type SwitchConnectedEvent = static_cast<QEvent::Type>(QEvent::User + 6);
 
 
 class LocalEvent : public QEvent
@@ -38,14 +42,23 @@ protected:
   virtual void localEvent(LocalEvent* event);
 };
 
+class NotifiableDialog : public QDialog
+{
+  Q_OBJECT
+public:
+  NotifiableDialog(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
+
+  // QObject interface
+public:
+  virtual bool event(QEvent *event) override;
+protected:
+  virtual void localEvent(LocalEvent* event);
+};
+
 class LocalEventNotifier
 {
 public:
-//  static LocalEventNotifier* instance();
   static void postLocalEvent(QEvent::Type type, QString url, QVariantMap params = QVariantMap());
-private:
-//  LocalEventNotifier();
-//  static LocalEventNotifier* _singleton;
 };
 
 #endif // LOCALEVENTNOTIFIER_H

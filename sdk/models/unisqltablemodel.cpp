@@ -10,6 +10,8 @@ UniSqlTableModel::UniSqlTableModel(QObject *parent, QSqlDatabase db)
   _db = db.isValid() ? db : QSqlDatabase::database();
   _query = QSqlQuery(_db);
   _filterManager = new SqlFilterManager(this);
+  connect(_filterManager, &SqlFilterManager::filterChanged,
+          this, &UniSqlTableModel::select);
 }
 
 bool UniSqlTableModel::setTable(QString tableName)
@@ -162,8 +164,9 @@ bool UniSqlTableModel::isDirty()
 
 bool UniSqlTableModel::submitAll(bool stopOnError)
 {
-  foreach(qlonglong id, _changesHash.keys()) {
-    if (!submitById(id) && stopOnError)
+  QHashIterator<qlonglong, QSqlRecord> it(_changesHash);
+  while(it.hasNext()) {
+    if (!submitById(it.next().key()) && stopOnError)
       return false;
   }
   return true;
@@ -194,7 +197,7 @@ bool UniSqlTableModel::submitById(qlonglong id)
 
       int row = _rowIndex.indexOf(id);
       _rowIndex.replace(row, newId);
-      //Если за счет триггеров данные вставляемой строки изменились
+      //If inserted row data changed by trigger
       emit dataChanged(index(row, 0), index(row, rowCount()-1));
       emit headerDataChanged(Qt::Vertical, row, row);
     }
@@ -257,7 +260,7 @@ bool UniSqlTableModel::updateRowInTable(const QSqlRecord &oldValues, const QSqlR
 bool UniSqlTableModel::insertRowInTable(const QSqlRecord &values)
 {
   QSqlRecord vals(values);
-  //Удаляем поля со значением NULL
+  //Remove fields with NULL-values
   for(int idx=values.count()-1; idx >= 0; idx--) {
     if (!values.field(idx).defaultValue().isNull() && values.field(idx).value().isNull())
       vals.remove(idx);
@@ -285,10 +288,12 @@ bool UniSqlTableModel::deleteRowInTable(const QSqlRecord &values)
 bool UniSqlTableModel::revertAll()
 {
   beginResetModel();
-  foreach(qlonglong id, _changesHash.keys()) {
-    //Добавленные но не сохраненные строки
-    if (id < 0) {
-      _rowIndex.removeOne(id);
+  QHashIterator<qlonglong, QSqlRecord> it(_changesHash);
+  while(it.hasNext()) {
+    it.next();
+    //Added but not submitted rows
+    if (it.key() < 0) {
+      _rowIndex.removeOne(it.key());
     }
   }
   _changesHash.clear();
@@ -304,7 +309,7 @@ SqlFilterManager *UniSqlTableModel::filter()
 void UniSqlTableModel::orderBy(QString field, Qt::SortOrder direction)
 {
   QString orderByPattern = " ORDER BY %1 %2";
-  _orderBy = orderByPattern.arg(field).arg(direction == Qt::AscendingOrder ? "ASC" : "DESC");
+  _orderBy = orderByPattern.arg(field, direction == Qt::AscendingOrder ? "ASC" : "DESC");
 }
 
 QString UniSqlTableModel::tableName()

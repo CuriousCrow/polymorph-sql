@@ -3,6 +3,7 @@
 
 #include "objects/dbviewitem.h"
 
+/** PostgreSQL view item */
 class PostgresViewItem : public DBViewItem
 {
   Q_OBJECT

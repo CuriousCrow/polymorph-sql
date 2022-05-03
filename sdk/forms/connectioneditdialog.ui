@@ -14,7 +14,7 @@
    <string>Connection editor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../icons.qrc">
+   <iconset resource="../icons.qrc">
     <normaloff>:/icons/database.png</normaloff>:/icons/database.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -213,29 +213,35 @@
         <string>Test connection</string>
        </property>
        <property name="icon">
-        <iconset resource="../../icons.qrc">
+        <iconset resource="../icons.qrc">
          <normaloff>:/icons/commit.png</normaloff>:/icons/commit.png</iconset>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnCreate">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Create</string>
        </property>
        <property name="icon">
-        <iconset resource="../../icons.qrc">
+        <iconset resource="../icons.qrc">
          <normaloff>:/icons/bullet_add.png</normaloff>:/icons/bullet_add.png</iconset>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnDrop">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Drop</string>
        </property>
        <property name="icon">
-        <iconset resource="../../icons.qrc">
+        <iconset resource="../icons.qrc">
          <normaloff>:/icons/bullet_delete.png</normaloff>:/icons/bullet_delete.png</iconset>
        </property>
       </widget>
@@ -259,7 +265,7 @@
         <string>OK</string>
        </property>
        <property name="icon">
-        <iconset resource="../../icons.qrc">
+        <iconset resource="../icons.qrc">
          <normaloff>:/icons/tick.png</normaloff>:/icons/tick.png</iconset>
        </property>
       </widget>
@@ -270,7 +276,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon">
-        <iconset resource="../../icons.qrc">
+        <iconset resource="../icons.qrc">
          <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
        </property>
       </widget>
@@ -280,7 +286,12 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
  </resources>
  <connections>
   <connection>

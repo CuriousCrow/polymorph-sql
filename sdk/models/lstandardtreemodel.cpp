@@ -77,7 +77,9 @@ LAbstractTreeItem *LStandardTreeModel::itemByIndex(QModelIndex index) const
 
 LAbstractTreeItem *LStandardTreeModel::itemByName(QString name) const
 {
-  return findChild<LAbstractTreeItem*>(name);
+    // Alternative custom method to findChild<T>() (that doesn't work with plugin-created objects)
+    QObject* itemObj = findChildByName(this, name);
+    return static_cast<LAbstractTreeItem*>(itemObj);
 }
 
 QModelIndex LStandardTreeModel::indexByName(QString name)
@@ -91,10 +93,10 @@ QModelIndex LStandardTreeModel::indexByName(QString name)
   return createIndex(itemRow, 0, item);
 }
 
-//TODO: findChild doesnt work with Items from plugins
 QModelIndex LStandardTreeModel::indexByItem(LAbstractTreeItem *item)
 {
-  if (!item){  // || !findChild<LAbstractTreeItem*>(item->objectName())){
+  // Alternative custom method to findChild<T>() (that doesn't work with plugin-created objects)
+  if (!item || !findChildByName(this, item->objectName())){
     return QModelIndex();
   }
 
@@ -210,3 +212,16 @@ bool LStandardTreeModel::removeRows(int row, int count, const QModelIndex &paren
   endRemoveRows();
   return true;
 }
+
+QObject *LStandardTreeModel::findChildByName(const QObject *parent, const QString &name) const
+{
+    foreach(QObject* child, parent->children()) {
+        if (child->objectName() == name)
+            return child;
+        QObject* childFound = findChildByName(child, name);
+        if (childFound)
+            return childFound;
+    }
+    return nullptr;
+}
+

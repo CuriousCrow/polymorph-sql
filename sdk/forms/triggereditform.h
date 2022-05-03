@@ -4,6 +4,8 @@
 #include <QDialog>
 #include "abstractdatabaseitemform.h"
 #include "../objects/appconst.h"
+#include "core/datastore.h"
+#include "core/dependencycontainer.h"
 
 namespace Ui {
 class TriggerEditForm;
@@ -15,6 +17,8 @@ class TriggerEditForm : public AbstractDatabaseEditForm
 public:
   Q_INVOKABLE TriggerEditForm();
   ~TriggerEditForm();
+
+  INJECT(DataStore*, ds)
 
 private:
   Ui::TriggerEditForm *ui;

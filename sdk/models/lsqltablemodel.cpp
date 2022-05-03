@@ -492,7 +492,6 @@ bool LSqlTableModel::isNull(const QModelIndex &index)
     return true;
   LSqlRecord& rec = _recMap[_recIndex[index.row()]];
   QSqlField field = rec.field(index.column());
-  QVariant varVal = field.value();
   return field.isNull();
 }
 

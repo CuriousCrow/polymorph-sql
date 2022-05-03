@@ -18,6 +18,8 @@ public:
   QList<IocPlugin*> plugins();
 
   AbstractDatabaseEditForm* objectForm(const QString &driver, DBObjectItem::ItemType itemType);
+  DBObjectItem* newObjInstance(const QString &driver, DBObjectItem::ItemType itemType);
+
 
   template<class T>
   T* dependencyForDriver(const QString &driver){
@@ -40,6 +42,10 @@ private:
   QList<IocPlugin*> _plugins;
   QHash<QString, IocPlugin*> _modules;
   static Core* _singleton;
+
+  // DependencyContainer interface
+public:
+  virtual void newInstanceProccessing(QObject *obj) override;
 };
 
 #define DemalexCore_iid "ru.levolex.demalexcore"

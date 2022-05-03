@@ -4,6 +4,9 @@
 
 QSettings* AppSettings::_settings = nullptr;
 
+AppSettings::AppSettings() {
+}
+
 QVariant AppSettings::val(QString name, QVariant defValue)
 {
   if (!_settings) {
@@ -34,5 +37,3 @@ void AppSettings::sync()
   val("");
   _settings->sync();
 }
-
-AppSettings::AppSettings(){}

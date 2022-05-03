@@ -1,11 +1,10 @@
 #include "dbtableitem.h"
 #include "appurl.h"
 #include <QIcon>
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QSqlField>
 #include <QSqlRecord>
 #include "appconst.h"
-#include "../core/qknowledgebase.h"
 
 
 DBTableItem::DBTableItem():
@@ -19,12 +18,12 @@ DBTableItem::~DBTableItem()
 
 void DBTableItem::reloadColumnsModel()
 {
-  //Необходимо переопределять для каждой отдельной СУБД
+  //Must be overrided for single one DBMS
 }
 
 void DBTableItem::reloadConstraintsModel()
 {
-  //Необходимо переопределить для каждой отдельной СУБД
+  //Must be overrided for single one DBMS
 }
 
 SqlColumnModel *DBTableItem::columnsModel()
@@ -60,7 +59,7 @@ DBCheckConstraint *DBTableItem::newCheckConstraint()
 int DBTableItem::colTypeFromString(QString name)
 {
 //  qDebug() << "ColTypeFromString:" << name.toUpper();
-  return QKnowledgeBase::kb()->typeByName(driverName().toUpper(), name.toUpper());
+  return _kb->typeByName(driverName().toUpper(), name.toUpper());
 }
 
 void DBTableItem::addDefaultColumn()
@@ -86,6 +85,7 @@ bool DBTableItem::refresh()
 {
   reloadColumnsModel();
   reloadConstraintsModel();
+  submit();
   return true;
 }
 
@@ -122,7 +122,7 @@ ActionResult DBTableItem::updateMe()
     }
     //    qDebug() << "Table" << fieldValue("caption").toString() << "modified";
     //    qDebug() << _columnsModel->columnChanges();
-    return ActionResult(RES_BASE_ERROR, "Раньше возвращалось false. Надо проверить");
+    return ActionResult(RES_BASE_ERROR, tr("Once returned 'false'. Should be verified"));
   }
 }
 
@@ -136,7 +136,7 @@ QString DBTableItem::toDML() const
   QString tablename = caption();
   QString sql = "select * from %1";
   QString preparedSql = sql.arg(identifier());
-  QSqlQuery result = QSqlQueryHelper::execSql(preparedSql, _connectionName);
+  QSqlQuery result = SqlQueryHelper::execSql(preparedSql, _connectionName);
   QStringList dmlList;
   while(result.next()) {
     QString insertSql = result.driver()->sqlStatement(QSqlDriver::InsertStatement, tablename, result.record(), false);

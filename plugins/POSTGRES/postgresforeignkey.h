@@ -4,6 +4,7 @@
 #include <QObject>
 #include "objects/dbforeignkey.h"
 
+/** PostgreSQL foreign key item */
 class PostgresForeignKey : public DBForeignKey
 {
   Q_OBJECT

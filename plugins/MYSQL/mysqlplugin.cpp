@@ -7,6 +7,8 @@
 #include "objects/dbviewitem.h"
 #include "objects/dbprocedureitem.h"
 #include "objects/dbtriggeritem.h"
+#include "forms/simplesequenceeditform.h"
+#include "mysqlsequence.h"
 
 
 MysqlPlugin::MysqlPlugin(QObject *parent) : IocPlugin(parent)
@@ -33,6 +35,11 @@ bool MysqlPlugin::registerPlugin(DependencyContainer *c)
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Folder);
   c->registerDependency(new DependencyMeta("mysqlTableItem", CLASSMETA(MysqlTableItem), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Table);
+  c->registerDependency(new DependencyMeta("mysqlSequenceItem", CLASSMETA(MysqlSequence), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Sequence);
+
+  c->registerDependency(new DependencyMeta("mysqlSequenceForm", CLASSMETA(SimpleSequenceEditForm), InstanceMode::Singleton))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Sequence);
   return true;
 }
 

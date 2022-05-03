@@ -3,34 +3,41 @@
 
 #include <QObject>
 #include <QSqlDatabase>
-#include "../models/qstructureitemmodel.h"
-#include "../models/unisqltablemodel.h"
+#include <QTabWidget>
+#include "models/lstructureitemmodel.h"
+#include "models/unisqltablemodel.h"
 
 class DataStore : public QObject
 {
   Q_OBJECT
 public:
-  static DataStore* instance(QObject* parent = nullptr);
-  static QStructureItemModel* structureModel();
-  static QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
-  static DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
-  static int databaseIdFromItem(DBObjectItem* item);
-  static UniSqlTableModel* historyModel(int dbId);
-  static QByteArray loadTableState(int dbId, QString name);
-  static void saveTableState(int dbId, QString name, QByteArray data);
-  static bool addQueryHistoryItem(int dbId, QString query);
-  static bool clearQueryHistory(int dbId);
+  explicit DataStore(QObject *parent = nullptr);
+
+  void setTabWidget(QTabWidget* tabWidget);
+  //Access to main window tab widget
+  QTabWidget* tabWidget();
+  LStructureItemModel* structureModel();
+  QModelIndex itemIdx(DBObjectItem* fromItem, QString folder, QString name = "");
+  DBObjectItem* itemByFolderAndName(DBObjectItem* fromItem, QString folder, QString name = "");
+  DBDatabaseItem* databaseItem(DBObjectItem* item);
+  int databaseIdFromItem(DBObjectItem* item);
+  UniSqlTableModel* historyModel(int dbId);
+  //Table state
+  QByteArray loadTableState(int dbId, QString name);
+  void saveTableState(int dbId, QString name, QByteArray data);
+  void resetTableState(int dbId, QString name);
+
+  bool addQueryHistoryItem(int dbId, QString query);
+  bool clearQueryHistory(int dbId);
+
+  void initRegisteredDatabases();
 signals:
 
 public slots:
 
 private:
-  explicit DataStore(QObject *parent = nullptr);
-  static DataStore* _singleton;
-
-  void initRegisteredDatabases();
-
-  QStructureItemModel* _structureModel;
+  LStructureItemModel* _structureModel;
+  QTabWidget* _tabWidget;
   QSqlDatabase appDB;
   UniSqlTableModel* _queryHistoryModel;
 };

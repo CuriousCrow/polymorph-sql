@@ -1,6 +1,6 @@
 #include "sqliteviewitem.h"
 #include "objects/appconst.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 
 
 SqliteViewItem::SqliteViewItem()
@@ -14,7 +14,7 @@ bool SqliteViewItem::refresh()
       "select name, sql from sqlite_master where type = 'view' "
       "and name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(preparedSql, connectionName());
   if (resultSet.next()) {
     setFieldValue(F_QUERY_TEXT, resultSet.value("sql"));
     submit();

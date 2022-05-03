@@ -1,5 +1,5 @@
 #include "ldbobjecttablemodel.h"
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QSqlRecord>
 
 
@@ -25,13 +25,23 @@ void LDBObjectTableModel::registerColumn(QString name)
 
 void LDBObjectTableModel::setQuery(QString sql)
 {
-  _sqlQuery = sql;
+    _sqlQuery = sql;
+}
+
+void LDBObjectTableModel::clear()
+{
+    beginResetModel();
+    _rowIndex.clear();
+    _dataMap.clear();
+    endResetModel();
 }
 
 void LDBObjectTableModel::reload(QString connectionName)
 {
+  clear();
+
   beginResetModel();
-  QSqlQuery result = QSqlQueryHelper::execSql(_sqlQuery, connectionName);
+  QSqlQuery result = SqlQueryHelper::execSql(_sqlQuery, connectionName);
   while(result.next()) {
     QVariantMap rowData = _fixedValues;
     QSqlRecord rec = result.record();

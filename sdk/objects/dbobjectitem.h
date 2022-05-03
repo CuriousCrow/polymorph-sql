@@ -66,6 +66,8 @@ public:
   DBObjectItem(QString caption, QObject* parent = nullptr);
   virtual ~DBObjectItem();
   QString connectionName() const;
+
+  void updateUrl();
   void setParentUrl(const AppUrl &url);
   QString driverName() const;
   void deleteChildren();
@@ -100,8 +102,11 @@ public:
   void setFieldValue(QString fieldName, QVariant value);
   void copyFieldTo(QString fieldName, DBObjectItem* targetObj);
   void copyFieldsTo(DBObjectItem* targetObj);
+
+  static QString baseClassByType(ItemType type);
 private:
   void setFieldValue(int colNumber, QVariant value);
+  QString varToStr(QVariant variant) const;
 
 protected:
   QString _connectionName;

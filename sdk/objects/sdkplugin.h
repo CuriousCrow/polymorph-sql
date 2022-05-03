@@ -4,6 +4,35 @@
 #include "../core/iocplugin.h"
 #include <QObject>
 
+#define B_TABLE "baseTableObject"
+#define B_VIEW "baseViewObject"
+#define B_TRIGGER "baseTriggerObject"
+#define B_PROCEDURE "baseProcedureObject"
+#define B_SEQUENCE "baseSequenceObject"
+#define B_PRIMARY_KEY "basePrimaryKey"
+
+#define B_TABLE_FORM "baseTableForm"
+#define B_VIEW_FORM "baseViewForm"
+#define B_PROCEDURE_FORM "baseProcedureForm"
+#define B_SEQUENCE_FORM "baseSequenceForm"
+#define B_TRIGGER_FORM "baseTriggerForm"
+#define B_CONNECTION_FORM "baseConnectionForm"
+#define B_FOREIGN_KEY_FORM "baseForeignKeyForm"
+#define B_CHECK_FORM "baseCheckForm"
+#define B_PRIMARY_KEY_FORM "basePrimaryKeyForm"
+#define B_UNIQUE_FORM "baseUniqueForm"
+#define B_QUERY_HISTORY_FORM "queryHistoryForm"
+#define B_TABLE_BROWSER_FORM "tableBrowserForm"
+
+#define B_KNOWLEDGE_BASE "kb"
+#define B_HELPLOOKUP_PROVIDER "helpLookupProvider"
+#define B_SQL_SYNTAX_HIGHLIGHTER "sqlSyntaxHighlighter"
+#define B_SQL_COMPLETER_SUPPORT "sqlCompleterSupport"
+
+#define B_BASE_COLUMN_MODEL "baseColumnModel"
+
+#define B_TABLE_FILTER_REMOVE_ACTION "removeTableFilter"
+
 class SdkPlugin : public IocPlugin
 {
     Q_OBJECT

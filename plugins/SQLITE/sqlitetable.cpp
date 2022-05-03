@@ -1,6 +1,6 @@
 #include "sqlitetable.h"
 #include <QStringList>
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QDebug>
 #include <QSqlRecord>
 #include <QSqlField>
@@ -9,8 +9,6 @@
 SqliteTableItem::SqliteTableItem()
   : DBTableItem()
 {
-  _columnsModel = new SqlColumnModel();
-
   _constraintsModel = new VariantMapTableModel();
   _constraintsModel->registerColumn(F_TYPE, tr("Type"));
   _constraintsModel->registerColumn(F_NAME, tr("Name"));
@@ -25,7 +23,7 @@ SqliteTableItem::~SqliteTableItem()
 void SqliteTableItem::reloadColumnsModel()
 {
   _columnsModel->clear();
-  QSqlRecord sqlColumns = QSqlQueryHelper::tableRowInfo(
+  QSqlRecord sqlColumns = SqlQueryHelper::tableRowInfo(
         this->caption(),
         connectionName());
   for (int i=0; i<sqlColumns.count(); i++) {
@@ -67,17 +65,20 @@ ActionResult SqliteTableItem::updateMe()
   if (res.isSuccess())
     return res;
 
-  //Создание новой таблицы
+  //Create new table
   QString sql = createTableQuery("tempTable");
-  QSqlQueryHelper::execSql(sql, connectionName());
+  SqlQueryHelper::execSql(sql, connectionName());
 
-  //Перенос данных сохранившихся колонок в новую таблицу
+  //Move remained columns into new table
   QHash<QString, QString> colNames = _columnsModel->permanentColNames();
   QStringList oldNames;
   QStringList newNames;
-  foreach (QString oldName, colNames.keys()) {
-    oldNames.append(oldName);
-    newNames.append(colNames.value(oldName));
+  QStringList keys = colNames.keys();
+  QHashIterator<QString, QString> i(colNames);
+  while(i.hasNext()) {
+      i.next();
+      oldNames.append(i.key());
+      newNames.append(i.value());
   }
   sql = "INSERT INTO tempTable (%1) SELECT %2 FROM #caption.old#";
   QString preparedSql = fillSqlPatternWithFields(sql).arg(newNames.join(", "), oldNames.join(", "));
@@ -91,7 +92,7 @@ ActionResult SqliteTableItem::updateMe()
   if (!res.isSuccess())
     return res;
 
-  //Переименовываем новую таблицу обратно
+  //Rename temporary table back
   sql = "ALTER TABLE tempTable RENAME TO #caption.new#";
   preparedSql = fillSqlPatternWithFields(sql);
   res = execSql(preparedSql, connectionName());
@@ -127,6 +128,6 @@ QString SqliteTableItem::createTableQuery(QString table) const
     QString pkTemplate = "CONSTRAINT pk_#caption.new# PRIMARY KEY (%1)";
     colDefList.append(fillSqlPatternWithFields(pkTemplate).arg(pkColList.join(",")));
   }
-  QString preparedSql = createPattern.arg(table).arg(colDefList.join(", "));
+  QString preparedSql = createPattern.arg(table, colDefList.join(", "));
   return preparedSql;
 }

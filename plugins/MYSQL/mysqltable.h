@@ -12,6 +12,8 @@ public:
   Q_INVOKABLE MysqlTableItem();
   virtual ~MysqlTableItem() Q_DECL_OVERRIDE;
 
+  INJECT_INITIALIZE(SqlColumnModel*, _columnsModel, baseColumnModel)
+
   // DBObjectItem interface
 public:
   virtual ActionResult insertMe() Q_DECL_OVERRIDE;

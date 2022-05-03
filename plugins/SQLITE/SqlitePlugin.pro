@@ -42,6 +42,9 @@ HEADERS  += \
 
 DISTFILES += SqlitePlugin.json
 
+TRANSLATIONS += \
+    translations/sqliteplugin_ru.ts
+
 # Default rules for deployment.
 unix {
     target.path = $$[QT_INSTALL_PLUGINS]/generic

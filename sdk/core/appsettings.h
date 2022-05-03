@@ -8,7 +8,7 @@
 class AppSettings
 {
 public:
-    AppSettings();
+    Q_INVOKABLE AppSettings();
     static QVariant val(QString name, QVariant defValue = QVariant());
     static QString strVal(QString name, QVariant defValue = QVariant());
     static int intVal(QString name, QVariant defValue = QVariant());

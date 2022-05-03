@@ -4,6 +4,7 @@
 #include <QObject>
 #include "objects/dbtriggeritem.h"
 
+/** PostgreSQL trigger item */
 class PostgresTriggerItem : public DBTriggerItem
 {
   Q_OBJECT

@@ -95,9 +95,15 @@
 #define TITLE_WARNING "Warning"
 #define TITLE_INFO "Information"
 
+#define DRIVER_BASE ""
 #define DRIVER_SQLITE "QSQLITE"
 #define DRIVER_MYSQL "QMYSQL"
-#define DRIVER_PSQL "QPSQL"
+#define DRIVER_POSTGRES "QPSQL"
 #define DRIVER_FIREBIRD "QIBASE"
+
+#define B_QUERY_EDITOR "queryEditor"
+#define B_CORE "core"
+#define B_DATA_STORE "ds"
+#define B_CONTEXT "context"
 
 #endif // APPCONST_H

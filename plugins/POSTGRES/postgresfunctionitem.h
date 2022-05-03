@@ -4,6 +4,7 @@
 #include <QObject>
 #include "objects/dbprocedureitem.h"
 
+/** PostgreSQL function item */
 class PostgresFunctionItem : public DBProcedureItem
 {
   Q_OBJECT

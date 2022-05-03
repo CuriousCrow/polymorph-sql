@@ -3,7 +3,7 @@
 
 #include <QMetaProperty>
 #include <QRegularExpression>
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "appconst.h"
 
 
@@ -23,9 +23,8 @@ QString DBObjectItem::connectionName() const
   return _connectionName;
 }
 
-void DBObjectItem::setParentUrl(const AppUrl &url)
+void DBObjectItem::updateUrl()
 {
-  _parentUrl = url;
   AppUrl newUrl = objectUrl();
   _connectionName = newUrl.connection();
   _driverName = newUrl.driver();
@@ -33,6 +32,12 @@ void DBObjectItem::setParentUrl(const AppUrl &url)
   for (int i=0; i<children().count(); i++){
     static_cast<DBObjectItem*>(children().at(i))->setParentUrl(newUrl);
   }
+}
+
+void DBObjectItem::setParentUrl(const AppUrl &url)
+{
+  _parentUrl = url;
+  updateUrl();
 }
 
 QString DBObjectItem::driverName() const
@@ -82,7 +87,7 @@ int DBObjectItem::fieldIndex(QString fieldName) const
 
 QString DBObjectItem::databaseName() const
 {
-  return QSqlQueryHelper::databaseName(connectionName());
+  return SqlQueryHelper::databaseName(connectionName());
 }
 
 DBObjectField& DBObjectItem::field(QString fieldName)
@@ -93,8 +98,10 @@ DBObjectField& DBObjectItem::field(QString fieldName)
 QString DBObjectItem::fillSqlPatternWithFields(QString pattern, QMap<QString, QString> valueMap) const
 {
   QString result = pattern;
-  foreach(QString key, valueMap.keys()) {
-    result = result.replace("#" + key + "#", valueMap.value(key));
+  QMapIterator<QString, QString> it(valueMap);
+  while(it.hasNext()) {
+    it.next();
+    result = result.replace("#" + it.key() + "#", it.value());
   }
   return result;
 }
@@ -103,9 +110,9 @@ QString DBObjectItem::fillSqlPatternWithFields(QString pattern) const
 {
   QString result = pattern;
   foreach(DBObjectField field, fields) {
-    result = result.replace("#" + field.name + ".new#", field.value().toString());
-    result = result.replace("#" + field.name + ".old#", field.oldValue().toString());
-    result = result.replace("#" + field.name + "#", field.value().toString());
+    result = result.replace("#" + field.name + ".new#", varToStr(field.value()));
+    result = result.replace("#" + field.name + ".old#", varToStr(field.oldValue()));
+    result = result.replace("#" + field.name + "#", varToStr(field.value()));
   }
   //Only for already existing objects
   if (!_connectionName.isEmpty()) {
@@ -145,7 +152,7 @@ QString DBObjectItem::filterUnmodifiedFields(QString pattern) const
 
 ActionResult DBObjectItem::execSql(QString sql, QString connectionName)
 {
-  QSqlQuery query = QSqlQueryHelper::execSql(sql, connectionName);
+  QSqlQuery query = SqlQueryHelper::execSql(sql, connectionName);
   if (query.lastError().isValid()) {
     return ActionResult(ERR_QUERY_ERROR, query.lastError().databaseText());
   }
@@ -214,6 +221,38 @@ void DBObjectItem::copyFieldsTo(DBObjectItem *targetObj)
     }
 }
 
+QString DBObjectItem::baseClassByType(DBObjectItem::ItemType type)
+{
+    switch (type) {
+    case DBObjectItem::Database:
+        return "DBDatabaseItem";
+    case DBObjectItem::Table:
+        return "DBTableItem";
+    case DBObjectItem::View:
+        return "DBViewItem";
+    case DBObjectItem::Sequence:
+        return "DBSequenceItem";
+    case DBObjectItem::Procedure:
+        return "DBProcedureItem";
+    case DBObjectItem::Folder:
+        return "DBFolderItem";
+    case DBObjectItem::Trigger:
+        return "DBTriggerItem";
+    case DBObjectItem::PrimaryKey:
+        return "DBPrimaryKey";
+    case DBObjectItem::ForeignKey:
+        return "DBForeignKey";
+    case DBObjectItem::UniqueConstraint:
+        return "DBUniqueConstraint";
+    case DBObjectItem::CheckConstraint:
+        return "DBCheckConstraint";
+    case DBObjectItem::SystemTable:
+        return "DBTableItem";
+    default:
+        return "DBObjectItem";
+    }
+}
+
 void DBObjectItem::setFieldValue(int colNumber, QVariant value)
 {
   if (colNumber >= fields.count()) {
@@ -221,6 +260,16 @@ void DBObjectItem::setFieldValue(int colNumber, QVariant value)
     return;
   }
   fields[colNumber].setValue(value);
+}
+
+QString DBObjectItem::varToStr(QVariant variant) const
+{
+  if (variant.isNull()) {
+    return "null";
+  }
+  else {
+    return variant.toString();
+  }
 }
 
 bool DBObjectItem::setData(int column, QVariant value, int role)

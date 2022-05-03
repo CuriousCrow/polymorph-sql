@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "abstractdatabaseitemform.h"
+#include "core/datastore.h"
+#include "core/dependencycontainer.h"
 
 namespace Ui {
   class ForeignKeyForm;
@@ -13,8 +15,10 @@ class ForeignKeyForm : public AbstractDatabaseEditForm
   Q_OBJECT
 
 public:
-  explicit ForeignKeyForm(QWidget *parent = nullptr);
+  Q_INVOKABLE ForeignKeyForm(QWidget *parent = nullptr);
   ~ForeignKeyForm() override;
+
+  INJECT(DataStore*, ds)
 
 private:
   Ui::ForeignKeyForm *ui;

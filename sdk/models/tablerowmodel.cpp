@@ -1,7 +1,7 @@
 #include "tablerowmodel.h"
-#include "../utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include <QSqlField>
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 
 TableRowModel::TableRowModel(QObject *parent) : QAbstractTableModel(parent)
 {
@@ -11,7 +11,7 @@ void TableRowModel::setTableItem(DBObjectItem *item)
 {
   _tableItem = item;
   beginResetModel();
-  _infoRec = QSqlQueryHelper::tableRowInfo(item->caption(),
+  _infoRec = SqlQueryHelper::tableRowInfo(item->caption(),
                                            item->connectionName());\
   endResetModel();
 }

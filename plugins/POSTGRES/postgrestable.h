@@ -4,12 +4,15 @@
 #include "objects/dbtableitem.h"
 #include <QSqlField>
 
+/** PostgreSQL table item */
 class PostgresTable : public DBTableItem
 {
   Q_OBJECT
 public:
   Q_INVOKABLE PostgresTable();
   virtual ~PostgresTable() Q_DECL_OVERRIDE;
+
+  INJECT_INITIALIZE(SqlColumnModel*, _columnsModel, baseColumnModel)
 
   virtual DBForeignKey* newForeignKey() Q_DECL_OVERRIDE;
   virtual DBPrimaryKey* newPrimaryKey() Q_DECL_OVERRIDE;
@@ -24,8 +27,6 @@ public:
 public:
   virtual void reloadColumnsModel() Q_DECL_OVERRIDE;
   virtual void reloadConstraintsModel() Q_DECL_OVERRIDE;
-protected:
-  QString caption() const;
 private:
   QString createTableQuery(QString table) const;
   QString columnDef(const SqlColumn &col) const;

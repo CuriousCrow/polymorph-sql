@@ -31,8 +31,10 @@ QString QueryParamsForm::applyParams(QString &sql)
 {
     QVariantMap map = _paramsModel->params();
     QString res = sql;
-    foreach(QString param, map.keys()) {
-        res = res.replace("#" + param + "#", map.value(param).toString());
+    QMapIterator<QString, QVariant> i(map);
+    while(i.hasNext()) {
+       i.next();
+       res = res.replace("#" + i.key() + "#", i.value().toString());
     }
     return res;
 }

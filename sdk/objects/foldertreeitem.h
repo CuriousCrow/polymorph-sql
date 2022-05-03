@@ -15,7 +15,6 @@ public:
   DBObjectItem::ItemType childrenType() const;
   void setChildrenType(DBObjectItem::ItemType childrenType);
 
-  void setCore(Core* core);
   INJECT(Core*, core);
 
 protected:

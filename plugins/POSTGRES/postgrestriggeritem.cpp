@@ -1,5 +1,5 @@
 #include "postgrestriggeritem.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "objects/appconst.h"
 #include <QDebug>
 
@@ -18,7 +18,7 @@ bool PostgresTriggerItem::refresh()
       "FROM information_schema.triggers "
       "where trigger_name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery resultSet = QSqlQueryHelper::execSql(preparedSql, connectionName());
+  QSqlQuery resultSet = SqlQueryHelper::execSql(preparedSql, connectionName());
   clearEventFields();
   if (resultSet.next()) {
     qDebug() << "Table:" << resultSet.value(F_TABLE);

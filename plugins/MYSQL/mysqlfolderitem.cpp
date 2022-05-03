@@ -1,5 +1,5 @@
 #include "mysqlfolderitem.h"
-#include "utils/qsqlqueryhelper.h"
+#include "utils/sqlqueryhelper.h"
 #include "objects/appconst.h"
 #include "objects/dbtriggeritem.h"
 #include "objects/dbprocedureitem.h"
@@ -29,6 +29,9 @@ void MysqlFolderItem::loadChildren()
     case DBObjectItem::View:
         sql = "select table_name name from information_schema.tables where table_schema = '#databaseName#' and table_type = 'VIEW'";
         break;
+    case DBObjectItem::Sequence:
+        sql = "SELECT TABLE_NAME name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#databaseName#' and AUTO_INCREMENT is not null";
+        break;
     default:
         sql = "";
     }
@@ -36,24 +39,24 @@ void MysqlFolderItem::loadChildren()
     if (sql.isEmpty())
         return;
 
-    QSqlQuery resultSet = QSqlQueryHelper::execSql(sql, connectionName());
+    QSqlQuery resultSet = SqlQueryHelper::execSql(sql, connectionName());
     while (resultSet.next()){
         DBObjectItem* childItem = nullptr;
         switch (childrenType()) {
         case DBObjectItem::Table:
-            childItem = Core::instance()->dependencyForDriver<DBTableItem>(driverName());
+            childItem = _core->dependencyForDriver<DBTableItem>(driverName());
             break;
         case DBObjectItem::View:
-            childItem = Core::instance()->dependencyForDriver<DBViewItem>(driverName());
+            childItem = _core->dependencyForDriver<DBViewItem>(driverName());
             break;
         case DBObjectItem::Sequence:
-            childItem = Core::instance()->dependencyForDriver<DBSequenceItem>(driverName());
+            childItem = _core->dependencyForDriver<DBSequenceItem>(driverName());
             break;
         case DBObjectItem::Procedure:
-            childItem = Core::instance()->dependencyForDriver<DBProcedureItem>(driverName());
+            childItem = _core->dependencyForDriver<DBProcedureItem>(driverName());
             break;
         case DBObjectItem::Trigger:
-            childItem = Core::instance()->dependencyForDriver<DBTriggerItem>(driverName());
+            childItem = _core->dependencyForDriver<DBTriggerItem>(driverName());
             break;
         default:
             break;

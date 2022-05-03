@@ -5,20 +5,19 @@
 #include <QSqlField>
 #include <QMessageBox>
 #include <QClipboard>
-#include "databaseexportform.h"
 #include "sdk/objects/appurl.h"
-#include "tablebrowserwindow.h"
-#include "settingsform.h"
+#include "sdk/forms/tablebrowserwindow.h"
 #include "sdk/objects/dbdatabaseitem.h"
 #include "sdk/objects/dbobjectitem.h"
 #include "sdk/objects/foldertreeitem.h"
-#include "sdk/core/qknowledgebase.h"
 #include "sdk/core/appsettings.h"
-#include "sdk/core/datastore.h"
-#include "sdk/core/core.h"
+#include "sdk/core/basecontextaction.h"
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/sdkplugin.h"
-#include "sdk/utils/qfileutils.h"
+#include "sdk/utils/fileutils.h"
+#include "testmodule.h"
+
+#include "sdk/forms/queryeditorwindow.h"
 
 #ifdef SINGLEAPP
 #include "plugins/POSTGRES/postgresplugin.h"
@@ -36,8 +35,25 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  //Extension points
+  _extensionPoints.insert(ExtensionPoint(EP_MAINWINDOW_MAINMENU, CLASS(BaseContextAction), "Mainwindow main menu items", false));
+  _extensionPoints.insert(ExtensionPoint(EP_MAINWINDOW_STRUCTURE_POPUP, CLASS(BaseContextAction), "Mainwindow structure tree items popup menu", false));
+
   //Loading DBMS plugins
-  Core::instance(this);
+  _core = Core::instance(this);
+
+  //DataStore singleton
+  _ds = new DataStore(this);
+  _ds->setTabWidget(ui->tabWidget);
+
+  _context = new BaseUserContext(this);
+  _kb = new LKnowledgeBase(this);
+  _core->registerSingletonObject(new DependencyMeta(B_DATA_STORE, CLASSMETA(DataStore)), _ds);
+  _core->registerSingletonObject(new DependencyMeta(B_CONTEXT, CLASSMETA(BaseUserContext)), _context);
+  _core->registerSingletonObject(new DependencyMeta(B_KNOWLEDGE_BASE, CLASSMETA(LKnowledgeBase)), _kb);
+
+  LStructureItemModel* structureModel = _ds->structureModel();
+
   Core::registerPlugin(new SdkPlugin());
 
 #ifdef SINGLEAPP
@@ -47,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerPlugin(new FirebirdPlugin());
   Core::registerPlugin(new MysqlPlugin());
 #else
-  QStringList pluginFiles = QFileUtils::filesOfDir(QApplication::applicationDirPath() + "/plugins");
+  QStringList pluginFiles = FileUtils::filesOfDir(QApplication::applicationDirPath() + "/plugins");
   QPluginLoader* pluginLoader = new QPluginLoader(this);
   foreach(QString filename, pluginFiles) {
       qDebug() << "Found plugin file:" << filename;
@@ -62,22 +78,19 @@ MainWindow::MainWindow(QWidget *parent) :
       }
   }
 #endif
+  _ds->initRegisteredDatabases();
+
+  QStringList modules = Core::instance()->supportedDrivers();
+  qDebug() << "Drivers supported:" << modules;
+  _kb->loadModels(modules);
 
   qDebug() << "Connect edit forms with handler slot";
-
   QStringList formBeans = Core::instance()->namesByClass<AbstractDatabaseEditForm>();
   foreach(QString beanName, formBeans) {
       qDebug() << "Form:" << beanName;
       AbstractDatabaseEditForm* editForm = Core::instance()->dependency<AbstractDatabaseEditForm>(beanName);
       connect(editForm, &AbstractDatabaseEditForm::accepted, this, &MainWindow::saveObjectChanges);
   }
-
-  //
-  DataStore* ds = DataStore::instance(this);
-  QStructureItemModel* structureModel = ds->structureModel();
-
-  QStringList modules = Core::instance()->supportedDrivers();
-  QKnowledgeBase::kb(this)->loadModels(modules);
 
   //Showing first column only
   //TODO: create utility methods for hiding columns
@@ -87,17 +100,6 @@ MainWindow::MainWindow(QWidget *parent) :
   }
 
   _itemContextMenu = new QMenu(ui->tvDatabaseStructure);
-  connect(_itemContextMenu, SIGNAL(aboutToShow()),
-          this, SLOT(updateStructureContextMenu()));
-  _editAction = _itemContextMenu->addAction("Edit object", this, SLOT(showEditorForCurrentItem()));
-  _dropAction = _itemContextMenu->addAction("Drop object", this, SLOT(dropCurrentDatabaseObject()));
-  _exportAction = _itemContextMenu->addAction("Export DDL", this, SLOT(exportCurrrentDatabaseObject()));
-  _exportDataAction = _itemContextMenu->addAction("Export data", this, SLOT(exportCurrentDatabaseObjectData()));
-
-  _folderContextMenu = new QMenu(ui->tvDatabaseStructure);
-  _folderContextMenu->addAction("Create object", this, SLOT(showCreateItemEditor()));
-  _reloadAction = _folderContextMenu->addAction("Refresh", this, SLOT(reloadItemChildren()));
-
 
   //Создаем окно редактирования соединений с БД
   _connectionEditDialog = new ConnectionEditDialog(this);
@@ -107,6 +109,12 @@ MainWindow::MainWindow(QWidget *parent) :
   //Удаление вкладки с таблицей
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(removeTabByIndex(int)));
+
+  connect(ui->tvDatabaseStructure->selectionModel(), &QItemSelectionModel::currentChanged,
+          this, &MainWindow::onCurrentItemChanged);
+
+  //Inject all extensions for MainWindow
+  _core->newInstanceProccessing(this);
 }
 
 MainWindow::~MainWindow()
@@ -149,10 +157,11 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
       IocPlugin* dbms = Core::plugin(dbItem->driverName(), FeatureType::DbmsObjects);
       foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
         FolderTreeItem* folder = Core::instance()->dependencyForDriver<FolderTreeItem>(dbItem->driverName());
-//        folder->setCore(Core::instance());
+
         folder->setParent(dbItem);
-        folder->setParentUrl(dbItem->objectUrl());
+        //setChildrenType should be before setParentUrl to generate a correct objectUrl
         folder->setChildrenType(type);
+        folder->setParentUrl(dbItem->objectUrl());
         folder->reloadChildren();
       }
       ui->tvDatabaseStructure->reset();
@@ -161,7 +170,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     //Database disconnection (clear all database items)
     else {
       removeTabsByItemUrl(dbItem->objectUrl().toString());
-      DataStore::structureModel()->deleteChildren(index);
+      _ds->structureModel()->deleteChildren(index);
       QSqlDatabase::removeDatabase(dbItem->connectionName());
     }
     refreshConnectionList();
@@ -184,15 +193,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     showEditorForCurrentItem();
     break;
   }
-}
-
-void MainWindow::on_tvDatabaseStructure_clicked(const QModelIndex &index)
-{
-  DBObjectItem* curItem = static_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
-  qDebug() << "Obj url:" << curItem->objectName();
-
-  ui->aEditDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
-  ui->aRemoveDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
+  emit _context->contextChanged();
 }
 
 void MainWindow::removeTabByIndex(int index)
@@ -223,7 +224,7 @@ void MainWindow::on_aRemoveDatabase_triggered()
     removeTabsByItemUrl(itemToRemove->objectUrl().toString());
     ActionResult res = itemToRemove->deleteMe();
     if (res.isSuccess()) {
-      DataStore::instance()->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(), QModelIndex());
+      _ds->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(), QModelIndex());
     }
     else {
       qWarning() << "Remove database error:" << res.description();
@@ -233,25 +234,11 @@ void MainWindow::on_aRemoveDatabase_triggered()
 
 void MainWindow::on_tvDatabaseStructure_pressed(const QModelIndex &index)
 {
+  if (!index.isValid())
+      return;
   //Show context menu by right mouse click
   if (QApplication::mouseButtons().testFlag(Qt::RightButton)){
-    DBObjectItem::ItemType type = static_cast<DBObjectItem::ItemType>(itemByIndex(index)->type());
-
-    _exportDataAction->setEnabled(type == DBObjectItem::Table);
-
-    switch (type) {
-    case DBObjectItem::View:
-    case DBObjectItem::Trigger:
-    case DBObjectItem::Table:
-      _itemContextMenu->popup(QCursor::pos());
-      break;
-    case DBObjectItem::Folder:
-      _folderContextMenu->popup(QCursor::pos());
-      break;
-    default:
-      _itemContextMenu->popup(QCursor::pos());
-      break;
-    }
+    _itemContextMenu->popup(QCursor::pos());
   }
 }
 
@@ -259,9 +246,8 @@ void MainWindow::showEditorForCurrentItem()
 {
   qDebug() << "Request edit form";
   DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  QVariantHash p;
-  p.insert(F_TYPE, currentItem->type());
-  AbstractDatabaseEditForm* editForm = Core::instance()->dependency<AbstractDatabaseEditForm>(p);
+  AbstractDatabaseEditForm* editForm =
+          Core::instance()->objectForm(currentItem->driverName(),(DBObjectItem::ItemType)currentItem->type());
   if (!editForm) {
     QMessageBox::warning(this, TITLE_WARNING, "Edit form isn't supported yet");
     return;
@@ -286,9 +272,9 @@ void MainWindow::dropCurrentDatabaseObject()
     removeTabsByItemUrl(itemToRemove->objectUrl().toString());
     ActionResult res = itemToRemove->deleteMe();
     if (res.isSuccess()) {
-      DataStore::structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
+      _ds->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
                                  ui->tvDatabaseStructure->currentIndex().parent());
-      refreshQueryEditorAssistance();
+      LocalEventNotifier::postLocalEvent(DbSchemaChangeEvent, "");
     }
     else {
       QMessageBox::warning(this, TITLE_ERROR, "Delete operation failed: " + res.description());
@@ -299,74 +285,6 @@ void MainWindow::dropCurrentDatabaseObject()
     break;
   }
   //TODO: Implementation for other DB objects
-}
-
-void MainWindow::exportCurrrentDatabaseObject()
-{
-  //TODO: Test implementation
-  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
-  DBObjectItem* curObj = itemByIndex(curIdx);
-  curObj->refresh();
-  QGuiApplication::clipboard()->setText(curObj->toDDL());
-}
-
-void MainWindow::exportCurrentDatabaseObjectData()
-{
-  //TODO: Test implementation
-  qDebug() << "DML export";
-  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
-  DBObjectItem* curObj = itemByIndex(curIdx);
-  curObj->refresh();
-  QGuiApplication::clipboard()->setText(curObj->toDML());
-}
-
-void MainWindow::reloadItemChildren()
-{
-  QModelIndex curIdx = ui->tvDatabaseStructure->currentIndex();
-  DataStore::structureModel()->deleteChildren(curIdx);
-  FolderTreeItem* folderItem = static_cast<FolderTreeItem*>(itemByIndex(curIdx));
-
-  qDebug() << "Folder" << folderItem->caption() << "refresh request";
-
-  folderItem->reloadChildren();
-
-  emit DataStore::structureModel()->dataChanged(curIdx, curIdx);
-}
-
-void MainWindow::updateStructureContextMenu()
-{
-  DBObjectItem* item = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-  _editAction->setText(item->isEditable() ? tr("Edit object") : tr("View object"));
-}
-
-void MainWindow::showCreateItemEditor()
-{
-  qDebug() << "Create window";
-  DBObjectItem* currentItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
-
-  if (currentItem->type() != DBObjectItem::Folder) {
-    qWarning() << "Create item action: Not folder item";
-    return;
-  }
-  FolderTreeItem* folderItem = static_cast<FolderTreeItem*>(currentItem);
-  QString driverName = folderItem->driverName();
-  AbstractDatabaseEditForm* editForm = Core::instance()->objectForm(driverName, folderItem->childrenType());
-  QVariantHash pObj;
-  pObj.insert(F_TYPE, folderItem->childrenType());
-  pObj.insert(F_DRIVER_NAME, driverName);
-  DBObjectItem* newItem = Core::instance()->dependency<DBObjectItem>(pObj);
-  if (!newItem) {
-    pObj.insert(F_DRIVER_NAME, "");
-    newItem = Core::instance()->dependency<DBObjectItem>(pObj);
-  }
-
-  newItem->setParentUrl(folderItem->objectUrl());
-  editForm->setObjItem(newItem);
-  editForm->setUserAction(AbstractDatabaseEditForm::Create);
-  editForm->objectToForm();
-  qDebug() << "Before show";
-  editForm->show();
-  qDebug() << "After show";
 }
 
 void MainWindow::saveDatabaseChanges()
@@ -390,8 +308,8 @@ void MainWindow::saveDatabaseChanges()
         return;
     }
     newDatabaseItem->submit();
-    DataStore::structureModel()->appendItem(newDatabaseItem);
-    refreshQueryEditorAssistance();
+    _ds->structureModel()->appendItem(newDatabaseItem);
+    LocalEventNotifier::postLocalEvent(DbSchemaChangeEvent, "");
   }
   else if (action == AbstractDatabaseEditForm::Edit) {
     //Nothing needs to be done
@@ -410,22 +328,22 @@ void MainWindow::saveObjectChanges()
       DBObjectItem* folderItem = itemByIndex(ui->tvDatabaseStructure->currentIndex());
       DBObjectItem* newItem = editForm->objItem();
       qDebug() << "appendItem():" << folderItem->objectName();
-      DataStore::structureModel()->appendItem(newItem, folderItem);
-      refreshQueryEditorAssistance();
+      _ds->structureModel()->appendItem(newItem, folderItem);
     }
     else if (action == AbstractDatabaseEditForm::Edit) {
-      refreshQueryEditorAssistance();
+      //Nothing yet
     }
+    LocalEventNotifier::postLocalEvent(DbSchemaChangeEvent, "");
 }
 
 DBObjectItem *MainWindow::itemByIndex(QModelIndex index)
 {
-  return static_cast<DBObjectItem*>(DataStore::structureModel()->itemByIndex(index));
+  return static_cast<DBObjectItem*>(_ds->structureModel()->itemByIndex(index));
 }
 
 DBObjectItem *MainWindow::itemByName(QString name)
 {
-  return static_cast<DBObjectItem*>(DataStore::structureModel()->itemByName(name));
+  return static_cast<DBObjectItem*>(_ds->structureModel()->itemByName(name));
 }
 
 void MainWindow::refreshConnectionList()
@@ -437,8 +355,8 @@ void MainWindow::refreshConnectionList()
   }
 }
 
-void MainWindow::refreshQueryEditorAssistance()
-{
+void MainWindow::refreshQueryEditorAssistance(DBObjectItem* item)
+{  
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
     QueryEditorWindow* editor = dynamic_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)
@@ -461,9 +379,10 @@ void MainWindow::showItemInfoWidget(DBObjectItem *dbItem)
 void MainWindow::openTableEditor(DBSelectableItem *tableItem)
 {
   QString itemUrl = tableItem->objectUrl().toString();
-  QWidget* tableWidget = ui->tabWidget->findChild<QWidget*>(itemUrl);
+  TableBrowserWindow* tableWidget = ui->tabWidget->findChild<TableBrowserWindow*>(itemUrl);
   if (!tableWidget){
-    tableWidget = new TableBrowserWindow(this, tableItem);
+    QVariantHash p;
+    tableWidget = Core::instance()->dependency<TableBrowserWindow>(p, tableItem);
     ui->tabWidget->addTab(tableWidget, tableItem->caption());
   }
   ui->tabWidget->setCurrentWidget(tableWidget);
@@ -482,22 +401,66 @@ void MainWindow::localEvent(LocalEvent *event)
     QString message = event->param(PARAM_MESSAGE).toString();
     ui->statusBar->showMessage(message, MAIN_STATUS_BAR_TIMEOUT);
   }
+  else if (event->type() == ItemDeleteEvent) {
+    qDebug() << "Removing item from structure model";
+    removeTabsByItemUrl(event->url());
+    _ds->structureModel()->removeRow(ui->tvDatabaseStructure->currentIndex().row(),
+                                     ui->tvDatabaseStructure->currentIndex().parent());
+    refreshQueryEditorAssistance(nullptr);
+  }
+  else if (event->type() == DbSchemaChangeEvent) {
+    //TODO: Update only query editors
+    refreshQueryEditorAssistance(nullptr);
+  }
+  else if (event->type() == SwitchConnectedEvent) {
+    qDebug() << "Switch connection event";
+    on_tvDatabaseStructure_doubleClicked(ui->tvDatabaseStructure->currentIndex());
+  }
 }
 
-void MainWindow::on_aOpenSqlEditor_triggered()
+void MainWindow::onCurrentItemChanged(const QModelIndex &index)
 {
-  //Создаем вкладку с редактором SQL-запросов
-  QueryEditorWindow* newQueryEditor = new QueryEditorWindow(this);
-  ui->tabWidget->addTab(newQueryEditor, tr("Query"));
+    DBObjectItem* curItem = _ds->structureModel()->itemByIdx(index);
+    qDebug() << "Current item:" << curItem;
+    _context->setCurrentItem(curItem);
+    ui->aEditDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
+    ui->aRemoveDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
 }
 
-void MainWindow::on_aSettings_triggered()
+void MainWindow::injectExtension(ExtensionPoint ep, QObject *e)
 {
-  SettingsForm::instance()->show();
-}
-
-void MainWindow::on_aExportDatabase_triggered()
-{
-  qDebug() << "Export database form";
-  DatabaseExportForm::instance()->show();
+  qDebug() << "Inject extensions for Mainwindow" << e->objectName();
+  if (e->inherits(CLASS(AbstractContextAction))) {
+    if (ep.name() == EP_MAINWINDOW_MAINMENU) {
+      BaseContextAction* action = static_cast<BaseContextAction*>(e);
+      //Main menu
+      if (action->inherits(I_MAINMENU_ITEM)) {
+          QMenu* parentMenu = nullptr;
+          QStringList pathList = (dynamic_cast<MainMenuItem*>(action))->menuPath();
+          foreach(QString section, pathList){
+              if (parentMenu) {
+                  parentMenu = parentMenu->addMenu(section);
+              }
+              else {
+                  parentMenu = ui->menuBar->addMenu(section);
+              }
+          }
+          if (parentMenu) {
+            parentMenu->addAction(action);
+          }
+          else {
+            ui->menuBar->addAction(action);
+          }
+      }
+    }
+    if (ep.name() == EP_MAINWINDOW_STRUCTURE_POPUP) {
+      BaseItemPopupAction* popupAction = dynamic_cast<BaseItemPopupAction*>(e);
+      if (popupAction) {
+        _itemContextMenu->addAction(popupAction);
+      }
+      else {
+        qWarning() << "Cannot inject extension object:" << e->objectName();
+      }
+    }
+  }
 }

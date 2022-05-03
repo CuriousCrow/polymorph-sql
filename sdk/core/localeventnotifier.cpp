@@ -3,29 +3,17 @@
 #include <QWidget>
 #include <QDebug>
 
-//LocalEventNotifier* LocalEventNotifier::_singleton = nullptr;
-
-//LocalEventNotifier *LocalEventNotifier::instance()
-//{
-//  if (!_singleton)
-//    _singleton = new LocalEventNotifier();
-//  return _singleton;
-//}
-
 void LocalEventNotifier::postLocalEvent(QEvent::Type type, QString url, QVariantMap params)
 {
+  qDebug() << "Local event registered:" << type;
   LocalEvent event(type, url, params);
   foreach(QWidget* widget, QApplication::topLevelWidgets()) {
-    if (widget->inherits("NotifiableWindow")) {
+    if (widget->isVisible() && (widget->inherits("NotifiableWindow") || widget->inherits("NotifiableDialog"))) {
       qDebug() << "Local event to" << widget->objectName();
       QApplication::sendEvent(widget, &event);
     }
   }
 }
-
-//LocalEventNotifier::LocalEventNotifier()
-//{
-//}
 
 LocalEvent::LocalEvent(QEvent::Type type, QString url, QVariantMap params)
   : QEvent(type), _params(params), _url(url)
@@ -35,7 +23,7 @@ LocalEvent::LocalEvent(QEvent::Type type, QString url, QVariantMap params)
 
 QVariant LocalEvent::param(QString name)
 {
-    return _params.value(name);
+  return _params.value(name);
 }
 
 QString LocalEvent::url()
@@ -60,6 +48,28 @@ bool NotifiableWindow::event(QEvent *event)
 }
 
 void NotifiableWindow::localEvent(LocalEvent *event)
+{
+  Q_UNUSED(event)
+  //By default do nothing
+}
+
+
+NotifiableDialog::NotifiableDialog(QWidget *parent, Qt::WindowFlags f) :
+  QDialog(parent, f)
+{
+}
+
+bool NotifiableDialog::event(QEvent *event)
+{
+  if (event->type() > QEvent::User) {
+    LocalEvent *localEvent = static_cast<LocalEvent*>(event);
+    this->localEvent(localEvent);
+    return true;
+  }
+  return QWidget::event(event);
+}
+
+void NotifiableDialog::localEvent(LocalEvent *event)
 {
   Q_UNUSED(event)
   //By default do nothing

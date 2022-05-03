@@ -3,6 +3,7 @@
 
 #include "objects/dbdatabaseitem.h"
 
+/** Sqlite database item */
 class SqliteDatabase : public DBDatabaseItem
 {
     Q_OBJECT

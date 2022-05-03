@@ -22,9 +22,11 @@ QVariantMap QueryParamTableModel::params() const
 void QueryParamTableModel::updateParams(QVariantMap params)
 {
     beginResetModel();
-    foreach(QString key, params.keys()) {
-      if (!_params.contains(key)) {
-        _params.insert(key, params.value(key));
+    QMapIterator<QString, QVariant> i(params);
+    while(i.hasNext()) {
+      i.next();
+      if (!_params.contains(i.key())) {
+        _params.insert(i.key(), i.value());
       }
     }
     endResetModel();

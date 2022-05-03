@@ -28,6 +28,7 @@ SOURCES += \
     mysqldatabase.cpp \
     mysqlfolderitem.cpp \
     mysqlplugin.cpp \
+    mysqlsequence.cpp \
     mysqltable.cpp
 
 
@@ -35,10 +36,14 @@ HEADERS  += \
     mysqldatabase.h \
     mysqlfolderitem.h \
     mysqlplugin.h \
+    mysqlsequence.h \
     mysqltable.h
 
 
 #FORMS    += \
+
+TRANSLATIONS += \
+    translations/mysqlplugin_ru.ts
 
 DISTFILES += MysqlPlugin.json
 
