@@ -20,3 +20,5 @@ HEADERS  += \
 
 #FORMS    += \
 
+TRANSLATIONS += \
+    $$PWD/translations/sqliteplugin_ru.ts

@@ -42,6 +42,9 @@ HEADERS  += \
 
 #FORMS    += \
 
+TRANSLATIONS += \
+    translations/mysqlplugin_ru.ts
+
 DISTFILES += MysqlPlugin.json
 
 # Default rules for deployment.

@@ -21,4 +21,5 @@ HEADERS  += \
 
 #FORMS    += \
 
-
+TRANSLATIONS += \
+    $$PWD/translations/mysqlplugin_ru.ts

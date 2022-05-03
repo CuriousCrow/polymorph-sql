@@ -21,3 +21,7 @@ HEADERS  += \
 
 #FORMS    += \
 
+
+TRANSLATIONS += \
+    $$PWD/translations/firebirdplugin_ru.ts
+

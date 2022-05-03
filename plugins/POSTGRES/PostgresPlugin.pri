@@ -34,3 +34,7 @@ HEADERS  += \
 
 
 #FORMS    += \
+
+
+TRANSLATIONS += \
+    $$PWD/translations/postgresplugin_ru.ts

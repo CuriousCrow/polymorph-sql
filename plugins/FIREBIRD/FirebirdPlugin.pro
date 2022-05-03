@@ -39,10 +39,13 @@ HEADERS  += \
     firebirdsequence.h \
     firebirdtable.h
 
-
 #FORMS    += \
 
-DISTFILES += FirebirdPlugin.json
+TRANSLATIONS += \
+    translations/firebirdplugin_ru.ts
+
+DISTFILES += \
+    FirebirdPlugin.json
 
 # Default rules for deployment.
 unix {

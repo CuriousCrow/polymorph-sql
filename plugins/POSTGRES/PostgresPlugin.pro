@@ -58,6 +58,9 @@ HEADERS  += \
 
 DISTFILES += PostgresPlugin.json
 
+TRANSLATIONS += \
+    translations/postgresplugin_ru.ts
+
 # Default rules for deployment.
 unix {
     target.path = $$[QT_INSTALL_PLUGINS]/generic

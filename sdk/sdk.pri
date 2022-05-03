@@ -240,5 +240,8 @@ FORMS    += \
     $$PWD/widgets/blobeditor.ui \
     $$PWD/forms/tablebrowserwindow.ui
 
+TRANSLATIONS += \
+    $$PWD/translations/sdk_ru.ts
+
 RESOURCES += \
     $$PWD/icons.qrc
