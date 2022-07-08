@@ -15,6 +15,7 @@ MysqlTableItem::MysqlTableItem()
 MysqlTableItem::~MysqlTableItem()
 {
   delete _columnsModel;
+  delete _constraintsModel;
 }
 
 ActionResult MysqlTableItem::insertMe()
