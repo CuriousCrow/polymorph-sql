@@ -1,11 +1,14 @@
 #include "firebirdtable.h"
 #include "utils/sqlqueryhelper.h"
+#include "objects/appconst.h"
 
 
 FirebirdTable::FirebirdTable()
   : DBTableItem()
 {
   _constraintsModel = new VariantMapTableModel();
+  _constraintsModel->registerColumn(F_TYPE, tr("Type"));
+  _constraintsModel->registerColumn(F_NAME, tr("Name"));
 }
 
 FirebirdTable::~FirebirdTable()
