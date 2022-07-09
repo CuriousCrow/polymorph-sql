@@ -23,11 +23,13 @@ bool MysqlDatabase::reloadChildren()
 
 QString MysqlDatabase::getAllObjectListSql() const
 {
-  return "SELECT table_name, 'table' FROM information_schema.tables "
-         "WHERE table_schema = 'test' AND table_type = 'BASE TABLE' "
+  QString pattern = "SELECT table_name as \"name\", 'table' as \"type\" FROM information_schema.tables "
+         "WHERE table_schema = '#databaseName#' AND table_type = 'BASE TABLE' "
          "UNION ALL "
          "SELECT table_name, 'view' FROM information_schema.views "
+         "WHERE table_schema = '#databaseName#' "
          "UNION ALL "
          "SELECT routine_name, 'procedure' FROM information_schema.routines "
-         "WHERE ROUTINE_TYPE='PROCEDURE' ";
+         "WHERE ROUTINE_SCHEMA = '#databaseName#' AND ROUTINE_TYPE='PROCEDURE' ";
+  return fillSqlPatternWithFields(pattern);
 }

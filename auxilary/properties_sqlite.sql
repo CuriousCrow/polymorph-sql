@@ -1,0 +1,65 @@
+--Data
+
+--T_TYPES
+insert into t_types ("id", "dbms", "name", "caption") values ('300', 'QSQLITE', 'INTEGER', 'Integer');
+insert into t_types ("id", "dbms", "name", "caption") values ('301', 'QSQLITE', 'TEXT', 'Text');
+insert into t_types ("id", "dbms", "name", "caption") values ('302', 'QSQLITE', 'REAL', 'Real');
+insert into t_types ("id", "dbms", "name", "caption") values ('303', 'QSQLITE', 'BLOB', 'Blob');
+
+--T_KEYWORDS
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('301', 'select', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('302', 'from', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('303', 'where', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('304', 'order', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('305', 'insert', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('306', 'update', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('307', 'delete', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('308', 'create', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('309', 'drop', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('310', 'table', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('311', 'view', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('312', 'index', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('313', 'by', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('314', 'and', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('315', 'or', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('316', 'in', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('317', 'into', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('318', 'case', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('319', 'coalesce', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('320', 'count', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('321', 'alter', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('322', 'left', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('323', 'join', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('324', 'right', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('324', 'right', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('325', 'inner', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('326', 'for', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('327', 'like', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('328', 'min', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('329', 'max', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('330', 'exists', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('331', 'set', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('332', 'sum', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('333', 'with', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('334', 'lock', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('335', 'having', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('336', 'outer', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('337', 'trim', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('338', 'trigger', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('339', 'procedure', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('340', 'sequence', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('341', 'column', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('342', 'add', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('343', 'null', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('344', 'constraint', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('345', 'unique', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('346', 'not', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('347', 'then', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('348', 'end', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('349', 'on', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('350', 'full', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('351', 'asc', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('352', 'ascending', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('353', 'desc', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('354', 'descending', NULL, NULL, 'QSQLITE');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('355', 'distinct', NULL, NULL, 'QSQLITE');
