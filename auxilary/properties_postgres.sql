@@ -118,4 +118,4 @@ insert into t_keywords ("id", "name", "description", "doclink", "driver") values
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('152', 'ascending', NULL, NULL, 'QPSQL');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('153', 'desc', NULL, NULL, 'QPSQL');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('154', 'descending', NULL, NULL, 'QPSQL');
-insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('154', 'distinct', NULL, NULL, 'QPSQL');
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('155', 'distinct', NULL, NULL, 'QPSQL');

@@ -64,4 +64,4 @@ insert into t_keywords ("id", "name", "description", "doclink", "driver") values
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('452', 'ascending', NULL, NULL, 'QIBASE');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('453', 'desc', NULL, NULL, 'QIBASE');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('454', 'descending', NULL, NULL, 'QIBASE');
-
+insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('455', 'distinct', NULL, NULL, 'QIBASE');

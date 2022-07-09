@@ -31,7 +31,6 @@ insert into t_keywords ("id", "name", "description", "doclink", "driver") values
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('322', 'left', NULL, NULL, 'QSQLITE');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('323', 'join', NULL, NULL, 'QSQLITE');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('324', 'right', NULL, NULL, 'QSQLITE');
-insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('324', 'right', NULL, NULL, 'QSQLITE');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('325', 'inner', NULL, NULL, 'QSQLITE');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('326', 'for', NULL, NULL, 'QSQLITE');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('327', 'like', NULL, NULL, 'QSQLITE');
