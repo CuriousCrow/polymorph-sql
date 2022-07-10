@@ -88,9 +88,10 @@ void SimpleSqlCompleterSupport::onCompleterRequested(const QString &contextText)
     objName = aliasSource(objName);
 
     QVariantMap dbObj = _objectsModel->rowByName(objName);
+    qDebug() << dbObj.value(F_TYPE).toString() << OBJTYPE_TABLE;
     if (!dbObj.isEmpty() && dbObj.value(F_TYPE).toString() == OBJTYPE_TABLE) {
       qDebug() << "Searching table:" << objName;
-      DBObjectItem* item = _ds->itemByFolderAndName(_dbItem, FOLDER_TABLES, objName.toLower());
+      DBObjectItem* item = _ds->itemByFolderAndName(_dbItem, FOLDER_TABLES, objName);
       if (item && item->type() == DBObjectItem::Table) {
         qDebug() << "Table object found";
         DBTableItem* tableItem = static_cast<DBTableItem*>(item);

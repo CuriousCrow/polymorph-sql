@@ -71,7 +71,7 @@ DBObjectItem *DBObjectItem::childItem(DBObjectItem::ItemType type, QString name)
 AppUrl DBObjectItem::objectUrl()
 {
   AppUrl url = _parentUrl;
-  QString caption = fieldValue(F_CAPTION).toString().toLower().replace(" ", "_");
+  QString caption = fieldValue(F_CAPTION).toString().replace(" ", "_");
   url.cd(caption);
   return url;
 }

@@ -13,11 +13,11 @@ FirebirdDatabase::FirebirdDatabase()
 
 QString FirebirdDatabase::getAllObjectListSql() const
 {
-  return "select trim(rdb$relation_name), 'table' from rdb$relations where rdb$relation_type=0 and (rdb$system_flag is null or rdb$system_flag = 0) "
+  return "select trim(rdb$relation_name) as \"name\", trim('table') as \"type\" from rdb$relations where rdb$relation_type=0 and (rdb$system_flag is null or rdb$system_flag = 0) "
          "union all "
-         "select trim(rdb$relation_name) name, 'view' from rdb$relations where rdb$relation_type=1 "
+         "select trim(rdb$relation_name) name, trim('view') from rdb$relations where rdb$relation_type=1 "
          "union all "
-         "select trim(rdb$generator_name) name, 'sequence' from rdb$generators where rdb$system_flag = 0 "
+         "select trim(rdb$generator_name) name, trim('sequence') from rdb$generators where rdb$system_flag = 0 "
          "union all "
-         "select trim(rdb$procedure_name) name, 'procedure' from rdb$procedures";
+         "select trim(rdb$procedure_name) name, trim('procedure') from rdb$procedures";
 }
