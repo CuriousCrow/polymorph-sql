@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QUuid>
 #include "objects/appconst.h"
 #include "objects/appurl.h"
 #include "objects/appconst.h"
@@ -24,6 +25,7 @@ TableBrowserWindow::TableBrowserWindow(DBSelectableItem* tableItem) :
 
     _mnuContext = new QMenu(this);
     _mnuContext->addAction(ui->aSetNull);
+    _mnuContext->addAction(ui->aGenerateUuid);
     _mnuContext->addAction(ui->aLoadFromFile);
     _mnuContext->addSeparator();
     _mnuContext->addAction(ui->aEqualFilter);
@@ -129,6 +131,11 @@ void TableBrowserWindow::on_tableView_pressed(const QModelIndex &index)
 void TableBrowserWindow::on_aSetNull_triggered()
 {
     _sourceModel->setData(ui->tableView->currentIndex(), QVariant());
+}
+
+void TableBrowserWindow::on_aGenerateUuid_triggered()
+{
+    _sourceModel->setData(ui->tableView->currentIndex(), QUuid::createUuid());
 }
 
 void TableBrowserWindow::onError(QString message)
@@ -298,19 +305,3 @@ void TableBrowserWindow::injectExtension(ExtensionPoint ep, QObject *e)
     _mnuFilterList->addAction(action);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

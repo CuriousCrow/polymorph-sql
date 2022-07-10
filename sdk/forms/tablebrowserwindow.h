@@ -70,6 +70,8 @@ private slots:
 
   void on_aResetState_triggered();
 
+  void on_aGenerateUuid_triggered();
+
 private:
   Ui::TableBrowserWindow *ui;
   QString _tableName;
