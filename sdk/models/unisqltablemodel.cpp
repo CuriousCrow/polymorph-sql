@@ -118,6 +118,14 @@ qlonglong UniSqlTableModel::idByRow(int row) const
   return _rowIndex.at(row);
 }
 
+QVariant UniSqlTableModel::primaryValue(int row) const
+{
+  if (_primaryKey.count() != 1)
+    return QVariant();
+  QSqlRecord rec = recByRow(row);
+  return rec.value(_primaryKey.fieldName(0));
+}
+
 QString UniSqlTableModel::fields()
 {
   QStringList fields;

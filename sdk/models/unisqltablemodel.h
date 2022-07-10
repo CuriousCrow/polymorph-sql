@@ -30,6 +30,7 @@ public:
   int fieldIndex(QString name);
   QStringList sqlError();
   qlonglong idByRow(int row) const;
+  QVariant primaryValue(int row) const;
 signals:
   void error(QString message);
 

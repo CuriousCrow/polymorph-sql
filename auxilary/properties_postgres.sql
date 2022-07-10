@@ -12,6 +12,7 @@ insert into t_types ("id", "dbms", "name", "caption") values ('107', 'QPSQL', 'T
 insert into t_types ("id", "dbms", "name", "caption") values ('108', 'QPSQL', 'REAL', 'Real');
 insert into t_types ("id", "dbms", "name", "caption") values ('109', 'QPSQL', 'CHAR', 'Char');
 insert into t_types ("id", "dbms", "name", "caption") values ('110', 'QPSQL', 'NUMERIC', 'Numeric');
+insert into t_types ("id", "dbms", "name", "caption") values ('111', 'QPSQL', 'UUID', 'UUID');
 
 --T_FUNCTIONS
 insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('102', 'abs', '[integer|smallint|numeric|real]', 'absolute value', NULL, 'QPSQL');

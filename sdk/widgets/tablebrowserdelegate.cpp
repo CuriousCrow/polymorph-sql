@@ -60,6 +60,8 @@ QWidget *TableBrowserDelegate::createEditor(QWidget *parent, const QStyleOptionV
 
 void TableBrowserDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
+  qDebug() << "setEditorData() called";
+
   if (_foreignKeys.contains(index.column())) {
 
   }
@@ -77,7 +79,7 @@ void TableBrowserDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
 
   if (_foreignKeys.contains(index.column())) {
     QTableView* editorView = static_cast<QTableView*>(editor);
-    model->setData(index, _foreignTable->idByRow(editorView->currentIndex().row()));
+    model->setData(index, _foreignTable->primaryValue(editorView->currentIndex().row()));
   }
   else if (index.column() == BLOB_COL) {
     BlobEditor* blobEditor = static_cast<BlobEditor*>(editor);
