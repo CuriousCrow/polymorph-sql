@@ -36,6 +36,7 @@ class AbstractKeySequenceHandler : public QObject
     Q_OBJECT
 public:
     AbstractKeySequenceHandler();
+    virtual ~AbstractKeySequenceHandler();
     virtual QSet<KeySequence> keySequences() = 0;
     virtual bool handle(const KeySequence &keySequence) = 0;
 };

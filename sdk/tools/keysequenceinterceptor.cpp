@@ -49,6 +49,10 @@ AbstractKeySequenceHandler::AbstractKeySequenceHandler() : QObject()
 
 }
 
+AbstractKeySequenceHandler::~AbstractKeySequenceHandler()
+{
+}
+
 KeySequence::KeySequence(const QString &key, QKeySequence::SequenceFormat format) : QKeySequence(key, format)
 {
 }

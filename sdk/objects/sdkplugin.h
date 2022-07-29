@@ -33,6 +33,8 @@
 
 #define B_TABLE_FILTER_REMOVE_ACTION "removeTableFilter"
 
+#define B_TOGGLE_QUERY_LINE_COMMENTS "toggleQueryCommentsKey"
+
 class SdkPlugin : public IocPlugin
 {
     Q_OBJECT

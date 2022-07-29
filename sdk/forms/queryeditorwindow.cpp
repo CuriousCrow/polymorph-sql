@@ -12,6 +12,7 @@
 #include "objects/sdkplugin.h"
 #include "objects/appconst.h"
 #include "queryhistoryform.h"
+#include "utils/messagedialogs.h"
 
 
 
@@ -125,8 +126,13 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
       updateStatusMessage(tr("Database need to be selected"));
       return;
   }
+  QString text = getActiveText();
+  if (text.contains(";")) {
+    MessageDialogs::warn(tr("Please, select only one SQL-query or use \"Run Scripts\" action"));
+    return;
+  }
 
-  QSqlQuery query = SqlQueryHelper::execSql(getActiveText(), connectionName());
+  QSqlQuery query = SqlQueryHelper::execSql(text, connectionName());
   if (!query.lastError().isValid()){
     _resultModel->setQuery(query);
     ui->tabWidget->setCurrentWidget(ui->tabResult);
@@ -308,6 +314,10 @@ void QueryEditorWindow::injectExtension(ExtensionPoint ep, QObject *e)
   if (e->inherits(CLASS(AbstractKeySequenceHandler))) {
     if (ep.name() == EP_QUERYEDITOR_KEYSEQUENCE) {
       AbstractKeySequenceHandler* keyHander = static_cast<AbstractKeySequenceHandler*>(e);
+      if (e->inherits(CLASS(QueryEditorKeyHandler))) {
+        QueryEditorKeyHandler* editorKeyHandler = static_cast<QueryEditorKeyHandler*>(e);
+        editorKeyHandler->setEditor(ui->teQueryEditor);
+      }
       _keyInterceptor->registerHandler(keyHander);
     }
   }
