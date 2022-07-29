@@ -68,3 +68,11 @@ void MysqlFolderItem::loadChildren()
         }
     }
 }
+
+QString MysqlFolderItem::folderName(ItemType type)
+{
+  if (type == DBObjectItem::Sequence) {
+    return tr("Auto Increments");
+  }
+  return FolderTreeItem::folderName(type);
+}

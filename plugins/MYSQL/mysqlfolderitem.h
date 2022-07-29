@@ -6,14 +6,14 @@
 
 class MysqlFolderItem : public FolderTreeItem
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    Q_INVOKABLE MysqlFolderItem();
+  Q_INVOKABLE MysqlFolderItem();
 
-    // FolderTreeItem interface
+  // FolderTreeItem interface
 protected:
-    virtual void loadChildren() override;
-
+  virtual void loadChildren() override;
+  virtual QString folderName(DBObjectItem::ItemType type) override;
 };
 
 #endif // MYSQLFOLDERITEM_H
