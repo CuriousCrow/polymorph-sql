@@ -23,6 +23,7 @@ protected:
 private:
   void highlightKeywords(const QString &text);
   void highlightFunctions(const QString &text);
+  void highlightComments(const QString &text);
   QStringList _sqlKeyWords;
   QStringList _sqlFunctions;
 };
