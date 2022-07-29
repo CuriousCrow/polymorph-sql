@@ -59,7 +59,7 @@ bool ToggleQueryCommentsHandler::handle(const KeySequence &keySequence)
   }
 
   _editor->setTextCursor(cursor);
-  return true;
+  return false;
 }
 
 void QueryEditorKeyHandler::setEditor(LQueryEditor *editor)
