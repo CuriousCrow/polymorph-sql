@@ -40,9 +40,9 @@ public:
   INJECT(LKnowledgeBase*, kb)
   INJECT(Core*, core)
   Q_INVOKABLE void inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport* completerSupport);
-  Q_INVOKABLE void inject_by_ds(DataStore* ds);
   Q_INVOKABLE void inject_helpLookupProvider(SqlHelpLookupProvider* lookupProvider);
   Q_INVOKABLE void inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter* syntaxHighlighter);
+  Q_INVOKABLE void inject_by_ds(DataStore* ds);
 
 public slots:
   void refreshConnectionList();
@@ -72,6 +72,7 @@ private:
   SimpleSqlCompleterSupport* _completerSupport;
   LSqlSyntaxHighlighter* _highlighter;
   LSimpleTooltip* _helpTooltip;
+  SqlHelpLookupProvider* _helpLookupProvider;
   QString connectionName();
   QString dbUrl();
   DBDatabaseItem* dbObject();

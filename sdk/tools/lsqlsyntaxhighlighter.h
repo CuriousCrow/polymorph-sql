@@ -16,6 +16,7 @@ public:
   QStringList functions();
 
   Q_INVOKABLE void inject_by_kb(LKnowledgeBase* kb);
+  void updateModels(QString driverName);
 
   // QSyntaxHighlighter interface
 protected:
@@ -24,6 +25,7 @@ private:
   void highlightKeywords(const QString &text);
   void highlightFunctions(const QString &text);
   void highlightComments(const QString &text);
+  LKnowledgeBase* _kb;
   QStringList _sqlKeyWords;
   QStringList _sqlFunctions;
 };

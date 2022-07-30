@@ -13,12 +13,13 @@ QString SqlHelpLookupProvider::lookup(QString keyword)
   QString desc = "No data";
   QString link = "";
 
-  int row = -1;
-  foreach(LSqlTableModel* model, _helpModels) {
-    row = model->rowByValue(F_NAME, keyword.toLower());
-    if (row >= 0) {
-      desc = model->data(row, F_DESCRIPTION).toString();
-      link = model->data(row, F_DOC_LINK).toString();
+  QVariantMap row;
+  foreach(LDBObjectTableModel* model, _helpModels) {
+    row = model->rowByName(keyword.toLower());
+    if (!row.isEmpty()) {
+      desc = row.value(F_DESCRIPTION).toString();
+      link = row.value(F_DOC_LINK).toString();
+      break;
     }
   }
   return p1.arg(desc) + (link.isEmpty() ? "" : p2.arg(link));
@@ -26,6 +27,12 @@ QString SqlHelpLookupProvider::lookup(QString keyword)
 
 void SqlHelpLookupProvider::inject_by_kb(LKnowledgeBase *kb)
 {
-    _helpModels.append(kb->mKeywords);
-    _helpModels.append(kb->mFunctions);
+  _kb = kb;
+}
+
+void SqlHelpLookupProvider::updateHelpModels(QString driverName)
+{
+  _helpModels.clear();
+  _helpModels.append(_kb->modelByType(OBJTYPE_KEYWORD, driverName));
+  _helpModels.append(_kb->modelByType(OBJTYPE_FUNCTION, driverName));
 }

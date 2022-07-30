@@ -4,6 +4,7 @@
 #include <QSqlTableModel>
 #include <QColor>
 #include "models/lsqltablemodel.h"
+#include "objects/appconst.h"
 
 LSqlSyntaxHighlighter::LSqlSyntaxHighlighter(QObject *parent):
   QSyntaxHighlighter(parent)
@@ -26,16 +27,20 @@ QStringList LSqlSyntaxHighlighter::functions()
 
 void LSqlSyntaxHighlighter::inject_by_kb(LKnowledgeBase *kb)
 {
-    //TODO: Keywords should be loaded depending on database type
-    LSqlTableModel* mKeywords = kb->mKeywords;
-    for (int i=0; i<mKeywords->rowCount(); i++){
-      _sqlKeyWords << mKeywords->data(mKeywords->index(i, mKeywords->fieldIndex("NAME"))).toString().toUpper();
-    }
-    LSqlTableModel* mFunctions = kb->mFunctions;
-    int nameCol = mFunctions->fieldIndex("NAME");
-    for (int i=0; i<mFunctions->rowCount(); i++) {
-      _sqlFunctions << mFunctions->data(mFunctions->index(i, nameCol)).toString().toLower();
-    }
+  _kb = kb;
+}
+
+void LSqlSyntaxHighlighter::updateModels(QString driverName)
+{
+  LDBObjectTableModel* mKeywords = _kb->modelByType(OBJTYPE_KEYWORD, driverName);
+  int nameCol = mKeywords->colByName(F_NAME);
+  for (int i=0; i<mKeywords->rowCount(); i++){
+    _sqlKeyWords << mKeywords->data(i, nameCol).toString().toUpper();
+  }
+  LDBObjectTableModel* mFunctions = _kb->modelByType(OBJTYPE_FUNCTION, driverName);
+  for (int i=0; i<mFunctions->rowCount(); i++) {
+    _sqlFunctions << mFunctions->data(i, nameCol).toString().toLower();
+  }
 }
 
 void LSqlSyntaxHighlighter::highlightBlock(const QString &text)

@@ -104,7 +104,8 @@ void QueryEditorWindow::inject_by_ds(DataStore *ds)
 
 void QueryEditorWindow::inject_helpLookupProvider(SqlHelpLookupProvider *lookupProvider)
 {
-    _helpTooltip->setLookupProvider(lookupProvider);
+  _helpLookupProvider = lookupProvider;
+  _helpTooltip->setLookupProvider(helpLookupProvider);
 }
 
 void QueryEditorWindow::inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter *syntaxHighlighter)
@@ -195,6 +196,8 @@ QString QueryEditorWindow::generateAlias(QString tableName)
 void QueryEditorWindow::reloadKnowledgeModel()
 {
   _completerSupport->setDatabaseItem(dbObject());
+  _helpLookupProvider->updateHelpModels(dbObject()->driverName());
+  _highlighter->updateModels(dbObject()->driverName());
 }
 
 void QueryEditorWindow::on_aCommit_triggered()

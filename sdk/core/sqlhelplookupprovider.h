@@ -8,14 +8,16 @@
 
 class SqlHelpLookupProvider : public QObject, public HelpLookupProvider
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    Q_INVOKABLE SqlHelpLookupProvider(QObject* parent = nullptr);
-    virtual QString lookup(QString keyword);
+  Q_INVOKABLE SqlHelpLookupProvider(QObject* parent = nullptr);
+  virtual QString lookup(QString keyword);
 
-    Q_INVOKABLE void inject_by_kb(LKnowledgeBase* kb);
+  Q_INVOKABLE void inject_by_kb(LKnowledgeBase* kb);
+  void updateHelpModels(QString driverName);
 private:
-    QList<LSqlTableModel*> _helpModels;
+  LKnowledgeBase* _kb;
+  QList<LDBObjectTableModel*> _helpModels;
 };
 
 #endif // SQLHELPLOOKUPPROVIDER_H

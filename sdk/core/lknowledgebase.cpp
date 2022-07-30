@@ -78,15 +78,6 @@ int LKnowledgeBase::typeByName(QString dbms, QString name)
 LKnowledgeBase::LKnowledgeBase(QObject *parent) : QObject(parent)
 {
   qDebug() << "Knowledge base created";
-  mKeywords = new LSqlTableModel(this);
-  mKeywords->setTable(T_KEYWORDS);
-  mKeywords->select();
-  qDebug() << mKeywords->rowCount() << "keywords loaded";
-
-  mFunctions = new LSqlTableModel(this);
-  mFunctions->setTable(T_FUNCTIONS);
-  mFunctions->select();
-  qDebug() << mFunctions->rowCount() << "functions loaded";
 
   mTypes = new LSqlTableModel(this);
   mTypes->setTable(T_TYPES);

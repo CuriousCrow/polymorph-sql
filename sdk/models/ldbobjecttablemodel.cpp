@@ -48,7 +48,7 @@ void LDBObjectTableModel::reload(QString connectionName)
     for(int idx=0; idx<rec.count(); idx++) {
       rowData.insert(rec.fieldName(idx), rec.value(idx));
     }
-    QString name = rowData.value(_idxField).toString();
+    QString name = rowData.value(_idxField).toString().toLower();
     _rowIndex.append(name);
     _dataMap.insert(name, rowData);
   }
@@ -92,6 +92,11 @@ QVariantMap LDBObjectTableModel::rowByName(QString name) const
 bool LDBObjectTableModel::contains(QString name) const
 {
   return _dataMap.contains(name);
+}
+
+QVariant LDBObjectTableModel::data(int row, int column)
+{
+  return data(index(row, column));
 }
 
 int LDBObjectTableModel::colByName(QString name) const

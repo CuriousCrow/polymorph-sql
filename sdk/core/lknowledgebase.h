@@ -14,8 +14,6 @@ public:
   Q_INVOKABLE LKnowledgeBase(QObject *parent = nullptr);
   ~LKnowledgeBase();
 
-  LSqlTableModel* mKeywords;
-  LSqlTableModel* mFunctions;
   LSqlTableModel* mTypes;
 
   void loadModels(const QStringList &drivers);

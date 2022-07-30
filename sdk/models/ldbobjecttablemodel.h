@@ -20,6 +20,10 @@ public:
   QString nameByRow(int row) const;
   QVariantMap rowByName(QString name) const;
   bool contains(QString name) const;
+
+  QVariant data(int row, int column);
+  int colByName(QString name) const;
+  QString columnName(int idx) const;
 private:
 
   QString _idxField = "name";
@@ -34,10 +38,6 @@ public:
   virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override;
   virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-protected:
-
-  int colByName(QString name) const;
-  QString columnName(int idx) const;
 };
 
 #endif // LDBOBJECTTABLEMODEL_H
