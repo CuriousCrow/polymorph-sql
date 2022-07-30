@@ -6,6 +6,53 @@ insert into t_types ("id", "dbms", "name", "caption") values ('301', 'QSQLITE', 
 insert into t_types ("id", "dbms", "name", "caption") values ('302', 'QSQLITE', 'REAL', 'Real');
 insert into t_types ("id", "dbms", "name", "caption") values ('303', 'QSQLITE', 'BLOB', 'Blob');
 
+--T_FUNCTIONS
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3000', 'abs', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3001', 'changes', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3002', 'char', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3003', 'coalesce', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3004', 'format', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3005', 'glob', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3006', 'hex', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3007', 'ifnull', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3008', 'iif', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3009', 'instr', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3010', 'last_insert_rowid', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3011', 'length', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3012', 'like', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3013', 'likelihood', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3014', 'likely', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3015', 'load_extension', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3016', 'lower', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3017', 'ltrim', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3018', 'max', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3019', 'min', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3020', 'nullif', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3021', 'printf', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3022', 'quote', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3023', 'random', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3024', 'randomblob', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3025', 'replace', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3026', 'round', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3027', 'rtrim', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3028', 'sign', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3029', 'soundex', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3030', 'sqlite_compileoption_get', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3031', 'sqlite_compileoption_used', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3032', 'sqlite_offset', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3033', 'sqlite_source_id', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3034', 'sqlite_version', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3035', 'substr', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3036', 'substring', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3037', 'total_changes', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3038', 'trim', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3039', 'typeof', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3040', 'unicode', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3041', 'unlikely', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3042', 'upper', '', '', NULL, 'QSQLITE');
+insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3043', 'zeroblob', '', '', NULL, 'QSQLITE');
+
+
 --T_KEYWORDS
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('301', 'select', NULL, NULL, 'QSQLITE');
 insert into t_keywords ("id", "name", "description", "doclink", "driver") values ('302', 'from', NULL, NULL, 'QSQLITE');
