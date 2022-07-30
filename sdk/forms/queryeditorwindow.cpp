@@ -105,7 +105,7 @@ void QueryEditorWindow::inject_by_ds(DataStore *ds)
 void QueryEditorWindow::inject_helpLookupProvider(SqlHelpLookupProvider *lookupProvider)
 {
   _helpLookupProvider = lookupProvider;
-  _helpTooltip->setLookupProvider(helpLookupProvider);
+  _helpTooltip->setLookupProvider(_helpLookupProvider);
 }
 
 void QueryEditorWindow::inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter *syntaxHighlighter)
