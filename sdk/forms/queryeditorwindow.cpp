@@ -34,31 +34,6 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
 
   _extensionPoints.insert(ExtensionPoint(EP_QUERYEDITOR_KEYSEQUENCE, CLASS(AbstractKeySequenceHandler), "Test key sequence handler", false));
 
-//  _knowledgeModel = new JointDBOjbectModel(this);
-//  _knowledgeModel->registerColumn(F_NAME);
-//  _knowledgeModel->registerColumn(F_TYPE);
-//  _knowledgeModel->registerColumn(F_DESCRIPTION);
-//  _knowledgeModel->registerColumn(F_DOC_LINK);
-
-//  _objectsModel = new LDBObjectTableModel(this);
-//  _objectsModel->registerColumn(F_NAME);
-//  _objectsModel->registerColumn(F_TYPE);
-//  _objectsModel->registerColumn(F_DESCRIPTION);
-//  _objectsModel->registerColumn(F_DOC_LINK);
-//  _objectsModel->setFixedValue(F_DESCRIPTION, "");
-//  _objectsModel->setFixedValue(F_DOC_LINK, "");
-
-//  _completer = new LTextCompleter(_knowledgeModel, this);
-//  QTableView* completerView = new QTableView(this);
-//  completerView->horizontalHeader()->hide();
-//  completerView->verticalHeader()->hide();
-//  completerView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//  _completer->setPopup(completerView);
-//  _completer->setCaseSensitivity(Qt::CaseInsensitive);
-//  _completer->setWidget(ui->teQueryEditor);
-//  connect(_completer, SIGNAL(completerRequested(QString)),
-//          this, SLOT(onCompleterRequested(QString)));
-
   connect(ui->cmbDatabase, SIGNAL(currentIndexChanged(int)),
           this, SLOT(reloadKnowledgeModel()));
 
@@ -228,8 +203,12 @@ void QueryEditorWindow::onAddAlias()
   QString prevWord = ui->teQueryEditor->previousWord();
 
   QString tableAlias = generateAlias(curWord.isEmpty() ? prevWord : curWord);
-  if (!curWord.isEmpty())
-    ui->teQueryEditor->textCursor().insertText(" ");
+  if (!curWord.isEmpty()) {
+    QTextCursor cursor = ui->teQueryEditor->textCursor();
+    cursor.movePosition(QTextCursor::EndOfWord);
+    cursor.insertText(" ");
+    ui->teQueryEditor->setTextCursor(cursor);
+  }
   ui->teQueryEditor->textCursor().insertText(tableAlias);
 }
 
