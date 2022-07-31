@@ -49,12 +49,6 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   connect(keyInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
           this, SLOT(onHelpKey()));
 
-  LKeySequenceInterceptor* aliasInterceptor = new LKeySequenceInterceptor(this);
-  aliasInterceptor->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_T));
-  aliasInterceptor->applyToWidget(ui->teQueryEditor);
-  connect(aliasInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
-          this, SLOT(onAddAlias()));
-
   connect(ui->teQueryEditor, &LQueryEditor::wordClicked,
           this, &QueryEditorWindow::onFindObject);
 
@@ -157,17 +151,6 @@ QString QueryEditorWindow::getActiveText()
   return activeText;
 }
 
-QString QueryEditorWindow::generateAlias(QString tableName)
-{
-//  qDebug() << "Table name: " << tableName;
-  QStringList sl = tableName.split("_", Qt::SkipEmptyParts);
-  QString alias;
-  foreach(QString word, sl) {
-    alias += word.at(0).toLower();
-  }
-  return alias;
-}
-
 void QueryEditorWindow::reloadKnowledgeModel()
 {
   _completerSupport->setDatabaseItem(dbObject());
@@ -195,21 +178,6 @@ void QueryEditorWindow::onHelpKey()
 {
   _helpTooltip->popup(ui->teQueryEditor->currentWord(),
                       ui->teQueryEditor->cursorGlobalPos());
-}
-
-void QueryEditorWindow::onAddAlias()
-{
-  QString curWord = ui->teQueryEditor->currentWord();
-  QString prevWord = ui->teQueryEditor->previousWord();
-
-  QString tableAlias = generateAlias(curWord.isEmpty() ? prevWord : curWord);
-  if (!curWord.isEmpty()) {
-    QTextCursor cursor = ui->teQueryEditor->textCursor();
-    cursor.movePosition(QTextCursor::EndOfWord);
-    cursor.insertText(" ");
-    ui->teQueryEditor->setTextCursor(cursor);
-  }
-  ui->teQueryEditor->textCursor().insertText(tableAlias);
 }
 
 void QueryEditorWindow::on_aExecScript_triggered()

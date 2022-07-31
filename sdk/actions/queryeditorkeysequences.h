@@ -50,4 +50,23 @@ public:
   virtual bool handle(const KeySequence &keySequence) override;
 };
 
+/** Generate table alias in query editor by Ctrl+T */
+class GenerateTableAliasHandler : public QueryEditorKeyHandler, public AbstractExtension
+{
+  Q_OBJECT
+public:
+  Q_INVOKABLE GenerateTableAliasHandler();
+
+  // AbstractKeySequenceHandler interface
+public:
+  virtual QSet<KeySequence> keySequences() override;
+  virtual bool handle(const KeySequence &keySequence) override;
+
+  // AbstractExtension interface
+public:
+  virtual bool supportsExtensionPoint(const ExtensionPoint &extensionPoint) const override;
+protected:
+  QString generateAlias(QString tableName);
+};
+
 #endif // QUERYEDITORKEYSEQUENCES_H

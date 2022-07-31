@@ -162,6 +162,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     c->registerDependency("addNewQueryTab", CLASSMETA(AddNewQueryEditorAction), InstanceMode::Singleton);
     c->registerDependency("testQueryEditorKey", CLASSMETA(QETestHandler), InstanceMode::Prototype);
     c->registerDependency(B_TOGGLE_QUERY_LINE_COMMENTS, CLASSMETA(ToggleQueryCommentsHandler), InstanceMode::Prototype);
+    c->registerDependency(B_GENERATE_TABLE_ALIAS, CLASSMETA(GenerateTableAliasHandler), InstanceMode::Prototype);
     c->registerDependency(B_TABLE_FILTER_REMOVE_ACTION, CLASSMETA(RemoveTableFilterAction), InstanceMode::Prototype);
 //    TestExtension* testExtension = new TestExtension();
 //    testExtension->setObjectName("Test extension object");

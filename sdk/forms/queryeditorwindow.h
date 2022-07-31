@@ -55,7 +55,6 @@ private slots:
   void on_aRollback_triggered();
 
   void onHelpKey();
-  void onAddAlias();
   void on_aExecScript_triggered();
   void onFindObject(QString word, Qt::KeyboardModifiers modifiers);
   void on_aQueryHistory_triggered();
@@ -77,7 +76,6 @@ private:
   QString dbUrl();
   DBDatabaseItem* dbObject();
   QString getActiveText();
-  QString generateAlias(QString tableName);
   QString _lastExecutedQuery;
 
   KeySequenceInterceptor* _keyInterceptor;
