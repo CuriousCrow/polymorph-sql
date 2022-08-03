@@ -116,7 +116,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QPlainTextEdit" name="edtSourceCode"/>
+        <widget class="LQueryEditor" name="edtSourceCode"/>
        </item>
       </layout>
      </widget>
@@ -163,7 +163,19 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LQueryEditor</class>
+   <extends>QPlainTextEdit</extends>
+   <header>widgets/lqueryeditor.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
+  <include location="../icons.qrc"/>
   <include location="../icons.qrc"/>
  </resources>
  <connections/>

@@ -153,9 +153,10 @@ QString QueryEditorWindow::getActiveText()
 
 void QueryEditorWindow::reloadKnowledgeModel()
 {
-  _completerSupport->setDatabaseItem(dbObject());
-  _helpLookupProvider->updateHelpModels(dbObject()->driverName());
-  _highlighter->updateModels(dbObject()->driverName());
+  DBDatabaseItem* dbItem = dbObject();
+  _completerSupport->setDatabaseItem(dbItem);
+  _helpLookupProvider->updateHelpModels(dbItem->driverName());
+  _highlighter->updateModels(dbItem->driverName());
 }
 
 void QueryEditorWindow::on_aCommit_triggered()

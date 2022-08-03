@@ -49,6 +49,7 @@ SOURCES += \
 #Widgets
   $$PWD/tools/keysequenceinterceptor.cpp \
   $$PWD/tools/simplesqlcompletersupport.cpp \
+  $$PWD/tools/sqleditorsupport.cpp \
   $$PWD/tools/testclasses.cpp \
   $$PWD/utils/messagedialogs.cpp \
     $$PWD/widgets/blobeditor.cpp \
@@ -155,6 +156,7 @@ HEADERS  += \
 #Widgets
   $$PWD/tools/keysequenceinterceptor.h \
   $$PWD/tools/simplesqlcompletersupport.h \
+  $$PWD/tools/sqleditorsupport.h \
   $$PWD/tools/testclasses.h \
   $$PWD/utils/messagedialogs.h \
     $$PWD/widgets/blobeditor.h \

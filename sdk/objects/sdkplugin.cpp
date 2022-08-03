@@ -40,6 +40,7 @@
 #include "core/sqlhelplookupprovider.h"
 #include "tools/lsqlsyntaxhighlighter.h"
 #include "tools/simplesqlcompletersupport.h"
+#include "tools/sqleditorsupport.h"
 
 #include "models/sqlcolumnmodel.h"
 
@@ -168,6 +169,7 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
 //    testExtension->setObjectName("Test extension object");
 //    c->registerSingletonObject(new DependencyMeta("testExtension", CLASSMETA(TestExtension)), testExtension);
 //    c->registerSingletonObject(new DependencyMeta("testItemPopup", CLASSMETA(TestPopupAction)), new TestPopupAction());
+    c->registerDependency("editorSupport", CLASSMETA(SqlEditorSupport), InstanceMode::Prototype);
 
     return true;
 }
