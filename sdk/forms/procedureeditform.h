@@ -23,17 +23,10 @@ public:
   ~ProcedureEditForm();
 
   INJECT(LKnowledgeBase*, kb);
-//  Q_INVOKABLE void inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport* completerSupport);
-//  Q_INVOKABLE void inject_helpLookupProvider(SqlHelpLookupProvider* lookupProvider);
-//  Q_INVOKABLE void inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter* syntaxHighlighter);
   INJECT(SqlEditorSupport*, editorSupport);
 
 private:
   Ui::ProcedureEditForm *ui;
-//  SimpleSqlCompleterSupport* _completerSupport;
-//  LSqlSyntaxHighlighter* _highlighter;
-//  LSimpleTooltip* _helpTooltip;
-//  SqlHelpLookupProvider* _helpLookupProvider;
 
   void reloadTypes();
 
@@ -45,7 +38,6 @@ private slots:
   void on_btnApply_clicked();
   void on_btnCancel_clicked();
   void onUserActionChanged();
-//  void onHelpKey();
 };
 
 #endif // PROCEDUREEDITFORM_H

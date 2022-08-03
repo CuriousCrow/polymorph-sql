@@ -1,9 +1,16 @@
 #include "sqleditorsupport.h"
 #include "tools/keysequenceinterceptor.h"
+#include "actions/queryeditorkeysequences.h"
 
 SqlEditorSupport::SqlEditorSupport() : QObject()
 {
-  _keyInterceptor = new LKeySequenceInterceptor(this);
+  _keyInterceptor = new KeySequenceInterceptor(this);
+  HelpKeyHandler* helpKeyHandler = new HelpKeyHandler();
+  connect(helpKeyHandler, &HelpKeyHandler::keySignal,
+          this, &SqlEditorSupport::onHelpKey);
+  _keyInterceptor->registerHandler(helpKeyHandler);
+
+  _extensionPoints.insert(ExtensionPoint(EP_QUERYEDITOR_KEYSEQUENCE, CLASS(AbstractKeySequenceHandler), "Test key sequence handler", false));
 }
 
 void SqlEditorSupport::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
@@ -39,10 +46,14 @@ void SqlEditorSupport::setEditor(QPlainTextEdit *editor)
   _helpTooltip->setOpenExternalLinks(true);
   _helpTooltip->setLookupProvider(_helpLookupProvider);
 
-  _keyInterceptor->applyToWidget(_editor);
-  _keyInterceptor->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_Q));
-  connect(_keyInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
-          this, SLOT(onHelpKey()));
+  _keyInterceptor->attachToWidget(_editor);
+  //Set editor object for key handlers
+  foreach(AbstractKeySequenceHandler* handler, _keyInterceptor->handlers()) {
+    if (handler->inherits(CLASS(QueryEditorKeyHandler))) {
+      QueryEditorKeyHandler* editorKeyHandler = static_cast<QueryEditorKeyHandler*>(handler);
+      editorKeyHandler->setEditor(_editor);
+    }
+  }
 
   _completerSupport->setWidget(_editor);
   _helpTooltip->setWidget(_editor);
@@ -72,6 +83,23 @@ QPoint SqlEditorSupport::cursorGlobalPos()
 
 void SqlEditorSupport::onHelpKey()
 {
-  _helpTooltip->popup(currentWord(),
-                      cursorGlobalPos());
+  _helpTooltip->popup(currentWord(), cursorGlobalPos());
+}
+
+void SqlEditorSupport::injectExtension(ExtensionPoint ep, QObject *e)
+{
+  qDebug() << "Inject QueryEditor extension:" << e->objectName();
+  if (e->inherits(CLASS(AbstractKeySequenceHandler))) {
+    if (ep.name() == EP_QUERYEDITOR_KEYSEQUENCE) {
+      AbstractKeySequenceHandler* keyHander = static_cast<AbstractKeySequenceHandler*>(e);
+      _keyInterceptor->registerHandler(keyHander);
+    }
+  }
+}
+
+QSet<KeySequence> HelpKeyHandler::keySequences()
+{
+  QSet<KeySequence> sequences;
+  sequences << KeySequence(Qt::CTRL + Qt::Key_Q);
+  return sequences;
 }

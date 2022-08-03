@@ -46,10 +46,11 @@ class KeySequenceInterceptor : public QObject
 {
     Q_OBJECT
 public:
-    explicit KeySequenceInterceptor(QObject *parent = nullptr);
+    Q_INVOKABLE KeySequenceInterceptor(QObject *parent = nullptr);
     void attachToWidget(QWidget *widget);
     void registerHandler(KeySequence keySequence, AbstractKeySequenceHandler* keyHandler);
     void registerHandler(AbstractKeySequenceHandler* keyHandler);
+    QList<AbstractKeySequenceHandler*> handlers() const;
 signals:
 
 protected:

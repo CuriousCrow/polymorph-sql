@@ -11,42 +11,12 @@ ProcedureEditForm::ProcedureEditForm() :
 {
   ui->setupUi(this);
   connect(this, SIGNAL(userActionChanged()), SLOT(onUserActionChanged()));
-
-//  _helpTooltip = new LSimpleTooltip(this);
-//  _helpTooltip->setOpenExternalLinks(true);
-//  _helpTooltip->setWidget(ui->edtSourceCode);
-
-//  LKeySequenceInterceptor* keyInterceptor = new LKeySequenceInterceptor(this);
-//  keyInterceptor->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_Q));
-//  keyInterceptor->applyToWidget(ui->edtSourceCode);
-//  connect(keyInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
-//          this, SLOT(onHelpKey()));
 }
 
 ProcedureEditForm::~ProcedureEditForm()
 {
   delete ui;
 }
-
-//void ProcedureEditForm::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
-//{
-//  _completerSupport = completerSupport;
-//  _completerSupport->setParent(this);
-//  _completerSupport->setWidget(ui->edtSourceCode);
-//}
-
-//void ProcedureEditForm::inject_helpLookupProvider(SqlHelpLookupProvider *lookupProvider)
-//{
-//  _helpLookupProvider = lookupProvider;
-//  _helpTooltip->setLookupProvider(_helpLookupProvider);
-//}
-
-//void ProcedureEditForm::inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter *syntaxHighlighter)
-//{
-//  _highlighter = syntaxHighlighter;
-//  _highlighter->setParent(this);
-//  _highlighter->setDocument(ui->edtSourceCode->document());
-//}
 
 void ProcedureEditForm::reloadTypes()
 {
@@ -64,9 +34,6 @@ void ProcedureEditForm::objectToForm()
 {
   _editorSupport->setEditor(ui->edtSourceCode);
   _editorSupport->updateModels(_objItem);
-//  _completerSupport->setItem(_objItem);
-//  _highlighter->updateModels(_objItem->driverName());
-//  _helpLookupProvider->updateHelpModels(_objItem->driverName());
 
   reloadTypes();
   ui->edtName->setText(_objItem->caption());
@@ -99,9 +66,3 @@ void ProcedureEditForm::onUserActionChanged()
   ui->cmbLanguage->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
   ui->cmbResultType->setEnabled(userAction() == AbstractDatabaseEditForm::Create);
 }
-
-//void ProcedureEditForm::onHelpKey()
-//{
-//  _helpTooltip->popup(ui->edtSourceCode->currentWord(),
-//                      ui->edtSourceCode->cursorGlobalPos());
-//}

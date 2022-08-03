@@ -28,9 +28,22 @@ class QueryEditorKeyHandler : public AbstractKeySequenceHandler
 {
   Q_OBJECT
 public:
-  void setEditor(LQueryEditor* editor);
+  void setEditor(QPlainTextEdit* editor);
+  QString currentWord();
+  QString previousWord();
+  QPoint cursorGlobalPos();
 protected:
-  LQueryEditor* _editor;
+  QPlainTextEdit* _editor;
+};
+
+class SlotQueryEditorKeyHandler : public QueryEditorKeyHandler
+{
+  Q_OBJECT
+  // AbstractKeySequenceHandler interface
+public:
+  virtual bool handle(const KeySequence &keySequence) override;
+signals:
+  void keySignal(const KeySequence &keySequence);
 };
 
 /** Toggles query editor line comments by Ctrl+/ key sequence */

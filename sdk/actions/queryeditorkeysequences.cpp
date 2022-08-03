@@ -62,9 +62,30 @@ bool ToggleQueryCommentsHandler::handle(const KeySequence &keySequence)
   return false;
 }
 
-void QueryEditorKeyHandler::setEditor(LQueryEditor *editor)
+void QueryEditorKeyHandler::setEditor(QPlainTextEdit* editor)
 {
   _editor = editor;
+}
+
+QString QueryEditorKeyHandler::currentWord()
+{
+  QTextCursor cursor = _editor->textCursor();
+  cursor.movePosition(QTextCursor::StartOfWord);
+  cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+  return cursor.selectedText();
+}
+
+QString QueryEditorKeyHandler::previousWord()
+{
+  QTextCursor cursor = _editor->textCursor();
+  cursor.movePosition(QTextCursor::PreviousWord);
+  cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+  return cursor.selectedText();
+}
+
+QPoint QueryEditorKeyHandler::cursorGlobalPos()
+{
+  return _editor->mapToGlobal(_editor->cursorRect().bottomRight());
 }
 
 GenerateTableAliasHandler::GenerateTableAliasHandler() : QueryEditorKeyHandler()
@@ -93,8 +114,8 @@ bool GenerateTableAliasHandler::handle(const KeySequence &keySequence)
 {
   Q_UNUSED(keySequence)
 
-  QString curWord = _editor->currentWord();
-  QString prevWord = _editor->previousWord();
+  QString curWord = currentWord();
+  QString prevWord = previousWord();
 
   QString tableAlias = generateAlias(curWord.isEmpty() ? prevWord : curWord);
   if (!curWord.isEmpty()) {
@@ -111,3 +132,11 @@ bool GenerateTableAliasHandler::supportsExtensionPoint(const ExtensionPoint &ext
 {
   return extensionPoint.name() == EP_QUERYEDITOR_KEYSEQUENCE;
 }
+
+bool SlotQueryEditorKeyHandler::handle(const KeySequence &keySequence)
+{
+  emit keySignal(keySequence);
+  return true;
+}
+
+

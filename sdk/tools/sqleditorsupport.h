@@ -5,27 +5,23 @@
 #include "tools/lsqlsyntaxhighlighter.h"
 #include "utils/lsimpletooltip.h"
 #include "core/sqlhelplookupprovider.h"
+#include "core/extensions.h"
 #include "tools/simplesqlcompletersupport.h"
 #include "objects/dbdatabaseitem.h"
 #include "widgets/lqueryeditor.h"
+#include "tools/keysequenceinterceptor.h"
+#include "actions/queryeditorkeysequences.h"
 
 
-//class LKeySequenceInterceptor : public QObject
-//{
-//  Q_OBJECT
-//public:
-//  LKeySequenceInterceptor(QObject* parent = Q_NULLPTR);
-//  void setKeySequence(QKeySequence keySequence);
-//  void applyToWidget(QWidget* widget);
-//private:
-//  QKeySequence _keySequence;
-//signals:
-//  void keySequencePressed(QKeySequence keySequence);
-//public:
-//  virtual bool eventFilter(QObject *watched, QEvent *event);
-//};
+class HelpKeyHandler : public SlotQueryEditorKeyHandler
+{
+  Q_OBJECT
+  // AbstractKeySequenceHandler interface
+public:
+  virtual QSet<KeySequence> keySequences() override;
+};
 
-class SqlEditorSupport : public QObject
+class SqlEditorSupport : public QObject, public Extensible
 {
   Q_OBJECT
 public:
@@ -50,7 +46,11 @@ private:
   LSqlSyntaxHighlighter* _highlighter;
   LSimpleTooltip* _helpTooltip;
   SqlHelpLookupProvider* _helpLookupProvider;
-  LKeySequenceInterceptor* _keyInterceptor;
+  KeySequenceInterceptor* _keyInterceptor;
+
+  // Extensible interface
+public:
+  virtual void injectExtension(ExtensionPoint ep, QObject *e) override;
 };
 
 #endif // SQLEDITORSUPPORT_H

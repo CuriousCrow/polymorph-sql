@@ -28,6 +28,11 @@ void KeySequenceInterceptor::registerHandler(AbstractKeySequenceHandler *keyHand
   }
 }
 
+QList<AbstractKeySequenceHandler *> KeySequenceInterceptor::handlers() const
+{
+  return _handlerHash.values();
+}
+
 bool KeySequenceInterceptor::eventFilter(QObject *watched, QEvent *event)
 {
     Q_UNUSED(watched)
