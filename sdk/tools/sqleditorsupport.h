@@ -29,6 +29,7 @@ public:
 
   void updateModels(DBObjectItem* dbItem);
   void setEditor(QPlainTextEdit* editor);
+  LDBObjectTableModel* objects();
 
 protected:
   Q_INVOKABLE void inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport* completerSupport);
@@ -37,6 +38,7 @@ protected:
   QString currentWord();
   QString previousWord();
   QPoint cursorGlobalPos();
+
 private slots:
   void onHelpKey();
 

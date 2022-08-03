@@ -81,6 +81,11 @@ QPoint SqlEditorSupport::cursorGlobalPos()
   return _editor->mapToGlobal(_editor->cursorRect().bottomRight());
 }
 
+LDBObjectTableModel* SqlEditorSupport::objects()
+{
+  return _completerSupport->objectsModel();
+}
+
 void SqlEditorSupport::onHelpKey()
 {
   _helpTooltip->popup(currentWord(), cursorGlobalPos());

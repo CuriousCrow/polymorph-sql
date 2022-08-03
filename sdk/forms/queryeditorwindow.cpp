@@ -6,19 +6,15 @@
 #include <QSqlError>
 #include <QStandardItemModel>
 #include <QStandardItem>
-#include "widgets/lqueryeditor.h"
+#include <QComboBox>
+#include <QStringListModel>
 #include "core/maphelplookupprovider.h"
 #include "core/localeventnotifier.h"
 #include "objects/sdkplugin.h"
 #include "objects/appconst.h"
 #include "queryhistoryform.h"
 #include "utils/messagedialogs.h"
-
-
-
-#include <QComboBox>
-
-#include <QStringListModel>
+#include "widgets/lqueryeditor.h"
 
 QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -29,25 +25,10 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
   _resultModel = new QSqlQueryModel(this);
   ui->tvResultSet->setModel(_resultModel);
 
-  _keyInterceptor = new KeySequenceInterceptor(this);
-  _keyInterceptor->attachToWidget(ui->teQueryEditor);
-
-  _extensionPoints.insert(ExtensionPoint(EP_QUERYEDITOR_KEYSEQUENCE, CLASS(AbstractKeySequenceHandler), "Test key sequence handler", false));
-
   connect(ui->cmbDatabase, SIGNAL(currentIndexChanged(int)),
           this, SLOT(reloadKnowledgeModel()));
 
   _activeConnectionModel = new LActiveConnectionModel(this);
-
-  _helpTooltip = new LSimpleTooltip(this);
-  _helpTooltip->setOpenExternalLinks(true);
-  _helpTooltip->setWidget(ui->teQueryEditor);
-
-  LKeySequenceInterceptor* keyInterceptor = new LKeySequenceInterceptor(this);
-  keyInterceptor->setKeySequence(QKeySequence(Qt::CTRL, Qt::Key_Q));
-  keyInterceptor->applyToWidget(ui->teQueryEditor);
-  connect(keyInterceptor, SIGNAL(keySequencePressed(QKeySequence)),
-          this, SLOT(onHelpKey()));
 
   connect(ui->teQueryEditor, &LQueryEditor::wordClicked,
           this, &QueryEditorWindow::onFindObject);
@@ -69,25 +50,6 @@ void QueryEditorWindow::inject_by_ds(DataStore *ds)
   _activeConnectionModel->setSourceModel(_ds->structureModel());
   ui->cmbDatabase->setModel(_activeConnectionModel);
   ui->cmbDatabase->setModelColumn(0);
-}
-
-void QueryEditorWindow::inject_helpLookupProvider(SqlHelpLookupProvider *lookupProvider)
-{
-  _helpLookupProvider = lookupProvider;
-  _helpTooltip->setLookupProvider(_helpLookupProvider);
-}
-
-void QueryEditorWindow::inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter *syntaxHighlighter)
-{
-    _highlighter = syntaxHighlighter;
-    _highlighter->setDocument(ui->teQueryEditor->document());
-}
-
-void QueryEditorWindow::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
-{
-  _completerSupport = completerSupport;
-  _completerSupport->setParent(this);
-  _completerSupport->setWidget(ui->teQueryEditor);
 }
 
 void QueryEditorWindow::on_aExecuteQuery_triggered()
@@ -154,9 +116,8 @@ QString QueryEditorWindow::getActiveText()
 void QueryEditorWindow::reloadKnowledgeModel()
 {
   DBDatabaseItem* dbItem = dbObject();
-  _completerSupport->setDatabaseItem(dbItem);
-  _helpLookupProvider->updateHelpModels(dbItem->driverName());
-  _highlighter->updateModels(dbItem->driverName());
+  _editorSupport->setEditor(ui->teQueryEditor);
+  _editorSupport->updateModels(dbItem);
 }
 
 void QueryEditorWindow::on_aCommit_triggered()
@@ -173,12 +134,6 @@ void QueryEditorWindow::refreshConnectionList()
 {
   qDebug() << "Refilter connection list";
   _activeConnectionModel->invalidate();
-}
-
-void QueryEditorWindow::onHelpKey()
-{
-  _helpTooltip->popup(ui->teQueryEditor->currentWord(),
-                      ui->teQueryEditor->cursorGlobalPos());
 }
 
 void QueryEditorWindow::on_aExecScript_triggered()
@@ -204,7 +159,7 @@ void QueryEditorWindow::onFindObject(QString word, Qt::KeyboardModifiers modifie
 {
   if (!modifiers.testFlag(Qt::ControlModifier))
     return;
-  QVariantMap dbObj = _completerSupport->objectsModel()->rowByName(word);
+  QVariantMap dbObj = _editorSupport->objects()->rowByName(word);
   //If current word is a table/view name then open table browser
   if (!dbObj.isEmpty()) {
     if (dbObj.value(F_TYPE).toString() == OBJTYPE_TABLE) {
@@ -257,19 +212,4 @@ void QueryEditorWindow::on_aUpdateParams_triggered()
         paramMap.insert(paramName, "");
     }
     ui->paramsForm->setParams(paramMap);
-}
-
-void QueryEditorWindow::injectExtension(ExtensionPoint ep, QObject *e)
-{
-  qDebug() << "Inject QueryEditor extension:" << e->objectName();
-  if (e->inherits(CLASS(AbstractKeySequenceHandler))) {
-    if (ep.name() == EP_QUERYEDITOR_KEYSEQUENCE) {
-      AbstractKeySequenceHandler* keyHander = static_cast<AbstractKeySequenceHandler*>(e);
-      if (e->inherits(CLASS(QueryEditorKeyHandler))) {
-        QueryEditorKeyHandler* editorKeyHandler = static_cast<QueryEditorKeyHandler*>(e);
-        editorKeyHandler->setEditor(ui->teQueryEditor);
-      }
-      _keyInterceptor->registerHandler(keyHander);
-    }
-  }
 }
