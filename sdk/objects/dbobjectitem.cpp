@@ -349,6 +349,14 @@ bool DBObjectItem::submit()
   return true;
 }
 
+bool DBObjectItem::revert()
+{
+  for(int i=0; i<fields.count(); i++) {
+    fields[i].revert();
+  }
+  return true;
+}
+
 bool DBObjectItem::hasField(QString fieldName) const
 {
   foreach(DBObjectField field, fields) {

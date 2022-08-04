@@ -55,14 +55,14 @@ void TableEditForm::formToObject()
   //Модель автоматически обновится при редактировании
 }
 
-void TableEditForm::on_pushButton_clicked()
+void TableEditForm::on_btnApply_clicked()
 {
   tryUserAction();
 }
 
-void TableEditForm::on_pushButton_2_clicked()
+void TableEditForm::on_btnClose_clicked()
 {
-  reject();
+  cancel();
 }
 
 void TableEditForm::on_btnAdd_clicked()

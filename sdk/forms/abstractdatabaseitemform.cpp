@@ -49,6 +49,12 @@ void AbstractDatabaseEditForm::tryUserAction()
   }
 }
 
+void AbstractDatabaseEditForm::cancel()
+{
+  _objItem->revert();
+  reject();
+}
+
 AbstractDatabaseEditForm::UserAction AbstractDatabaseEditForm::userAction() const
 {
   return _userAction;

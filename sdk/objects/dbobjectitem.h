@@ -91,6 +91,7 @@ public:
   bool isEditable() const;
   virtual bool isModified() const;
   virtual bool submit();
+  virtual bool revert();
 
   bool hasField(QString fieldName) const;
   void registerField(QString fieldName);

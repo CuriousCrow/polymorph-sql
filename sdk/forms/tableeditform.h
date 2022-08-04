@@ -32,8 +32,8 @@ public:
   virtual void objectToForm();
   virtual void formToObject();
 private slots:
-  void on_pushButton_clicked();
-  void on_pushButton_2_clicked();
+  void on_btnApply_clicked();
+  void on_btnClose_clicked();
   void on_btnAdd_clicked();
   void on_btnDelete_clicked();
   void on_btnDropConstraint_clicked();

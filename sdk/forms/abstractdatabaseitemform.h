@@ -30,6 +30,7 @@ signals:
 protected:
   DBObjectItem* _objItem;
   virtual void tryUserAction();
+  virtual void cancel();
 private:
   UserAction _userAction;
 };
