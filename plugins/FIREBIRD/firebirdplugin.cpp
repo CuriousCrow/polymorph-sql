@@ -15,6 +15,7 @@ QList<DBObjectItem::ItemType> FirebirdPlugin::supportedTypes()
 {
   QList<DBObjectItem::ItemType> types;
   types.append(DBObjectItem::Table);
+  types.append(DBObjectItem::SystemTable);
   types.append(DBObjectItem::View);
   types.append(DBObjectItem::Sequence);
   types.append(DBObjectItem::Procedure);
