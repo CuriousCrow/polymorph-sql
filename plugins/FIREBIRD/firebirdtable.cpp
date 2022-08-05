@@ -100,7 +100,9 @@ QString FirebirdTable::typeDef(const SqlColumn &col) const
 
 ActionResult FirebirdTable::insertMe()
 {
-  return execSql(createTableQuery(identifier()), connectionName());
+  QString sql = createTableQuery(identifier().toUpper());
+  setFieldValue(F_CAPTION, caption().toUpper());
+  return execSql(sql, connectionName());
 }
 
 ActionResult FirebirdTable::updateMe()
@@ -191,7 +193,7 @@ void FirebirdTable::reloadConstraintsModel()
     return;
   _constraintsModel->clear();
   QString sql =
-      "select RDB$CONSTRAINT_NAME \"name\", RDB$CONSTRAINT_TYPE \"type\"\n"
+      "select trim(RDB$CONSTRAINT_NAME) \"name\", trim(RDB$CONSTRAINT_TYPE) \"type\"\n"
       "from RDB$RELATION_CONSTRAINTS\n"
       "where RDB$RELATION_NAME = '#caption#' and RDB$CONSTRAINT_TYPE <> 'NOT NULL'";
   QString preparedSql = fillSqlPatternWithFields(sql);
