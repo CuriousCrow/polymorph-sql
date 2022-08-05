@@ -17,6 +17,17 @@ public:
   // DBTableItem interface
 public:
   virtual void reloadColumnsModel() Q_DECL_OVERRIDE;
+  virtual void reloadConstraintsModel() Q_DECL_OVERRIDE;
+protected:
+  QString createTableQuery(QString table) const;
+  QString columnDef(const SqlColumn &col) const;
+  QString typeDef(const SqlColumn &col) const;
+
+  // DBObjectItem interface
+public:
+  virtual ActionResult insertMe() override;
+  virtual ActionResult updateMe() override;
+
 };
 
 #endif // FIREBIRDTABLE_H
