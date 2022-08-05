@@ -43,7 +43,9 @@ private slots:
   void onShowUniqueConstraintEditor();
   void onShowCheckConstraintEditor();
 
-  void onShowConstraintEditor(QString namePrefix, DBObjectItem::ItemType objType);
+  void showCreateConstraintEditor(QString namePrefix, DBObjectItem::ItemType objType);
+  void showViewConstraintEditor(const QModelIndex& index);
+  void openConstraintEditor(DBObjectItem* obj, AbstractDatabaseEditForm::UserAction action);
 
   void onNewConstraintApply();
   void onNewConstraintCancel();

@@ -196,7 +196,6 @@ void PostgresTable::reloadConstraintsModel()
     item.insert(F_TYPE, query.value(F_TYPE));
     _constraintsModel->addRow(item);
   }
-
 }
 
 QString PostgresTable::createTableQuery(QString table) const
