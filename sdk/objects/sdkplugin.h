@@ -12,6 +12,7 @@
 #define B_PRIMARY_KEY "basePrimaryKey"
 
 #define B_TABLE_FORM "baseTableForm"
+#define B_SYSTEM_TABLE_FORM "baseSytemTableForm"
 #define B_VIEW_FORM "baseViewForm"
 #define B_PROCEDURE_FORM "baseProcedureForm"
 #define B_SEQUENCE_FORM "baseSequenceForm"

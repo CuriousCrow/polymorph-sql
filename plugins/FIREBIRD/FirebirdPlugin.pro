@@ -29,7 +29,12 @@ SOURCES += \
     firebirdfolderitem.cpp \
     firebirdplugin.cpp \
     firebirdsequence.cpp \
-    firebirdtable.cpp
+    firebirdtable.cpp \
+    firebirdprimarykey.cpp \
+    firebirdforeignkey.cpp \
+    firebirduniqueconstraint.cpp \
+    firebirdcheckconstraint.cpp \
+    firebirdview.cpp
 
 
 HEADERS  += \
@@ -37,7 +42,12 @@ HEADERS  += \
     firebirdfolderitem.h \
     firebirdplugin.h \
     firebirdsequence.h \
-    firebirdtable.h
+    firebirdtable.h \
+    firebirdprimarykey.h \
+    firebirdforeignkey.h \
+    firebirduniqueconstraint.h \
+    firebirdcheckconstraint.h \
+    firebirdview.h
 
 #FORMS    += \
 

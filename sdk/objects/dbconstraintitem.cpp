@@ -1,10 +1,12 @@
 #include "dbconstraintitem.h"
 #include "appconst.h"
+#include <QSqlDriver>
 
 
 DBConstraintItem::DBConstraintItem(QString caption, QObject *parent)
   : DBObjectItem(caption, parent)
 {
+  _identifierSupport = new QuoteIdentifier();
   registerField(F_TABLE);
   registerField(F_COLUMN);
 }
@@ -22,8 +24,8 @@ int DBConstraintItem::type() const
 
 ActionResult DBConstraintItem::deleteMe()
 {
-  QString sql = "alter table \"#table#\" drop constraint \"#caption#\"";
-  QString preparedSql = fillSqlPatternWithFields(sql);
+  QString sql = "alter table %1 drop constraint %2";
+  QString preparedSql = sql.arg(_identifierSupport->escapeIdentifier(fieldValue(F_TABLE).toString()), identifier());
   return execSql(preparedSql, connectionName());
 }
 
@@ -31,4 +33,10 @@ ActionResult DBConstraintItem::deleteMe()
 ActionResult DBConstraintItem::updateMe()
 {
   return ActionResult(ERR_NOT_IMPLEMENTED);
+}
+
+QString DBConstraintItem::fillSqlPatternWithFields(QString pattern) const
+{
+  QString sql = pattern.replace("#table#", _identifierSupport->escapeIdentifier(fieldValue(F_TABLE).toString()));
+  return DBObjectItem::fillSqlPatternWithFields(sql);
 }

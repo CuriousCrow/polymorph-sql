@@ -13,6 +13,11 @@
 #define UQ_PREFIX "uq_"
 #define FK_PREFIX "fk_"
 
+#define CT_PRIMARY_KEY "PRIMARY KEY"
+#define CT_FOREIGN_KEY "FOREIGN KEY"
+#define CT_CHECK "CHECK"
+#define CT_UNIQUE "UNIQUE"
+
 TableEditForm::TableEditForm() :
   AbstractDatabaseEditForm(nullptr),
   ui(new Ui::TableEditForm)
@@ -88,9 +93,12 @@ void TableEditForm::on_btnDropConstraint_clicked()
     return;
 
   QString constraintName = ui->tvConstraints->model()->index(curIdx.row(), 1).data().toString();
+  QString constraintType = ui->tvConstraints->model()->index(curIdx.row(), 0).data().toString();
   qDebug() << "Deleting constraint:" << constraintName;
   DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
-  DBConstraintItem* constraintItem = new DBConstraintItem(constraintName);
+  DBObjectItem::ItemType type = typeByName(constraintType);
+  DBConstraintItem* constraintItem = static_cast<DBConstraintItem*>(_core->newObjInstance(_objItem->driverName(), type));
+  constraintItem->setFieldValue(F_CAPTION, constraintName);
   constraintItem->setParentUrl(tableItem->objectUrl());
   constraintItem->setFieldValue(F_TABLE, tableItem->caption());
 
@@ -145,26 +153,12 @@ void TableEditForm::showViewConstraintEditor(const QModelIndex& index)
   QString constType = model->index(index.row(), 0).data().toString();
   QString constName = model->index(index.row(), 1).data().toString();
 
-  DBObjectItem::ItemType type;
-  if (constType == "FOREIGN KEY") {
-    type = DBObjectItem::ItemType::ForeignKey;
-  }
-  else if (constType == "PRIMARY KEY") {
-    type = DBObjectItem::ItemType::PrimaryKey;
-  }
-  else if (constType == "UNIQUE") {
-    type = DBObjectItem::ItemType::UniqueConstraint;
-  }
-  else if (constType == "CHECK") {
-    type = DBObjectItem::ItemType::CheckConstraint;
-  }
-  else {
-    return;
-  }
+  DBObjectItem::ItemType type = typeByName(constType);
   DBObjectItem* constItem = _core->newObjInstance(tableItem->driverName(), type);
   constItem->setFieldValue(F_CAPTION, constName);
   constItem->setFieldValue(F_TABLE, tableItem->caption());
   constItem->setParentUrl(tableItem->objectUrl());
+  constItem->refresh();
   openConstraintEditor(constItem, AbstractDatabaseEditForm::Edit);
 }
 
@@ -200,4 +194,25 @@ void TableEditForm::onNewConstraintCancel()
 void TableEditForm::on_tvConstraints_doubleClicked(const QModelIndex &index)
 {
   showViewConstraintEditor(index);
+}
+
+DBObjectItem::ItemType TableEditForm::typeByName(QString typeName)
+{
+  DBObjectItem::ItemType type;
+  if (typeName == CT_FOREIGN_KEY) {
+    type = DBObjectItem::ItemType::ForeignKey;
+  }
+  else if (typeName == CT_PRIMARY_KEY) {
+    type = DBObjectItem::ItemType::PrimaryKey;
+  }
+  else if (typeName == CT_UNIQUE) {
+    type = DBObjectItem::ItemType::UniqueConstraint;
+  }
+  else if (typeName == CT_CHECK) {
+    type = DBObjectItem::ItemType::CheckConstraint;
+  }
+  else {
+    type = DBObjectItem::ItemType::UnknownType;
+  }
+  return type;
 }

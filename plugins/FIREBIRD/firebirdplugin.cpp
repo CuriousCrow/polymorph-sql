@@ -4,6 +4,11 @@
 #include "firebirddatabase.h"
 #include "firebirdtable.h"
 #include "firebirdsequence.h"
+#include "firebirdprimarykey.h"
+#include "firebirdforeignkey.h"
+#include "firebirduniqueconstraint.h"
+#include "firebirdcheckconstraint.h"
+#include "firebirdview.h"
 
 
 FirebirdPlugin::FirebirdPlugin(QObject *parent) : IocPlugin(parent)
@@ -34,6 +39,16 @@ bool FirebirdPlugin::registerPlugin(DependencyContainer *c)
   c->registerDependency(new DependencyMeta("firebirdSequenceItem", CLASSMETA(FirebirdSequence), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Sequence);
 
+  c->registerDependency(new DependencyMeta("firebirdPrimaryKeyItem", CLASSMETA(FirebirdPrimaryKey), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::PrimaryKey);
+  c->registerDependency(new DependencyMeta("firebirdForeignKeyItem", CLASSMETA(FirebirdForeignKey), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::ForeignKey);
+  c->registerDependency(new DependencyMeta("firebirdUniqueConstraintItem", CLASSMETA(FirebirdUniqueConstraint), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::UniqueConstraint);
+  c->registerDependency(new DependencyMeta("firebirdCheckConstraintItem", CLASSMETA(FirebirdCheckConstraint), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::CheckConstraint);
+  c->registerDependency(new DependencyMeta("firebirdViewItem", CLASSMETA(FirebirdView), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::View);
   return true;
 }
 

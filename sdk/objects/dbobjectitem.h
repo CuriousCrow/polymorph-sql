@@ -2,6 +2,7 @@
 #define DBOBJECTITEM_H
 
 #include "../models/lstandardtreemodel.h"
+#include "abstractidentifiersupport.h"
 #include <QSqlDatabase>
 #include "appurl.h"
 
@@ -114,11 +115,13 @@ protected:
   bool _editable = true;
   AppUrl _parentUrl;
   QString _driverName;
+  AbstractIdentifierSupport* _identifierSupport;
   QList<DBObjectField> fields;
   int fieldIndex(QString fieldName) const;
   QString databaseName() const;
   DBObjectField& field(QString fieldName);
-  QString fillSqlPatternWithFields(QString pattern) const;
+  QString identifier() const;
+  virtual QString fillSqlPatternWithFields(QString pattern) const;
   QString fillSqlPatternWithFields(QString pattern, QMap<QString, QString> valueMap) const;
   QString fillWithModifiedFields(QString pattern) const;
   QString filterUnmodifiedFields(QString pattern) const;

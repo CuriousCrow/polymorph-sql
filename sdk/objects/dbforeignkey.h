@@ -16,6 +16,8 @@ public:
   virtual int type() const Q_DECL_OVERRIDE;
   virtual ActionResult insertMe() Q_DECL_OVERRIDE;
   virtual bool refresh() Q_DECL_OVERRIDE;
+protected:
+  virtual QString fillSqlPatternWithFields(QString pattern) const Q_DECL_OVERRIDE;
 };
 
 #endif // DBFOREIGNKEY_H

@@ -20,7 +20,7 @@ MysqlTableItem::~MysqlTableItem()
 
 ActionResult MysqlTableItem::insertMe()
 {
-  ActionResult result = execSql(createTableQuery(fieldValue(F_CAPTION).toString()), connectionName());
+  ActionResult result = execSql(createTableQuery(identifier()), connectionName());
   if (result.isSuccess())
     submit();
   return result;
@@ -92,6 +92,28 @@ void MysqlTableItem::reloadColumnsModel()
     col.setNotNull(query.value("is_nullable").toString() == "YES");
     col.setAutoIncrement(query.value("EXTRA").toString() == "auto_increment");
     _columnsModel->addSqlColumn(col, true);
+  }
+}
+
+void MysqlTableItem::reloadConstraintsModel()
+{
+  //New table (not yet commited)
+  if (connectionName().isEmpty())
+    return;
+  _constraintsModel->clear();
+  QString sql =
+      "select trim(CONSTRAINT_NAME) \"name\", trim(CONSTRAINT_TYPE) \"type\" "
+      "from INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+      "where TABLE_SCHEMA = '#databaseName#' and TABLE_NAME = '#caption#'";
+  QString preparedSql = fillSqlPatternWithFields(sql);
+  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
+  int fakeId = 1;
+  while (query.next()) {
+    QVariantMap item;
+    item.insert(F_ID, fakeId++);
+    item.insert(F_NAME, query.value(F_NAME));
+    item.insert(F_TYPE, query.value(F_TYPE));
+    _constraintsModel->addRow(item);
   }
 }
 

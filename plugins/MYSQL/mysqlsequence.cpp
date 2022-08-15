@@ -4,6 +4,7 @@
 
 MysqlSequence::MysqlSequence() : DBSequenceItem()
 {
+  _identifierSupport = new BacktickIdentifier();
 }
 
 

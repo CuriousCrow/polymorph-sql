@@ -76,6 +76,7 @@ void FolderTreeItem::loadSystemTableItems()
     QStringList tableNames = QSqlDatabase::database(connectionName()).tables(QSql::SystemTables);
     foreach (QString name, tableNames){
       DBTableItem* tableItem = _core->dependencyForDriver<DBTableItem>(driverName());
+      tableItem->setSystem(true);
       tableItem->setParent(this);
       tableItem->setFieldValue(F_CAPTION, name);
       tableItem->setParentUrl(objectUrl());

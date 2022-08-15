@@ -52,6 +52,7 @@ private slots:
   void on_tvConstraints_doubleClicked(const QModelIndex &index);
 
 private:
+  DBObjectItem::ItemType typeByName(QString typeName);
   ComboboxHashDelegate* _colTypeDelegate;
   QMenu* _menuAddConstraint;
 

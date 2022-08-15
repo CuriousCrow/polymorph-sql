@@ -8,7 +8,12 @@
 #include "objects/dbprocedureitem.h"
 #include "objects/dbtriggeritem.h"
 #include "forms/simplesequenceeditform.h"
+#include "mysqlview.h"
 #include "mysqlsequence.h"
+#include "mysqlprimarykey.h"
+#include "mysqlforeignkey.h"
+#include "mysqluniqueconstraint.h"
+#include "mysqlcheckconstraint.h"
 
 
 MysqlPlugin::MysqlPlugin(QObject *parent) : IocPlugin(parent)
@@ -37,9 +42,20 @@ bool MysqlPlugin::registerPlugin(DependencyContainer *c)
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Table);
   c->registerDependency(new DependencyMeta("mysqlSequenceItem", CLASSMETA(MysqlSequence), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Sequence);
+  c->registerDependency(new DependencyMeta("mysqlView", CLASSMETA(MysqlView), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::View);
+
+  c->registerDependency(new DependencyMeta("mysqlPrimaryKey", CLASSMETA(MysqlPrimaryKey), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::PrimaryKey);
+  c->registerDependency(new DependencyMeta("mysqlForeignKey", CLASSMETA(MysqlForeignKey), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::ForeignKey);
+  c->registerDependency(new DependencyMeta("mysqlUniqueConstraint", CLASSMETA(MysqlUniqueConstraint), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::UniqueConstraint);
+  c->registerDependency(new DependencyMeta("mysqlCheckConstraint", CLASSMETA(MysqlCheckConstraint), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::CheckConstraint);
 
   c->registerDependency(new DependencyMeta("mysqlSequenceForm", CLASSMETA(SimpleSequenceEditForm), InstanceMode::Singleton))
-                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Sequence);
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Sequence); 
   return true;
 }
 

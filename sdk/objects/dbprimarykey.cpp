@@ -21,7 +21,7 @@ bool DBPrimaryKey::refresh()
 
 ActionResult DBPrimaryKey::insertMe()
 {
-  QString sql = "alter table \"#table#\" add constraint #caption# primary key (#column#)";
+  QString sql = "alter table #table# add constraint #caption# primary key (#column#)";
   QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }

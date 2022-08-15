@@ -29,7 +29,12 @@ SOURCES += \
     mysqlfolderitem.cpp \
     mysqlplugin.cpp \
     mysqlsequence.cpp \
-    mysqltable.cpp
+    mysqltable.cpp \
+    mysqlview.cpp \
+    mysqlprimarykey.cpp \
+    mysqlforeignkey.cpp \
+    mysqlcheckconstraint.cpp \
+    mysqluniqueconstraint.cpp
 
 
 HEADERS  += \
@@ -37,7 +42,12 @@ HEADERS  += \
     mysqlfolderitem.h \
     mysqlplugin.h \
     mysqlsequence.h \
-    mysqltable.h
+    mysqltable.h \
+    mysqlview.h \
+    mysqlprimarykey.h \
+    mysqlforeignkey.h \
+    mysqluniqueconstraint.h \
+    mysqlcheckconstraint.h
 
 
 #FORMS    += \

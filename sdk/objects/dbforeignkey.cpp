@@ -19,8 +19,8 @@ int DBForeignKey::type() const
 
 ActionResult DBForeignKey::insertMe()
 {
-  QString sql = "alter table \"#table#\" add constraint #caption# "
-                "foreign key (#column#) references \"#reftable#\"(#refcolumn#) "
+  QString sql = "alter table #table# add constraint #caption# "
+                "foreign key (#column#) references #reftable#(#refcolumn#) "
                 "on update #onUpdate# on delete #onDelete#";
   QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
@@ -30,4 +30,10 @@ ActionResult DBForeignKey::insertMe()
 bool DBForeignKey::refresh()
 {
   return false;
+}
+
+QString DBForeignKey::fillSqlPatternWithFields(QString pattern) const
+{
+  QString sql = pattern.replace("#reftable#", _identifierSupport->escapeIdentifier(fieldValue(F_REFTABLE).toString()));
+  return DBConstraintItem::fillSqlPatternWithFields(sql);
 }

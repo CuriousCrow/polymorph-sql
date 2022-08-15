@@ -22,6 +22,7 @@ public:
   // DBTableItem interface
 public:
   virtual void reloadColumnsModel() Q_DECL_OVERRIDE;
+  virtual void reloadConstraintsModel() Q_DECL_OVERRIDE;
 private:
   QString createTableQuery(QString table) const;
   QString columnDef(const SqlColumn &col) const;

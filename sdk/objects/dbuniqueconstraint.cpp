@@ -6,7 +6,6 @@
 DBUniqueConstraint::DBUniqueConstraint(QString caption, QObject *parent)
   : DBConstraintItem(caption, parent)
 {
-
 }
 
 int DBUniqueConstraint::type() const
@@ -16,7 +15,7 @@ int DBUniqueConstraint::type() const
 
 ActionResult DBUniqueConstraint::insertMe()
 {
-  QString sql = "alter table \"#table#\" add constraint #caption# unique (#column#)";
+  QString sql = "alter table #table# add constraint #caption# unique (#column#)";
   QString preparedSql = fillSqlPatternWithFields(sql);
   return execSql(preparedSql, connectionName());
 }

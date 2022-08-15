@@ -37,6 +37,8 @@ public:
 
   // DBObjectItem interface
 public:
+  void setSystem(bool system);
+
   virtual int type() const Q_DECL_OVERRIDE;
 
   virtual ActionResult updateMe() Q_DECL_OVERRIDE;
@@ -48,7 +50,8 @@ public:
 protected:
   SqlColumnModel* _columnsModel;
   VariantMapTableModel* _constraintsModel;
-
+private:
+  bool _isSystem = false;
 };
 
 #endif // DBTABLEITEM_H

@@ -1,16 +1,17 @@
 #include "dbselectableitem.h"
 #include <QIcon>
 #include <QSqlDriver>
+#include "objects/appconst.h"
 
 
 DBSelectableItem::DBSelectableItem(QString caption, QObject *parent) : DBObjectItem(caption, parent)
 {
-
+  _identifierSupport = new QuoteIdentifier();
 }
 
 int DBSelectableItem::colCount() const
 {
-    return 1;
+  return 1;
 }
 
 QVariant DBSelectableItem::colData(int column, int role) const
@@ -32,11 +33,11 @@ QVariant DBSelectableItem::colData(int column, int role) const
 
 bool DBSelectableItem::reloadChildren()
 {
-    return true;
+  return true;
 }
 
-QString DBSelectableItem::identifier() const
+QString DBSelectableItem::fillSqlPatternWithFields(QString pattern) const
 {
-   QString objName = QSqlDatabase::database(connectionName()).driver()->escapeIdentifier(caption(), QSqlDriver::TableName);
-    return objName;
+  QString sql = DBObjectItem::fillSqlPatternWithFields(pattern);
+  return sql.replace("#identifier#", identifier());
 }

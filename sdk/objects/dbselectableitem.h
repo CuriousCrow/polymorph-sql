@@ -16,7 +16,7 @@ public:
 public:
     virtual bool reloadChildren() Q_DECL_OVERRIDE;
 protected:
-    QString identifier() const;
+    virtual QString fillSqlPatternWithFields(QString pattern) const Q_DECL_OVERRIDE;
 };
 
 #endif // DBSELECTABLEITEM_H

@@ -126,6 +126,8 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
     //Object Forms
     c->registerDependency(B_TABLE_FORM, CLASSMETA(TableEditForm), InstanceMode::Singleton)
                           ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Table);
+    c->registerDependency(B_SYSTEM_TABLE_FORM, CLASSMETA(TableEditForm), InstanceMode::Singleton)
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::SystemTable);
     c->registerDependency(B_VIEW_FORM, CLASSMETA(ViewEditDialog), InstanceMode::Singleton)
                           ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::View);
     c->registerDependency(B_PROCEDURE_FORM, CLASSMETA(ProcedureEditForm), InstanceMode::Singleton)

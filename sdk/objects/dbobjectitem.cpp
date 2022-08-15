@@ -10,6 +10,8 @@
 DBObjectItem::DBObjectItem(QString caption, QObject* parent):
   LAbstractTreeItem(caption, parent)
 {
+  _identifierSupport = new NoOpIdentifier();
+
   registerField(F_CAPTION);
   setFieldValue(F_CAPTION, caption);
 }
@@ -93,6 +95,11 @@ QString DBObjectItem::databaseName() const
 DBObjectField& DBObjectItem::field(QString fieldName)
 {
   return fields[fieldIndex(fieldName)];
+}
+
+QString DBObjectItem::identifier() const
+{
+  return _identifierSupport->escapeIdentifier(caption());
 }
 
 QString DBObjectItem::fillSqlPatternWithFields(QString pattern, QMap<QString, QString> valueMap) const

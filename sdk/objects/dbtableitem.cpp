@@ -73,6 +73,11 @@ void DBTableItem::addDefaultColumn()
   _columnsModel->addSqlColumn(SqlColumn(DEF_COLUMN_NAME + QString::number(newColNumber), NoType));
 }
 
+void DBTableItem::setSystem(bool system)
+{
+  _isSystem = system;
+  _editable = !_isSystem;
+}
 
 ActionResult DBTableItem::deleteMe()
 {
@@ -128,7 +133,7 @@ ActionResult DBTableItem::updateMe()
 
 int DBTableItem::type() const
 {
-  return Table;
+  return _isSystem ? SystemTable : Table;
 }
 
 QString DBTableItem::toDML() const
