@@ -6,6 +6,7 @@
 class AbstractIdentifierSupport
 {
 public:
+  virtual ~AbstractIdentifierSupport();
   virtual QString escapeIdentifier(QString ident) = 0;
 };
 

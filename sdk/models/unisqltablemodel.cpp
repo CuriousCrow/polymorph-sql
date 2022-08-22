@@ -137,8 +137,15 @@ QString UniSqlTableModel::fields()
 
 QString UniSqlTableModel::selectAllSql()
 {
-  QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
+  qDebug() << "Pattern rec:" << _patternRec;
+  QString stmt;
+//  if (_patternRec.isEmpty()) {
+//    stmt = QString("SELECT * FROM %1").arg(tableName());
+//  }
+//  else {
+    stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
                                             _patternRec, false);
+//  }
   QString where = _filterManager->whereClause();
 
   QString sql = Sql::concat(stmt, where);

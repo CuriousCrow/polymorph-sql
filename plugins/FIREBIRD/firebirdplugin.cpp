@@ -9,6 +9,10 @@
 #include "firebirduniqueconstraint.h"
 #include "firebirdcheckconstraint.h"
 #include "firebirdview.h"
+#include "firebirdtrigger.h"
+#include "firebirdtriggerform.h"
+#include "firebirdprocedureform.h"
+#include "firebirdprocedure.h"
 
 
 FirebirdPlugin::FirebirdPlugin(QObject *parent) : IocPlugin(parent)
@@ -49,6 +53,15 @@ bool FirebirdPlugin::registerPlugin(DependencyContainer *c)
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::CheckConstraint);
   c->registerDependency(new DependencyMeta("firebirdViewItem", CLASSMETA(FirebirdView), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::View);
+  c->registerDependency(new DependencyMeta("firebirdTrigger", CLASSMETA(FirebirdTrigger), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Trigger);
+  c->registerDependency(new DependencyMeta("firebirdProcedure", CLASSMETA(FirebirdProcedure), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Procedure);
+
+  c->registerDependency(new DependencyMeta("firebirdTriggerForm", CLASSMETA(FirebirdTriggerForm), InstanceMode::Singleton))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Trigger);
+  c->registerDependency(new DependencyMeta("firebirdProcedureForm", CLASSMETA(FirebirdProcedureForm), InstanceMode::Singleton))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Procedure);
   return true;
 }
 

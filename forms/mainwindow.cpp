@@ -181,6 +181,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     ui->tvDatabaseStructure->setExpanded(index, !ui->tvDatabaseStructure->isExpanded(index));
     break;
   case DBObjectItem::Table:
+  case DBObjectItem::SystemTable:
   case DBObjectItem::View: {
     //Show or add table editor
     DBSelectableItem* tableItem = static_cast<DBSelectableItem*>(objectItem);
@@ -369,6 +370,7 @@ void MainWindow::showItemInfoWidget(DBObjectItem *dbItem)
   switch (dbItem->type()) {
   case DBObjectItem::Table:
   case DBObjectItem::View:
+  case DBObjectItem::SystemTable:
     //Show or add table editor
     DBSelectableItem* tableItem = static_cast<DBSelectableItem*>(dbItem);
     openTableEditor(tableItem);

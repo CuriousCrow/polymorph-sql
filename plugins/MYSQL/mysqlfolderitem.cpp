@@ -21,19 +21,25 @@ void MysqlFolderItem::loadChildren()
 
     switch (childrenType()) {
     case DBObjectItem::Table:
-        sql = "select table_name name from information_schema.tables where table_schema = '#databaseName#' and table_type = 'BASE TABLE'";
-        break;
+      sql = "select table_name name from information_schema.tables where table_schema = '#databaseName#' and table_type = 'BASE TABLE'";
+      break;
     case DBObjectItem::SystemTable:
-        sql = "";
-        break;
+      loadInformationSchemaTables();
+      return;
     case DBObjectItem::View:
-        sql = "select table_name name from information_schema.tables where table_schema = '#databaseName#' and table_type = 'VIEW'";
-        break;
+      sql = "select table_name name from information_schema.tables where table_schema = '#databaseName#' and table_type = 'VIEW'";
+      break;
     case DBObjectItem::Sequence:
-        sql = "SELECT TABLE_NAME name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#databaseName#' and AUTO_INCREMENT is not null";
-        break;
+      sql = "SELECT TABLE_NAME name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#databaseName#' and AUTO_INCREMENT is not null";
+      break;
+    case DBObjectItem::Procedure:
+      sql = "select ROUTINE_NAME name from INFORMATION_SCHEMA.ROUTINES where ROUTINE_SCHEMA = '#databaseName#'";
+      break;
+    case DBObjectItem::Trigger:
+      sql = "select TRIGGER_NAME name from INFORMATION_SCHEMA.TRIGGERS where trigger_schema='#databaseName#'";
+      break;
     default:
-        sql = "";
+      sql = "";
     }
     sql = fillSqlPatternWithFields(sql);
     if (sql.isEmpty())
@@ -75,4 +81,18 @@ QString MysqlFolderItem::folderName(ItemType type)
     return tr("Auto Increments");
   }
   return FolderTreeItem::folderName(type);
+}
+
+void MysqlFolderItem::loadInformationSchemaTables()
+{
+  QStringList tableNames;
+  tableNames << "APPLICABLE_ROLES" << "CHARACTER_SETS" << "CHECK_CONSTRAINTS"
+             << "COLLATIONS" << "COLUMN_PRIVELEGES" << "COLUMN_STATISTICS"
+             << "COLUMNS" << "TABLES";
+  foreach(QString name, tableNames) {
+    DBObjectItem* infoTable = _core->dependencyForDriver<DBTableItem>(driverName());
+    infoTable->setFieldValue(F_CAPTION, "INFORMATION_SCHEMA." + name);
+    infoTable->setParent(this);
+    infoTable->setParentUrl(objectUrl());
+  }
 }

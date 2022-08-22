@@ -19,6 +19,7 @@ public:
 public:
   virtual bool reloadChildren() Q_DECL_OVERRIDE;
   virtual int type() const Q_DECL_OVERRIDE;
+  virtual ActionResult deleteMe() override;
 };
 
 #endif // DBPROCEDUREITEM_H

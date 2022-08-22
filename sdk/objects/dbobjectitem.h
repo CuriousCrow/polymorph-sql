@@ -10,6 +10,7 @@
 #define RES_BASE_ERROR 100
 #define ERR_NOT_IMPLEMENTED 101
 #define ERR_QUERY_ERROR 102
+#define ERR_VALIDATION_ERROR 103
 
 class ActionResult
 {
@@ -85,6 +86,7 @@ public:
   virtual QString toDDL() const;
   virtual QString toDML() const;
 
+  virtual QStringList validate();
   virtual ActionResult insertMe();
   virtual ActionResult updateMe();
   virtual ActionResult deleteMe();

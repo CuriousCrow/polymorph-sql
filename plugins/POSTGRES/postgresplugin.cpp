@@ -44,7 +44,7 @@ bool PostgresPlugin::registerPlugin(DependencyContainer *c)
                        ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)->setParam(F_TYPE, DBObjectItem::Trigger);
     c->registerDependency(new DependencyMeta("postgresSequence", CLASSMETA(PostgresSequence), InstanceMode::Prototype))
                        ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)->setParam(F_TYPE, DBObjectItem::Sequence);
-    c->registerDependency(new DependencyMeta("postgresFunction", CLASSMETA(PostgresFunctionItem), InstanceMode::Prototype))
+    c->registerDependency(new DependencyMeta("postgresProcedure", CLASSMETA(PostgresFunctionItem), InstanceMode::Prototype))
                        ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)->setParam(F_TYPE, DBObjectItem::Procedure);
     c->registerDependency(new DependencyMeta("postgresPrimaryKey", CLASSMETA(PostgresPrimaryKey), InstanceMode::Prototype))
                        ->setParam(F_DRIVER_NAME, DRIVER_POSTGRES)->setParam(F_TYPE, DBObjectItem::PrimaryKey);

@@ -28,29 +28,38 @@ SOURCES += \
     mysqldatabase.cpp \
     mysqlfolderitem.cpp \
     mysqlplugin.cpp \
+    mysqlprocedureeditform.cpp \
     mysqlsequence.cpp \
     mysqltable.cpp \
+    mysqltriggerform.cpp \
     mysqlview.cpp \
     mysqlprimarykey.cpp \
     mysqlforeignkey.cpp \
     mysqlcheckconstraint.cpp \
-    mysqluniqueconstraint.cpp
+    mysqluniqueconstraint.cpp \
+    mysqlprocedure.cpp \
+    mysqltrigger.cpp
 
 
 HEADERS  += \
     mysqldatabase.h \
     mysqlfolderitem.h \
     mysqlplugin.h \
+    mysqlprocedureeditform.h \
     mysqlsequence.h \
     mysqltable.h \
+    mysqltriggerform.h \
     mysqlview.h \
     mysqlprimarykey.h \
     mysqlforeignkey.h \
     mysqluniqueconstraint.h \
-    mysqlcheckconstraint.h
+    mysqlcheckconstraint.h \
+    mysqlprocedure.h \
+    mysqltrigger.h
 
-
-#FORMS    += \
+FORMS    += \
+    mysqlprocedureeditform.ui \
+    mysqltriggerform.ui
 
 TRANSLATIONS += \
     translations/mysqlplugin_ru.ts
@@ -62,4 +71,3 @@ unix {
     target.path = $$[QT_INSTALL_PLUGINS]/generic
 }
 !isEmpty(target.path): INSTALLS += target
-

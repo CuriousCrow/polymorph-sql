@@ -59,10 +59,10 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
       return;
   }
   QString text = getActiveText();
-  if (text.contains(";")) {
-    MessageDialogs::warn(tr("Please, select only one SQL-query or use \"Run Scripts\" action"));
-    return;
-  }
+//  if (text.contains(";")) {
+//    MessageDialogs::warn(tr("Please, select only one SQL-query or use \"Run Scripts\" action"));
+//    return;
+//  }
 
   QSqlQuery query = SqlQueryHelper::execSql(text, connectionName());
   if (!query.lastError().isValid()){

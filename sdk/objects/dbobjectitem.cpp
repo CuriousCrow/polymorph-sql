@@ -121,6 +121,7 @@ QString DBObjectItem::fillSqlPatternWithFields(QString pattern) const
     result = result.replace("#" + field.name + ".old#", varToStr(field.oldValue()));
     result = result.replace("#" + field.name + "#", varToStr(field.value()));
   }
+  result = result.replace("#identifier#", identifier());
   //Only for already existing objects
   if (!_connectionName.isEmpty()) {
     result = result.replace("#databaseName#", databaseName());
@@ -303,6 +304,14 @@ QString DBObjectItem::toDDL() const
 QString DBObjectItem::toDML() const
 {
   return "";
+}
+
+QStringList DBObjectItem::validate()
+{
+  QStringList errors;
+  if (caption().isEmpty())
+    errors.append(tr("Object name should not empty"));
+  return errors;
 }
 
 int DBObjectItem::colCount() const

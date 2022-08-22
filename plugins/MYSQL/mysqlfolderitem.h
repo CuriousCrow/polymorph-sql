@@ -14,6 +14,8 @@ public:
 protected:
   virtual void loadChildren() override;
   virtual QString folderName(DBObjectItem::ItemType type) override;
+private:
+  void loadInformationSchemaTables();
 };
 
 #endif // MYSQLFOLDERITEM_H

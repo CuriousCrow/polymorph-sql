@@ -28,28 +28,40 @@ SOURCES += \
     firebirddatabase.cpp \
     firebirdfolderitem.cpp \
     firebirdplugin.cpp \
+    firebirdprocedure.cpp \
+    firebirdprocedureform.cpp \
     firebirdsequence.cpp \
     firebirdtable.cpp \
     firebirdprimarykey.cpp \
     firebirdforeignkey.cpp \
+    firebirdtriggerform.cpp \
     firebirduniqueconstraint.cpp \
     firebirdcheckconstraint.cpp \
-    firebirdview.cpp
+    firebirdutils.cpp \
+    firebirdview.cpp \
+    firebirdtrigger.cpp
 
 
 HEADERS  += \
     firebirddatabase.h \
     firebirdfolderitem.h \
     firebirdplugin.h \
+    firebirdprocedure.h \
+    firebirdprocedureform.h \
     firebirdsequence.h \
     firebirdtable.h \
     firebirdprimarykey.h \
     firebirdforeignkey.h \
+    firebirdtriggerform.h \
     firebirduniqueconstraint.h \
     firebirdcheckconstraint.h \
-    firebirdview.h
+    firebirdutils.h \
+    firebirdview.h \
+    firebirdtrigger.h
 
-#FORMS    += \
+FORMS += \
+  firebirdprocedureform.ui \
+  firebirdtriggerform.ui
 
 TRANSLATIONS += \
     translations/firebirdplugin_ru.ts
@@ -62,4 +74,6 @@ unix {
     target.path = $$[QT_INSTALL_PLUGINS]/generic
 }
 !isEmpty(target.path): INSTALLS += target
+
+
 

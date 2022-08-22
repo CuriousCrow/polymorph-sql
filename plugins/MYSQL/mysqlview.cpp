@@ -5,6 +5,7 @@
 
 MysqlView::MysqlView() : DBViewItem()
 {
+  _identifierSupport = new BacktickIdentifier();
 }
 
 bool MysqlView::refresh()

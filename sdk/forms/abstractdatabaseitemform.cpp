@@ -28,7 +28,11 @@ void AbstractDatabaseEditForm::tryUserAction()
   if ((userAction()==AbstractDatabaseEditForm::Edit) && !_objItem->isModified())
     reject();
 
-  if (userAction() == AbstractDatabaseEditForm::Create) {
+  QStringList validationResult = _objItem->validate();
+  if (!validationResult.isEmpty()) {
+    res = ActionResult(ERR_VALIDATION_ERROR, validationResult.first());
+  }
+  else if (userAction() == AbstractDatabaseEditForm::Create) {
     res = _objItem->insertMe();
   }
   else if (userAction() == AbstractDatabaseEditForm::Edit) {

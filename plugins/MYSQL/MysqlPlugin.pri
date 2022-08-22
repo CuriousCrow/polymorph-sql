@@ -9,11 +9,15 @@ SOURCES += \
     $$PWD/mysqlforeignkey.cpp \
     $$PWD/mysqlplugin.cpp \
     $$PWD/mysqlprimarykey.cpp \
+    $$PWD/mysqlprocedure.cpp \
     $$PWD/mysqltable.cpp \
     $$PWD/mysqlsequence.cpp \
+    $$PWD/mysqltrigger.cpp \
     $$PWD/mysqluniqueconstraint.cpp \
     $$PWD/mysqlview.cpp \
-    $$PWD/mysqlcheckconstraint.cpp
+    $$PWD/mysqlcheckconstraint.cpp \
+    $$PWD/mysqlprocedureeditform.cpp \
+    $$PWD/mysqltriggerform.cpp
 
 
 HEADERS  += \
@@ -22,14 +26,20 @@ HEADERS  += \
     $$PWD/mysqlforeignkey.h \
     $$PWD/mysqlplugin.h \
     $$PWD/mysqlprimarykey.h \
+    $$PWD/mysqlprocedure.h \
     $$PWD/mysqltable.h \
     $$PWD/mysqlsequence.h \
+    $$PWD/mysqltrigger.h \
     $$PWD/mysqluniqueconstraint.h \
     $$PWD/mysqlview.h \
-    $$PWD/mysqlcheckconstraint.h
+    $$PWD/mysqlcheckconstraint.h \
+    $$PWD/mysqlprocedureeditform.h \
+    $$PWD/mysqltriggerform.h
 
 
-#FORMS    += \
+FORMS    += \
+    $$PWD/mysqlprocedureeditform.ui \
+    $$PWD/mysqltriggerform.ui
 
 TRANSLATIONS += \
     $$PWD/translations/mysqlplugin_ru.ts

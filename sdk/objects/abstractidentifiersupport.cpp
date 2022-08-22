@@ -27,3 +27,7 @@ QString NoOpIdentifier::escapeIdentifier(QString ident)
 {
   return ident;
 }
+
+AbstractIdentifierSupport::~AbstractIdentifierSupport()
+{
+}
