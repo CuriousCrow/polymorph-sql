@@ -382,6 +382,12 @@ bool DBObjectItem::hasField(QString fieldName) const
   return false;
 }
 
+bool DBObjectItem::isEmptyField(QString fieldName) const
+{
+  QVariant value = fieldValue(fieldName);
+  return value.toString().isEmpty();
+}
+
 DBObjectField::DBObjectField(QString fieldName)
 {
   name = fieldName;

@@ -62,7 +62,8 @@ public:
     PrimaryKey,
     ForeignKey,
     UniqueConstraint,
-    CheckConstraint
+    CheckConstraint,
+    UserType
   };
 
   DBObjectItem(QString caption, QObject* parent = nullptr);
@@ -97,6 +98,7 @@ public:
   virtual bool revert();
 
   bool hasField(QString fieldName) const;
+  bool isEmptyField(QString fieldName) const;
   void registerField(QString fieldName);
   QVariant fieldValue(QString fieldName) const;
   QVariant fieldValue(int colNumber) const;

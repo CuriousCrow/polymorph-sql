@@ -191,6 +191,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
   case DBObjectItem::Sequence:
   case DBObjectItem::Procedure:
   case DBObjectItem::Trigger:
+  case DBObjectItem::UserType:
     showEditorForCurrentItem();
     break;
   }

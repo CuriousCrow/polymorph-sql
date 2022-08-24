@@ -39,7 +39,9 @@ SOURCES += \
     firebirdcheckconstraint.cpp \
     firebirdutils.cpp \
     firebirdview.cpp \
-    firebirdtrigger.cpp
+    firebirdtrigger.cpp \
+    forms/firebirddomainform.cpp \
+    objects/firebirddomain.cpp
 
 
 HEADERS  += \
@@ -57,11 +59,14 @@ HEADERS  += \
     firebirdcheckconstraint.h \
     firebirdutils.h \
     firebirdview.h \
-    firebirdtrigger.h
+    firebirdtrigger.h \
+    forms/firebirddomainform.h \
+    objects/firebirddomain.h
 
 FORMS += \
   firebirdprocedureform.ui \
-  firebirdtriggerform.ui
+  firebirdtriggerform.ui \
+  forms/firebirddomainform.ui
 
 TRANSLATIONS += \
     translations/firebirdplugin_ru.ts

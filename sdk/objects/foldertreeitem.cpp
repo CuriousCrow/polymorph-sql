@@ -110,6 +110,8 @@ QString FolderTreeItem::typeName(DBObjectItem::ItemType type)
       return FOLDER_SEQUENCES;
     case DBObjectItem::Procedure:
       return FOLDER_PROCEDURES;
+    case DBObjectItem::UserType:
+      return FOLDER_USER_TYPE;
     default:
       return "unknown";
     }
@@ -130,6 +132,8 @@ QString FolderTreeItem::folderName(DBObjectItem::ItemType type)
       return tr("Procedures");
     case DBObjectItem::Trigger:
       return tr("Triggers");
+    case DBObjectItem::UserType:
+      return tr("User types");
     default:
       return "";
     }

@@ -13,6 +13,10 @@ public:
     // FolderTreeItem interface
 protected:
     virtual void loadChildren() override;
+
+  // FolderTreeItem interface
+protected:
+  virtual QString folderName(DBObjectItem::ItemType type) override;
 };
 
 #endif // FIREBIRDFOLDERITEM_H

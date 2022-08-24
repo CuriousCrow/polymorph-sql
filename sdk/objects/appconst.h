@@ -27,6 +27,9 @@
 #define F_SOURCE_CODE "sourceCode"
 #define F_TYPE "type"
 #define F_MODE "mode"
+#define F_LENGTH "length"
+#define F_NOT_NULL "notNull"
+#define F_DEFAULT "default"
 #define F_LANGUAGE "language"
 #define F_ARGS "args"
 #define F_RETURN_TYPE "returnType"
@@ -73,6 +76,7 @@
 #define FOLDER_KEYWORDS "keywords"
 #define FOLDER_FUNCTIONS "functions"
 #define FOLDER_OBJECTS "objects"
+#define FOLDER_USER_TYPE "usertype"
 
 //#define OBJTYPE_
 

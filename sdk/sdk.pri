@@ -48,6 +48,7 @@ SOURCES += \
     $$PWD/forms/tablebrowserwindow.cpp \
 #Widgets
   $$PWD/objects/abstractidentifiersupport.cpp \
+  $$PWD/objects/dbusertype.cpp \
   $$PWD/tools/keysequenceinterceptor.cpp \
   $$PWD/tools/simplesqlcompletersupport.cpp \
   $$PWD/tools/sqleditorsupport.cpp \
@@ -156,6 +157,7 @@ HEADERS  += \
     $$PWD/forms/tablebrowserwindow.h \
 #Widgets
   $$PWD/objects/abstractidentifiersupport.h \
+  $$PWD/objects/dbusertype.h \
   $$PWD/tools/keysequenceinterceptor.h \
   $$PWD/tools/simplesqlcompletersupport.h \
   $$PWD/tools/sqleditorsupport.h \

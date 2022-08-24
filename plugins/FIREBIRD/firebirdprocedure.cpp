@@ -64,8 +64,8 @@ bool FirebirdProcedure::refresh()
   _mInArguments->clear();
   _mOutArguments->clear();
 
-  QString sql = "select p.rdb$procedure_source \"sourceCode\", pp.rdb$parameter_name \"name\", "
-          "pp.rdb$parameter_type \"mode\",  f.rdb$field_type \"type\", f.rdb$character_length \"length\", "
+  QString sql = "select p.rdb$procedure_source \"sourceCode\", trim(pp.rdb$parameter_name) \"name\", "
+          "pp.rdb$parameter_type \"mode\",  trim(f.rdb$field_type) \"type\", f.rdb$character_length \"length\", "
           "f.rdb$field_precision \"precision\" "
           "from rdb$procedures p "
           "left join rdb$procedure_parameters pp on p.rdb$procedure_name = pp.rdb$procedure_name "

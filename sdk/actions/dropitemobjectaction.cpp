@@ -11,6 +11,7 @@ DropItemObjectAction::DropItemObjectAction() : BaseItemPopupAction(nullptr)
     _supportedTypes.insert(DBObjectItem::Procedure);
     _supportedTypes.insert(DBObjectItem::Trigger);
     _supportedTypes.insert(DBObjectItem::Sequence);
+    _supportedTypes.insert(DBObjectItem::UserType);
 }
 
 void DropItemObjectAction::doAction()

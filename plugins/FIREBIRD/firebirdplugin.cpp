@@ -13,6 +13,8 @@
 #include "firebirdtriggerform.h"
 #include "firebirdprocedureform.h"
 #include "firebirdprocedure.h"
+#include "forms/firebirddomainform.h"
+#include "objects/firebirddomain.h"
 
 
 FirebirdPlugin::FirebirdPlugin(QObject *parent) : IocPlugin(parent)
@@ -29,6 +31,7 @@ QList<DBObjectItem::ItemType> FirebirdPlugin::supportedTypes()
   types.append(DBObjectItem::Sequence);
   types.append(DBObjectItem::Procedure);
   types.append(DBObjectItem::Trigger);
+  types.append(DBObjectItem::UserType);
   return types;
 }
 
@@ -57,11 +60,15 @@ bool FirebirdPlugin::registerPlugin(DependencyContainer *c)
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Trigger);
   c->registerDependency(new DependencyMeta("firebirdProcedure", CLASSMETA(FirebirdProcedure), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Procedure);
+  c->registerDependency(new DependencyMeta("firebirdDomain", CLASSMETA(FirebirdDomain), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::UserType);
 
   c->registerDependency(new DependencyMeta("firebirdTriggerForm", CLASSMETA(FirebirdTriggerForm), InstanceMode::Singleton))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Trigger);
   c->registerDependency(new DependencyMeta("firebirdProcedureForm", CLASSMETA(FirebirdProcedureForm), InstanceMode::Singleton))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Procedure);
+  c->registerDependency(new DependencyMeta("firebirdDomainForm", CLASSMETA(FirebirdDomainForm), InstanceMode::Singleton))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::UserType);
   return true;
 }
 

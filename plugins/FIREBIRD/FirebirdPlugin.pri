@@ -18,7 +18,9 @@ SOURCES += \
     $$PWD/firebirdtriggerform.cpp \
     $$PWD/firebirdutils.cpp \
     $$PWD/firebirdprocedure.cpp \
-    $$PWD/firebirdprocedureform.cpp
+    $$PWD/firebirdprocedureform.cpp \
+    $$PWD/objects/firebirddomain.cpp \
+    $$PWD/forms/firebirddomainform.cpp
 
 
 HEADERS  += \
@@ -36,12 +38,15 @@ HEADERS  += \
     $$PWD/firebirdtriggerform.h \
     $$PWD/firebirdutils.h \
     $$PWD/firebirdprocedure.h \
-    $$PWD/firebirdprocedureform.h
+    $$PWD/firebirdprocedureform.h \
+    $$PWD/objects/firebirddomain.h \
+    $$PWD/forms/firebirddomainform.h
 
 
 FORMS    += \
     $$PWD/firebirdtriggerform.ui \
-    $$PWD/firebirdprocedureform.ui
+    $$PWD/firebirdprocedureform.ui \
+    $$PWD/forms/firebirddomainform.ui
 
 
 TRANSLATIONS += \
