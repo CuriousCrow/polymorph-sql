@@ -46,6 +46,9 @@ private:
   // DependencyContainer interface
 public:
   virtual void newInstanceProccessing(QObject *obj) override;
+
+protected:
+  virtual void newInjectProcessing(QObject *injectedObj, QObject *targetObj) override;
 };
 
 #define DemalexCore_iid "ru.levolex.demalexcore"

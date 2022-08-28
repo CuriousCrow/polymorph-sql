@@ -13,6 +13,7 @@ LSqlSyntaxHighlighter::LSqlSyntaxHighlighter(QObject *parent):
 
 LSqlSyntaxHighlighter::~LSqlSyntaxHighlighter()
 {
+  qDebug() << "LSqlSyntaxHighlighter destructor";
 }
 
 QStringList LSqlSyntaxHighlighter::keyWords()

@@ -13,6 +13,7 @@ SOURCES += \
     $$PWD/firebirdtable.cpp \
     $$PWD/firebirdsequence.cpp \
     $$PWD/firebirdtrigger.cpp \
+    $$PWD/firebirdtypeprovider.cpp \
     $$PWD/firebirduniqueconstraint.cpp \
     $$PWD/firebirdview.cpp \
     $$PWD/firebirdtriggerform.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 
 HEADERS  += \
     $$PWD/firebirdcheckconstraint.h \
+    $$PWD/firebirdconst.h \
     $$PWD/firebirddatabase.h \
     $$PWD/firebirdfolderitem.h \
     $$PWD/firebirdforeignkey.h \
@@ -33,6 +35,7 @@ HEADERS  += \
     $$PWD/firebirdtable.h \
     $$PWD/firebirdsequence.h \
     $$PWD/firebirdtrigger.h \
+    $$PWD/firebirdtypeprovider.h \
     $$PWD/firebirduniqueconstraint.h \
     $$PWD/firebirdview.h \
     $$PWD/firebirdtriggerform.h \

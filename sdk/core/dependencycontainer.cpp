@@ -55,6 +55,8 @@ DependencyMeta *DependencyContainer::registerSingletonObject(DependencyMeta *met
         return nullptr;
     }
     object->setObjectName(meta->name());
+    object->setProperty(PRM_MODE, Singleton);
+    object->setProperty(PRM_BEAN_NAME, meta->name());
     _singletonHash.insert(meta->name(), object);
     return registerDependency(meta);
 }
@@ -190,7 +192,12 @@ QObject *DependencyContainer::dependency(const QString &name, const QObject *arg
     }
 
     QObject* newObj = metaObj->newInstance(QGenericArgument(paramType, &arg));
-//    newObj->setObjectName(meta->name());
+    //Meta information of new object
+    newObj->setProperty(PRM_MODE, meta->mode());
+    newObj->setProperty(PRM_BEAN_NAME, meta->name());
+
+    if (meta->mode() == Singleton)
+      newObj->setObjectName(meta->name());
     injectProperties(newObj, name);
     if (!newObj) {
         qWarning() << "Cant instantiate object:" << name;
@@ -217,11 +224,12 @@ QObject *DependencyContainer::dependency(const QString &name, const QObject *arg
                 Q_ASSERT_X(!_errorOnInjectFail, "DependencyContainer::dependency()", "Field injection failed. Fix the bug or disable errorOnInjectFail flag.");
                 continue;
             }
+            newInjectProcessing(dependencyObj, newObj);
             QString argType = QString::fromLatin1(method.parameterTypes().at(0)).remove("*").trimmed();
 
             if (!dependencyObj->inherits(argType.toLatin1())) {
                 QString errStr = "Bean %1: Inject method %2 expects arg type %3 descedant. Found bean (%4) instead";
-                qCritical() << errStr.arg(name).arg(methodName).arg(argType).arg(beanName).arg(dependencyObj->metaObject()->className());
+                qCritical() << errStr.arg(name, methodName, argType, beanName, dependencyObj->metaObject()->className());
                 continue;
             }
 
@@ -258,6 +266,14 @@ void DependencyContainer::newInstanceProccessing(QObject *obj)
 {
   Q_UNUSED(obj)
   //By default do nothing
+}
+
+void DependencyContainer::newInjectProcessing(QObject *injectedObj, QObject *targetObj)
+{
+  Q_UNUSED(injectedObj)
+  Q_UNUSED(targetObj)
+  //By default do nothing
+  //Here can be implemented parenting logic, logging etc
 }
 
 void DependencyContainer::injectProperties(QObject* obj, const QString &name)

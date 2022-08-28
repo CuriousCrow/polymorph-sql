@@ -15,6 +15,8 @@
 #include "firebirdprocedure.h"
 #include "forms/firebirddomainform.h"
 #include "objects/firebirddomain.h"
+#include "firebirdtypeprovider.h"
+#include "firebirdconst.h"
 
 
 FirebirdPlugin::FirebirdPlugin(QObject *parent) : IocPlugin(parent)
@@ -37,38 +39,43 @@ QList<DBObjectItem::ItemType> FirebirdPlugin::supportedTypes()
 
 bool FirebirdPlugin::registerPlugin(DependencyContainer *c)
 {
-  c->registerDependency(new DependencyMeta("firebirdDatabase", CLASSMETA(FirebirdDatabase), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_DATABASE, CLASSMETA(FirebirdDatabase), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Database);
-  c->registerDependency(new DependencyMeta("firebirdFolderItem", CLASSMETA(FirebirdFolderItem), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_FOLDER, CLASSMETA(FirebirdFolderItem), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Folder);
-  c->registerDependency(new DependencyMeta("firebirdTableItem", CLASSMETA(FirebirdTable), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_TABLE, CLASSMETA(FirebirdTable), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Table);
-  c->registerDependency(new DependencyMeta("firebirdSequenceItem", CLASSMETA(FirebirdSequence), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_SEQUENCE, CLASSMETA(FirebirdSequence), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Sequence);
 
-  c->registerDependency(new DependencyMeta("firebirdPrimaryKeyItem", CLASSMETA(FirebirdPrimaryKey), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_PRIMARY_KEY, CLASSMETA(FirebirdPrimaryKey), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::PrimaryKey);
-  c->registerDependency(new DependencyMeta("firebirdForeignKeyItem", CLASSMETA(FirebirdForeignKey), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_FOREIGN_KEY, CLASSMETA(FirebirdForeignKey), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::ForeignKey);
-  c->registerDependency(new DependencyMeta("firebirdUniqueConstraintItem", CLASSMETA(FirebirdUniqueConstraint), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_UNIQUE_CONSTRAINT, CLASSMETA(FirebirdUniqueConstraint), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::UniqueConstraint);
-  c->registerDependency(new DependencyMeta("firebirdCheckConstraintItem", CLASSMETA(FirebirdCheckConstraint), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_CHECK_CONSTRAINT, CLASSMETA(FirebirdCheckConstraint), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::CheckConstraint);
-  c->registerDependency(new DependencyMeta("firebirdViewItem", CLASSMETA(FirebirdView), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_VIEW, CLASSMETA(FirebirdView), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::View);
-  c->registerDependency(new DependencyMeta("firebirdTrigger", CLASSMETA(FirebirdTrigger), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_TRIGGER, CLASSMETA(FirebirdTrigger), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Trigger);
-  c->registerDependency(new DependencyMeta("firebirdProcedure", CLASSMETA(FirebirdProcedure), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_PROCEDURE, CLASSMETA(FirebirdProcedure), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Procedure);
-  c->registerDependency(new DependencyMeta("firebirdDomain", CLASSMETA(FirebirdDomain), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_DOMAIN, CLASSMETA(FirebirdDomain), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::UserType);
 
-  c->registerDependency(new DependencyMeta("firebirdTriggerForm", CLASSMETA(FirebirdTriggerForm), InstanceMode::Singleton))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_TRIGGER_FORM, CLASSMETA(FirebirdTriggerForm), InstanceMode::Singleton))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Trigger);
-  c->registerDependency(new DependencyMeta("firebirdProcedureForm", CLASSMETA(FirebirdProcedureForm), InstanceMode::Singleton))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_PROCEDURE_FORM, CLASSMETA(FirebirdProcedureForm), InstanceMode::Singleton))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::Procedure);
-  c->registerDependency(new DependencyMeta("firebirdDomainForm", CLASSMETA(FirebirdDomainForm), InstanceMode::Singleton))
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_DOMAIN_FORM, CLASSMETA(FirebirdDomainForm), InstanceMode::Singleton))
                         ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD)->setParam(F_TYPE, DBObjectItem::UserType);
+
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_TYPE_PROVIDER, CLASSMETA(FirebirdTypeProvider), InstanceMode::Singleton))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD);
+  c->registerDependency(new DependencyMeta(B_FIREBIRD_ARG_MODEL, CLASSMETA(ArgumentTableModel), InstanceMode::Prototype))
+                        ->setParam(F_DRIVER_NAME, DRIVER_FIREBIRD);
   return true;
 }
 

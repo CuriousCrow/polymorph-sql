@@ -21,7 +21,6 @@ ViewEditDialog::~ViewEditDialog()
 
 void ViewEditDialog::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
 {
-  completerSupport->setParent(this);
   _completerSupport = completerSupport;
   _completerSupport->setWidget(ui->edtQueryText);
 }

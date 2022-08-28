@@ -4,6 +4,7 @@
 #include "models/comboboxitemdelegate.h"
 
 
+
 FirebirdProcedureForm::FirebirdProcedureForm() :
   AbstractDatabaseEditForm(),
   ui(new Ui::FirebirdProcedureForm)
@@ -13,9 +14,9 @@ FirebirdProcedureForm::FirebirdProcedureForm() :
   connect(this, SIGNAL(userActionChanged()), SLOT(onUserActionChanged()));
 
   ComboboxItemDelegate* typesDelegate = new ComboboxItemDelegate();
-  QStringList types;
-  types << "INTEGER" << "VARCHAR" << "BOOLEAN" << "BIGINT";
-  typesDelegate->setOptions(types);
+
+  _typeProvider = new FirebirdTypeProvider();
+  typesDelegate->setOptions(_typeProvider->typeNames());
   ui->tvInputArguments->setItemDelegateForColumn(1, typesDelegate);
   ui->tvOutputArguments->setItemDelegateForColumn(1, typesDelegate);
 }
@@ -32,8 +33,8 @@ void FirebirdProcedureForm::objectToForm()
   _editorSupport->updateModels(_objItem);
 
   _procedureObj = static_cast<FirebirdProcedure*>(_objItem);
-  ui->tvInputArguments->setModel(_procedureObj->inArgModel());
-  ui->tvOutputArguments->setModel(_procedureObj->outArgModel());
+  ui->tvInputArguments->setModel(_procedureObj->inArgumentModel());
+  ui->tvOutputArguments->setModel(_procedureObj->outArgumentModel());
 
   ui->edtName->setText(_objItem->caption());
   QString sourceCode = _objItem->fieldValue(F_SOURCE_CODE).toString();

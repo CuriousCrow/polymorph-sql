@@ -14,8 +14,6 @@ public:
   Q_INVOKABLE LKnowledgeBase(QObject *parent = nullptr);
   ~LKnowledgeBase();
 
-  LSqlTableModel* mTypes;
-
   void loadModels(const QStringList &drivers);
   LDBObjectTableModel* modelByType(QString type, QString driver = "");
   void loadModelByType(QString table, QString type, QString driver = "");
@@ -24,6 +22,7 @@ public:
   QString typeName(int type);
   int typeByName(QString dbms, QString name);
 private:
+  LSqlTableModel* _mTypes;
   QHash<QString, LDBObjectTableModel*> _modelHash;
 signals:
 

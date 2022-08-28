@@ -41,7 +41,8 @@ SOURCES += \
     firebirdview.cpp \
     firebirdtrigger.cpp \
     forms/firebirddomainform.cpp \
-    objects/firebirddomain.cpp
+    objects/firebirddomain.cpp \
+    firebirdtypeprovider.cpp
 
 
 HEADERS  += \
@@ -61,7 +62,8 @@ HEADERS  += \
     firebirdview.h \
     firebirdtrigger.h \
     forms/firebirddomainform.h \
-    objects/firebirddomain.h
+    objects/firebirddomain.h \
+    firebirdtypeprovider.h
 
 FORMS += \
   firebirdprocedureform.ui \

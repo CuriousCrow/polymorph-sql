@@ -13,6 +13,7 @@ SOURCES += \
     $$PWD/mysqltable.cpp \
     $$PWD/mysqlsequence.cpp \
     $$PWD/mysqltrigger.cpp \
+    $$PWD/mysqltypeprovider.cpp \
     $$PWD/mysqluniqueconstraint.cpp \
     $$PWD/mysqlview.cpp \
     $$PWD/mysqlcheckconstraint.cpp \
@@ -30,6 +31,7 @@ HEADERS  += \
     $$PWD/mysqltable.h \
     $$PWD/mysqlsequence.h \
     $$PWD/mysqltrigger.h \
+    $$PWD/mysqltypeprovider.h \
     $$PWD/mysqluniqueconstraint.h \
     $$PWD/mysqlview.h \
     $$PWD/mysqlcheckconstraint.h \

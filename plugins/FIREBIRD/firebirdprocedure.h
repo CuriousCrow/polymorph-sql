@@ -3,7 +3,23 @@
 
 #include "objects/dbprocedureitem.h"
 #include "models/variantmaptablemodel.h"
+#include "firebirdtypeprovider.h"
 #include <QObject>
+#include "core/core.h"
+#include "firebirdconst.h"
+
+class ArgumentTableModel : public VariantMapTableModel
+{
+  Q_OBJECT
+public:
+  Q_INVOKABLE ArgumentTableModel();
+
+  INJECT(FirebirdTypeProvider*, firebirdTypeProvider)
+
+public slots:
+  void onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
+
+};
 
 class FirebirdProcedure : public DBProcedureItem
 {
@@ -12,8 +28,11 @@ public:
   Q_INVOKABLE FirebirdProcedure();
   ~FirebirdProcedure();
 
-  VariantMapTableModel* inArgModel();
-  VariantMapTableModel* outArgModel();
+  ArgumentTableModel* inArgumentModel();
+  ArgumentTableModel* outArgumentModel();
+
+  INJECT_AS(ArgumentTableModel*, inArgModel, firebirdArgModel)
+  INJECT_AS(ArgumentTableModel*, outArgModel, firebirdArgModel)
 
   void addInArg();
   void addOutArg();
@@ -30,8 +49,6 @@ private:
   QString argsFromModel(VariantMapTableModel* argModel) const;
   int _inMaxId = 1;
   int _outMaxId = 1;
-  VariantMapTableModel* _mInArguments;
-  VariantMapTableModel* _mOutArguments;
 };
 
 #endif // FIREBIRDPROCEDURE_H

@@ -18,6 +18,7 @@ DBObjectItem::DBObjectItem(QString caption, QObject* parent):
 
 DBObjectItem::~DBObjectItem()
 {
+  deleteInjected();
 }
 
 QString DBObjectItem::connectionName() const
@@ -32,7 +33,12 @@ void DBObjectItem::updateUrl()
   _driverName = newUrl.driver();
   setObjectName(newUrl.toString());
   for (int i=0; i<children().count(); i++){
-    static_cast<DBObjectItem*>(children().at(i))->setParentUrl(newUrl);
+    if (children().at(i)->inherits(DB_OBJECT_CLASS))
+      static_cast<DBObjectItem*>(children().at(i))->setParentUrl(newUrl);
+    else {
+      QString warnMsg = objectName() + ": All DBObjectItem objects should have only DBObjectItem descendant children";
+      qWarning() << warnMsg;
+    }
   }
 }
 
@@ -169,6 +175,14 @@ ActionResult DBObjectItem::execSql(QString sql, QString connectionName)
   }
 }
 
+void DBObjectItem::deleteInjected()
+{
+  while(!_dependantObjects.isEmpty()) {
+    QObject* obj = _dependantObjects.takeFirst();
+    delete obj;
+  }
+}
+
 QVariant DBObjectItem::fieldValue(QString fieldName) const
 {
   int index = fieldIndex(fieldName);
@@ -227,6 +241,12 @@ void DBObjectItem::copyFieldsTo(DBObjectItem *targetObj)
     foreach(DBObjectField field, fields) {
         targetObj->setFieldValue(field.name, field.value());
     }
+}
+
+void DBObjectItem::registerDependantObject(QObject *obj)
+{
+  qDebug() << "Registering injected beanName:" << obj->property("beanName");
+  _dependantObjects.append(obj);
 }
 
 QString DBObjectItem::baseClassByType(DBObjectItem::ItemType type)

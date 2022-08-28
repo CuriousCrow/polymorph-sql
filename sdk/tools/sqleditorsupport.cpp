@@ -16,19 +16,18 @@ SqlEditorSupport::SqlEditorSupport() : QObject()
 void SqlEditorSupport::inject_sqlCompleterSupport_into_form(SimpleSqlCompleterSupport *completerSupport)
 {
   _completerSupport = completerSupport;
-  _completerSupport->setParent(this);
 }
 
 void SqlEditorSupport::inject_helpLookupProvider(SqlHelpLookupProvider *lookupProvider)
 {
   _helpLookupProvider = lookupProvider;
-  _helpLookupProvider->setParent(this);
+//  _helpLookupProvider->setParent(this);
 }
 
 void SqlEditorSupport::inject_by_sqlSyntaxHighlighter(LSqlSyntaxHighlighter *syntaxHighlighter)
 {
   _highlighter = syntaxHighlighter;
-  _highlighter->setParent(this);
+//  _highlighter->setParent(this);
 }
 
 void SqlEditorSupport::updateModels(DBObjectItem* item)

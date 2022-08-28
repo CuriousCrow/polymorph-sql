@@ -113,4 +113,6 @@
 #define B_DATA_STORE "ds"
 #define B_CONTEXT "context"
 
+#define DB_OBJECT_CLASS "DBObjectItem"
+
 #endif // APPCONST_H

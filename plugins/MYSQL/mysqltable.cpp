@@ -10,12 +10,11 @@ MysqlTableItem::MysqlTableItem()
   _constraintsModel = new VariantMapTableModel();
   _constraintsModel->registerColumn(F_TYPE, tr("Type"));
   _constraintsModel->registerColumn(F_NAME, tr("Name"));
+  registerDependantObject(_constraintsModel);
 }
 
 MysqlTableItem::~MysqlTableItem()
 {
-  delete _columnsModel;
-  delete _constraintsModel;
 }
 
 ActionResult MysqlTableItem::insertMe()

@@ -125,3 +125,22 @@ void Core::newInstanceProccessing(QObject *obj)
     }
   }
 }
+
+
+void Core::newInjectProcessing(QObject *injectedObj, QObject *targetObj)
+{
+  if (injectedObj->property(PRM_MODE) == Singleton)
+    return;
+
+  if (targetObj->inherits(DB_OBJECT_CLASS)) {
+    if (!injectedObj->inherits(DB_OBJECT_CLASS)) {
+      static_cast<DBObjectItem*>(targetObj)->registerDependantObject(injectedObj);
+    }
+  }
+  else {
+    injectedObj->setParent(targetObj);
+  }
+}
+
+
+

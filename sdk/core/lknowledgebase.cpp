@@ -46,8 +46,8 @@ QHash<int, QString> LKnowledgeBase::typesHash(QString dbms)
 {
   QHash<int, QString> resHash;
 
-  for(int row=0; row<mTypes->rowCount(); row++) {
-    QSqlRecord rec = mTypes->record(row);
+  for(int row=0; row<_mTypes->rowCount(); row++) {
+    QSqlRecord rec = _mTypes->record(row);
     if (rec.value(F_DBMS).toString() == dbms.toUpper())
       resHash.insert(rec.value(F_ID).toInt(), rec.value(F_NAME).toString());
   }
@@ -58,7 +58,7 @@ QString LKnowledgeBase::typeName(int type)
 {
   if (type <= 0)
     return "Undefined";
-  QSqlRecord* rec = mTypes->recordById(type);
+  QSqlRecord* rec = _mTypes->recordById(type);
   if (!rec)
     return "Unknown";
   return rec->value(F_NAME).toString();
@@ -66,8 +66,8 @@ QString LKnowledgeBase::typeName(int type)
 
 int LKnowledgeBase::typeByName(QString dbms, QString name)
 {
-  for(int row=0; row<mTypes->rowCount(); row++) {
-    QSqlRecord rec = mTypes->record(row);
+  for(int row=0; row<_mTypes->rowCount(); row++) {
+    QSqlRecord rec = _mTypes->record(row);
     if (rec.value(F_DBMS).toString() == dbms && rec.value(F_NAME).toString() == name)
       return rec.value(F_ID).toInt();
   }
@@ -79,10 +79,10 @@ LKnowledgeBase::LKnowledgeBase(QObject *parent) : QObject(parent)
 {
   qDebug() << "Knowledge base created";
 
-  mTypes = new LSqlTableModel(this);
-  mTypes->setTable(T_TYPES);
-  mTypes->select();
-  qDebug() << mTypes->rowCount() << "types loaded";
+  _mTypes = new LSqlTableModel(this);
+  _mTypes->setTable(T_TYPES);
+  _mTypes->select();
+  qDebug() << _mTypes->rowCount() << "types loaded";
 }
 
 

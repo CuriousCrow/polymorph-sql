@@ -109,8 +109,12 @@ public:
   void copyFieldTo(QString fieldName, DBObjectItem* targetObj);
   void copyFieldsTo(DBObjectItem* targetObj);
 
+  //Registering injected objects to be deleted in destructor
+  void registerDependantObject(QObject* obj);
+
   static QString baseClassByType(ItemType type);
 private:
+  QList<QObject*> _dependantObjects;
   void setFieldValue(int colNumber, QVariant value);
   QString varToStr(QVariant variant) const;
 
@@ -130,6 +134,7 @@ protected:
   QString fillWithModifiedFields(QString pattern) const;
   QString filterUnmodifiedFields(QString pattern) const;
   ActionResult execSql(QString sql, QString connectionName = QSqlDatabase::defaultConnection);
+  void deleteInjected();
 
   // LAbstractTreeItem interface
 public:

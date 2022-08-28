@@ -4,6 +4,7 @@
 #include "forms/abstractdatabaseitemform.h"
 #include "tools/sqleditorsupport.h"
 #include "firebirdprocedure.h"
+#include "firebirdtypeprovider.h"
 
 
 namespace Ui {
@@ -23,6 +24,7 @@ public:
 private:
   Ui::FirebirdProcedureForm *ui;
 
+  FirebirdTypeProvider* _typeProvider;
   FirebirdProcedure* _procedureObj;
 
   // AbstractDatabaseEditForm interface

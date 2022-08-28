@@ -7,62 +7,52 @@ FirebirdProcedure::FirebirdProcedure() : DBProcedureItem()
 {
   _identifierSupport = new QuoteIdentifier();
   registerField(F_ARGS);
-
-  _mInArguments = new VariantMapTableModel();
-  _mInArguments->registerColumn(F_NAME, tr("Name"));
-  _mInArguments->registerColumn(F_TYPE, tr("Type"));
-
-  _mOutArguments = new VariantMapTableModel();
-  _mOutArguments->registerColumn(F_NAME, tr("Name"));
-  _mOutArguments->registerColumn(F_TYPE, tr("Type"));
 }
 
 FirebirdProcedure::~FirebirdProcedure()
 {
   delete _identifierSupport;
-  delete _mInArguments;
-  delete _mOutArguments;
 }
 
-VariantMapTableModel *FirebirdProcedure::inArgModel()
+ArgumentTableModel *FirebirdProcedure::inArgumentModel()
 {
-  return _mInArguments;
+  return _inArgModel;
 }
 
-VariantMapTableModel *FirebirdProcedure::outArgModel()
+ArgumentTableModel *FirebirdProcedure::outArgumentModel()
 {
-  return _mOutArguments;
+  return _outArgModel;
 }
 
 void FirebirdProcedure::addInArg()
 {
   QVariantMap rowArg;
   rowArg.insert(F_ID, _inMaxId++);
-  _mInArguments->addRow(rowArg);
+  _inArgModel->addRow(rowArg);
 }
 
 void FirebirdProcedure::addOutArg()
 {
   QVariantMap rowArg;
   rowArg.insert(F_ID, _outMaxId++);
-  _mOutArguments->addRow(rowArg);
+  _outArgModel->addRow(rowArg);
 }
 
 void FirebirdProcedure::removeInArg(int row)
 {
-  _mInArguments->deleteByRow(row);
+  _inArgModel->deleteByRow(row);
 }
 
 void FirebirdProcedure::removeOutArg(int row)
 {
-  _mOutArguments->deleteByRow(row);
+  _outArgModel->deleteByRow(row);
 }
 
 
 bool FirebirdProcedure::refresh()
 {
-  _mInArguments->clear();
-  _mOutArguments->clear();
+  _inArgModel->clear();
+  _outArgModel->clear();
 
   QString sql = "select p.rdb$procedure_source \"sourceCode\", trim(pp.rdb$parameter_name) \"name\", "
           "pp.rdb$parameter_type \"mode\",  trim(f.rdb$field_type) \"type\", f.rdb$character_length \"length\", "
@@ -87,11 +77,12 @@ bool FirebirdProcedure::refresh()
       row.insert(F_ID, mode == 0 ? _inMaxId++ : _outMaxId++);
       row.insert(F_NAME, resultSet.value(F_NAME));
       row.insert(F_TYPE, Utils::typeFromCode(resultSet.value(F_TYPE).toInt()));
+      row.insert(F_LENGTH, resultSet.value(F_LENGTH));
 
       if (mode == 0) {
-        _mInArguments->addRow(row);
+        _inArgModel->addRow(row);
       } else {
-        _mOutArguments->addRow(row);
+        _outArgModel->addRow(row);
       }
 
       if (!resultSet.next())
@@ -111,10 +102,10 @@ QString FirebirdProcedure::toDDL() const
 
   QString preparedSql = fillSqlPatternWithFields(sql);
   QString args = "";
-  QString inArgs = argsFromModel(_mInArguments);
+  QString inArgs = argsFromModel(_inArgModel);
   if (!inArgs.isEmpty())
     args += " (" + inArgs + ")";
-  QString outArgs = argsFromModel(_mOutArguments);
+  QString outArgs = argsFromModel(_outArgModel);
   if (!outArgs.isEmpty())
     args += " RETURNS(" + outArgs + ")";
   return preparedSql.arg(args);
@@ -140,4 +131,26 @@ QString FirebirdProcedure::argsFromModel(VariantMapTableModel *argModel) const
     args.append(line);
   }
   return args.join(", ");
+}
+
+ArgumentTableModel::ArgumentTableModel() : VariantMapTableModel()
+{
+  this->registerColumn(F_NAME, tr("Name"));
+  this->registerColumn(F_TYPE, tr("Type"));
+  this->registerColumn(F_LENGTH, tr("Length"));
+
+  connect(this, &ArgumentTableModel::dataChanged, this, &ArgumentTableModel::onDataChanged);
+}
+
+
+void ArgumentTableModel::onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
+{
+  Q_UNUSED(bottomRight)
+
+  if (topLeft.column() == 1) {
+    QString typeName = topLeft.data().toString();
+    DBType* type = _firebirdTypeProvider->type(typeName);
+    if (!type->hasLength())
+      setData(index(topLeft.row(), 2), QVariant(), Qt::EditRole);
+  }
 }
