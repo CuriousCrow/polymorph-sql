@@ -15,7 +15,7 @@ class ConnectionEditDialog : public AbstractDatabaseEditForm
   Q_OBJECT
 
 public:
-  explicit ConnectionEditDialog(QWidget *parent = nullptr);
+  Q_INVOKABLE ConnectionEditDialog(QWidget *parent = nullptr);
   virtual ~ConnectionEditDialog() override;
 private slots:
   void on_btnOk_clicked();

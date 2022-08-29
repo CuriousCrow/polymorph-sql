@@ -43,6 +43,7 @@
 #include "tools/sqleditorsupport.h"
 
 #include "models/sqlcolumnmodel.h"
+#include "objects/typeprovider.h"
 
 #include "tools/testclasses.h"
 
@@ -136,8 +137,8 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
                           ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Sequence);
     c->registerDependency(B_TRIGGER_FORM, CLASSMETA(TriggerEditForm), InstanceMode::Singleton)
                           ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Trigger);
-    c->registerDependency(B_CONNECTION_FORM, CLASSMETA(ConnectionEditDialog), InstanceMode::Singleton)
-                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Database);
+//    c->registerDependency(B_CONNECTION_FORM, CLASSMETA(ConnectionEditDialog), InstanceMode::Singleton)
+//                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Database);
     c->registerDependency(B_FOREIGN_KEY_FORM, CLASSMETA(ForeignKeyForm), InstanceMode::Prototype)
                           ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::ForeignKey);
     c->registerDependency(B_CHECK_FORM, CLASSMETA(CheckConstraintEditForm), InstanceMode::Prototype)
@@ -172,6 +173,9 @@ bool SdkPlugin::registerPlugin(DependencyContainer *c)
 //    c->registerSingletonObject(new DependencyMeta("testExtension", CLASSMETA(TestExtension)), testExtension);
 //    c->registerSingletonObject(new DependencyMeta("testItemPopup", CLASSMETA(TestPopupAction)), new TestPopupAction());
     c->registerDependency("editorSupport", CLASSMETA(SqlEditorSupport), InstanceMode::Prototype);
+
+    c->registerDependency("baseTypeProvider", CLASSMETA(BaseTypeProvider), InstanceMode::Prototype)
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE);
 
     return true;
 }

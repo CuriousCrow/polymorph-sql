@@ -5,6 +5,7 @@
 #include "tools/sqleditorsupport.h"
 #include "firebirdprocedure.h"
 #include "firebirdtypeprovider.h"
+#include "models/comboboxitemdelegate.h"
 
 
 namespace Ui {
@@ -20,12 +21,13 @@ public:
   ~FirebirdProcedureForm();
 
   INJECT(SqlEditorSupport*, editorSupport);
+  INJECT_AS(FirebirdTypeProvider*, typeProvider, firebirdTypeProvider)
 
 private:
   Ui::FirebirdProcedureForm *ui;
 
-  FirebirdTypeProvider* _typeProvider;
   FirebirdProcedure* _procedureObj;
+  ComboboxItemDelegate* _typesDelegate;
 
   // AbstractDatabaseEditForm interface
 public:

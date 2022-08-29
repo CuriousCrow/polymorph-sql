@@ -1,32 +1,33 @@
 --Data
 
 --T_TYPES
-insert into t_types ("id", "dbms", "name", "caption") values ('200', 'QMYSQL', 'CHAR', 'Char');
-insert into t_types ("id", "dbms", "name", "caption") values ('201', 'QMYSQL', 'VARCHAR', 'Varchar');
-insert into t_types ("id", "dbms", "name", "caption") values ('202', 'QMYSQL', 'TINYTEXT', 'Tiny Text');
-insert into t_types ("id", "dbms", "name", "caption") values ('203', 'QMYSQL', 'TEXT', 'Text');
-insert into t_types ("id", "dbms", "name", "caption") values ('204', 'QMYSQL', 'MEDIUMTEXT', 'Medium Text');
-insert into t_types ("id", "dbms", "name", "caption") values ('205', 'QMYSQL', 'LARGETEXT', 'Large Text');
-insert into t_types ("id", "dbms", "name", "caption") values ('206', 'QMYSQL', 'TINYINT', 'Tiny Int');
-insert into t_types ("id", "dbms", "name", "caption") values ('207', 'QMYSQL', 'BOOL', 'Bool');
-insert into t_types ("id", "dbms", "name", "caption") values ('208', 'QMYSQL', 'SMALLINT', 'Small Int');
-insert into t_types ("id", "dbms", "name", "caption") values ('209', 'QMYSQL', 'MEDIUMINT', 'Medium Int');
-insert into t_types ("id", "dbms", "name", "caption") values ('210', 'QMYSQL', 'INT', 'Int');
-insert into t_types ("id", "dbms", "name", "caption") values ('211', 'QMYSQL', 'BIGINT', 'Bigint');
-insert into t_types ("id", "dbms", "name", "caption") values ('212', 'QMYSQL', 'DECIMAL', 'Decimal');
-insert into t_types ("id", "dbms", "name", "caption") values ('213', 'QMYSQL', 'FLOAT', 'Float');
-insert into t_types ("id", "dbms", "name", "caption") values ('214', 'QMYSQL', 'DOUBLE', 'Double');
-insert into t_types ("id", "dbms", "name", "caption") values ('215', 'QMYSQL', 'DATE', 'Date');
-insert into t_types ("id", "dbms", "name", "caption") values ('216', 'QMYSQL', 'TIME', 'Time');
-insert into t_types ("id", "dbms", "name", "caption") values ('217', 'QMYSQL', 'DATETIME', 'Date/Time');
-insert into t_types ("id", "dbms", "name", "caption") values ('218', 'QMYSQL', 'TIMESTAMP', 'Timestamp');
-insert into t_types ("id", "dbms", "name", "caption") values ('219', 'QMYSQL', 'YEAR', 'Year');
-insert into t_types ("id", "dbms", "name", "caption") values ('220', 'QMYSQL', 'ENUM', 'Enum');
-insert into t_types ("id", "dbms", "name", "caption") values ('221', 'QMYSQL', 'SET', 'Set');
-insert into t_types ("id", "dbms", "name", "caption") values ('222', 'QMYSQL', 'TINYBLOB', 'Tiny Blob');
-insert into t_types ("id", "dbms", "name", "caption") values ('223', 'QMYSQL', 'BLOB', 'Blob');
-insert into t_types ("id", "dbms", "name", "caption") values ('224', 'QMYSQL', 'MEDIUMBLOB', 'Medium Blob');
-insert into t_types ("id", "dbms", "name", "caption") values ('225', 'QMYSQL', 'LARGEBLOB', 'Large Blob');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('200', 'QMYSQL', 'CHAR', 'Char', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('201', 'QMYSQL', 'VARCHAR', 'Varchar', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('202', 'QMYSQL', 'TINYTEXT', 'Tiny Text', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('203', 'QMYSQL', 'TEXT', 'Text', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('204', 'QMYSQL', 'MEDIUMTEXT', 'Medium Text', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('205', 'QMYSQL', 'LARGETEXT', 'Large Text', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('206', 'QMYSQL', 'TINYINT', 'Tiny Int', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('207', 'QMYSQL', 'BOOL', 'Bool', null, null, 'boolean');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('208', 'QMYSQL', 'SMALLINT', 'Small Int', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('209', 'QMYSQL', 'MEDIUMINT', 'Medium Int', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('210', 'QMYSQL', 'INT', 'Int', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('211', 'QMYSQL', 'BIGINT', 'Bigint', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('212', 'QMYSQL', 'DECIMAL', 'Decimal', null, null, 'decimal');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('213', 'QMYSQL', 'FLOAT', 'Float', null, null, 'decimal');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('214', 'QMYSQL', 'DOUBLE', 'Double', null, null, 'decimal');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('215', 'QMYSQL', 'DATE', 'Date', null, null, 'date');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('216', 'QMYSQL', 'TIME', 'Time', null, null, 'time');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('217', 'QMYSQL', 'DATETIME', 'Date/Time', null, null, 'datetime');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('218', 'QMYSQL', 'TIMESTAMP', 'Timestamp', null, null, 'datetime');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('219', 'QMYSQL', 'YEAR', 'Year', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('220', 'QMYSQL', 'ENUM', 'Enum', null, null, 'enum');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('221', 'QMYSQL', 'SET', 'Set', null, null, 'set');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('222', 'QMYSQL', 'TINYBLOB', 'Tiny Blob', null, null, 'blob');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('223', 'QMYSQL', 'BLOB', 'Blob', null, null, 'blob');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('224', 'QMYSQL', 'MEDIUMBLOB', 'Medium Blob', null, null, 'blob');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('225', 'QMYSQL', 'LARGEBLOB', 'Large Blob', null, null, 'blob');
+
 
 --T_FUNCTIONS
 insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('2000', 'ABS', '', 'Return the absolute value', 'https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_abs', 'QMYSQL');

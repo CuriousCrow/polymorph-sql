@@ -4,8 +4,16 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
-#include "../models/lsqltablemodel.h"
-#include "../models/ldbobjecttablemodel.h"
+#include "models/lsqltablemodel.h"
+#include "models/ldbobjecttablemodel.h"
+
+struct TypeInfo
+{
+  QString name;
+  QString caption;
+  QString description;
+  QString kind;
+};
 
 class LKnowledgeBase : public QObject
 {
@@ -21,9 +29,13 @@ public:
   QHash<int, QString> typesHash(QString dbms);
   QString typeName(int type);
   int typeByName(QString dbms, QString name);
+
+  void loadTypeModel(QString driver);
+  LDBObjectTableModel* typesByDriver(QString driver);
 private:
   LSqlTableModel* _mTypes;
   QHash<QString, LDBObjectTableModel*> _modelHash;
+  QHash<QString, LDBObjectTableModel*> _typesHash;
 signals:
 
 public slots:

@@ -19,6 +19,11 @@ public:
 public slots:
   void onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
 
+  // VariantMapTableModel interface
+public:
+  virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
+private:
+  bool hasLength(int row) const;
 };
 
 class FirebirdProcedure : public DBProcedureItem

@@ -14,12 +14,14 @@ DependencyContainer::~DependencyContainer()
     qDebug() << "Dependency container destructor";
     delete _propertyProvider;
 
+    qDebug() << "Destroying all registered singletons";
     while(!_singletonHash.isEmpty()) {
         QStringList keys = _singletonHash.keys();
         QString name = keys.first();
         QObject* obj = _singletonHash.value(name);
         _singletonHash.remove(name);
         delete obj;
+        qDebug() << name << "deleted!";
     }
 }
 

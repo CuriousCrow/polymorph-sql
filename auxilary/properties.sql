@@ -38,9 +38,12 @@ CREATE TABLE "t_settings" (
 
 CREATE TABLE t_types (
 	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-	dbms TEXT NOT NULL, 
+	driver TEXT NOT NULL, 
 	name TEXT NOT NULL, 
-	caption TEXT
+	caption TEXT,
+	description TEXT,
+	doclink TEXT,
+	kind TEXT
 );
 
 --T_TABLE_COLUMNS

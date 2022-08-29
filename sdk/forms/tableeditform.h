@@ -6,7 +6,8 @@
 #include "abstractdatabaseitemform.h"
 #include "models/tablerowmodel.h"
 #include "objects/dbtableitem.h"
-#include "models/comboboxhashdelegate.h"
+#include "objects/typeprovider.h"
+#include "models/comboboxitemdelegate.h"
 #include "core/core.h"
 #include "core/dependencycontainer.h"
 #include "core/lknowledgebase.h"
@@ -53,7 +54,8 @@ private slots:
 
 private:
   DBObjectItem::ItemType typeByName(QString typeName);
-  ComboboxHashDelegate* _colTypeDelegate;
+  ComboboxItemDelegate* _colTypeDelegate;
+  TypeProvider* _typeProvider;
   QMenu* _menuAddConstraint;
 
 };

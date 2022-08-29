@@ -8,6 +8,7 @@ void LKnowledgeBase::loadModels(const QStringList &drivers)
     qDebug() << "Load module base:" << driver;
     loadModelByType(T_KEYWORDS, OBJTYPE_KEYWORD, driver);
     loadModelByType(T_FUNCTIONS, OBJTYPE_FUNCTION, driver);
+    loadTypeModel(driver);
   }
   loadModelByType(T_KEYWORDS, OBJTYPE_KEYWORD);
   loadModelByType(T_FUNCTIONS, OBJTYPE_FUNCTION);
@@ -48,7 +49,7 @@ QHash<int, QString> LKnowledgeBase::typesHash(QString dbms)
 
   for(int row=0; row<_mTypes->rowCount(); row++) {
     QSqlRecord rec = _mTypes->record(row);
-    if (rec.value(F_DBMS).toString() == dbms.toUpper())
+    if (rec.value(F_DRIVER).toString() == dbms.toUpper())
       resHash.insert(rec.value(F_ID).toInt(), rec.value(F_NAME).toString());
   }
   return resHash;
@@ -73,6 +74,32 @@ int LKnowledgeBase::typeByName(QString dbms, QString name)
   }
   //Here should be const
   return 0;
+}
+
+void LKnowledgeBase::loadTypeModel(QString driver)
+{
+  QString sqlPattern = "select * from t_types where driver='%1'";
+  QString preparedSql = sqlPattern.arg(driver);
+
+  LDBObjectTableModel* model = new LDBObjectTableModel(this);
+  model->registerColumn(F_NAME);
+  model->registerColumn(F_CAPTION);
+  model->registerColumn(F_DESCRIPTION);
+  model->registerColumn(F_DOC_LINK);
+  model->registerColumn(F_KIND);
+
+  model->setQuery(preparedSql);
+  _typesHash.insert(driver, model);
+
+  model->reload();
+  qDebug() << "Types" << driver << ":" << model->rowCount();
+}
+
+LDBObjectTableModel* LKnowledgeBase::typesByDriver(QString driver)
+{
+  if (!_typesHash.contains(driver))
+    return nullptr;
+  return _typesHash.value(driver);
 }
 
 LKnowledgeBase::LKnowledgeBase(QObject *parent) : QObject(parent)

@@ -42,6 +42,8 @@ void LDBObjectTableModel::reload(QString connectionName)
 
   beginResetModel();
   QSqlQuery result = SqlQueryHelper::execSql(_sqlQuery, connectionName);
+  if (result.lastError().isValid())
+    qWarning() << "Error loading model:" << result.lastError().databaseText();
   while(result.next()) {
     QVariantMap rowData = _fixedValues;
     QSqlRecord rec = result.record();
@@ -53,6 +55,12 @@ void LDBObjectTableModel::reload(QString connectionName)
     _dataMap.insert(name, rowData);
   }
   endResetModel();
+}
+
+QVariantMap LDBObjectTableModel::recordByRow(int row)
+{
+  QString name = _rowIndex.at(row);
+  return _dataMap.value(name);
 }
 
 int LDBObjectTableModel::rowCount(const QModelIndex &parent) const

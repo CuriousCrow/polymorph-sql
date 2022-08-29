@@ -1,18 +1,19 @@
 --Data
 
 --T_TYPES
-insert into t_types ("id", "dbms", "name", "caption") values ('100', 'QPSQL', 'BOOLEAN', 'Boolean');
-insert into t_types ("id", "dbms", "name", "caption") values ('101', 'QPSQL', 'SMALLINT', 'SmallInt');
-insert into t_types ("id", "dbms", "name", "caption") values ('102', 'QPSQL', 'INTEGER', 'Integer');
-insert into t_types ("id", "dbms", "name", "caption") values ('103', 'QPSQL', 'BIGINT', 'BigInt');
-insert into t_types ("id", "dbms", "name", "caption") values ('104', 'QPSQL', 'DATE', 'Date');
-insert into t_types ("id", "dbms", "name", "caption") values ('105', 'QPSQL', 'TIMESTAMP', 'Timestamp');
-insert into t_types ("id", "dbms", "name", "caption") values ('106', 'QPSQL', 'CHARACTER VARYING', 'Varchar');
-insert into t_types ("id", "dbms", "name", "caption") values ('107', 'QPSQL', 'TIME', 'Time');
-insert into t_types ("id", "dbms", "name", "caption") values ('108', 'QPSQL', 'REAL', 'Real');
-insert into t_types ("id", "dbms", "name", "caption") values ('109', 'QPSQL', 'CHAR', 'Char');
-insert into t_types ("id", "dbms", "name", "caption") values ('110', 'QPSQL', 'NUMERIC', 'Numeric');
-insert into t_types ("id", "dbms", "name", "caption") values ('111', 'QPSQL', 'UUID', 'UUID');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('100', 'QPSQL', 'BOOLEAN', 'Boolean', null, null, 'boolean');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('101', 'QPSQL', 'SMALLINT', 'SmallInt', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('102', 'QPSQL', 'INTEGER', 'Integer', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('103', 'QPSQL', 'BIGINT', 'BigInt', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('104', 'QPSQL', 'DATE', 'Date', null, null, 'date');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('105', 'QPSQL', 'TIMESTAMP', 'Timestamp', null, null, 'datetime');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('106', 'QPSQL', 'CHARACTER VARYING', 'Varchar', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('107', 'QPSQL', 'TIME', 'Time', null, null, 'time');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('108', 'QPSQL', 'REAL', 'Real', null, null, 'decimal');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('109', 'QPSQL', 'CHAR', 'Char', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('110', 'QPSQL', 'NUMERIC', 'Numeric', null, null, 'decimal');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('111', 'QPSQL', 'UUID', 'UUID', null, null, 'string');
+
 
 --T_FUNCTIONS
 insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('1002', 'abs', '[integer|smallint|numeric|real]', 'absolute value', 'https://www.postgresql.org/docs/14/functions-math.html', 'QPSQL');

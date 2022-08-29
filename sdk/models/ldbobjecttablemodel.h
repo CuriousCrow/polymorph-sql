@@ -17,6 +17,7 @@ public:
   void clear();
   void reload(QString connectionName = QSqlDatabase::defaultConnection);
 
+  QVariantMap recordByRow(int row);
   QString nameByRow(int row) const;
   QVariantMap rowByName(QString name) const;
   bool contains(QString name) const;

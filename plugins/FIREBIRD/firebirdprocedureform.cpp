@@ -1,8 +1,6 @@
 #include "firebirdprocedureform.h"
 #include "ui_firebirdprocedureform.h"
 #include "objects/appconst.h"
-#include "models/comboboxitemdelegate.h"
-
 
 
 FirebirdProcedureForm::FirebirdProcedureForm() :
@@ -11,14 +9,8 @@ FirebirdProcedureForm::FirebirdProcedureForm() :
 {
   ui->setupUi(this);
 
+  _typesDelegate = new ComboboxItemDelegate(this);
   connect(this, SIGNAL(userActionChanged()), SLOT(onUserActionChanged()));
-
-  ComboboxItemDelegate* typesDelegate = new ComboboxItemDelegate();
-
-  _typeProvider = new FirebirdTypeProvider();
-  typesDelegate->setOptions(_typeProvider->typeNames());
-  ui->tvInputArguments->setItemDelegateForColumn(1, typesDelegate);
-  ui->tvOutputArguments->setItemDelegateForColumn(1, typesDelegate);
 }
 
 FirebirdProcedureForm::~FirebirdProcedureForm()
@@ -26,11 +18,16 @@ FirebirdProcedureForm::~FirebirdProcedureForm()
   delete ui;
 }
 
-
 void FirebirdProcedureForm::objectToForm()
 {
   _editorSupport->setEditor(ui->teSource);
   _editorSupport->updateModels(_objItem);
+
+  _typeProvider->setItemObject(_objItem);
+
+  _typesDelegate->setOptions(_typeProvider->typeNames());
+  ui->tvInputArguments->setItemDelegateForColumn(1, _typesDelegate);
+  ui->tvOutputArguments->setItemDelegateForColumn(1, _typesDelegate);
 
   _procedureObj = static_cast<FirebirdProcedure*>(_objItem);
   ui->tvInputArguments->setModel(_procedureObj->inArgumentModel());

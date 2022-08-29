@@ -1,13 +1,13 @@
 --Data
 
 --T_TYPES
-insert into t_types ("id", "dbms", "name", "caption") values ('400', 'QIBASE', 'VARCHAR', 'Varchar');
-insert into t_types ("id", "dbms", "name", "caption") values ('401', 'QIBASE', 'CHAR', 'Char');
-insert into t_types ("id", "dbms", "name", "caption") values ('402', 'QIBASE', 'INTEGER', 'Integer');
-insert into t_types ("id", "dbms", "name", "caption") values ('403', 'QIBASE', 'BIGINT', 'BigInt');
-insert into t_types ("id", "dbms", "name", "caption") values ('404', 'QIBASE', 'DATE', 'Date');
-insert into t_types ("id", "dbms", "name", "caption") values ('405', 'QIBASE', 'TIMESTAMP', 'Timestamp');
-insert into t_types ("id", "dbms", "name", "caption") values ('406', 'QIBASE', 'SMALLINT', 'SmallInt');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('400', 'QIBASE', 'VARCHAR', 'Varchar', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('401', 'QIBASE', 'CHAR', 'Char', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('402', 'QIBASE', 'INTEGER', 'Integer', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('403', 'QIBASE', 'BIGINT', 'BigInt', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('404', 'QIBASE', 'DATE', 'Date', null, null, 'date');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('405', 'QIBASE', 'TIMESTAMP', 'Timestamp', null, null, 'datetime');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('406', 'QIBASE', 'SMALLINT', 'SmallInt', null, null, 'integer');
 
 --T_FUNCTIONS
 insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('4000', 'ABS', '[number]', 'Returns the absolute value of the argument.', 'https://www.firebirdsql.org/file/documentation/chunk/en/refdocs/fblangref25/fblangref25-functions-math.html#fblangref25-functions-scalarfuncs-abs', 'QIBASE');

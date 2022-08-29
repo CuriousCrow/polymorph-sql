@@ -1,10 +1,10 @@
 --Data
 
 --T_TYPES
-insert into t_types ("id", "dbms", "name", "caption") values ('300', 'QSQLITE', 'INTEGER', 'Integer');
-insert into t_types ("id", "dbms", "name", "caption") values ('301', 'QSQLITE', 'TEXT', 'Text');
-insert into t_types ("id", "dbms", "name", "caption") values ('302', 'QSQLITE', 'REAL', 'Real');
-insert into t_types ("id", "dbms", "name", "caption") values ('303', 'QSQLITE', 'BLOB', 'Blob');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('300', 'QSQLITE', 'INTEGER', 'Integer', null, null, 'integer');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('301', 'QSQLITE', 'TEXT', 'Text', null, null, 'string');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('302', 'QSQLITE', 'REAL', 'Real', null, null, 'decimal');
+insert into t_types ("id", "driver", "name", "caption", "description", "doclink", "kind") values ('303', 'QSQLITE', 'BLOB', 'Blob', null, null, 'blob');
 
 --T_FUNCTIONS
 insert into t_functions ("id", "name", "args", "description", "doclink", "driver") values ('3000', 'abs', '', '', NULL, 'QSQLITE');

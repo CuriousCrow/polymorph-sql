@@ -34,6 +34,8 @@
 #define F_ARGS "args"
 #define F_RETURN_TYPE "returnType"
 #define F_DBMS "dbms"
+#define F_KIND "kind"
+#define F_DRIVER "driver"
 #define F_EXPRESSION "expression"
 #define F_DATABASE_ID "database_id"
 #define F_TABLENAME "tablename"
@@ -114,5 +116,14 @@
 #define B_CONTEXT "context"
 
 #define DB_OBJECT_CLASS "DBObjectItem"
+
+#define TYPEKIND_STRING "string"
+#define TYPEKIND_INTEGER "integer"
+#define TYPEKIND_DATE "date"
+#define TYPEKIND_TIME "time"
+#define TYPEKIND_DATETIME "datetime"
+#define TYPEKIND_BLOB "blob"
+#define TYPEKIND_BOOLEAN "boolean"
+#define TYPEKIND_FLOAT "float"
 
 #endif // APPCONST_H

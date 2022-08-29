@@ -1,4 +1,5 @@
 #include "typeprovider.h"
+#include "objects/appconst.h"
 
 TypeProvider::TypeProvider() : QAbstractTableModel()
 {
@@ -14,12 +15,14 @@ QStringList TypeProvider::typeNames() const
   return resList;
 }
 
-
-
 StringDBType::StringDBType(QString name, QString title) : BaseDBType(name, title)
 {
 }
 
+bool StringDBType::hasLength() const
+{
+  return true;
+}
 
 QString StringDBType::valueToSql(const QVariant &value)
 {
@@ -85,6 +88,37 @@ BaseTypeProvider::BaseTypeProvider() : TypeProvider()
 void BaseTypeProvider::setItemObject(DBObjectItem *itemObj)
 {
   this->_itemObj = itemObj;
+  _driverName = this->_itemObj->driverName();
+  reload();
+}
+
+void BaseTypeProvider::addType(const QVariantMap &typeMap)
+{
+  QString kind = typeMap.value(F_KIND).toString();
+  QString name = typeMap.value(F_NAME).toString();
+  QString caption = typeMap.value(F_CAPTION).toString();
+  if (kind == TYPEKIND_STRING)
+    _types.append(new StringDBType(name, caption));
+  else if (kind == TYPEKIND_INTEGER)
+    _types.append(new IntegerDBType(name, caption));
+  else if (kind == TYPEKIND_FLOAT)
+    _types.append(new FloatDBType(name, caption));
+  else if (kind == TYPEKIND_BLOB)
+    _types.append(new BlobDBType(name, caption));
+  else
+    _types.append(new IntegerDBType(name, caption));
+
+}
+
+void BaseTypeProvider::reload()
+{
+  _types.clear();
+
+  LDBObjectTableModel* typesModel = _kb->typesByDriver(_driverName);
+  for(int i=0; i<typesModel->rowCount(); i++) {
+    QVariantMap rec = typesModel->recordByRow(i);
+    addType(rec);
+  }
 }
 
 

@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QAbstractTableModel>
 #include "objects/dbobjectitem.h"
-
+#include "core/lknowledgebase.h"
+#include "core/core.h"
 
 class DBType
 {
@@ -26,6 +27,7 @@ public:
   TypeProvider();
   QStringList typeNames() const;
 
+  virtual void setItemObject(DBObjectItem* itemObj) = 0;
   virtual DBType* type(QString name) const = 0;
   virtual QList<DBType*> types() const = 0;
 };
@@ -55,6 +57,7 @@ public:
   StringDBType(QString name, QString title = "");
   // DBType interface
 public:
+  virtual bool hasLength() const override;
   virtual QString valueToSql(const QVariant &value) override;
 };
 
@@ -93,10 +96,14 @@ class BaseTypeProvider : public TypeProvider
   Q_OBJECT
 public:
   Q_INVOKABLE BaseTypeProvider();
-  void setItemObject(DBObjectItem* itemObj);
+  INJECT(LKnowledgeBase*, kb)
+  void setItemObject(DBObjectItem* itemObj) override;
+  virtual void addType(const QVariantMap &typeMap);
 protected:
   DBObjectItem* _itemObj;
   QList<DBType*> _types;
+  QString _driverName;
+  virtual void reload();
 
   // QAbstractItemModel interface
 public:

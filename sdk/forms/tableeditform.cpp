@@ -2,11 +2,12 @@
 #include "ui_tableeditform.h"
 #include <QMessageBox>
 #include <QDebug>
-#include "../objects/appconst.h"
-#include "../objects/dbuniqueconstraint.h"
+#include "objects/appconst.h"
+#include "objects/dbuniqueconstraint.h"
 #include "foreignkeyform.h"
 #include "uniqueconstrainteditform.h"
 #include "checkconstrainteditform.h"
+
 
 #define CHK_PREFIX "chk_"
 #define PK_PREFIX "pk_"
@@ -23,7 +24,7 @@ TableEditForm::TableEditForm() :
   ui(new Ui::TableEditForm)
 {
   ui->setupUi(this);
-  _colTypeDelegate = new ComboboxHashDelegate(ui->tableView);
+  _colTypeDelegate = new ComboboxItemDelegate(ui->tableView);
   ui->tableView->setItemDelegateForColumn(COL_IDX_TYPE, _colTypeDelegate);
 
   _menuAddConstraint = new QMenu(this);
@@ -47,7 +48,10 @@ void TableEditForm::objectToForm()
   DBTableItem* tableItem = static_cast<DBTableItem*>(_objItem);
   tableItem->reloadColumnsModel();
 
-  _colTypeDelegate->setItemsHash(_kb->typesHash(_objItem->driverName()));
+  _typeProvider = _core->dependencyForDriver<TypeProvider>(_objItem->driverName());
+  _typeProvider->setItemObject(_objItem);
+  _colTypeDelegate->setOptions(_typeProvider->typeNames());
+
   ui->tableView->setModel(tableItem->columnsModel());
 
   tableItem->reloadConstraintsModel();
@@ -57,7 +61,7 @@ void TableEditForm::objectToForm()
 void TableEditForm::formToObject()
 {
   _objItem->setFieldValue(F_CAPTION, ui->lineEdit->text());
-  //Модель автоматически обновится при редактировании
+  //Model will be automatically updateds
 }
 
 void TableEditForm::on_btnApply_clicked()

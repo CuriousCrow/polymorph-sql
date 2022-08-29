@@ -3,6 +3,10 @@
 #include "utils/sqlqueryhelper.h"
 #include "firebirdutils.h"
 
+#define COL_NAME 0
+#define COL_TYPE 1
+#define COL_LENGTH 2
+
 FirebirdProcedure::FirebirdProcedure() : DBProcedureItem()
 {
   _identifierSupport = new QuoteIdentifier();
@@ -147,10 +151,24 @@ void ArgumentTableModel::onDataChanged(const QModelIndex &topLeft, const QModelI
 {
   Q_UNUSED(bottomRight)
 
-  if (topLeft.column() == 1) {
-    QString typeName = topLeft.data().toString();
-    DBType* type = _firebirdTypeProvider->type(typeName);
-    if (!type->hasLength())
-      setData(index(topLeft.row(), 2), QVariant(), Qt::EditRole);
+  if (topLeft.column() == COL_TYPE) {
+    if (!hasLength(topLeft.row()))
+      setData(index(topLeft.row(), COL_LENGTH), QVariant(), Qt::EditRole);
   }
+}
+
+
+Qt::ItemFlags ArgumentTableModel::flags(const QModelIndex &index) const
+{
+  if (index.column() == COL_LENGTH && !hasLength(index.row())) {
+    return Qt::NoItemFlags;
+  }
+  return Qt::ItemIsEnabled | Qt::ItemIsEditable;
+}
+
+bool ArgumentTableModel::hasLength(int row) const
+{
+  QString typeName = index(row, COL_TYPE).data().toString();
+  DBType* type = _firebirdTypeProvider->type(typeName);
+  return type->hasLength();
 }
