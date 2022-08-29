@@ -26,16 +26,13 @@ public:
   LDBObjectTableModel* modelByType(QString type, QString driver = "");
   void loadModelByType(QString table, QString type, QString driver = "");
 
-  QHash<int, QString> typesHash(QString dbms);
-  QString typeName(int type);
-  int typeByName(QString dbms, QString name);
-
   void loadTypeModel(QString driver);
   LDBObjectTableModel* typesByDriver(QString driver);
+  QStringList typeNamesByDriver(QString driver);
 private:
-  LSqlTableModel* _mTypes;
   QHash<QString, LDBObjectTableModel*> _modelHash;
   QHash<QString, LDBObjectTableModel*> _typesHash;
+
 signals:
 
 public slots:

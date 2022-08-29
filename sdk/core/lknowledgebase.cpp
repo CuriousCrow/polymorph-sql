@@ -43,39 +43,6 @@ void LKnowledgeBase::loadModelByType(QString table, QString type, QString driver
   qDebug() << name << ":" << model->rowCount();
 }
 
-QHash<int, QString> LKnowledgeBase::typesHash(QString dbms)
-{
-  QHash<int, QString> resHash;
-
-  for(int row=0; row<_mTypes->rowCount(); row++) {
-    QSqlRecord rec = _mTypes->record(row);
-    if (rec.value(F_DRIVER).toString() == dbms.toUpper())
-      resHash.insert(rec.value(F_ID).toInt(), rec.value(F_NAME).toString());
-  }
-  return resHash;
-}
-
-QString LKnowledgeBase::typeName(int type)
-{
-  if (type <= 0)
-    return "Undefined";
-  QSqlRecord* rec = _mTypes->recordById(type);
-  if (!rec)
-    return "Unknown";
-  return rec->value(F_NAME).toString();
-}
-
-int LKnowledgeBase::typeByName(QString dbms, QString name)
-{
-  for(int row=0; row<_mTypes->rowCount(); row++) {
-    QSqlRecord rec = _mTypes->record(row);
-    if (rec.value(F_DBMS).toString() == dbms && rec.value(F_NAME).toString() == name)
-      return rec.value(F_ID).toInt();
-  }
-  //Here should be const
-  return 0;
-}
-
 void LKnowledgeBase::loadTypeModel(QString driver)
 {
   QString sqlPattern = "select * from t_types where driver='%1'";
@@ -95,6 +62,16 @@ void LKnowledgeBase::loadTypeModel(QString driver)
   qDebug() << "Types" << driver << ":" << model->rowCount();
 }
 
+QStringList LKnowledgeBase::typeNamesByDriver(QString driver)
+{
+  QStringList resList;
+  LDBObjectTableModel* model = _typesHash.value(driver);
+  for(int row = 0; row < model->rowCount(); row++) {
+    resList.append(model->nameByRow(row));
+  }
+  return resList;
+}
+
 LDBObjectTableModel* LKnowledgeBase::typesByDriver(QString driver)
 {
   if (!_typesHash.contains(driver))
@@ -105,14 +82,7 @@ LDBObjectTableModel* LKnowledgeBase::typesByDriver(QString driver)
 LKnowledgeBase::LKnowledgeBase(QObject *parent) : QObject(parent)
 {
   qDebug() << "Knowledge base created";
-
-  _mTypes = new LSqlTableModel(this);
-  _mTypes->setTable(T_TYPES);
-  _mTypes->select();
-  qDebug() << _mTypes->rowCount() << "types loaded";
 }
-
-
 
 LKnowledgeBase::~LKnowledgeBase()
 {

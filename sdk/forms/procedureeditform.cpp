@@ -20,14 +20,11 @@ ProcedureEditForm::~ProcedureEditForm()
 
 void ProcedureEditForm::reloadTypes()
 {
-  QHash<int, QString> types = _kb->typesHash(_objItem->driverName());
+  QStringList types = _kb->typeNamesByDriver(_objItem->driverName());
   ui->cmbResultType->clear();
   ui->cmbResultType->addItem("void");
   ui->cmbResultType->addItem("trigger");
-  QStringList values = types.values();
-  foreach (QString type, values) {
-    ui->cmbResultType->addItem(type.toLower());
-  }
+  ui->cmbResultType->addItems(types);
 }
 
 void ProcedureEditForm::objectToForm()
