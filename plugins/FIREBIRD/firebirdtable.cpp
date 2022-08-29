@@ -47,7 +47,7 @@ void FirebirdTable::reloadColumnsModel()
   QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
     SqlColumn col(query.value("ccaption").toString().trimmed(),
-                  colTypeFromString(query.value("ctype").toString().trimmed()));
+                  query.value("ctype").toString().trimmed());
     col.setDefaultValue(query.value("cdefault"));
     col.setIsPrimary(false);
     col.setLength(query.value("clength").toInt());
@@ -79,7 +79,7 @@ QString FirebirdTable::createTableQuery(QString table) const
 
 QString FirebirdTable::columnDef(const SqlColumn &col) const
 {
-  QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
+  QString colDef = col.name() + " " + col.type();
   if (col.length() > 0)
     colDef.append("(" + QString::number(col.length()) + ")");
   if (col.notNull())
@@ -91,7 +91,7 @@ QString FirebirdTable::columnDef(const SqlColumn &col) const
 
 QString FirebirdTable::typeDef(const SqlColumn &col) const
 {
-  QString strType = _columnsModel->columnTypeCaption(col.type());
+  QString strType = col.type();
   if (col.length() > 0)
     strType = QString("%1(%2)").arg(strType).arg(col.length());
   return strType;

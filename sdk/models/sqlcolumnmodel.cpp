@@ -6,10 +6,6 @@ SqlColumnModel::SqlColumnModel(QObject *parent) : QAbstractTableModel(parent)
 
 }
 
-QString SqlColumnModel::columnTypeCaption(int type) const
-{
-  return _kb->typeName(type);
-}
 
 void SqlColumnModel::addSqlColumn(SqlColumn col, bool init)
 {
@@ -173,8 +169,6 @@ QVariant SqlColumnModel::data(const QModelIndex &index, int role) const
     col = _dataHash.value(_idxList.at(index.row()));
   if (role == Qt::DisplayRole || role == Qt::EditRole) {
     QVariant resVal = col.valueByIndex(index.column());
-    if (index.column() == COL_IDX_TYPE)
-      resVal = columnTypeCaption(resVal.toInt());
     return resVal;
   }
   else if (role == Qt::BackgroundRole) {
@@ -205,7 +199,7 @@ bool SqlColumnModel::setData(const QModelIndex &index, const QVariant &value, in
       col.setName(value.toString());
       break;
     case 2:
-      col.setType(value.toInt());
+      col.setType(value.toString());
       break;
     case 3:
       col.setLength(value.toInt());
@@ -316,7 +310,7 @@ SqlColumn::SqlColumn()
   _autoIncrement = false;
 }
 
-SqlColumn::SqlColumn(QString name, int type)
+SqlColumn::SqlColumn(QString name, QString type)
 {
   _name = name;
   _type = type;
@@ -350,12 +344,12 @@ void SqlColumn::setName(const QString &name)
   _name = name;
 }
 
-int SqlColumn::type() const
+QString SqlColumn::type() const
 {
   return _type;
 }
 
-void SqlColumn::setType(const int &type)
+void SqlColumn::setType(const QString &type)
 {
   _type = type;
 }

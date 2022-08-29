@@ -163,7 +163,7 @@ void PostgresTable::reloadColumnsModel()
   QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
-    SqlColumn col(query.value("column_name").toString(), colTypeFromString(query.value("data_type").toString()));
+    SqlColumn col(query.value("column_name").toString(), query.value("data_type").toString());
     col.setDefaultValue(query.value("column_default"));
     col.setIsPrimary(query.value("primary_key").toBool());
     col.setLength(query.value("character_maximum_length").toInt());
@@ -219,7 +219,7 @@ QString PostgresTable::createTableQuery(QString table) const
 
 QString PostgresTable::columnDef(const SqlColumn &col) const
 {
-  QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
+  QString colDef = col.name() + " " + col.type();
   if (col.length() > 0)
     colDef.append("(" + QString::number(col.length()) + ")");
   if (col.notNull())
@@ -231,7 +231,7 @@ QString PostgresTable::columnDef(const SqlColumn &col) const
 
 QString PostgresTable::typeDef(const SqlColumn &col) const
 {
-  return _columnsModel->columnTypeCaption(col.type());
+  return col.type();
 }
 
 QString PostgresTable::defaultDef(const SqlColumn &col) const

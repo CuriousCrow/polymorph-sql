@@ -56,12 +56,6 @@ DBCheckConstraint *DBTableItem::newCheckConstraint()
   return new DBCheckConstraint("chk_" + caption());
 }
 
-int DBTableItem::colTypeFromString(QString name)
-{
-//  qDebug() << "ColTypeFromString:" << name.toUpper();
-  return _kb->typeByName(driverName().toUpper(), name.toUpper());
-}
-
 void DBTableItem::addDefaultColumn()
 {  
   int newColNumber = 1;

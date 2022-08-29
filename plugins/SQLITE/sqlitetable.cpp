@@ -27,16 +27,16 @@ void SqliteTableItem::reloadColumnsModel()
         connectionName());
   for (int i=0; i<sqlColumns.count(); i++) {
     QSqlField field = sqlColumns.field(i);
-    int colType = NoType;
+    QString colType = NoType;
     switch (field.type()) {
     case QVariant::String:
-      colType = colTypeFromString("TEXT");
+      colType = "TEXT";
       break;
     case QVariant::Int:
-      colType = colTypeFromString("INTEGER");
+      colType = "INTEGER";
       break;
     case QVariant::Double:
-      colType = colTypeFromString("REAL");
+      colType = "REAL";
       break;
     default:
       break;
@@ -111,7 +111,7 @@ QString SqliteTableItem::createTableQuery(QString table) const
     SqlColumn col = _columnsModel->columnByIndex(i);
     if (!rowIdPk && col.isPrimary())
       pkColList.append(col.name());
-    QString colDef = col.name() + " " + _columnsModel->columnTypeCaption(col.type());
+    QString colDef = col.name() + " " + col.type();
     if (rowIdPk && col.isPrimary()) {
       colDef.append(" PRIMARY KEY");
       if (col.autoIncrement())

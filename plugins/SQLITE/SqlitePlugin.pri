@@ -9,7 +9,6 @@ SOURCES += \
     $$PWD/sqlitefolderitem.cpp \
     $$PWD/sqliteplugin.cpp \
     $$PWD/sqlitetable.cpp \
-    $$PWD/sqlitetypeprovider.cpp \
     $$PWD/sqliteviewitem.cpp
 
 HEADERS  += \
@@ -17,7 +16,6 @@ HEADERS  += \
     $$PWD/sqlitefolderitem.h \
     $$PWD/sqliteplugin.h \
     $$PWD/sqlitetable.h \
-    $$PWD/sqlitetypeprovider.h \
     $$PWD/sqliteviewitem.h
 
 #FORMS    += \

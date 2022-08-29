@@ -32,7 +32,6 @@ public:
 
   DBForeignKey* loadForeignKey(QString name);
 
-  int colTypeFromString(QString name);
   void addDefaultColumn();  
 
   // DBObjectItem interface

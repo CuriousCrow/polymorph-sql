@@ -14,7 +14,6 @@ SOURCES += \
     $$PWD/postgressequence.cpp \
     $$PWD/postgrestable.cpp \
     $$PWD/postgrestriggeritem.cpp \
-    $$PWD/postgrestypeprovider.cpp \
     $$PWD/postgresuniqueconstraint.cpp \
     $$PWD/postgresviewitem.cpp
 
@@ -30,7 +29,6 @@ HEADERS  += \
     $$PWD/postgressequence.h \
     $$PWD/postgrestable.h \
     $$PWD/postgrestriggeritem.h \
-    $$PWD/postgrestypeprovider.h \
     $$PWD/postgresuniqueconstraint.h \
     $$PWD/postgresviewitem.h
 

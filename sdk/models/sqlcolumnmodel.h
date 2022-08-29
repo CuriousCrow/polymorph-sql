@@ -6,21 +6,21 @@
 #include "core/dependencycontainer.h"
 #include "core/lknowledgebase.h"
 
-#define NoType 0
+#define NoType ""
 #define COL_IDX_TYPE 2
 
 class SqlColumn
 {
 public:
   SqlColumn();
-  SqlColumn(QString name, int type);
+  SqlColumn(QString name, QString type);
   SqlColumn(const SqlColumn &other);
 
   QString name() const;
   void setName(const QString &name);
 
-  int type() const;
-  void setType(const int &type);
+  QString type() const;
+  void setType(const QString &type);
 
   int length() const;
   void setLength(int length);
@@ -46,7 +46,7 @@ public:
 
 private:
   QString _name;
-  int _type;
+  QString _type;
   int _length;
   int _precision;
   bool _notNull;
@@ -81,7 +81,6 @@ public:
 
   INJECT(LKnowledgeBase*, kb)
 
-  virtual QString columnTypeCaption(int type) const;
   void addSqlColumn(SqlColumn col, bool init = false);
   SqlColumn columnByIndex(int idx);
   int rowByName(const QString name);
