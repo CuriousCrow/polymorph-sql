@@ -5,9 +5,17 @@
 #include <QColor>
 #include "core/dependencycontainer.h"
 #include "core/lknowledgebase.h"
+#include "objects/typeprovider.h"
 
 #define NoType ""
+#define COL_IDX_PK 0
+#define COL_IDX_NAME 1
 #define COL_IDX_TYPE 2
+#define COL_IDX_LENGTH 3
+#define COL_IDX_PRECISION 4
+#define COL_IDX_NOTNULL 5
+#define COL_IDX_DEFAULT 6
+#define COL_IDX_AUTOINCREMENT 7
 
 class SqlColumn
 {
@@ -74,6 +82,7 @@ public:
 
   INJECT(LKnowledgeBase*, kb)
 
+  void setTypeProvider(TypeProvider* provider);
   void addSqlColumn(SqlColumn col, bool init = false);
   SqlColumn columnByIndex(int idx);
   int rowByName(const QString name);
@@ -95,10 +104,11 @@ public:
   virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
-public slots:
-  //  virtual bool submit();
 protected:
+  TypeProvider* _typeProvider;
   qlonglong getNextId();
+private slots:
+  void onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 private:
   qlonglong _idGen = 1;
   QList<qlonglong> _idxList;
@@ -106,6 +116,7 @@ private:
   QHash<qlonglong, SqlColumn> _changes;
   QColor _modifiedColor = Qt::green;
   QColor _errorColor = Qt::red;
+  bool hasLength(int row) const;
 };
 
 #endif // SQLCOLUMNMODEL_H

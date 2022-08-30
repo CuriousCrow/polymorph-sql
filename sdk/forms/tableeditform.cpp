@@ -7,6 +7,7 @@
 #include "foreignkeyform.h"
 #include "uniqueconstrainteditform.h"
 #include "checkconstrainteditform.h"
+#include "models/sqlcolumnmodel.h"
 
 
 #define CHK_PREFIX "chk_"
@@ -52,6 +53,7 @@ void TableEditForm::objectToForm()
   _typeProvider->setItemObject(_objItem);
   _colTypeDelegate->setOptions(_typeProvider->typeNames());
 
+  tableItem->columnsModel()->setTypeProvider(_typeProvider);
   ui->tableView->setModel(tableItem->columnsModel());
 
   tableItem->reloadConstraintsModel();

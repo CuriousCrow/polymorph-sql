@@ -4,9 +4,13 @@
 
 SqlColumnModel::SqlColumnModel(QObject *parent) : QAbstractTableModel(parent)
 {
-
+  connect(this, &SqlColumnModel::dataChanged, this, &SqlColumnModel::onDataChanged);
 }
 
+void SqlColumnModel::setTypeProvider(TypeProvider *provider)
+{
+  _typeProvider = provider;
+}
 
 void SqlColumnModel::addSqlColumn(SqlColumn col, bool init)
 {
@@ -193,34 +197,35 @@ bool SqlColumnModel::setData(const QModelIndex &index, const QVariant &value, in
     else
       col = _dataHash[colId];
     switch (index.column()) {
-    case 0:
+    case COL_IDX_PK:
       col.setIsPrimary(value.toBool());
       break;
-    case 1:
+    case COL_IDX_NAME:
       col.setName(value.toString());
       break;
-    case 2:
+    case COL_IDX_TYPE:
       col.setType(value.toString());
       break;
-    case 3:
+    case COL_IDX_LENGTH:
       col.setLength(value.toInt());
       break;
-    case 4:
+    case COL_IDX_PRECISION:
       col.setPrecision(value.toInt());
       break;
-    case 5:
+    case COL_IDX_NOTNULL:
       col.setNotNull(value.toBool());
       break;
-    case 6:
+    case COL_IDX_DEFAULT:
       col.setDefaultValue(value);
       break;
-    case 7:
+    case COL_IDX_AUTOINCREMENT:
       col.setAutoIncrement(value.toBool());
       break;
     default:
       return false;
     }
     _changes.insert(colId, col);
+    emit dataChanged(index, index);
     return true;
   }
   return true;
@@ -233,21 +238,21 @@ QVariant SqlColumnModel::headerData(int section, Qt::Orientation orientation, in
 
   if (orientation == Qt::Horizontal) {
     switch (section) {
-    case 0:
+    case COL_IDX_PK:
       return tr("Primary key");
-    case 1:
+    case COL_IDX_NAME:
       return tr("Column name");
-    case 2:
+    case COL_IDX_TYPE:
       return tr("Type");
-    case 3:
+    case COL_IDX_LENGTH:
       return tr("Length");
-    case 4:
+    case COL_IDX_PRECISION:
       return tr("Precision");
-    case 5:
+    case COL_IDX_NOTNULL:
       return tr("Not null");
-    case 6:
+    case COL_IDX_DEFAULT:
       return tr("Default value");
-    case 7:
+    case COL_IDX_AUTOINCREMENT:
       return tr("Autoincrement");
     default:
       return QVariant();
@@ -292,12 +297,33 @@ Qt::ItemFlags SqlColumnModel::flags(const QModelIndex &index) const
 {
   if (!index.isValid())
     return Qt::NoItemFlags;
+  if (index.column() == COL_IDX_LENGTH && !hasLength(index.row())) {
+    return Qt::NoItemFlags;
+  }
   return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
 qlonglong SqlColumnModel::getNextId()
 {
   return ++_idGen;
+}
+
+void SqlColumnModel::onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
+{
+  Q_UNUSED(bottomRight)
+  Q_UNUSED(roles)
+
+  if (topLeft.column() == COL_IDX_TYPE) {
+    if (!hasLength(topLeft.row()))
+      setData(index(topLeft.row(), COL_IDX_LENGTH), QVariant(), Qt::EditRole);
+  }
+}
+
+bool SqlColumnModel::hasLength(int row) const
+{
+  QString typeName = index(row, COL_IDX_TYPE).data().toString();
+  DBType* type = _typeProvider->type(typeName);
+  return type->hasLength();
 }
 
 SqlColumn::SqlColumn()
@@ -412,21 +438,21 @@ void SqlColumn::setAutoIncrement(bool autoIncrement)
 QVariant SqlColumn::valueByIndex(int idx)
 {
   switch (idx) {
-  case 0:
+  case COL_IDX_PK:
     return this->isPrimary();
-  case 1:
+  case COL_IDX_NAME:
     return this->name();
-  case 2:
+  case COL_IDX_TYPE:
     return this->type();
-  case 3:
+  case COL_IDX_LENGTH:
     return this->length() == 0 ? QVariant() : this->length();
-  case 4:
+  case COL_IDX_PRECISION:
     return this->precision() == 0 ? QVariant() : this->precision();
-  case 5:
+  case COL_IDX_NOTNULL:
     return this->notNull();
-  case 6:
+  case COL_IDX_DEFAULT:
     return this->defaultValue();
-  case 7:
+  case COL_IDX_AUTOINCREMENT:
     return this->autoIncrement();
   default:
     return QVariant();
