@@ -1,5 +1,6 @@
 #include "sqlcolumnmodel.h"
 #include <QDebug>
+#include "objects/appconst.h"
 
 SqlColumnModel::SqlColumnModel(QObject *parent) : QAbstractTableModel(parent)
 {
@@ -301,117 +302,111 @@ qlonglong SqlColumnModel::getNextId()
 
 SqlColumn::SqlColumn()
 {
-  _type = NoType;
-  //
-  _precision = 0;
-  _length = 0;
-  _notNull = false;
-  _isPrimary = false;
-  _autoIncrement = false;
+  setName("");
+  setType(NoType);
+  setDefaultValue(QVariant());
+  setLength(0);
+  setPrecision(0);
+  setNotNull(false);
+  setIsPrimary(false);
+  setAutoIncrement(false);
 }
 
-SqlColumn::SqlColumn(QString name, QString type)
+SqlColumn::SqlColumn(QString name, QString type) : SqlColumn()
 {
-  _name = name;
-  _type = type;
-  //
-  _precision = 0;
-  _length = 0;
-  _notNull = false;
-  _isPrimary = false;
-  _autoIncrement = false;
+  setName(name);
+  setType(type);
 }
 
 SqlColumn::SqlColumn(const SqlColumn &other)
 {
-  this->_name = other.name();
-  this->_type = other.type();
-  this->_length = other.length();
-  this->_precision = other.precision();
-  this->_isPrimary = other.isPrimary();
-  this->_notNull = other.notNull();
-  this->_defaultValue = other.defaultValue();
-  this->_autoIncrement = other.autoIncrement();
+  setName(other.name());
+  setType(other.type());
+  setPrecision(other.precision());
+  setLength(other.length());
+  setNotNull(other.notNull());
+  setIsPrimary(other.isPrimary());
+  setAutoIncrement(other.autoIncrement());
 }
 
 QString SqlColumn::name() const
 {
-  return _name;
+  return _colData.value(PRM_NAME).toString();
 }
 
 void SqlColumn::setName(const QString &name)
 {
-  _name = name;
+  _colData.insert(F_NAME, name);
 }
 
 QString SqlColumn::type() const
 {
-  return _type;
+  return _colData.value(F_TYPE).toString();
 }
 
 void SqlColumn::setType(const QString &type)
 {
-  _type = type;
+  _colData.insert(F_TYPE, type);
 }
 
 int SqlColumn::length() const
 {
-  return _length;
+  return _colData.value(F_LENGTH).toInt();
 }
 
 void SqlColumn::setLength(int length)
 {
-  _length = length;
+  _colData.insert(F_LENGTH, length);
 }
 
 int SqlColumn::precision() const
 {
-  return _precision;
+  return _colData.value(F_PRECISION).toInt();
 }
 
 void SqlColumn::setPrecision(int precision)
 {
-  _precision = precision;
+  _colData.insert(F_PRECISION, precision);
 }
 
 bool SqlColumn::notNull() const
 {
-  return _notNull;
+  return _colData.value(F_NOT_NULL).toBool();
 }
 
 void SqlColumn::setNotNull(bool notNull)
 {
-  _notNull = notNull;
+  _colData.insert(F_NOT_NULL, notNull);
 }
 
 bool SqlColumn::isPrimary() const
 {
-  return _isPrimary;
+  return _colData.value(F_IS_PRIMARY).toBool();
 }
 
 void SqlColumn::setIsPrimary(bool isPrimary)
 {
-  _isPrimary = isPrimary;
+  _colData.insert(F_IS_PRIMARY, isPrimary);
 }
 
 QVariant SqlColumn::defaultValue() const
 {
-  return _defaultValue;
+  return _colData.value(F_DEFAULT);
 }
 
 void SqlColumn::setDefaultValue(const QVariant &defaultValue)
 {
-  _defaultValue = defaultValue;
+  _colData.insert(F_DEFAULT, defaultValue);
 }
 
 bool SqlColumn::autoIncrement() const
 {
-  return _autoIncrement;
+  return _colData.value(F_AUTOINCREMENT).toBool();
 }
 
 void SqlColumn::setAutoIncrement(bool autoIncrement)
 {
-  _autoIncrement = autoIncrement;
+  _colData.insert(F_AUTOINCREMENT, autoIncrement);
 }
 
 QVariant SqlColumn::valueByIndex(int idx)
@@ -424,9 +419,9 @@ QVariant SqlColumn::valueByIndex(int idx)
   case 2:
     return this->type();
   case 3:
-    return this->length();
+    return this->length() == 0 ? QVariant() : this->length();
   case 4:
-    return this->precision();
+    return this->precision() == 0 ? QVariant() : this->precision();
   case 5:
     return this->notNull();
   case 6:

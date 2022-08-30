@@ -158,7 +158,7 @@ void PostgresTable::reloadColumnsModel()
       "(select tc.constraint_name, cu.column_name "
       "from INFORMATION_SCHEMA.table_constraints tc "
       "left join information_schema.key_column_usage cu on tc.constraint_name=cu.constraint_name "
-      "where tc.table_name='person' and tc.constraint_type='PRIMARY KEY') as pk on t.column_name=pk.column_name "
+      "where tc.table_name='#caption#' and tc.constraint_type='PRIMARY KEY') as pk on t.column_name=pk.column_name "
       "WHERE t.table_catalog='#databaseName#' AND t.table_name='#caption#'";
   QString preparedSql = fillSqlPatternWithFields(sql);
   QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());

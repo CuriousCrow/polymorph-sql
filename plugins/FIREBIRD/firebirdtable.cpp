@@ -22,8 +22,21 @@ void FirebirdTable::reloadColumnsModel()
   if (connectionName().isEmpty())
     return;
   _columnsModel->clear();
-  QString sql = "SELECT r.RDB$FIELD_NAME AS ccaption, r.RDB$DESCRIPTION AS cdescription, r.RDB$DEFAULT_VALUE AS cdefault, r.RDB$NULL_FLAG AS cnot_null, "
-                "f.RDB$FIELD_LENGTH AS clength, f.RDB$FIELD_PRECISION AS cprecision, f.RDB$FIELD_SCALE AS cscale, "
+  QStringList primaryColumns;
+
+  QString sql =
+      "select trim(i.RDB$FIELD_NAME) "
+      "from RDB$RELATION_CONSTRAINTS rc "
+      "left join RDB$INDEX_SEGMENTS i on rc.RDB$INDEX_NAME = i.RDB$INDEX_NAME "
+      "where rc.RDB$CONSTRAINT_TYPE = 'PRIMARY KEY' and rc.RDB$RELATION_NAME = '#caption#'";
+  QString preparedSql = fillSqlPatternWithFields(sql);
+  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
+  while (query.next()) {
+    primaryColumns.append(query.value(0).toString());
+  }
+
+  sql = "SELECT r.RDB$FIELD_NAME AS ccaption, r.RDB$DESCRIPTION AS cdescription, r.RDB$DEFAULT_VALUE AS cdefault, r.RDB$NULL_FLAG AS cnot_null, "
+                "f.RDB$CHARACTER_LENGTH AS clength, f.RDB$FIELD_PRECISION AS cprecision, f.RDB$FIELD_SCALE AS cscale, "
                 "CASE f.RDB$FIELD_TYPE "
                 "WHEN 261 THEN 'BLOB' "
                 "WHEN 14 THEN 'CHAR' "
@@ -42,14 +55,14 @@ void FirebirdTable::reloadColumnsModel()
                 "ELSE 'UNKNOWN' END AS ctype "
                 "FROM RDB$RELATION_FIELDS r "
                 "LEFT JOIN RDB$FIELDS f ON r.RDB$FIELD_SOURCE = f.RDB$FIELD_NAME "
-                "WHERE r.RDB$RELATION_NAME='#caption#' ORDER BY r.RDB$FIELD_POSITION;";
-  QString preparedSql = fillSqlPatternWithFields(sql);
-  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
+                "WHERE r.RDB$RELATION_NAME='#caption#' ORDER BY r.RDB$FIELD_POSITION";
+  preparedSql = fillSqlPatternWithFields(sql);
+  query = SqlQueryHelper::execSql(preparedSql, connectionName());
   while (query.next()) {
-    SqlColumn col(query.value("ccaption").toString().trimmed(),
-                  query.value("ctype").toString().trimmed());
+    QString name = query.value("ccaption").toString().trimmed();
+    SqlColumn col(name, query.value("ctype").toString().trimmed());
     col.setDefaultValue(query.value("cdefault"));
-    col.setIsPrimary(false);
+    col.setIsPrimary(primaryColumns.contains(name));
     col.setLength(query.value("clength").toInt());
     col.setPrecision(query.value("cprecision").toInt());
     col.setNotNull(query.value("cnot_null").toBool());

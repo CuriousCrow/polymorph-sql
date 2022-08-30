@@ -45,14 +45,7 @@ public:
   bool operator ==(const SqlColumn &other);
 
 private:
-  QString _name;
-  QString _type;
-  int _length;
-  int _precision;
-  bool _notNull;
-  bool _isPrimary;
-  QVariant _defaultValue;
-  bool _autoIncrement;
+  QVariantHash _colData;
 };
 
 inline uint qHash(const SqlColumn &key) {
