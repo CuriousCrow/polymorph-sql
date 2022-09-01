@@ -25,56 +25,55 @@ DESTDIR = ../../../build-DemalexGroup/$${BUILDTYPE}/plugins
 include(../../sdk/sdk.pri)
 
 SOURCES += \
-    firebirddatabase.cpp \
-    firebirdfolderitem.cpp \
-    firebirdplugin.cpp \
-    firebirdprocedure.cpp \
-    firebirdprocedureform.cpp \
-    firebirdsequence.cpp \
-    firebirdtable.cpp \
-    firebirdprimarykey.cpp \
-    firebirdforeignkey.cpp \
-    firebirdtriggerform.cpp \
-    firebirduniqueconstraint.cpp \
-    firebirdcheckconstraint.cpp \
-    firebirdutils.cpp \
-    firebirdview.cpp \
-    firebirdtrigger.cpp \
-    forms/firebirddomainform.cpp \
-    objects/firebirddomain.cpp \
-    firebirdtypeprovider.cpp
-
+  forms/firebirddomainform.cpp \
+  forms/firebirdprocedureform.cpp \
+  forms/firebirdtriggerform.cpp \
+  objects/firebirddatabase.cpp \
+  objects/firebirdfolderitem.cpp \
+  objects/firebirdprocedure.cpp \
+  objects/firebirdsequence.cpp \
+  objects/firebirdtable.cpp \
+  objects/firebirdprimarykey.cpp \
+  objects/firebirdforeignkey.cpp \
+  objects/firebirduniqueconstraint.cpp \
+  objects/firebirdcheckconstraint.cpp \
+  objects/firebirdview.cpp \
+  objects/firebirdtrigger.cpp \
+  objects/firebirddomain.cpp \
+  firebirdplugin.cpp \
+  firebirdutils.cpp \
+  firebirdtypeprovider.cpp
 
 HEADERS  += \
-    firebirddatabase.h \
-    firebirdfolderitem.h \
-    firebirdplugin.h \
-    firebirdprocedure.h \
-    firebirdprocedureform.h \
-    firebirdsequence.h \
-    firebirdtable.h \
-    firebirdprimarykey.h \
-    firebirdforeignkey.h \
-    firebirdtriggerform.h \
-    firebirduniqueconstraint.h \
-    firebirdcheckconstraint.h \
-    firebirdutils.h \
-    firebirdview.h \
-    firebirdtrigger.h \
-    forms/firebirddomainform.h \
-    objects/firebirddomain.h \
-    firebirdtypeprovider.h
+  forms/firebirdprocedureform.h \
+  forms/firebirdtriggerform.h \
+  forms/firebirddomainform.h \
+  objects/firebirddomain.h \
+  objects/firebirddatabase.h \
+  objects/firebirdfolderitem.h \
+  objects/firebirdprocedure.h \
+  objects/firebirdsequence.h \
+  objects/firebirdtable.h \
+  objects/firebirdprimarykey.h \
+  objects/firebirdforeignkey.h \
+  objects/firebirduniqueconstraint.h \
+  objects/firebirdcheckconstraint.h \
+  objects/firebirdview.h \
+  objects/firebirdtrigger.h \
+  firebirdplugin.h \
+  firebirdutils.h \
+  firebirdtypeprovider.h
 
 FORMS += \
-  firebirdprocedureform.ui \
-  firebirdtriggerform.ui \
+  forms/firebirdprocedureform.ui \
+  forms/firebirdtriggerform.ui \
   forms/firebirddomainform.ui
 
 TRANSLATIONS += \
-    translations/firebirdplugin_ru.ts
+  translations/firebirdplugin_ru.ts
 
 DISTFILES += \
-    FirebirdPlugin.json
+  FirebirdPlugin.json
 
 # Default rules for deployment.
 unix {

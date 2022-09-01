@@ -4,54 +4,51 @@ DEPENDPATH += $$PWD
 QT += sql widgets
 
 SOURCES += \
-    $$PWD/firebirdcheckconstraint.cpp \
-    $$PWD/firebirddatabase.cpp \
-    $$PWD/firebirdfolderitem.cpp \
-    $$PWD/firebirdforeignkey.cpp \
-    $$PWD/firebirdplugin.cpp \
-    $$PWD/firebirdprimarykey.cpp \
-    $$PWD/firebirdtable.cpp \
-    $$PWD/firebirdsequence.cpp \
-    $$PWD/firebirdtrigger.cpp \
-    $$PWD/firebirdtypeprovider.cpp \
-    $$PWD/firebirduniqueconstraint.cpp \
-    $$PWD/firebirdview.cpp \
-    $$PWD/firebirdtriggerform.cpp \
-    $$PWD/firebirdutils.cpp \
-    $$PWD/firebirdprocedure.cpp \
-    $$PWD/firebirdprocedureform.cpp \
-    $$PWD/objects/firebirddomain.cpp \
-    $$PWD/forms/firebirddomainform.cpp
-
+  $$PWD/objects/firebirdcheckconstraint.cpp \
+  $$PWD/objects/firebirddatabase.cpp \
+  $$PWD/objects/firebirdfolderitem.cpp \
+  $$PWD/objects/firebirdforeignkey.cpp \
+  $$PWD/objects/firebirdprimarykey.cpp \
+  $$PWD/objects/firebirdtable.cpp \
+  $$PWD/objects/firebirdsequence.cpp \
+  $$PWD/objects/firebirdtrigger.cpp \
+  $$PWD/objects/firebirduniqueconstraint.cpp \
+  $$PWD/objects/firebirdview.cpp \
+  $$PWD/objects/firebirdprocedure.cpp \
+  $$PWD/objects/firebirddomain.cpp \
+  $$PWD/forms/firebirdtriggerform.cpp \
+  $$PWD/forms/firebirdprocedureform.cpp \
+  $$PWD/forms/firebirddomainform.cpp \
+  $$PWD/firebirdplugin.cpp \
+  $$PWD/firebirdtypeprovider.cpp \
+  $$PWD/firebirdutils.cpp
 
 HEADERS  += \
-    $$PWD/firebirdcheckconstraint.h \
-    $$PWD/firebirdconst.h \
-    $$PWD/firebirddatabase.h \
-    $$PWD/firebirdfolderitem.h \
-    $$PWD/firebirdforeignkey.h \
-    $$PWD/firebirdplugin.h \
-    $$PWD/firebirdprimarykey.h \
-    $$PWD/firebirdtable.h \
-    $$PWD/firebirdsequence.h \
-    $$PWD/firebirdtrigger.h \
-    $$PWD/firebirdtypeprovider.h \
-    $$PWD/firebirduniqueconstraint.h \
-    $$PWD/firebirdview.h \
-    $$PWD/firebirdtriggerform.h \
-    $$PWD/firebirdutils.h \
-    $$PWD/firebirdprocedure.h \
-    $$PWD/firebirdprocedureform.h \
-    $$PWD/objects/firebirddomain.h \
-    $$PWD/forms/firebirddomainform.h
-
+  $$PWD/objects/firebirddatabase.h \
+  $$PWD/objects/firebirdfolderitem.h \
+  $$PWD/objects/firebirdforeignkey.h \
+  $$PWD/objects/firebirdprimarykey.h \
+  $$PWD/objects/firebirdtable.h \
+  $$PWD/objects/firebirdsequence.h \
+  $$PWD/objects/firebirdtrigger.h \
+  $$PWD/objects/firebirdprocedure.h \
+  $$PWD/objects/firebirduniqueconstraint.h \
+  $$PWD/objects/firebirdview.h \
+  $$PWD/objects/firebirdcheckconstraint.h \
+  $$PWD/objects/firebirddomain.h \
+  $$PWD/forms/firebirdtriggerform.h \
+  $$PWD/forms/firebirdprocedureform.h \
+  $$PWD/forms/firebirddomainform.h \
+  $$PWD/firebirdutils.h \
+  $$PWD/firebirdconst.h \
+  $$PWD/firebirdplugin.h \
+  $$PWD/firebirdtypeprovider.h
 
 FORMS    += \
-    $$PWD/firebirdtriggerform.ui \
-    $$PWD/firebirdprocedureform.ui \
-    $$PWD/forms/firebirddomainform.ui
-
+  $$PWD/forms/firebirdtriggerform.ui \
+  $$PWD/forms/firebirdprocedureform.ui \
+  $$PWD/forms/firebirddomainform.ui
 
 TRANSLATIONS += \
-    $$PWD/translations/firebirdplugin_ru.ts
+  $$PWD/translations/firebirdplugin_ru.ts
 

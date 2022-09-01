@@ -3,7 +3,7 @@
 
 #include "forms/abstractdatabaseitemform.h"
 #include "tools/sqleditorsupport.h"
-#include "firebirdprocedure.h"
+#include "objects/firebirdprocedure.h"
 #include "firebirdtypeprovider.h"
 #include "models/comboboxitemdelegate.h"
 
