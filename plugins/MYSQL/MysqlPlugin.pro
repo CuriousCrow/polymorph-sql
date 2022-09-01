@@ -25,44 +25,43 @@ DESTDIR = ../../../build-DemalexGroup/$${BUILDTYPE}/plugins
 include(../../sdk/sdk.pri)
 
 SOURCES += \
-    mysqldatabase.cpp \
-    mysqlfolderitem.cpp \
-    mysqlplugin.cpp \
-    mysqlprocedureeditform.cpp \
-    mysqlsequence.cpp \
-    mysqltable.cpp \
-    mysqltriggerform.cpp \
-    mysqlview.cpp \
-    mysqlprimarykey.cpp \
-    mysqlforeignkey.cpp \
-    mysqlcheckconstraint.cpp \
-    mysqluniqueconstraint.cpp \
-    mysqlprocedure.cpp \
-    mysqltrigger.cpp
-
+  objects/mysqldatabase.cpp \
+  objects/mysqlfolderitem.cpp \
+  objects/mysqlview.cpp \
+  objects/mysqlprimarykey.cpp \
+  objects/mysqlforeignkey.cpp \
+  objects/mysqlcheckconstraint.cpp \
+  objects/mysqluniqueconstraint.cpp \
+  objects/mysqlprocedure.cpp \
+  objects/mysqltrigger.cpp \
+  objects/mysqlsequence.cpp \
+  objects/mysqltable.cpp \
+  forms/mysqltriggerform.cpp \
+  forms/mysqlprocedureeditform.cpp \
+  mysqlplugin.cpp
 
 HEADERS  += \
-    mysqldatabase.h \
-    mysqlfolderitem.h \
-    mysqlplugin.h \
-    mysqlprocedureeditform.h \
-    mysqlsequence.h \
-    mysqltable.h \
-    mysqltriggerform.h \
-    mysqlview.h \
-    mysqlprimarykey.h \
-    mysqlforeignkey.h \
-    mysqluniqueconstraint.h \
-    mysqlcheckconstraint.h \
-    mysqlprocedure.h \
-    mysqltrigger.h
+  objects/mysqldatabase.h \
+  objects/mysqlfolderitem.h \
+  objects/mysqlsequence.h \
+  objects/mysqltable.h \
+  objects/mysqlview.h \
+  objects/mysqlprimarykey.h \
+  objects/mysqlforeignkey.h \
+  objects/mysqluniqueconstraint.h \
+  objects/mysqlcheckconstraint.h \
+  objects/mysqlprocedure.h \
+  objects/mysqltrigger.h \
+  forms/mysqltriggerform.h \
+  forms/mysqlprocedureeditform.h \
+  mysqlplugin.h
 
 FORMS    += \
-    mysqlprocedureeditform.ui \
-    mysqltriggerform.ui
+  forms/mysqlprocedureeditform.ui \
+  forms/mysqltriggerform.ui
 
 TRANSLATIONS += \
-    translations/mysqlplugin_ru.ts
+  translations/mysqlplugin_ru.ts
 
 DISTFILES += MysqlPlugin.json
 

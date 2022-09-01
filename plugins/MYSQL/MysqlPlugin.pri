@@ -4,42 +4,42 @@ DEPENDPATH += $$PWD
 QT += sql widgets
 
 SOURCES += \
-    $$PWD/mysqldatabase.cpp \
-    $$PWD/mysqlfolderitem.cpp \
-    $$PWD/mysqlforeignkey.cpp \
-    $$PWD/mysqlplugin.cpp \
-    $$PWD/mysqlprimarykey.cpp \
-    $$PWD/mysqlprocedure.cpp \
-    $$PWD/mysqltable.cpp \
-    $$PWD/mysqlsequence.cpp \
-    $$PWD/mysqltrigger.cpp \
-    $$PWD/mysqluniqueconstraint.cpp \
-    $$PWD/mysqlview.cpp \
-    $$PWD/mysqlcheckconstraint.cpp \
-    $$PWD/mysqlprocedureeditform.cpp \
-    $$PWD/mysqltriggerform.cpp
+  $$PWD/objects/mysqlprimarykey.cpp \
+  $$PWD/objects/mysqlprocedure.cpp \
+  $$PWD/objects/mysqltable.cpp \
+  $$PWD/objects/mysqlsequence.cpp \
+  $$PWD/objects/mysqltrigger.cpp \
+  $$PWD/objects/mysqluniqueconstraint.cpp \
+  $$PWD/objects/mysqlview.cpp \
+  $$PWD/objects/mysqlcheckconstraint.cpp \
+  $$PWD/objects/mysqldatabase.cpp \
+  $$PWD/objects/mysqlfolderitem.cpp \
+  $$PWD/objects/mysqlforeignkey.cpp \
+  $$PWD/mysqlplugin.cpp \
+  $$PWD/forms/mysqlprocedureeditform.cpp \
+  $$PWD/forms/mysqltriggerform.cpp
 
 
 HEADERS  += \
-    $$PWD/mysqldatabase.h \
-    $$PWD/mysqlfolderitem.h \
-    $$PWD/mysqlforeignkey.h \
-    $$PWD/mysqlplugin.h \
-    $$PWD/mysqlprimarykey.h \
-    $$PWD/mysqlprocedure.h \
-    $$PWD/mysqltable.h \
-    $$PWD/mysqlsequence.h \
-    $$PWD/mysqltrigger.h \
-    $$PWD/mysqluniqueconstraint.h \
-    $$PWD/mysqlview.h \
-    $$PWD/mysqlcheckconstraint.h \
-    $$PWD/mysqlprocedureeditform.h \
-    $$PWD/mysqltriggerform.h
+  $$PWD/objects/mysqldatabase.h \
+  $$PWD/objects/mysqlfolderitem.h \
+  $$PWD/objects/mysqlforeignkey.h \
+  $$PWD/objects/mysqlprimarykey.h \
+  $$PWD/objects/mysqlprocedure.h \
+  $$PWD/objects/mysqltable.h \
+  $$PWD/objects/mysqlsequence.h \
+  $$PWD/objects/mysqltrigger.h \
+  $$PWD/objects/mysqluniqueconstraint.h \
+  $$PWD/objects/mysqlview.h \
+  $$PWD/objects/mysqlcheckconstraint.h \
+  $$PWD/mysqlplugin.h \
+  $$PWD/forms/mysqlprocedureeditform.h \
+  $$PWD/forms/mysqltriggerform.h
 
 
 FORMS    += \
-    $$PWD/mysqlprocedureeditform.ui \
-    $$PWD/mysqltriggerform.ui
+  $$PWD/forms/mysqlprocedureeditform.ui \
+  $$PWD/forms/mysqltriggerform.ui
 
 TRANSLATIONS += \
-    $$PWD/translations/mysqlplugin_ru.ts
+  $$PWD/translations/mysqlplugin_ru.ts
