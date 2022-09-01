@@ -25,33 +25,33 @@ DESTDIR = ../../../build-DemalexGroup/$${BUILDTYPE}/plugins
 include(../../sdk/sdk.pri)
 
 SOURCES += \
-    postgrescheckconstraint.cpp \
-    postgresdatabase.cpp \
-    postgresfolderitem.cpp \
-    postgresforeignkey.cpp \
-    postgresfunctionitem.cpp \
-    postgresplugin.cpp \
-    postgresprimarykey.cpp \
-    postgressequence.cpp \
-    postgrestable.cpp \
-    postgrestriggeritem.cpp \
-    postgresuniqueconstraint.cpp \
-    postgresviewitem.cpp
+  objects/postgrescheckconstraint.cpp \
+  objects/postgresdatabase.cpp \
+  objects/postgresfolderitem.cpp \
+  objects/postgresforeignkey.cpp \
+  objects/postgresfunctionitem.cpp \
+  objects/postgresprimarykey.cpp \
+  objects/postgressequence.cpp \
+  objects/postgrestable.cpp \
+  objects/postgrestriggeritem.cpp \
+  objects/postgresuniqueconstraint.cpp \
+  objects/postgresviewitem.cpp \
+  postgresplugin.cpp
 
 
 HEADERS  += \
-    postgrescheckconstraint.h \
-    postgresdatabase.h \
-    postgresfolderitem.h \
-    postgresforeignkey.h \
-    postgresfunctionitem.h \
-    postgresplugin.h \
-    postgresprimarykey.h \
-    postgressequence.h \
-    postgrestable.h \
-    postgrestriggeritem.h \
-    postgresuniqueconstraint.h \
-    postgresviewitem.h
+  objects/postgrescheckconstraint.h \
+  objects/postgresdatabase.h \
+  objects/postgresfolderitem.h \
+  objects/postgresforeignkey.h \
+  objects/postgresfunctionitem.h \
+  objects/postgresprimarykey.h \
+  objects/postgressequence.h \
+  objects/postgrestable.h \
+  objects/postgrestriggeritem.h \
+  objects/postgresuniqueconstraint.h \
+  objects/postgresviewitem.h \
+  postgresplugin.h
 
 
 #FORMS    += \
