@@ -5,18 +5,18 @@ QT += sql widgets
 
 
 SOURCES += \
-    $$PWD/sqlitedatabase.cpp \
-    $$PWD/sqlitefolderitem.cpp \
-    $$PWD/sqliteplugin.cpp \
-    $$PWD/sqlitetable.cpp \
-    $$PWD/sqliteviewitem.cpp
+  $$PWD/objects/sqlitedatabase.cpp \
+  $$PWD/objects/sqlitefolderitem.cpp \
+  $$PWD/objects/sqlitetable.cpp \
+  $$PWD/objects/sqliteviewitem.cpp \
+  $$PWD/sqliteplugin.cpp
 
 HEADERS  += \
-    $$PWD/sqlitedatabase.h \
-    $$PWD/sqlitefolderitem.h \
-    $$PWD/sqliteplugin.h \
-    $$PWD/sqlitetable.h \
-    $$PWD/sqliteviewitem.h
+  $$PWD/objects/sqlitedatabase.h \
+  $$PWD/objects/sqlitefolderitem.h \
+  $$PWD/objects/sqlitetable.h \
+  $$PWD/objects/sqliteviewitem.h \
+  $$PWD/sqliteplugin.h
 
 #FORMS    += \
 

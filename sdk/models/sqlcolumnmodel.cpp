@@ -323,6 +323,8 @@ bool SqlColumnModel::hasLength(int row) const
 {
   QString typeName = index(row, COL_IDX_TYPE).data().toString();
   DBType* type = _typeProvider->type(typeName);
+  if (!type)
+    return false;
   return type->hasLength();
 }
 

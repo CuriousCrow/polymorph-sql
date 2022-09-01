@@ -25,25 +25,25 @@ DESTDIR = ../../../build-DemalexGroup/$${BUILDTYPE}/plugins
 include(../../sdk/sdk.pri)
 
 SOURCES += \
-    sqlitedatabase.cpp \
-    sqlitefolderitem.cpp \
-    sqliteplugin.cpp \
-    sqlitetable.cpp \
-    sqliteviewitem.cpp
+  objects/sqlitedatabase.cpp \
+  objects/sqlitefolderitem.cpp \
+  objects/sqlitetable.cpp \
+  objects/sqliteviewitem.cpp \
+  sqliteplugin.cpp
 
 HEADERS  += \
-    sqlitedatabase.h \
-    sqlitefolderitem.h \
-    sqliteplugin.h \
-    sqlitetable.h \
-    sqliteviewitem.h
+  objects/sqlitedatabase.h \
+  objects/sqlitefolderitem.h \
+  objects/sqlitetable.h \
+  objects/sqliteviewitem.h \
+  sqliteplugin.h
 
 #FORMS    += \
 
 DISTFILES += SqlitePlugin.json
 
 TRANSLATIONS += \
-    translations/sqliteplugin_ru.ts
+  translations/sqliteplugin_ru.ts
 
 # Default rules for deployment.
 unix {

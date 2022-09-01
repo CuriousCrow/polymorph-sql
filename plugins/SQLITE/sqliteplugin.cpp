@@ -1,9 +1,9 @@
 #include "sqliteplugin.h"
 #include "objects/appconst.h"
-#include "sqlitedatabase.h"
-#include "sqlitetable.h"
-#include "sqliteviewitem.h"
-#include "sqlitefolderitem.h"
+#include "objects/sqlitedatabase.h"
+#include "objects/sqlitetable.h"
+#include "objects/sqliteviewitem.h"
+#include "objects/sqlitefolderitem.h"
 #include "objects/dbsequenceitem.h"
 
 
