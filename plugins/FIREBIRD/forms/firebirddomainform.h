@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "forms/abstractdatabaseitemform.h"
+#include "firebirdtypeprovider.h"
 
 namespace Ui {
 class FirebirdDomainForm;
@@ -16,6 +17,8 @@ public:
   Q_INVOKABLE FirebirdDomainForm();
   ~FirebirdDomainForm();
 
+  INJECT_AS(FirebirdTypeProvider*, typeProvider, firebirdTypeProvider)
+
 private:
   Ui::FirebirdDomainForm *ui;
 
@@ -26,6 +29,7 @@ public:
 private slots:
   void on_btnCancel_clicked();
   void on_btnApply_clicked();
+  void on_cmbType_currentTextChanged(const QString &type);
 };
 
 #endif // FIREBIRDDOMAINFORM_H

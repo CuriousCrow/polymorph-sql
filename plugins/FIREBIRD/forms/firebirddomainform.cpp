@@ -7,11 +7,6 @@ FirebirdDomainForm::FirebirdDomainForm() :
   ui(new Ui::FirebirdDomainForm)
 {
   ui->setupUi(this);
-
-  QStringList types;
-  types << "BLOB" << "CHAR" << "CSTRING" << "DFLOAT" << "DOUBLE" << "FLOAT" << "BIGINT"
-        << "INTEGER" << "QUAD" << "SMALLINT" << "DATE" << "TIME" << "TIMESTAMP" << "VARCHAR";
-  ui->cmbType->addItems(types);
 }
 
 FirebirdDomainForm::~FirebirdDomainForm()
@@ -21,6 +16,11 @@ FirebirdDomainForm::~FirebirdDomainForm()
 
 void FirebirdDomainForm::objectToForm()
 {
+  _typeProvider->setItemObject(_objItem);
+
+  ui->cmbType->clear();
+  ui->cmbType->addItems(_typeProvider->typeNames());
+
   ui->edtName->setText(_objItem->fieldValue(F_CAPTION).toString());
   ui->edtLength->setValue(_objItem->fieldValue(F_LENGTH).toInt());
   ui->edtDefault->setText(_objItem->fieldValue(F_DEFAULT).toString());
@@ -46,4 +46,13 @@ void FirebirdDomainForm::on_btnCancel_clicked()
 void FirebirdDomainForm::on_btnApply_clicked()
 {
   tryUserAction();
+}
+
+void FirebirdDomainForm::on_cmbType_currentTextChanged(const QString &type)
+{
+  DBType* typeInfo = _typeProvider->type(type);
+  if (!typeInfo->hasLength()) {
+    ui->edtLength->clear();
+  }
+  ui->edtLength->setEnabled(typeInfo->hasLength());
 }

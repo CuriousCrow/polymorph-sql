@@ -3,6 +3,7 @@
 
 #include <QString>
 
+/** Utility functions for Firebird plugin */
 class Utils
 {
 private:

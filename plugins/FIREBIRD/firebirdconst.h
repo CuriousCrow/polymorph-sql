@@ -1,6 +1,8 @@
 #ifndef FIREBIRDCONST_H
 #define FIREBIRDCONST_H
 
+/** Constants for Firebird plugin */
+
 #define B_FIREBIRD_DATABASE "firebirdDatabase"
 #define B_FIREBIRD_FOLDER "firebirdFolder"
 #define B_FIREBIRD_TABLE "firebirdTable"
