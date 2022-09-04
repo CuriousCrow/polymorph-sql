@@ -51,6 +51,8 @@ void FirebirdDomainForm::on_btnApply_clicked()
 void FirebirdDomainForm::on_cmbType_currentTextChanged(const QString &type)
 {
   DBType* typeInfo = _typeProvider->type(type);
+  if (!typeInfo)
+    return;
   if (!typeInfo->hasLength()) {
     ui->edtLength->clear();
   }
