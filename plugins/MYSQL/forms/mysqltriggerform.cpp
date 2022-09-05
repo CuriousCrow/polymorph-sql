@@ -75,5 +75,5 @@ void MysqlTriggerForm::onUserActionChanged()
 
 void MysqlTriggerForm::on_edtName_textChanged(const QString &text)
 {
-  setWindowTitle("Trigger: " + text);
+  setWindowTitle(tr("Trigger: ") + text);
 }

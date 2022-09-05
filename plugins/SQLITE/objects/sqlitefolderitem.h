@@ -17,7 +17,6 @@ protected:
 private:
     void loadSequences();
     void loadTriggers();
-    void loadProcedures();
 };
 
 #endif // SQLITEFOLDERITEM_H

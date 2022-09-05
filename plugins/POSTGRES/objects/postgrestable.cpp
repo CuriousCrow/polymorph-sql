@@ -1,10 +1,10 @@
 #include "postgrestable.h"
 #include <QSqlQuery>
 #include <QDebug>
-#include "utils/sqlqueryhelper.h"
 #include "models/sqlcolumnmodel.h"
 #include "objects/appconst.h"
 #include "objects/dbforeignkey.h"
+#include "utils/sqlqueryhelper.h"
 #include "postgresprimarykey.h"
 #include "postgresforeignkey.h"
 #include "postgresuniqueconstraint.h"
@@ -61,8 +61,8 @@ ActionResult PostgresTable::updateMe()
   qDebug() << "QDBPostgreqlTableItem::updateMe()";
   ActionResult res;
 
-  //Переименование таблицы
-  //TODO: Сделать отдельный виртуальный метод renameMe для всех объектов
+  //Table renaming
+  //TODO: Introduce new virtual renameMe method for DBObjectItem
   if (fieldModified(F_CAPTION)) {
     qDebug() << "Rename table";
     QString sql = "ALTER TABLE \"#caption.old#\" RENAME TO \"#caption.new#\"";
@@ -234,26 +234,6 @@ QString PostgresTable::typeDef(const SqlColumn &col) const
   return col.type();
 }
 
-QString PostgresTable::defaultDef(const SqlColumn &col) const
-{
-  if (col.defaultValue().isNull())
-    return "";
-
-//  switch (col.type()) {
-//  case ColumnType::BigInt:
-//  case ColumnType::Integer:
-//  case ColumnType::SmallInt:
-//    return col.defaultValue().toString();
-//  case ColumnType::Varchar:
-//    return "'" + col.defaultValue().toString() + "'";
-//  case ColumnType::Date:
-//    return "'" + col.defaultValue().toString() + "'";
-//  case ColumnType::Time:
-//    return "'" + col.defaultValue().toString() + "'";
-//  default:
-    return "";
-//  }
-}
 
 QString PostgresTable::toDDL() const
 {

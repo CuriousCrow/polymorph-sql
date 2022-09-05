@@ -31,7 +31,6 @@ private:
   QString createTableQuery(QString table) const;
   QString columnDef(const SqlColumn &col) const;
   QString typeDef(const SqlColumn &col) const;
-  QString defaultDef(const SqlColumn &col) const;
 };
 
 #endif // POSTGRESTABLE_H

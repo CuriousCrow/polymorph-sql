@@ -7,6 +7,7 @@
 #include "objects/dbviewitem.h"
 #include "objects/dbprocedureitem.h"
 #include "objects/dbtriggeritem.h"
+#include "objects/typeprovider.h"
 #include "objects/mysqlview.h"
 #include "objects/mysqlsequence.h"
 #include "objects/mysqlprocedure.h"
@@ -18,6 +19,7 @@
 #include "forms/simplesequenceeditform.h"
 #include "forms/mysqlprocedureeditform.h"
 #include "forms/mysqltriggerform.h"
+#include "mysqlconst.h"
 
 
 MysqlPlugin::MysqlPlugin(QObject *parent) : IocPlugin(parent)
@@ -39,36 +41,39 @@ QList<DBObjectItem::ItemType> MysqlPlugin::supportedTypes()
 
 bool MysqlPlugin::registerPlugin(DependencyContainer *c)
 {
-  c->registerDependency(new DependencyMeta("mysqlDatabaseItem", CLASSMETA(MysqlDatabase), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_DATABASE, CLASSMETA(MysqlDatabase), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Database);
-  c->registerDependency(new DependencyMeta("mysqlFolderItem", CLASSMETA(MysqlFolderItem), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_FOLDER, CLASSMETA(MysqlFolderItem), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Folder);
-  c->registerDependency(new DependencyMeta("mysqlTableItem", CLASSMETA(MysqlTableItem), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_TABLE, CLASSMETA(MysqlTableItem), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Table);
-  c->registerDependency(new DependencyMeta("mysqlSequenceItem", CLASSMETA(MysqlSequence), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_SEQUENCE, CLASSMETA(MysqlSequence), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Sequence);
-  c->registerDependency(new DependencyMeta("mysqlView", CLASSMETA(MysqlView), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_VIEW, CLASSMETA(MysqlView), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::View);
-  c->registerDependency(new DependencyMeta("mysqlProcedure", CLASSMETA(MysqlProcedure), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_PROCEDURE, CLASSMETA(MysqlProcedure), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Procedure);
-  c->registerDependency(new DependencyMeta("mysqlTrigger", CLASSMETA(MysqlTrigger), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_TRIGGER, CLASSMETA(MysqlTrigger), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Trigger);
 
-  c->registerDependency(new DependencyMeta("mysqlPrimaryKey", CLASSMETA(MysqlPrimaryKey), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_PK, CLASSMETA(MysqlPrimaryKey), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::PrimaryKey);
-  c->registerDependency(new DependencyMeta("mysqlForeignKey", CLASSMETA(MysqlForeignKey), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_FK, CLASSMETA(MysqlForeignKey), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::ForeignKey);
-  c->registerDependency(new DependencyMeta("mysqlUniqueConstraint", CLASSMETA(MysqlUniqueConstraint), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_UNIQUE, CLASSMETA(MysqlUniqueConstraint), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::UniqueConstraint);
-  c->registerDependency(new DependencyMeta("mysqlCheckConstraint", CLASSMETA(MysqlCheckConstraint), InstanceMode::Prototype))
+  c->registerDependency(new DependencyMeta(B_MYSQL_CHECK, CLASSMETA(MysqlCheckConstraint), InstanceMode::Prototype))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::CheckConstraint);
 
-  c->registerDependency(new DependencyMeta("mysqlSequenceForm", CLASSMETA(SimpleSequenceEditForm), InstanceMode::Singleton))
+  c->registerDependency(new DependencyMeta(B_MYSQL_SEQUENCE_FORM, CLASSMETA(SimpleSequenceEditForm), InstanceMode::Singleton))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Sequence);
-  c->registerDependency(new DependencyMeta("mysqlProcedureForm", CLASSMETA(MysqlProcedureEditForm), InstanceMode::Singleton))
+  c->registerDependency(new DependencyMeta(B_MYSQL_PROCEDURE_FORM, CLASSMETA(MysqlProcedureEditForm), InstanceMode::Singleton))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Procedure);
-  c->registerDependency(new DependencyMeta("mysqlTriggerForm", CLASSMETA(MysqlTriggerForm), InstanceMode::Singleton))
+  c->registerDependency(new DependencyMeta(B_MYSQL_TRIGGER_FORM, CLASSMETA(MysqlTriggerForm), InstanceMode::Singleton))
                         ->setParam(F_DRIVER_NAME, DRIVER_MYSQL)->setParam(F_TYPE, DBObjectItem::Trigger);
+
+  c->registerDependency(new DependencyMeta(B_MYSQL_TYPE_PROVIDER, CLASSMETA(BaseTypeProvider), InstanceMode::Singleton))
+                        ->setParam(F_DRIVER_NAME, DRIVER_MYSQL);
   return true;
 }
 

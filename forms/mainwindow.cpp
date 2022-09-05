@@ -359,6 +359,7 @@ void MainWindow::refreshConnectionList()
 
 void MainWindow::refreshQueryEditorAssistance(DBObjectItem* item)
 {  
+  Q_UNUSED(item)
   for(int idx=0; idx<ui->tabWidget->count(); idx++) {
     QueryEditorWindow* editor = dynamic_cast<QueryEditorWindow*>(ui->tabWidget->widget(idx));
     if (editor)

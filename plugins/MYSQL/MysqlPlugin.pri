@@ -21,6 +21,7 @@ SOURCES += \
 
 
 HEADERS  += \
+  $$PWD/mysqlconst.h \
   $$PWD/objects/mysqldatabase.h \
   $$PWD/objects/mysqlfolderitem.h \
   $$PWD/objects/mysqlforeignkey.h \

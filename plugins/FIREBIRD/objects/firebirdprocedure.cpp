@@ -150,6 +150,7 @@ ArgumentTableModel::ArgumentTableModel() : VariantMapTableModel()
 void ArgumentTableModel::onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
   Q_UNUSED(bottomRight)
+  Q_UNUSED(roles)
 
   if (topLeft.column() == COL_TYPE) {
     if (!hasLength(topLeft.row()))

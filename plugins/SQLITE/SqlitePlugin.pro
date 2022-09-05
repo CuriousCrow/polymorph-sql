@@ -36,7 +36,8 @@ HEADERS  += \
   objects/sqlitefolderitem.h \
   objects/sqlitetable.h \
   objects/sqliteviewitem.h \
-  sqliteplugin.h
+  sqliteplugin.h \
+  sqliteconst.h
 
 #FORMS    += \
 

@@ -6,7 +6,6 @@
 PostgresCheckConstraint::PostgresCheckConstraint()
   : DBCheckConstraint("", nullptr)
 {
-
 }
 
 bool PostgresCheckConstraint::refresh()

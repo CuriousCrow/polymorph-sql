@@ -40,8 +40,6 @@ private slots:
   void on_btnDeleteInputArg_clicked();
   void on_btnAddOutputArg_clicked();
   void on_btnDeleteOutputArg_clicked();
-
-  void onUserActionChanged();
 };
 
 #endif // FIREBIRDPROCEDUREFORM_H

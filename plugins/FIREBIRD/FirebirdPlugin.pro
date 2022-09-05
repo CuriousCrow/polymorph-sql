@@ -62,7 +62,8 @@ HEADERS  += \
   objects/firebirdtrigger.h \
   firebirdplugin.h \
   firebirdutils.h \
-  firebirdtypeprovider.h
+  firebirdtypeprovider.h \
+  firebirdconst.h
 
 FORMS += \
   forms/firebirdprocedureform.ui \

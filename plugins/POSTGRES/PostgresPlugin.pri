@@ -30,6 +30,7 @@ HEADERS  += \
   $$PWD/objects/postgrestriggeritem.h \
   $$PWD/objects/postgresuniqueconstraint.h \
   $$PWD/objects/postgresviewitem.h \
+  $$PWD/postgresconst.h \
   $$PWD/postgresplugin.h
 
 

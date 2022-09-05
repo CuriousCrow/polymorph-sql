@@ -1,8 +1,8 @@
 #include "mysqlprocedureeditform.h"
 #include "ui_mysqlprocedureeditform.h"
-#include "objects/appconst.h"
 #include "models/comboboxitemdelegate.h"
-#include "mysqlprocedure.h"
+#include "objects/mysqlprocedure.h"
+#include "objects/appconst.h"
 
 MysqlProcedureEditForm::MysqlProcedureEditForm() :
   AbstractDatabaseEditForm(nullptr),
@@ -10,11 +10,7 @@ MysqlProcedureEditForm::MysqlProcedureEditForm() :
 {
   ui->setupUi(this);
 
-  ComboboxItemDelegate* typesDelegate = new ComboboxItemDelegate();
-  QStringList types;
-  types << "INT" << "VARCHAR" << "BOOLEAN" << "BIGINT";
-  typesDelegate->setOptions(types);
-  ui->tvArguments->setItemDelegateForColumn(2, typesDelegate);
+  _typesDelegate = new ComboboxItemDelegate(this);
 
   ComboboxItemDelegate* modeDelegate = new ComboboxItemDelegate();
   QStringList modes;
@@ -43,6 +39,10 @@ void MysqlProcedureEditForm::objectToForm()
   _editorSupport->setEditor(ui->teSource);
   _editorSupport->updateModels(_objItem);
 
+  _typeProvider->setItemObject(_objItem);
+  _typesDelegate->setOptions(_typeProvider->typeNames());
+  ui->tvArguments->setItemDelegateForColumn(2, _typesDelegate);
+
   MysqlProcedure* procObj = static_cast<MysqlProcedure*>(_objItem);
   _argModel = procObj->argumentModel();
   ui->tvArguments->setModel(_argModel);
@@ -58,7 +58,7 @@ void MysqlProcedureEditForm::formToObject()
 
 void MysqlProcedureEditForm::on_edtName_textChanged(const QString &name)
 {
-  this->setWindowTitle("Procedure: " + name);
+  this->setWindowTitle(tr("Procedure: ") + name);
 }
 
 void MysqlProcedureEditForm::on_btnAddArg_clicked()

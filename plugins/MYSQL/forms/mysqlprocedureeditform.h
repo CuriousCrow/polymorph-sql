@@ -5,6 +5,8 @@
 #include "forms/abstractdatabaseitemform.h"
 #include "models/variantmaptablemodel.h"
 #include "tools/sqleditorsupport.h"
+#include "models/comboboxitemdelegate.h"
+
 
 namespace Ui {
 class MysqlProcedureEditForm;
@@ -20,6 +22,7 @@ public:
   ~MysqlProcedureEditForm();
 
   INJECT(SqlEditorSupport*, editorSupport);
+  INJECT_AS(BaseTypeProvider*, typeProvider, mysqlTypeProvider)
 
 private slots:
   void on_btnApply_clicked();
@@ -32,6 +35,7 @@ private slots:
 
 private:
   Ui::MysqlProcedureEditForm *ui;
+  ComboboxItemDelegate* _typesDelegate;
   VariantMapTableModel* _argModel;
   int _maxId = 0;
 

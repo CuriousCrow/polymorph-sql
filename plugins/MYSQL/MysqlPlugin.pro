@@ -54,7 +54,8 @@ HEADERS  += \
   objects/mysqltrigger.h \
   forms/mysqltriggerform.h \
   forms/mysqlprocedureeditform.h \
-  mysqlplugin.h
+  mysqlplugin.h \
+  mysqlconst.h
 
 FORMS    += \
   forms/mysqlprocedureeditform.ui \

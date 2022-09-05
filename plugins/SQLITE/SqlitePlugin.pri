@@ -16,6 +16,7 @@ HEADERS  += \
   $$PWD/objects/sqlitefolderitem.h \
   $$PWD/objects/sqlitetable.h \
   $$PWD/objects/sqliteviewitem.h \
+  $$PWD/sqliteconst.h \
   $$PWD/sqliteplugin.h
 
 #FORMS    += \

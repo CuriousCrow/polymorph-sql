@@ -5,6 +5,7 @@
 #include "objects/sqliteviewitem.h"
 #include "objects/sqlitefolderitem.h"
 #include "objects/dbsequenceitem.h"
+#include "sqliteconst.h"
 
 
 SqlitePlugin::SqlitePlugin(QObject *parent) : IocPlugin(parent)
@@ -24,13 +25,13 @@ QList<DBObjectItem::ItemType> SqlitePlugin::supportedTypes()
 
 bool SqlitePlugin::registerPlugin(DependencyContainer *c)
 {
-    c->registerDependency(new DependencyMeta("sqliteDatabase", CLASSMETA(SqliteDatabase), InstanceMode::Prototype))
+    c->registerDependency(new DependencyMeta(B_SQLITE_DATABASE, CLASSMETA(SqliteDatabase), InstanceMode::Prototype))
                        ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)->setParam(F_TYPE, DBObjectItem::Database);
-    c->registerDependency(new DependencyMeta("sqliteFolder", CLASSMETA(SqliteFolderItem), InstanceMode::Prototype))
+    c->registerDependency(new DependencyMeta(B_SQLITE_FOLDER, CLASSMETA(SqliteFolderItem), InstanceMode::Prototype))
                        ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)->setParam(F_TYPE, DBObjectItem::Folder);
-    c->registerDependency(new DependencyMeta("sqliteTable", CLASSMETA(SqliteTableItem), InstanceMode::Prototype))
+    c->registerDependency(new DependencyMeta(B_SQLITE_TABLE, CLASSMETA(SqliteTableItem), InstanceMode::Prototype))
                        ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)->setParam(F_TYPE, DBObjectItem::Table);
-    c->registerDependency(new DependencyMeta("sqliteView", CLASSMETA(SqliteViewItem), InstanceMode::Prototype))
+    c->registerDependency(new DependencyMeta(B_SQLITE_VIEW, CLASSMETA(SqliteViewItem), InstanceMode::Prototype))
                        ->setParam(F_DRIVER_NAME, DRIVER_SQLITE)->setParam(F_TYPE, DBObjectItem::View);
     return true;
 }

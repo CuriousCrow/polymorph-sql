@@ -109,6 +109,7 @@ void FirebirdTrigger::setEventByCode(int eventType)
     setFieldValue(F_TIMING, TIMING_AFTER);
     setFieldValue(F_EVENT_INSERT, true);
     setFieldValue(F_EVENT_UPDATE, true);
+    break;
   case 25:
     setFieldValue(F_TIMING, TIMING_BEFORE);
     setFieldValue(F_EVENT_INSERT, true);
@@ -142,7 +143,6 @@ void FirebirdTrigger::setEventByCode(int eventType)
     setFieldValue(F_EVENT_DELETE, true);
     break;
   }
-
 }
 
 void FirebirdTrigger::clearEventFields()

@@ -81,8 +81,3 @@ void FirebirdProcedureForm::on_btnDeleteOutputArg_clicked()
     return;
   _procedureObj->removeOutArg(row);
 }
-
-void FirebirdProcedureForm::onUserActionChanged()
-{
-  //
-}

@@ -51,7 +51,8 @@ HEADERS  += \
   objects/postgrestriggeritem.h \
   objects/postgresuniqueconstraint.h \
   objects/postgresviewitem.h \
-  postgresplugin.h
+  postgresplugin.h \
+  postgresconst.h
 
 
 #FORMS    += \

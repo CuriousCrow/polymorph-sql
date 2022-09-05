@@ -21,7 +21,6 @@ void SqliteFolderItem::loadChildren()
         loadTriggers();
         break;
     case DBObjectItem::Procedure:
-        loadProcedures();
         break;
     default:
         FolderTreeItem::loadChildren();
@@ -52,9 +51,4 @@ void SqliteFolderItem::loadTriggers()
     triggerItem->setFieldValue(F_CURRENT_VALUE, resultSet.value(F_CURRENT_VALUE).toInt());
     triggerItem->setParentUrl(objectUrl());
   }
-}
-
-void SqliteFolderItem::loadProcedures()
-{
-
 }
