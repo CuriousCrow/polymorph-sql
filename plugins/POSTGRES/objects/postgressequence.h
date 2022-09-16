@@ -2,7 +2,7 @@
 #define POSTGRESSEQUENCE_H
 
 #include <QObject>
-#include "objects/dbsequenceitem.h"
+#include "objects/dbsequence.h"
 
 /** PostgreSQL sequence item */
 class PostgresSequence : public DBSequenceItem

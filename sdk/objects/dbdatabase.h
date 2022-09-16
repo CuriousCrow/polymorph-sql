@@ -1,13 +1,13 @@
-#ifndef DBDATABASEITEM_H
-#define DBDATABASEITEM_H
+#ifndef DBDATABASE_H
+#define DBDATABASE_H
 
 #include "dbobjectitem.h"
 #include "utils/sqlqueryhelper.h"
 #include "dbtableitem.h"
-#include "dbprocedureitem.h"
-#include "dbsequenceitem.h"
-#include "dbtriggeritem.h"
-#include "dbviewitem.h"
+#include "dbprocedure.h"
+#include "dbsequence.h"
+#include "dbtrigger.h"
+#include "dbview.h"
 
 class DBDatabaseItem : public DBObjectItem
 {
@@ -51,4 +51,4 @@ public slots:
   void onFolderRequestReload();
 };
 
-#endif // DBDATABASEITEM_H
+#endif // DBDATABASE_H

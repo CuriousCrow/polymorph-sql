@@ -1,5 +1,5 @@
-#ifndef DBPROCEDUREITEM_H
-#define DBPROCEDUREITEM_H
+#ifndef DBPROCEDURE_H
+#define DBPROCEDURE_H
 
 #include "dbobjectitem.h"
 
@@ -22,4 +22,4 @@ public:
   virtual ActionResult deleteMe() override;
 };
 
-#endif // DBPROCEDUREITEM_H
+#endif // DBPROCEDURE_H

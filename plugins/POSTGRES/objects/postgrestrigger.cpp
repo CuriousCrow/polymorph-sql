@@ -1,4 +1,4 @@
-#include "postgrestriggeritem.h"
+#include "postgrestrigger.h"
 #include "utils/sqlqueryhelper.h"
 #include "objects/appconst.h"
 #include <QDebug>

@@ -1,5 +1,5 @@
-#ifndef DBSEQUENCEITEM_H
-#define DBSEQUENCEITEM_H
+#ifndef DBSEQUENCE_H
+#define DBSEQUENCE_H
 
 #include "dbobjectitem.h"
 
@@ -29,4 +29,4 @@ public:
   virtual QString toDDL() const Q_DECL_OVERRIDE;
 };
 
-#endif // DBSEQUENCEITEM_H
+#endif // DBSEQUENCE_H

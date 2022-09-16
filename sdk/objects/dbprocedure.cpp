@@ -1,4 +1,4 @@
-#include "dbprocedureitem.h"
+#include "dbprocedure.h"
 #include "appconst.h"
 #include <QIcon>
 

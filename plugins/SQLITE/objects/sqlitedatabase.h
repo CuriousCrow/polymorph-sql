@@ -1,7 +1,7 @@
 #ifndef SQLITEDATABASE_H
 #define SQLITEDATABASE_H
 
-#include "objects/dbdatabaseitem.h"
+#include "objects/dbdatabase.h"
 
 /** Sqlite database item */
 class SqliteDatabase : public DBDatabaseItem

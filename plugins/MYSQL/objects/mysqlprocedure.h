@@ -1,7 +1,7 @@
 #ifndef MYSQLPROCEDURE_H
 #define MYSQLPROCEDURE_H
 
-#include "objects/dbprocedureitem.h"
+#include "objects/dbprocedure.h"
 #include <QObject>
 #include "models/variantmaptablemodel.h"
 

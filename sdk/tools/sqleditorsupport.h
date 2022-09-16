@@ -7,7 +7,7 @@
 #include "core/sqlhelplookupprovider.h"
 #include "core/extensions.h"
 #include "tools/simplesqlcompletersupport.h"
-#include "objects/dbdatabaseitem.h"
+#include "objects/dbdatabase.h"
 #include "widgets/lqueryeditor.h"
 #include "tools/keysequenceinterceptor.h"
 #include "actions/queryeditorkeysequences.h"

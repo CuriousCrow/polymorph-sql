@@ -1,7 +1,7 @@
 #ifndef FIREBIRDVIEW_H
 #define FIREBIRDVIEW_H
 
-#include "objects/dbviewitem.h"
+#include "objects/dbview.h"
 #include <QObject>
 
 class FirebirdView : public DBViewItem

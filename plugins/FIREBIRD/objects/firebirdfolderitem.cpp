@@ -1,9 +1,9 @@
 #include "firebirdfolderitem.h"
 #include "utils/sqlqueryhelper.h"
 #include "core/core.h"
-#include "objects/dbprocedureitem.h"
-#include "objects/dbtriggeritem.h"
-#include "objects/dbsequenceitem.h"
+#include "objects/dbprocedure.h"
+#include "objects/dbtrigger.h"
+#include "objects/dbsequence.h"
 #include "objects/dbusertype.h"
 #include "objects/appconst.h"
 

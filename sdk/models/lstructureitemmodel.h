@@ -3,7 +3,7 @@
 
 #include "lstandardtreemodel.h"
 #include "objects/dbobjectitem.h"
-#include "objects/dbdatabaseitem.h"
+#include "objects/dbdatabase.h"
 #include <QSqlDatabase>
 
 class LStructureItemModel : public LStandardTreeModel

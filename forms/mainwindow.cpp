@@ -7,7 +7,7 @@
 #include <QClipboard>
 #include "sdk/objects/appurl.h"
 #include "sdk/forms/tablebrowserwindow.h"
-#include "sdk/objects/dbdatabaseitem.h"
+#include "sdk/objects/dbdatabase.h"
 #include "sdk/objects/dbobjectitem.h"
 #include "sdk/objects/foldertreeitem.h"
 #include "sdk/core/appsettings.h"

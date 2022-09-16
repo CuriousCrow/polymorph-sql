@@ -1,4 +1,4 @@
-#include "dbdatabaseitem.h"
+#include "dbdatabase.h"
 #include <QDebug>
 #include <QMessageBox>
 #include <QSqlError>
@@ -6,11 +6,11 @@
 #include "appurl.h"
 #include <QIcon>
 #include "dbtableitem.h"
-#include "dbviewitem.h"
+#include "dbview.h"
 #include "foldertreeitem.h"
-#include "dbsequenceitem.h"
-#include "dbtriggeritem.h"
-#include "dbprocedureitem.h"
+#include "dbsequence.h"
+#include "dbtrigger.h"
+#include "dbprocedure.h"
 #include "appconst.h"
 
 

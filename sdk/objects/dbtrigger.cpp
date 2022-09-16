@@ -1,4 +1,4 @@
-#include "dbtriggeritem.h"
+#include "dbtrigger.h"
 #include "utils/sqlqueryhelper.h"
 #include "appconst.h"
 #include <QIcon>

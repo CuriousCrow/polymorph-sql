@@ -1,4 +1,4 @@
-#include "dbviewitem.h"
+#include "dbview.h"
 #include <QIcon>
 #include "utils/sqlqueryhelper.h"
 #include "appconst.h"

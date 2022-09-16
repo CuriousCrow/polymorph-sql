@@ -1,5 +1,5 @@
-#ifndef DBTRIGGERITEM_H
-#define DBTRIGGERITEM_H
+#ifndef DBTRIGGER_H
+#define DBTRIGGER_H
 
 #include "dbobjectitem.h"
 
@@ -27,4 +27,4 @@ public:
   virtual ActionResult deleteMe() Q_DECL_OVERRIDE;
 };
 
-#endif // DBTRIGGERITEM_H
+#endif // DBTRIGGER_H

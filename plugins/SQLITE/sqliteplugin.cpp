@@ -2,9 +2,9 @@
 #include "objects/appconst.h"
 #include "objects/sqlitedatabase.h"
 #include "objects/sqlitetable.h"
-#include "objects/sqliteviewitem.h"
+#include "objects/sqliteview.h"
 #include "objects/sqlitefolderitem.h"
-#include "objects/dbsequenceitem.h"
+#include "objects/dbsequence.h"
 #include "sqliteconst.h"
 
 

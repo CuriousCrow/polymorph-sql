@@ -1,13 +1,13 @@
 #ifndef DBMSSUPPORT_H
 #define DBMSSUPPORT_H
 
-#include "dbsequenceitem.h"
-#include "dbprocedureitem.h"
+#include "dbsequence.h"
+#include "dbprocedure.h"
 #include "dbtableitem.h"
-#include "dbtriggeritem.h"
-#include "dbviewitem.h"
+#include "dbtrigger.h"
+#include "dbview.h"
 #include <QObject>
-#include "dbdatabaseitem.h"
+#include "dbdatabase.h"
 #include "../forms/abstractdatabaseitemform.h"
 #include "foldertreeitem.h"
 

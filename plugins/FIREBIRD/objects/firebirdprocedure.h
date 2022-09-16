@@ -1,7 +1,7 @@
 #ifndef FIREBIRDPROCEDURE_H
 #define FIREBIRDPROCEDURE_H
 
-#include "objects/dbprocedureitem.h"
+#include "objects/dbprocedure.h"
 #include "models/variantmaptablemodel.h"
 #include "firebirdtypeprovider.h"
 #include <QObject>

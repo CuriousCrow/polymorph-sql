@@ -5,7 +5,7 @@
 #include "../core/core.h"
 #include "../core/iocplugin.h"
 #include "dbtableitem.h"
-#include "dbviewitem.h"
+#include "dbview.h"
 
 FolderTreeItem::FolderTreeItem(QObject* parent):
   DBObjectItem("", parent)

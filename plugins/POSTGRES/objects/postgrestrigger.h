@@ -1,8 +1,8 @@
-#ifndef POSTGRESTRIGGERITEM_H
-#define POSTGRESTRIGGERITEM_H
+#ifndef POSTGRESTRIGGER_H
+#define POSTGRESTRIGGER_H
 
 #include <QObject>
-#include "objects/dbtriggeritem.h"
+#include "objects/dbtrigger.h"
 
 /** PostgreSQL trigger item */
 class PostgresTriggerItem : public DBTriggerItem
@@ -25,4 +25,4 @@ private:
   QStringList events() const;
 };
 
-#endif // POSTGRESTRIGGERITEM_H
+#endif // POSTGRESTRIGGER_H

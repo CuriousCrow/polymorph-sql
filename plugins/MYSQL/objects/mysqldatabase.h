@@ -1,7 +1,7 @@
 #ifndef MYSQLDATABASE_H
 #define MYSQLDATABASE_H
 
-#include "objects/dbdatabaseitem.h"
+#include "objects/dbdatabase.h"
 
 class MysqlDatabase : public DBDatabaseItem
 {

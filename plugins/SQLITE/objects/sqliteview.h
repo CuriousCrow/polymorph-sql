@@ -1,8 +1,8 @@
-#ifndef SQLITEVIEWITEM_H
-#define SQLITEVIEWITEM_H
+#ifndef SQLITEVIEW_H
+#define SQLITEVIEW_H
 
 #include <QObject>
-#include "objects/dbviewitem.h"
+#include "objects/dbview.h"
 
 /** SQLite view item */
 class SqliteViewItem : public DBViewItem
@@ -16,4 +16,4 @@ public:
   virtual bool refresh() Q_DECL_OVERRIDE;
 };
 
-#endif // SQLITEVIEWITEM_H
+#endif // SQLITEVIEW_H

@@ -1,7 +1,7 @@
-#ifndef POSTGRESVIEWITEM_H
-#define POSTGRESVIEWITEM_H
+#ifndef POSTGRESVIEW_H
+#define POSTGRESVIEW_H
 
-#include "objects/dbviewitem.h"
+#include "objects/dbview.h"
 
 /** PostgreSQL view item */
 class PostgresViewItem : public DBViewItem
@@ -15,4 +15,4 @@ public:
   virtual bool refresh() override;
 };
 
-#endif // POSTGRESVIEWITEM_H
+#endif // POSTGRESVIEW_H

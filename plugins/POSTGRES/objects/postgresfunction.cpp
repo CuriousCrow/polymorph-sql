@@ -1,4 +1,4 @@
-#include "postgresfunctionitem.h"
+#include "postgresfunction.h"
 #include "objects/appconst.h"
 #include "utils/sqlqueryhelper.h"
 

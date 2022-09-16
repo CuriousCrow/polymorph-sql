@@ -28,14 +28,14 @@ SOURCES += \
   objects/sqlitedatabase.cpp \
   objects/sqlitefolderitem.cpp \
   objects/sqlitetable.cpp \
-  objects/sqliteviewitem.cpp \
+  objects/sqliteview.cpp \
   sqliteplugin.cpp
 
 HEADERS  += \
   objects/sqlitedatabase.h \
   objects/sqlitefolderitem.h \
   objects/sqlitetable.h \
-  objects/sqliteviewitem.h \
+  objects/sqliteview.h \
   sqliteplugin.h \
   sqliteconst.h
 

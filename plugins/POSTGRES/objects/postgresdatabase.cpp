@@ -2,8 +2,8 @@
 #include "postgrestable.h"
 #include "postgressequence.h"
 #include "objects/appconst.h"
-#include "postgresfunctionitem.h"
-#include "postgrestriggeritem.h"
+#include "postgresfunction.h"
+#include "postgrestrigger.h"
 
 #define POSTGRES_PORT 5432
 

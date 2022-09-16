@@ -1,6 +1,6 @@
 #include "sqlitefolderitem.h"
-#include "objects/dbtriggeritem.h"
-#include "objects/dbsequenceitem.h"
+#include "objects/dbtrigger.h"
+#include "objects/dbsequence.h"
 #include "objects/appconst.h"
 #include "core/core.h"
 #include "utils/sqlqueryhelper.h"

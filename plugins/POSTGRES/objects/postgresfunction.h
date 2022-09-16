@@ -1,8 +1,8 @@
-#ifndef POSTGRESFUNCTIONITEM_H
-#define POSTGRESFUNCTIONITEM_H
+#ifndef POSTGRESFUNCTION_H
+#define POSTGRESFUNCTION_H
 
 #include <QObject>
-#include "objects/dbprocedureitem.h"
+#include "objects/dbprocedure.h"
 
 /** PostgreSQL function item */
 class PostgresFunctionItem : public DBProcedureItem
@@ -20,4 +20,4 @@ public:
   virtual QString toDDL() const Q_DECL_OVERRIDE;
 };
 
-#endif // POSTGRESFUNCTIONITEM_H
+#endif // POSTGRESFUNCTION_H

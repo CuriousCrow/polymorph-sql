@@ -1,7 +1,7 @@
 #ifndef FIREBIRDTRIGGER_H
 #define FIREBIRDTRIGGER_H
 
-#include "objects/dbtriggeritem.h"
+#include "objects/dbtrigger.h"
 #include "models/variantmaptablemodel.h"
 #include <QObject>
 

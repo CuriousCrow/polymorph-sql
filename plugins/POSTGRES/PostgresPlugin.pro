@@ -29,13 +29,13 @@ SOURCES += \
   objects/postgresdatabase.cpp \
   objects/postgresfolderitem.cpp \
   objects/postgresforeignkey.cpp \
-  objects/postgresfunctionitem.cpp \
+  objects/postgresfunction.cpp \
   objects/postgresprimarykey.cpp \
   objects/postgressequence.cpp \
   objects/postgrestable.cpp \
-  objects/postgrestriggeritem.cpp \
+  objects/postgrestrigger.cpp \
   objects/postgresuniqueconstraint.cpp \
-  objects/postgresviewitem.cpp \
+  objects/postgresview.cpp \
   postgresplugin.cpp
 
 
@@ -44,13 +44,13 @@ HEADERS  += \
   objects/postgresdatabase.h \
   objects/postgresfolderitem.h \
   objects/postgresforeignkey.h \
-  objects/postgresfunctionitem.h \
+  objects/postgresfunction.h \
   objects/postgresprimarykey.h \
   objects/postgressequence.h \
   objects/postgrestable.h \
-  objects/postgrestriggeritem.h \
+  objects/postgrestrigger.h \
   objects/postgresuniqueconstraint.h \
-  objects/postgresviewitem.h \
+  objects/postgresview.h \
   postgresplugin.h \
   postgresconst.h
 

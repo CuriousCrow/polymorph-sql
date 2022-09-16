@@ -1,5 +1,5 @@
-#ifndef DBVIEWITEM_H
-#define DBVIEWITEM_H
+#ifndef DBVIEW_H
+#define DBVIEW_H
 
 #include "dbselectableitem.h"
 
@@ -27,4 +27,4 @@ public:
   virtual QString toDDL() const Q_DECL_OVERRIDE;
 };
 
-#endif // DBVIEWITEM_H
+#endif // DBVIEW_H

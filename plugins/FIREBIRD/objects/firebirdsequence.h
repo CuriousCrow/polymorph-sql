@@ -1,7 +1,7 @@
 #ifndef FIREBIRDSEQUENCE_H
 #define FIREBIRDSEQUENCE_H
 
-#include "objects/dbsequenceitem.h"
+#include "objects/dbsequence.h"
 #include <QObject>
 
 class FirebirdSequence : public DBSequenceItem

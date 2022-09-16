@@ -1,7 +1,7 @@
 #ifndef POSTGRESDATABASE_H
 #define POSTGRESDATABASE_H
 
-#include "objects/dbdatabaseitem.h"
+#include "objects/dbdatabase.h"
 
 /** PostgreSQL database item */
 class PostgresDatabase : public DBDatabaseItem

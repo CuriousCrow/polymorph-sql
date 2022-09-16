@@ -2,7 +2,7 @@
 #define FIREBIRDDATABASE_H
 
 #include <QObject>
-#include "objects/dbdatabaseitem.h"
+#include "objects/dbdatabase.h"
 
 class FirebirdDatabase : public DBDatabaseItem
 {
