@@ -8,7 +8,7 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = DemalexManager
+TARGET = PolymorphManager
 TEMPLATE = app
 
 CONFIG ~= s/-O[0123s]//g
@@ -17,7 +17,7 @@ CONFIG += -O0
 RC_ICONS = sdk/icons/cc_16.ico
 
 #Use this flag to compile all plugins inside main application
-DEFINES += SINGLEAPP
+#DEFINES += SINGLEAPP
 
 SOURCES += main.cpp\
     forms/mainwindow.cpp

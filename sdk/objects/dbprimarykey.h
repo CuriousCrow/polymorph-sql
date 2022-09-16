@@ -15,6 +15,7 @@ public:
   virtual int type() const Q_DECL_OVERRIDE;
   virtual bool refresh() Q_DECL_OVERRIDE;
   virtual ActionResult insertMe() Q_DECL_OVERRIDE;
+  virtual QString toDDL() const override;
 };
 
 #endif // DBPRIMARYKEY_H

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Demalex SQL manager</string>
+   <string>Polymorph SQL Manager</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../sdk/icons.qrc">
@@ -150,10 +150,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../sdk/icons.qrc"/>
-  <include location="../sdk/icons.qrc"/>
-  <include location="../sdk/icons.qrc"/>
-  <include location="../sdk/icons.qrc"/>
   <include location="../sdk/icons.qrc"/>
   <include location="../sdk/icons.qrc"/>
  </resources>

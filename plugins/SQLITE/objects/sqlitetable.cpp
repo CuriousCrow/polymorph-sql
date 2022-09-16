@@ -54,7 +54,7 @@ void SqliteTableItem::reloadColumnsModel()
 
 ActionResult SqliteTableItem::insertMe()
 {
-  return execSql(createTableQuery(caption()), connectionName());
+  return execSql(toDDL(), connectionName());
 }
 
 ActionResult SqliteTableItem::updateMe()
@@ -129,4 +129,10 @@ QString SqliteTableItem::createTableQuery(QString table) const
   }
   QString preparedSql = createPattern.arg(table, colDefList.join(", "));
   return preparedSql;
+}
+
+
+QString SqliteTableItem::toDDL() const
+{
+  return createTableQuery(caption());
 }

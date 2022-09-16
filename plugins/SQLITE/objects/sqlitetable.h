@@ -18,6 +18,7 @@ public:
 public:
     virtual ActionResult insertMe() Q_DECL_OVERRIDE;
     virtual ActionResult updateMe() Q_DECL_OVERRIDE;
+    virtual QString toDDL() const override;
 private:
     QString createTableQuery(QString table) const;
 };

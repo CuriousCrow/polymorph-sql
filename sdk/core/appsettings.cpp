@@ -10,7 +10,7 @@ AppSettings::AppSettings() {
 QVariant AppSettings::val(QString name, QVariant defValue)
 {
   if (!_settings) {
-    QString settingsPath = QApplication::applicationDirPath() + "/demalexmanager.ini";
+    QString settingsPath = QApplication::applicationDirPath() + "/polymorphmanager.ini";
     qDebug() << "Loading settings: " + settingsPath;
     _settings = new QSettings(settingsPath, QSettings::IniFormat);
   }

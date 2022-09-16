@@ -21,7 +21,12 @@ bool DBPrimaryKey::refresh()
 
 ActionResult DBPrimaryKey::insertMe()
 {
+  return execSql(toDDL(), connectionName());
+}
+
+
+QString DBPrimaryKey::toDDL() const
+{
   QString sql = "alter table #table# add constraint #caption# primary key (#column#)";
-  QString preparedSql = fillSqlPatternWithFields(sql);
-  return execSql(preparedSql, connectionName());
+  return fillSqlPatternWithFields(sql);
 }

@@ -20,7 +20,7 @@ else {
     BUILDTYPE = release
 }
 
-DESTDIR = ../../../build-DemalexGroup/$${BUILDTYPE}/plugins
+DESTDIR = ../../../build-PolymorphSqlGroup/$${BUILDTYPE}/plugins
 
 include(../../sdk/sdk.pri)
 
