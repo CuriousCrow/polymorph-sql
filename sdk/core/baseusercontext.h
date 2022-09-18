@@ -11,6 +11,9 @@ class BaseUserContext : public AbstractUserContext
 public:
     BaseUserContext(QObject *parent = nullptr);
     DBObjectItem::ItemType type() const;
+    bool isEditable();
+    bool hasCurItem();
+    bool hasChildren();
 
     DBObjectItem* currentItem();
 public slots:

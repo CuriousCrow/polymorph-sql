@@ -25,5 +25,5 @@ void SwitchConnectedAction::updateState()
 
 bool SwitchConnectedAction::isConnected()
 {
-  return context()->currentItem()->hasChildren();
+  return context()->hasChildren();
 }
