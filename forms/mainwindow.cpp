@@ -427,8 +427,8 @@ void MainWindow::onCurrentItemChanged(const QModelIndex &index)
     DBObjectItem* curItem = _ds->structureModel()->itemByIdx(index);
     qDebug() << "Current item:" << curItem;
     _context->setCurrentItem(curItem);
-    ui->aEditDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
-    ui->aRemoveDatabase->setEnabled(curItem->type() == DBObjectItem::Database);
+    ui->aEditDatabase->setEnabled(curItem && curItem->type() == DBObjectItem::Database);
+    ui->aRemoveDatabase->setEnabled(curItem && curItem->type() == DBObjectItem::Database);
 }
 
 void MainWindow::injectExtension(ExtensionPoint ep, QObject *e)
