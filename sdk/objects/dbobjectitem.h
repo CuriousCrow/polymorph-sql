@@ -24,6 +24,17 @@ private:
   QString _description;
 };
 
+class ObjectStatus
+{
+public:
+  ObjectStatus(QString code, QString description);
+  QString code();
+  QString description();
+private:
+  QString _code;
+  QString _description;
+};
+
 class DBObjectField
 {
 public:
@@ -76,6 +87,7 @@ public:
   void deleteChildren();
   QString caption() const;
 
+
   DBObjectItem* childItem(DBObjectItem::ItemType type, QString name = "");
 
   virtual bool reloadChildren() = 0;
@@ -83,6 +95,8 @@ public:
   virtual int type() const = 0;
   virtual bool setData(int column, QVariant value, int role);
   virtual bool refresh();
+  virtual ObjectStatus status() const;
+  bool inStatus(QString status) const;
   //SQL export
   virtual QString toDDL() const;
   virtual QString toDML() const;

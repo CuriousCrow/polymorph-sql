@@ -5,12 +5,13 @@
 #include "../sdk/forms/abstractdatabaseitemform.h"
 
 enum FeatureType {
-    DbmsObjects,
-    DbmsForms,
-    FormActions
+    DbmsObjects = 1,
+    DbmsForms = 2,
+    FormActions = 4
 };
 
 Q_DECLARE_FLAGS(FeatureTypes, FeatureType)
+Q_DECLARE_OPERATORS_FOR_FLAGS(FeatureTypes)
 
 class AbstractPlugin {
 public:

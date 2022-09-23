@@ -129,4 +129,7 @@
 #define TYPEKIND_BOOLEAN "boolean"
 #define TYPEKIND_FLOAT "float"
 
+#define ST_DEFAULT "default"
+#define ST_UNSUPPORTED "unsupported"
+
 #endif // APPCONST_H

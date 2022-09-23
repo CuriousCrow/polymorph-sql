@@ -13,6 +13,7 @@
 #include "dbprocedure.h"
 #include "appconst.h"
 
+#define S_NOT_SUPPORTED " (not supported)"
 
 DBDatabaseItem::DBDatabaseItem(QString caption):
   DBObjectItem(caption)
@@ -59,7 +60,7 @@ bool DBDatabaseItem::createDbConnection()
 
 QString DBDatabaseItem::info()
 {
-    return fieldValue(F_HOSTNAME).toString().append(":").append(fieldValue(F_DATABASE_NAME).toString());
+  return fieldValue(F_HOSTNAME).toString().append(":").append(fieldValue(F_DATABASE_NAME).toString());
 }
 
 DBObjectItem *DBDatabaseItem::folderByType(DBObjectItem::ItemType type)
@@ -202,9 +203,15 @@ QVariant DBDatabaseItem::colData(int column, int role) const
 {
   switch (role) {
   case Qt::DecorationRole:
-    return (column == 0) ? QIcon(":/icons/database.png") : QVariant();
+    if (column != 0)
+      return QVariant();
+    return inStatus(ST_UNSUPPORTED) ? QIcon(":/icons/database_unsupported.png") : QIcon(":/icons/database.png");
   case Qt::UserRole:
     return fieldValue(F_ID);
+  case Qt::DisplayRole:
+    if (column != 0)
+      return DBObjectItem::colData(column, role);
+    return fieldValue(0).toString() + (inStatus(ST_UNSUPPORTED) ? S_NOT_SUPPORTED : "");
   }
   return DBObjectItem::colData(column, role);
 }
@@ -214,17 +221,15 @@ int DBDatabaseItem::type() const
     return Database;
 }
 
-void DBDatabaseItem::onFolderRequestReload()
-{
-
-}
-
-QString DBDatabaseItem::driver()
+QString DBDatabaseItem::driver() const
 {
   return fieldValue(F_DRIVER_NAME).toString();
 }
 
-bool DBDatabaseItem::isDriver(QString name)
+ObjectStatus DBDatabaseItem::status() const
 {
-  return driver() == name;
+  if (driver().isEmpty())
+    return ObjectStatus(ST_UNSUPPORTED, S_NOT_SUPPORTED);
+  else
+    return ObjectStatus(ST_DEFAULT, "");
 }
