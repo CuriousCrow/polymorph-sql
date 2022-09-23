@@ -31,5 +31,6 @@
         <file>icons/bullet_delete.png</file>
         <file>icons/disk.png</file>
         <file>icons/history.png</file>
+        <file>icons/database_unsupported.png</file>
     </qresource>
 </RCC>

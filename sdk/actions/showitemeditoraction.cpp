@@ -38,6 +38,6 @@ void ShowItemEditorAction::doAction()
 void ShowItemEditorAction::updateState()
 {
     BaseItemPopupAction::updateState();
-    setVisible(context()->hasCurItem());
+    setVisible(context()->hasCurItem() && !context()->currentItem()->driverName().isEmpty());
     setText(context()->isEditable() ? tr("Edit object") : tr("View object"));
 }

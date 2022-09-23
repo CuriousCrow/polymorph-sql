@@ -4,6 +4,7 @@
 #include "../core/iocplugin.h"
 #include <QObject>
 
+#define B_DATABASE "baseDatabaseObject"
 #define B_TABLE "baseTableObject"
 #define B_VIEW "baseViewObject"
 #define B_TRIGGER "baseTriggerObject"

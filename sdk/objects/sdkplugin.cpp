@@ -105,6 +105,8 @@ QString SdkPlugin::driver()
 bool SdkPlugin::registerPlugin(DependencyContainer *c)
 {
     //Database objects
+    c->registerDependency(B_DATABASE, CLASSMETA(DBDatabaseItem), InstanceMode::Prototype)
+                          ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Database);
     c->registerDependency(B_TABLE, CLASSMETA(DBTableItem), InstanceMode::Prototype)
                           ->setParam(F_DRIVER_NAME, DRIVER_BASE)->setParam(F_TYPE, DBObjectItem::Table);
     c->registerDependency(B_VIEW, CLASSMETA(DBViewItem), InstanceMode::Prototype)

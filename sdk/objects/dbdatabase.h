@@ -13,24 +13,24 @@ class DBDatabaseItem : public DBObjectItem
 {
   Q_OBJECT
 public:
-  DBDatabaseItem(QString caption);
+  Q_INVOKABLE DBDatabaseItem(QString caption = "");
   ~DBDatabaseItem() Q_DECL_OVERRIDE;
 
   bool createDbConnection();
   QString info();
-  DBObjectItem* folderByType(DBObjectItem::ItemType type);
 
+  DBObjectItem* folderByType(DBObjectItem::ItemType type);
 protected:
-  
   virtual QString getViewListSql() const;
   virtual QString getSequenceListSql() const;
   virtual QString getTriggerListSql() const;
   virtual QString getProcedureListSql() const;
 
-  QString driver();
-  bool isDriver(QString name);
+  QString driver() const;
+
   // DBObjectItem interface
 public:
+  virtual ObjectStatus status() const Q_DECL_OVERRIDE;
   virtual bool reloadChildren() Q_DECL_OVERRIDE;
   virtual AppUrl objectUrl() Q_DECL_OVERRIDE;
   virtual ActionResult insertMe() Q_DECL_OVERRIDE;
@@ -46,9 +46,6 @@ public:
 public:  
   virtual QVariant colData(int column, int role) const Q_DECL_OVERRIDE;
   virtual int type() const Q_DECL_OVERRIDE;
-
-public slots:
-  void onFolderRequestReload();
 };
 
 #endif // DBDATABASE_H

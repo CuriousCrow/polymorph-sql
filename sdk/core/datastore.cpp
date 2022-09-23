@@ -58,6 +58,8 @@ void DataStore::initRegisteredDatabases()
     }
     DBDatabaseItem* item = Core::instance()->dependencyForDriver<DBDatabaseItem>(driverName);
     for (int i=0; i<rec.count(); i++) {
+      if (rec.fieldName(i) == F_DRIVER_NAME)
+        continue;
       item->setFieldValue(rec.fieldName(i), rec.value(i));
     }
     _structureModel->appendItem(item);

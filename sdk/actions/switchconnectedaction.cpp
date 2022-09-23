@@ -20,6 +20,10 @@ void SwitchConnectedAction::doAction()
 void SwitchConnectedAction::updateState()
 {
   setText(isConnected() ? T_DISCONNECT : T_CONNECT);
+  if (context()->currentItem()->driverName().isEmpty()) {
+    setVisible(false);
+    return;
+  }
   BaseItemPopupAction::updateState();
 }
 

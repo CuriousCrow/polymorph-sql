@@ -316,6 +316,16 @@ bool DBObjectItem::refresh()
   return true;
 }
 
+ObjectStatus DBObjectItem::status() const
+{
+  return ObjectStatus(ST_DEFAULT, "");
+}
+
+bool DBObjectItem::inStatus(QString status) const
+{
+  return this->status().code() == status;
+}
+
 QString DBObjectItem::toDDL() const
 {
   return "";
@@ -468,6 +478,20 @@ int ActionResult::resCode() const
 }
 
 QString ActionResult::description() const
+{
+  return _description;
+}
+
+ObjectStatus::ObjectStatus(QString code, QString description): _code(code), _description(description)
+{
+}
+
+QString ObjectStatus::code()
+{
+  return _code;
+}
+
+QString ObjectStatus::description()
 {
   return _description;
 }

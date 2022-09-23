@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerPlugin(new PostgresPlugin());
   Core::registerPlugin(new SqlitePlugin());
   Core::registerPlugin(new FirebirdPlugin());
-  Core::registerPlugin(new MysqlPlugin());
+//  Core::registerPlugin(new MysqlPlugin());
 #else
   QStringList pluginFiles = FileUtils::filesOfDir(QApplication::applicationDirPath() + "/plugins");
   QPluginLoader* pluginLoader = new QPluginLoader(this);
@@ -152,7 +152,7 @@ void MainWindow::on_tvDatabaseStructure_doubleClicked(const QModelIndex &index)
     DBDatabaseItem* dbItem = static_cast<DBDatabaseItem*>(objectItem);
     //Database connection (loading database items)
     if (dbItem->children().isEmpty()){
-      if (!dbItem->createDbConnection())
+      if (dbItem->inStatus(ST_UNSUPPORTED) || !dbItem->createDbConnection())
         break;
       IocPlugin* dbms = Core::plugin(dbItem->driverName(), FeatureType::DbmsObjects);
       foreach (DBObjectItem::ItemType type, dbms->supportedTypes()) {
@@ -427,7 +427,7 @@ void MainWindow::onCurrentItemChanged(const QModelIndex &index)
     DBObjectItem* curItem = _ds->structureModel()->itemByIdx(index);
     qDebug() << "Current item:" << curItem;
     _context->setCurrentItem(curItem);
-    ui->aEditDatabase->setEnabled(curItem && curItem->type() == DBObjectItem::Database);
+    ui->aEditDatabase->setEnabled(curItem && curItem->type() == DBObjectItem::Database && !curItem->driverName().isEmpty());
     ui->aRemoveDatabase->setEnabled(curItem && curItem->type() == DBObjectItem::Database);
 }
 
