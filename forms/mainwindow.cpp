@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
   Core::registerPlugin(new PostgresPlugin());
   Core::registerPlugin(new SqlitePlugin());
   Core::registerPlugin(new FirebirdPlugin());
-//  Core::registerPlugin(new MysqlPlugin());
+  Core::registerPlugin(new MysqlPlugin());
 #else
   QStringList pluginFiles = FileUtils::filesOfDir(QApplication::applicationDirPath() + "/plugins");
   QPluginLoader* pluginLoader = new QPluginLoader(this);
@@ -286,7 +286,6 @@ void MainWindow::dropCurrentDatabaseObject()
   default:
     break;
   }
-  //TODO: Implementation for other DB objects
 }
 
 void MainWindow::saveDatabaseChanges()

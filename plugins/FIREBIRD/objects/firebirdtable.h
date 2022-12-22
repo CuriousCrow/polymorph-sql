@@ -27,6 +27,7 @@ protected:
 public:
   virtual ActionResult insertMe() override;
   virtual ActionResult updateMe() override;
+  virtual QString toDDL() const override;
 
 };
 

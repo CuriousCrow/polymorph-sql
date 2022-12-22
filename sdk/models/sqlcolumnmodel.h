@@ -89,7 +89,7 @@ public:
   QHash<SqlColumn, SqlColumn> columnChanges();
   QHash<QString, QString> permanentColNames();
   EditType editType();
-  bool hasOnlyIntegerPK();
+  bool hasOneColumnPK();
   bool isModified();
   void clear();
 

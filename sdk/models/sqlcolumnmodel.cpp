@@ -110,21 +110,16 @@ SqlColumnModel::EditType SqlColumnModel::editType()
   }
 }
 
-bool SqlColumnModel::hasOnlyIntegerPK()
+bool SqlColumnModel::hasOneColumnPK()
 {
-//        //TODO: should be fugured out
-//  int pkCount = 0;
-//  int intPkCount = 0;
-//  for(int i=0; i<rowCount(); i++) {
-//    SqlColumn col = columnByIndex(i);
-//    if (col.isPrimary()) {
-//      if (col.type() == ColumnType::Integer)
-//        intPkCount++;
-//      pkCount++;
-//    }
-//  }
-//  return (pkCount == 1) && (intPkCount == 1);
-  return true;
+  int pkCount = 0;
+  for(int i=0; i<rowCount(); i++) {
+    SqlColumn col = columnByIndex(i);
+    if (col.isPrimary()) {
+      pkCount++;
+    }
+  }
+  return (pkCount == 1);
 }
 
 bool SqlColumnModel::isModified()

@@ -112,7 +112,7 @@ QString FirebirdTable::typeDef(const SqlColumn &col) const
 
 ActionResult FirebirdTable::insertMe()
 {
-  QString sql = createTableQuery(identifier().toUpper());
+  QString sql = toDDL();
   setFieldValue(F_CAPTION, caption().toUpper());
   return execSql(sql, connectionName());
 }
@@ -131,6 +131,8 @@ ActionResult FirebirdTable::updateMe()
   res = DBTableItem::updateMe();
   if (res.isSuccess())
     return RES_OK_CODE;
+  else
+    res = ActionResult(RES_OK_CODE);
 
   QHash<SqlColumn, SqlColumn> changes = _columnsModel->columnChanges();
   qDebug() << "Changes size:" << changes.count();
@@ -162,10 +164,22 @@ ActionResult FirebirdTable::updateMe()
       qDebug() << "Col modify:" << fromCol << "to" << toCol;
       QStringList difs;
       QString pattern;
+
+      //NOT NULL
+      if (fromCol.notNull() != toCol.notNull()) {
+        pattern = "UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = %1 "
+                  "WHERE RDB$FIELD_NAME = '%2' AND RDB$RELATION_NAME = '%3'";
+        QString preparedSql = pattern.arg((toCol.notNull() ? "1" : "NULL"), toCol.name(), caption());
+        res = execSql(preparedSql, connectionName());
+        if (!res.isSuccess())
+          return res;
+      }
+      //COLUMN TYPE
       if (fromCol.type() != toCol.type() || fromCol.length() != toCol.length()) {
         pattern = "ALTER COLUMN %1 TYPE %2";
         difs.append(pattern.arg(toCol.name(), typeDef(toCol)));
       }
+      //DEFAULT VALUE
       if (fromCol.defaultValue() != toCol.defaultValue()) {
         if (toCol.defaultValue().toString().isEmpty())
           pattern = "ALTER COLUMN %1 DROP DEFAULT %2";
@@ -174,13 +188,15 @@ ActionResult FirebirdTable::updateMe()
         }
         difs.append(pattern.arg(toCol.name(), toCol.defaultValue().toString()));
       }
-      if (fromCol.notNull() != toCol.notNull()) {
-        pattern = "ALTER COLUMN %1 ";
-        pattern.append(toCol.notNull() ? "SET NOT NULL" : "DROP NOT NULL");
-        difs.append(pattern.arg(toCol.name()));
-      }
+//    Since FIREBIRD3
+//      if (fromCol.notNull() != toCol.notNull()) {
+//        pattern = "ALTER COLUMN %1 ";
+//        pattern.append(toCol.notNull() ? "SET NOT NULL" : "DROP NOT NULL");
+//        difs.append(pattern.arg(toCol.name()));
+//      }
+      //RENAME COLUMN
       if (fromCol.name() != toCol.name()) {
-        pattern = "RENAME COLUMN \"%1\" TO \"%2\"";
+        pattern = "ALTER COLUMN \"%1\" TO \"%2\"";
         difs.append(pattern.arg(fromCol.name(), toCol.name()));
       }
       if (difs.isEmpty()) {
@@ -196,6 +212,11 @@ ActionResult FirebirdTable::updateMe()
     }
   }
   return res;
+}
+
+QString FirebirdTable::toDDL() const
+{
+  return createTableQuery(identifier().toUpper());
 }
 
 void FirebirdTable::reloadConstraintsModel()

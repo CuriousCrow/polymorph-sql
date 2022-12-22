@@ -151,4 +151,7 @@ QString MysqlTableItem::columnDef(const SqlColumn &col) const
   return colDef;
 }
 
-
+QString MysqlTableItem::toDDL() const
+{
+  return createTableQuery(caption());
+}

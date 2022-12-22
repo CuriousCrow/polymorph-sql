@@ -58,6 +58,7 @@ void DatabaseExportForm::on_btnStart_clicked()
   backupScript.append(COMMENT_PREFIX "Backup" SQL_DELIMITER);
 
   //DDL
+  //TABLE
   DBObjectItem* folder = dbItem->folderByType(DBObjectItem::Table);
   if (folder) {
     backupScript.append(COMMENT_PREFIX + folder->caption());
