@@ -106,7 +106,7 @@ QString SqliteTableItem::createTableQuery(QString table) const
   QString createPattern = "CREATE TABLE %1 (%2);";
   QStringList pkColList;
   QStringList colDefList;
-  bool rowIdPk = _columnsModel->hasOnlyIntegerPK();
+  bool rowIdPk = _columnsModel->hasOneColumnPK();
   for(int i=0; i<_columnsModel->rowCount(); i++) {
     SqlColumn col = _columnsModel->columnByIndex(i);
     if (!rowIdPk && col.isPrimary())

@@ -43,9 +43,9 @@ void QueryHistoryForm::on_lvHistory_doubleClicked(const QModelIndex &index)
 
 void QueryHistoryForm::on_cmbProjects_currentIndexChanged(int index)
 {
+  Q_UNUSED(index)
   _selectedQuery.clear();
-  //TODO: Change to ui->cmbProjects->currentData().toInt()
-  int dbId = ui->cmbProjects->model()->index(index, 0).data(Qt::UserRole).toInt();
+  int dbId = ui->cmbProjects->currentData().toInt();
   ui->lvHistory->setModel(_ds->historyModel(dbId));
   ui->lvHistory->setModelColumn(2);
 }

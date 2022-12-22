@@ -35,7 +35,7 @@ signals:
   void error(QString message);
 
 protected:
-  //TODO: Should be static method
+  //Wrapper for all sql-queries (for debugging)
   QVariant execQuery(const QString &sql, QString resColumn);
   //Wrapper for all sql-queries (for debugging)
   bool execQuery(const QString &sql);

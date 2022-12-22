@@ -19,6 +19,8 @@ public:
   virtual ActionResult insertMe() Q_DECL_OVERRIDE;
   virtual ActionResult updateMe() Q_DECL_OVERRIDE;
 
+  virtual QString toDDL() const override;
+
   // DBTableItem interface
 public:
   virtual void reloadColumnsModel() Q_DECL_OVERRIDE;
