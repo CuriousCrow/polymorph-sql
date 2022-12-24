@@ -12,7 +12,9 @@ bool MysqlSequence::refresh()
 {
     QString sql = "ANALYZE TABLE `#caption#`";
     QString preparedSql = fillSqlPatternWithFields(sql);
-    SqlQueryHelper::execSql(preparedSql, connectionName());
+    //Problem of non-updating autoincrement values solved by information_schema_stats_expiry global parameter
+    //ANALYLE TABLE doesn`t work for InnoDB tables
+//    SqlQueryHelper::execSql(preparedSql, connectionName());
     sql = "SELECT AUTO_INCREMENT 'currentValue' FROM INFORMATION_SCHEMA.TABLES "
         "WHERE TABLE_SCHEMA='#databaseName#' AND TABLE_NAME='#caption#'";
     preparedSql = fillSqlPatternWithFields(sql);

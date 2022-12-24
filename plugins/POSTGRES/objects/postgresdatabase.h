@@ -13,10 +13,6 @@ public:
 
   // DBDatabaseItem interface
 protected:
-  virtual QString getViewListSql() const Q_DECL_OVERRIDE;
-  virtual QString getSequenceListSql() const Q_DECL_OVERRIDE;
-  virtual QString getTriggerListSql() const Q_DECL_OVERRIDE;
-  virtual QString getProcedureListSql() const Q_DECL_OVERRIDE;
 
   // DBDatabaseItem interface
 public:

@@ -75,26 +75,6 @@ DBObjectItem *DBDatabaseItem::folderByType(DBObjectItem::ItemType type)
   return nullptr;
 }
 
-QString DBDatabaseItem::getViewListSql() const
-{
-    return "";
-}
-
-QString DBDatabaseItem::getSequenceListSql() const
-{
-    return "";
-}
-
-QString DBDatabaseItem::getTriggerListSql() const
-{
-    return "";
-}
-
-QString DBDatabaseItem::getProcedureListSql() const
-{
-    return "";
-}
-
 bool DBDatabaseItem::reloadChildren()
 {
   if (!children().isEmpty())

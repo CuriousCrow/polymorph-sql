@@ -92,7 +92,7 @@ QString FirebirdTable::createTableQuery(QString table) const
 
 QString FirebirdTable::columnDef(const SqlColumn &col) const
 {
-  QString colDef = col.name() + " " + col.type();
+  QString colDef = col.name() + " \"" + col.type() + "\"";
   if (col.length() > 0)
     colDef.append("(" + QString::number(col.length()) + ")");
   if (col.notNull())

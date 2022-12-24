@@ -21,11 +21,6 @@ public:
 
   DBObjectItem* folderByType(DBObjectItem::ItemType type);
 protected:
-  virtual QString getViewListSql() const;
-  virtual QString getSequenceListSql() const;
-  virtual QString getTriggerListSql() const;
-  virtual QString getProcedureListSql() const;
-
   QString driver() const;
 
   // DBObjectItem interface

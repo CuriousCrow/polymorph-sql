@@ -119,7 +119,7 @@ void MysqlTableItem::reloadConstraintsModel()
 
 QString MysqlTableItem::createTableQuery(QString table) const
 {
-  QString createPattern = "CREATE TABLE %1 (%2);";
+  QString createPattern = "CREATE TABLE %1 (%2) AUTO_INCREMENT=0;";
   QStringList pkColList;
   QStringList colDefList;
   for(int i=0; i<_columnsModel->rowCount(); i++) {

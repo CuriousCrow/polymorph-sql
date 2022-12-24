@@ -30,6 +30,7 @@ void MysqlFolderItem::loadChildren()
       sql = "select table_name name from information_schema.tables where table_schema = '#databaseName#' and table_type = 'VIEW'";
       break;
     case DBObjectItem::Sequence:
+      setZeroStatsExpiry();
       sql = "SELECT TABLE_NAME name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#databaseName#' and AUTO_INCREMENT is not null";
       break;
     case DBObjectItem::Procedure:
@@ -95,4 +96,11 @@ void MysqlFolderItem::loadInformationSchemaTables()
     infoTable->setParent(this);
     infoTable->setParentUrl(objectUrl());
   }
+}
+
+void MysqlFolderItem::setZeroStatsExpiry()
+{
+  QString sql = "SET SESSION information_schema_stats_expiry=0";
+  ActionResult res = execSql(sql, connectionName());
+  qDebug() << "Set zero stats expiry time:" << res.isSuccess() << res.description();
 }

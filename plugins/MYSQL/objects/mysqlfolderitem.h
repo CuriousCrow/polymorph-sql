@@ -16,6 +16,7 @@ protected:
   virtual QString folderName(DBObjectItem::ItemType type) override;
 private:
   void loadInformationSchemaTables();
+  void setZeroStatsExpiry();
 };
 
 #endif // MYSQLFOLDERITEM_H
