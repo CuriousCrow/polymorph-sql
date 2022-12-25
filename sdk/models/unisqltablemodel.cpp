@@ -139,13 +139,13 @@ QString UniSqlTableModel::selectAllSql()
 {
   qDebug() << "Pattern rec:" << _patternRec;
   QString stmt;
-//  if (_patternRec.isEmpty()) {
-//    stmt = QString("SELECT * FROM %1").arg(tableName());
-//  }
-//  else {
+  if (_patternRec.isEmpty()) {
+    stmt = QString("SELECT * FROM %1").arg(tableName());
+  }
+  else {
     stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
                                             _patternRec, false);
-//  }
+  }
   QString where = _filterManager->whereClause();
 
   QString sql = Sql::concat(stmt, where);
@@ -159,10 +159,16 @@ bool UniSqlTableModel::select()
   if (!execQuery(selectAllSql())){
     return false;
   }
+
   beginResetModel();
   clearData();
   //Fills index and data map with query result data
   while (_query.next()){
+    //Pattern rec from first result record
+    if (_patternRec.isEmpty()) {
+      _patternRec = _query.record();
+    }
+
     qlonglong id = getId(_query);
     _rowIndex.append(id);
     _dataHash.insert(id, _query.record());
