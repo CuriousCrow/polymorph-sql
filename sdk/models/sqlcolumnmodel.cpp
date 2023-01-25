@@ -432,6 +432,16 @@ void SqlColumn::setAutoIncrement(bool autoIncrement)
   _colData.insert(F_AUTOINCREMENT, autoIncrement);
 }
 
+TypeKind SqlColumn::typeKind() const
+{
+  return (TypeKind)_colData.value(F_KIND).toInt();
+}
+
+void SqlColumn::setTypeKind(const TypeKind kind)
+{
+  _colData.insert(F_KIND, kind);
+}
+
 QVariant SqlColumn::valueByIndex(int idx)
 {
   switch (idx) {

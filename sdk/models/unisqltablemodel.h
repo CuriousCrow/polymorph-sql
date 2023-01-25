@@ -16,7 +16,7 @@ class UniSqlTableModel : public QAbstractTableModel
 {
   Q_OBJECT
 public:
-  UniSqlTableModel(QObject* parent = nullptr, QSqlDatabase db = QSqlDatabase());
+  UniSqlTableModel(QObject* parent = nullptr, QString connectionName = "");
   bool setTable(QString tableName);
   bool select();
   bool isDirty();
@@ -36,9 +36,10 @@ signals:
 
 protected:
   //Wrapper for all sql-queries (for debugging)
-  QVariant execQuery(const QString &sql, QString resColumn);
+//  QVariant execQuery(const QString &sql, QString resColumn);
   //Wrapper for all sql-queries (for debugging)
-  bool execQuery(const QString &sql);
+  bool execDDL(const QString &sql);
+  QSqlQuery execDML(const QString &sql);
 
   void clearData();
 
@@ -53,9 +54,11 @@ protected:
 
   virtual QString selectAllSql();
   virtual bool selectRowInTable(QSqlRecord &values);
-  virtual bool updateRowInTable(const QSqlRecord &oldValues, const QSqlRecord &newValues);
-  virtual bool insertRowInTable(const QSqlRecord &values);
+  virtual QSqlQuery updateRowInTable(const QSqlRecord &oldValues, const QSqlRecord &newValues);
+  virtual QSqlQuery insertRowInTable(const QSqlRecord &values);
   virtual bool deleteRowInTable(const QSqlRecord &values);
+
+  QSqlDatabase db();
 private:
   QString _tableName;
   QSqlIndex _primaryKey;
@@ -66,8 +69,7 @@ private:
   SqlFilterManager* _filterManager;
   QString _orderBy;
 
-  QSqlDatabase _db;
-  QSqlQuery _query;
+  QString _connectionName;
   QStringList _sqlErrors;
   qlonglong _genId = 1;
   qlonglong _tempId = -1;

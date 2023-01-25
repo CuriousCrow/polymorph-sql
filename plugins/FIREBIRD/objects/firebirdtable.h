@@ -5,6 +5,8 @@
 #include "core/dependencycontainer.h"
 #include "models/sqlcolumnmodel.h"
 
+
+
 class FirebirdTable : public DBTableItem
 {
   Q_OBJECT

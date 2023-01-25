@@ -52,7 +52,8 @@ void FirebirdTable::reloadColumnsModel()
                 "WHEN 13 THEN 'TIME' "
                 "WHEN 35 THEN 'TIMESTAMP' "
                 "WHEN 37 THEN 'VARCHAR' "
-                "ELSE 'UNKNOWN' END AS ctype "
+                "ELSE 'UNKNOWN' END AS ctype, "
+                "iif(POSITION('RDB$' IN f.rdb$field_name)>0, 0, 1) AS ctypekind "
                 "FROM RDB$RELATION_FIELDS r "
                 "LEFT JOIN RDB$FIELDS f ON r.RDB$FIELD_SOURCE = f.RDB$FIELD_NAME "
                 "WHERE r.RDB$RELATION_NAME='#caption#' ORDER BY r.RDB$FIELD_POSITION";
@@ -66,6 +67,8 @@ void FirebirdTable::reloadColumnsModel()
     col.setLength(query.value("clength").toInt());
     col.setPrecision(query.value("cprecision").toInt());
     col.setNotNull(query.value("cnot_null").toBool());
+    qDebug() << name << query.value("ctypekind").toInt();
+    col.setTypeKind((TypeKind)query.value("ctypekind").toInt());
     _columnsModel->addSqlColumn(col, true);
   }
 }
@@ -92,7 +95,9 @@ QString FirebirdTable::createTableQuery(QString table) const
 
 QString FirebirdTable::columnDef(const SqlColumn &col) const
 {
-  QString colDef = col.name() + " \"" + col.type() + "\"";
+  bool isDomain = col.typeKind() == TypeKind::Custom;
+  QString colType = isDomain ? "\"" + col.type() + "\"" : col.type();
+  QString colDef = col.name() + " " + colType;
   if (col.length() > 0)
     colDef.append("(" + QString::number(col.length()) + ")");
   if (col.notNull())
@@ -240,5 +245,3 @@ void FirebirdTable::reloadConstraintsModel()
     _constraintsModel->addRow(item);
   }
 }
-
-
