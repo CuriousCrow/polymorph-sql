@@ -57,6 +57,8 @@ protected:
   virtual QSqlQuery updateRowInTable(const QSqlRecord &oldValues, const QSqlRecord &newValues);
   virtual QSqlQuery insertRowInTable(const QSqlRecord &values);
   virtual bool deleteRowInTable(const QSqlRecord &values);
+
+  QSqlDatabase db();
 private:
   QString _tableName;
   QSqlIndex _primaryKey;
