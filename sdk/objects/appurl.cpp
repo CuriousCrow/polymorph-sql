@@ -78,6 +78,7 @@ QString AppUrl::connection() const
   }
   AppUrl dbUrl(*this);
   dbUrl.setPath();
+  qDebug() << "Connection name:" << dbUrl.toString();
   return dbUrl.toString();
 }
 

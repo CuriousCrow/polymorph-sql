@@ -17,6 +17,11 @@
 #define COL_IDX_DEFAULT 6
 #define COL_IDX_AUTOINCREMENT 7
 
+enum TypeKind {
+  Standard = 0,
+  Custom = 1
+};
+
 class SqlColumn
 {
 public:
@@ -47,6 +52,9 @@ public:
 
   bool autoIncrement() const;
   void setAutoIncrement(bool autoIncrement);
+
+  TypeKind typeKind() const;
+  void setTypeKind(const TypeKind kind);
 
   QVariant valueByIndex(int idx);
 

@@ -2,13 +2,13 @@
 #include <QSqlDriver>
 #include <QDebug>
 #include <QSqlError>
+#include <QSqlResult>
 #include <QColor>
 
-UniSqlTableModel::UniSqlTableModel(QObject *parent, QSqlDatabase db)
+UniSqlTableModel::UniSqlTableModel(QObject *parent, QString connectionName)
   : QAbstractTableModel(parent)
 {
-  _db = db.isValid() ? db : QSqlDatabase::database();
-  _query = QSqlQuery(_db);
+  _connectionName = connectionName;
   _filterManager = new SqlFilterManager(this);
   connect(_filterManager, &SqlFilterManager::filterChanged,
           this, &UniSqlTableModel::select);
@@ -17,10 +17,11 @@ UniSqlTableModel::UniSqlTableModel(QObject *parent, QSqlDatabase db)
 bool UniSqlTableModel::setTable(QString tableName)
 {
   _tableName = tableName;
-  QString preparedName = _db.driver()->escapeIdentifier(_tableName, QSqlDriver::TableName);
-  _patternRec = _db.record(preparedName);
+  QSqlDatabase db = QSqlDatabase::database(_connectionName);
+  QString preparedName = db.driver()->escapeIdentifier(_tableName, QSqlDriver::TableName);
+  _patternRec = db.record(preparedName);
   qDebug() << "setTable():" << _patternRec;
-  _primaryKey = _db.primaryIndex(preparedName);
+  _primaryKey = db.primaryIndex(preparedName);
   if (_primaryKey.count() == 1 && _primaryKey.field(0).type() == QVariant::Int) {
     _intPkField = _primaryKey.fieldName(0);
   }
@@ -30,28 +31,33 @@ bool UniSqlTableModel::setTable(QString tableName)
   return true;
 }
 
-bool UniSqlTableModel::execQuery(const QString &sql)
+bool UniSqlTableModel::execDDL(const QString &sql)
 {
-  bool result = _query.exec(sql);
-  qDebug() << "Execute query: " << sql;
-  if (!result){
-    QString errorMessage = _query.lastError().databaseText();
+  return !execDML(sql).lastError().isValid();
+}
+
+QSqlQuery UniSqlTableModel::execDML(const QString &sql)
+{
+  QSqlDatabase db = QSqlDatabase::database(_connectionName);
+  QSqlQuery result = db.exec(sql);
+  qDebug() << QString("UniSqlTableModel::execQuery: %1").arg(sql);
+  if (result.lastError().isValid()){
+    QString errorMessage = result.lastError().databaseText();
     _sqlErrors.append(errorMessage);
-    qDebug() << "Sql:" << sql;
-    qDebug() << "Error: " << errorMessage;
+    qDebug() << "UniSqlTableModel::sqlError: " << errorMessage;
   }
   return result;
 }
 
-QVariant UniSqlTableModel::execQuery(const QString &sql, QString resColumn)
-{
-  if (execQuery(sql) && _query.next()){
-    return _query.value(resColumn);
-  }
-  else {
-    return QVariant();
-  }
-}
+//QVariant UniSqlTableModel::execQuery(const QString &sql, QString resColumn)
+//{
+//  if (execQuery(sql) && _query.next()){
+//    return _query.value(resColumn);
+//  }
+//  else {
+//    return QVariant();
+//  }
+//}
 
 void UniSqlTableModel::clearData()
 {
@@ -76,7 +82,8 @@ bool UniSqlTableModel::supportsReturning()
 {
   QStringList list;
   list << "QIBASE" << "QPSQL";
-  return list.contains(_db.driverName());
+  QSqlDatabase db = QSqlDatabase::database(_connectionName);
+  return list.contains(db.driverName());
 }
 
 qlonglong UniSqlTableModel::getId(QSqlQuery &query)
@@ -143,7 +150,8 @@ QString UniSqlTableModel::selectAllSql()
     stmt = QString("SELECT * FROM %1").arg(tableName());
   }
   else {
-    stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
+    QSqlDatabase db = QSqlDatabase::database(_connectionName);
+    stmt = db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
                                             _patternRec, false);
   }
   QString where = _filterManager->whereClause();
@@ -156,22 +164,23 @@ QString UniSqlTableModel::selectAllSql()
 
 bool UniSqlTableModel::select()
 {
-  if (!execQuery(selectAllSql())){
+  QSqlQuery query = execDML(selectAllSql());
+  if (query.lastError().isValid()){
     return false;
   }
 
   beginResetModel();
   clearData();
   //Fills index and data map with query result data
-  while (_query.next()){
+  while (query.next()){
     //Pattern rec from first result record
     if (_patternRec.isEmpty()) {
-      _patternRec = _query.record();
+      _patternRec = query.record();
     }
 
-    qlonglong id = getId(_query);
+    qlonglong id = getId(query);
     _rowIndex.append(id);
-    _dataHash.insert(id, _query.record());
+    _dataHash.insert(id, query.record());
   }
   endResetModel();
 
@@ -198,16 +207,16 @@ bool UniSqlTableModel::submitById(qlonglong id)
   //This row was not changed actually
   if (!_changesHash.contains(id))
     return true;
-  bool resultOk = false;
+  QSqlQuery query;
   //Insert action
   if (id < 0) {
-    resultOk = insertRowInTable(_changesHash.value(id));
-    if (resultOk) {
+    query = insertRowInTable(_changesHash.value(id));
+    if (!query.lastError().isValid()) {
       qlonglong newId = 0;
       if (supportsReturning()) {
-        _query.next();
-        newId = getId(_query);
-        _dataHash.insert(newId, _query.record());
+        query.next();
+        newId = getId(query);
+        _dataHash.insert(newId, query.record());
       }
       else {
         newId = genId();
@@ -225,8 +234,8 @@ bool UniSqlTableModel::submitById(qlonglong id)
   }
   //Delete action
   else if (_changesHash.value(id).isEmpty()) {
-    resultOk = deleteRowInTable(_dataHash.value(id));
-    if (resultOk) {
+    bool resOk = deleteRowInTable(_dataHash.value(id));
+    if (resOk) {
       int delRow = _rowIndex.indexOf(id);
       beginRemoveRows(QModelIndex(), delRow, delRow);
       _rowIndex.removeAt(delRow);
@@ -237,27 +246,28 @@ bool UniSqlTableModel::submitById(qlonglong id)
   }
   //Update action
   else {
-    resultOk = updateRowInTable(_dataHash.value(id), _changesHash.value(id));
-    if (resultOk) {
+    query = updateRowInTable(_dataHash.value(id), _changesHash.value(id));
+    if (!query.lastError().isValid()) {
       _dataHash.insert(id, _changesHash.value(id));
       _changesHash.remove(id);
     }
   }
-  return resultOk;
+  return !query.lastError().isValid();
 }
 
 bool UniSqlTableModel::selectRowInTable(QSqlRecord &values)
 {
   QSqlRecord whereValues = values.keyValues(_primaryKey);
-  QString stmt = _db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
+  QSqlDatabase db = QSqlDatabase::database(_connectionName);
+  QString stmt = db.driver()->sqlStatement(QSqlDriver::SelectStatement, tableName(),
                                                    values, false);
-  QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
+  QString where = db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
                                                      whereValues, false);
   QString sql = Sql::concat(stmt, where);
-  bool result = execQuery(sql);
+  QSqlQuery query = execDML(sql);
   //Query was successfully executed and returns a record
-  if (result && _query.next()){
-    QSqlRecord resRec = _query.record();
+  if (!query.lastError().isValid() && query.next()){
+    QSqlRecord resRec = query.record();
     for(int i = 0; i < resRec.count(); i++){
       values.setValue(i, resRec.value(i));
     }
@@ -266,19 +276,20 @@ bool UniSqlTableModel::selectRowInTable(QSqlRecord &values)
   return false;
 }
 
-bool UniSqlTableModel::updateRowInTable(const QSqlRecord &oldValues, const QSqlRecord &newValues)
+QSqlQuery UniSqlTableModel::updateRowInTable(const QSqlRecord &oldValues, const QSqlRecord &newValues)
 {
   QSqlRecord whereValues = noPk() ? oldValues : oldValues.keyValues(_primaryKey);
 
-  QString stmt = _db.driver()->sqlStatement(QSqlDriver::UpdateStatement, tableName(),
+  QSqlDatabase db = QSqlDatabase::database(_connectionName);
+  QString stmt = db.driver()->sqlStatement(QSqlDriver::UpdateStatement, tableName(),
                                             newValues, false);
-  QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
+  QString where = db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
                                              whereValues, false);
   QString sql = Sql::concat(stmt, where);
-  return execQuery(sql);
+  return execDML(sql);
 }
 
-bool UniSqlTableModel::insertRowInTable(const QSqlRecord &values)
+QSqlQuery UniSqlTableModel::insertRowInTable(const QSqlRecord &values)
 {
   QSqlRecord vals(values);
   //Remove fields with NULL-values
@@ -286,23 +297,25 @@ bool UniSqlTableModel::insertRowInTable(const QSqlRecord &values)
     if (!values.field(idx).defaultValue().isNull() && values.field(idx).value().isNull())
       vals.remove(idx);
   }
-  QString stmt = _db.driver()->sqlStatement(QSqlDriver::InsertStatement, tableName(),
+  QSqlDatabase db = QSqlDatabase::database(_connectionName);
+  QString stmt = db.driver()->sqlStatement(QSqlDriver::InsertStatement, tableName(),
                                                    vals, false);
   if (supportsReturning()) {
     stmt.append(Sql::sp()).append("RETURNING").append(Sql::sp()).append(fields());
   }
-  return execQuery(stmt);
+  return execDML(stmt);
 }
 
 bool UniSqlTableModel::deleteRowInTable(const QSqlRecord &values)
 {
   QSqlRecord whereValues = noPk() ? values : values.keyValues(_primaryKey);
-  QString stmt = _db.driver()->sqlStatement(QSqlDriver::DeleteStatement, tableName(),
+  QSqlDatabase db = QSqlDatabase::database(_connectionName);
+  QString stmt = db.driver()->sqlStatement(QSqlDriver::DeleteStatement, tableName(),
                                             values, false);
-  QString where = _db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
+  QString where = db.driver()->sqlStatement(QSqlDriver::WhereStatement, tableName(),
                                              whereValues, false);
   QString sql = Sql::concat(stmt, where);
-  return execQuery(sql);
+  return execDDL(sql);
 }
 
 
@@ -335,7 +348,8 @@ void UniSqlTableModel::orderBy(QString field, Qt::SortOrder direction)
 
 QString UniSqlTableModel::tableName()
 {
-  return _db.driver()->escapeIdentifier(_tableName, QSqlDriver::TableName);
+  QSqlDatabase db = QSqlDatabase::database(_connectionName);
+  return db.driver()->escapeIdentifier(_tableName, QSqlDriver::TableName);
 }
 
 QString UniSqlTableModel::fieldName(int idx)

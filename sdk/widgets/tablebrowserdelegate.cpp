@@ -10,7 +10,7 @@
 TableBrowserDelegate::TableBrowserDelegate(DBSelectableItem* item, QObject *parent)
   : QStyledItemDelegate(parent), _tableItem(item)
 {
-  _foreignTable = new UniSqlTableModel(this, QSqlDatabase::database(item->connectionName()));
+  _foreignTable = new UniSqlTableModel(this, item->connectionName());
 
   if (item->type() == DBObjectItem::Table) {
       DBTableItem* tableItem = static_cast<DBTableItem*>(item);

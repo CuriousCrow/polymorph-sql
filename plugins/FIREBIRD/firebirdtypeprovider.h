@@ -6,6 +6,16 @@
 #include "core/lknowledgebase.h"
 #include <QObject>
 
+class FirebirdDomainType : public BaseDBType
+{
+public:
+  FirebirdDomainType(QString name, QString title = "");
+  // DBType interface
+public:
+  virtual bool isUserType() const override;
+  virtual QString valueToSql(const QVariant &value) override;
+};
+
 class FirebirdTypeProvider : public BaseTypeProvider
 {
   Q_OBJECT
