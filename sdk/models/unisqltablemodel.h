@@ -16,7 +16,7 @@ class UniSqlTableModel : public QAbstractTableModel
 {
   Q_OBJECT
 public:
-  UniSqlTableModel(QObject* parent = nullptr, QString connectionName = "");
+  UniSqlTableModel(QObject* parent = nullptr, QString connectionName = QSqlDatabase::defaultConnection);
   bool setTable(QString tableName);
   bool select();
   bool isDirty();
