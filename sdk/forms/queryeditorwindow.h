@@ -14,6 +14,7 @@
 #include "models/lactiveconnectionmodel.h"
 #include "models/ldbobjectmodel.h"
 #include "models/ldbobjecttablemodel.h"
+#include "models/lsqlquerymodel.h"
 #include "models/jointdbojbectmodel.h"
 #include "models/queryparamtablemodel.h"
 #include "tools/lsqlsyntaxhighlighter.h"
@@ -59,7 +60,7 @@ private slots:
 private:
   Ui::QueryEditorWindow *ui;
   LActiveConnectionModel* _activeConnectionModel;
-  QSqlQueryModel* _resultModel;
+  LSqlQueryModel* _resultModel;
   DataStore* _ds;
   QString connectionName();
   QString dbUrl();

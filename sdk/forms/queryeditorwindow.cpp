@@ -22,7 +22,7 @@ QueryEditorWindow::QueryEditorWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  _resultModel = new QSqlQueryModel(this);
+  _resultModel = new LSqlQueryModel(this);
   ui->tvResultSet->setModel(_resultModel);
 
   connect(ui->cmbDatabase, SIGNAL(currentIndexChanged(int)),
@@ -55,7 +55,7 @@ void QueryEditorWindow::inject_by_ds(DataStore *ds)
 void QueryEditorWindow::on_aExecuteQuery_triggered()
 {
   if (ui->cmbDatabase->currentIndex() < 0) {
-      updateStatusMessage(tr("Database need to be selected"));
+      updateStatusMessage(tr("Database needs to be selected"));
       return;
   }
   QString text = getActiveText();
@@ -66,7 +66,7 @@ void QueryEditorWindow::on_aExecuteQuery_triggered()
 
   QSqlQuery query = SqlQueryHelper::execSql(text, connectionName());
   if (!query.lastError().isValid()){
-    _resultModel->setQuery(query);
+    _resultModel->reload(query);
     ui->tabWidget->setCurrentWidget(ui->tabResult);
   }
   if (query.lastError().isValid()){
@@ -212,4 +212,32 @@ void QueryEditorWindow::on_aUpdateParams_triggered()
         paramMap.insert(paramName, "");
     }
     ui->paramsForm->setParams(paramMap);
+}
+
+void QueryEditorWindow::on_aSelectAndDelete_triggered()
+{
+  QString sql;
+  QSqlDatabase db = QSqlDatabase::database(connectionName());
+  {
+    sql = "SELECT * FROM TEST";
+    QSqlQuery query = db.exec(sql);
+    qDebug() << "Result1:" << query.lastError().databaseText();
+  }
+
+  {
+    sql = "DROP TABLE TEST";
+    QSqlQuery query = db.exec(sql);
+    qDebug() << "Result2:" << query.lastError().databaseText();
+  }
+}
+
+void QueryEditorWindow::on_aCreate_triggered()
+{
+  QString sql;
+  QSqlDatabase db = QSqlDatabase::database(connectionName());
+  {
+    sql = "CREATE TABLE TEST (ID BIGINT NOT NULL, CONSTRAINT pk_TEST PRIMARY KEY (ID))";
+    QSqlQuery query = db.exec(sql);
+    qDebug() << "Result:" << query.lastError().databaseText();
+  }
 }
