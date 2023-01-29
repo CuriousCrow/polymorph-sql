@@ -213,31 +213,3 @@ void QueryEditorWindow::on_aUpdateParams_triggered()
     }
     ui->paramsForm->setParams(paramMap);
 }
-
-void QueryEditorWindow::on_aSelectAndDelete_triggered()
-{
-  QString sql;
-  QSqlDatabase db = QSqlDatabase::database(connectionName());
-  {
-    sql = "SELECT * FROM TEST";
-    QSqlQuery query = db.exec(sql);
-    qDebug() << "Result1:" << query.lastError().databaseText();
-  }
-
-  {
-    sql = "DROP TABLE TEST";
-    QSqlQuery query = db.exec(sql);
-    qDebug() << "Result2:" << query.lastError().databaseText();
-  }
-}
-
-void QueryEditorWindow::on_aCreate_triggered()
-{
-  QString sql;
-  QSqlDatabase db = QSqlDatabase::database(connectionName());
-  {
-    sql = "CREATE TABLE TEST (ID BIGINT NOT NULL, CONSTRAINT pk_TEST PRIMARY KEY (ID))";
-    QSqlQuery query = db.exec(sql);
-    qDebug() << "Result:" << query.lastError().databaseText();
-  }
-}
