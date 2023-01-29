@@ -130,8 +130,13 @@ QString FirebirdProcedure::argsFromModel(VariantMapTableModel *argModel) const
 {
   QStringList args;
   for(int row = 0; row < argModel->rowCount(); row++) {
-    QString line = argModel->data(row, F_NAME).toString() + " "
-      + argModel->data(row, F_TYPE).toString();
+    QString type = argModel->data(row, F_TYPE).toString();
+    QString name = argModel->data(row, F_NAME).toString();
+    int length = argModel->data(row, F_LENGTH).toInt();
+
+    QString line = name + " " + type;
+    if (length > 0)
+      line += QString("(%1)").arg(QString::number(length));
     args.append(line);
   }
   return args.join(", ");
@@ -171,5 +176,5 @@ bool ArgumentTableModel::hasLength(int row) const
 {
   QString typeName = index(row, COL_TYPE).data().toString();
   DBType* type = _firebirdTypeProvider->type(typeName);
-  return type->hasLength();
+  return type ? type->hasLength() : false;
 }
