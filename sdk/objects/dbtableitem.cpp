@@ -75,9 +75,7 @@ void DBTableItem::setSystem(bool system)
 
 ActionResult DBTableItem::deleteMe()
 {
-  QString sql = "drop table %1";
-  QString preparedSql = sql.arg(identifier());
-  return execSql(preparedSql, connectionName());
+  return execSql(dropDDL(), connectionName());
 }
 
 bool DBTableItem::refresh()
@@ -142,4 +140,10 @@ QString DBTableItem::toDML() const
     dmlList.append(insertSql + SQL_DELIMITER);
   }
   return dmlList.join(FILE_DELIMITER);
+}
+
+QString DBTableItem::dropDDL() const
+{
+  QString sql = "drop table %1";
+  return sql.arg(identifier());
 }

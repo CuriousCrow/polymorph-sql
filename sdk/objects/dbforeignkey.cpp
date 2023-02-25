@@ -19,11 +19,15 @@ int DBForeignKey::type() const
 
 ActionResult DBForeignKey::insertMe()
 {
-  QString sql = "alter table #table# add constraint #caption# "
-                "foreign key (#column#) references #reftable#(#refcolumn#) "
-                "on update #onUpdate# on delete #onDelete#";
-  QString preparedSql = fillSqlPatternWithFields(sql);
-  return execSql(preparedSql, connectionName());
+  return execSql(toDDL(), connectionName());
+}
+
+QString DBForeignKey::toDDL() const
+{
+    QString sql = "alter table #table# add constraint #caption# "
+                  "foreign key (#column#) references #reftable#(#refcolumn#) "
+                  "on update #onUpdate# on delete #onDelete#";
+    return fillSqlPatternWithFields(sql);
 }
 
 

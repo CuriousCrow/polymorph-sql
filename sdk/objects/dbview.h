@@ -25,6 +25,7 @@ public:
   virtual ActionResult deleteMe() Q_DECL_OVERRIDE;
 
   virtual QString toDDL() const Q_DECL_OVERRIDE;
+  virtual QString dropDDL() const Q_DECL_OVERRIDE;
 };
 
 #endif // DBVIEW_H

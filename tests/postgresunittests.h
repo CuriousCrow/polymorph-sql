@@ -21,6 +21,8 @@ private slots:
   void postgresViewTest();
   void postgresTableTest();
   void postgresPrimaryKeyTest();
+  void postgresUniqueTest();
+  void postgresSequenceTest();
 //  void postgresForeignKeyTest();
 
 private:

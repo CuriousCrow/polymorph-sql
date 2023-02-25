@@ -8,7 +8,7 @@ class DBPrimaryKey : public DBConstraintItem
 {
   Q_OBJECT
 public:
-  DBPrimaryKey(QString caption, QObject* parent = nullptr);
+  Q_INVOKABLE DBPrimaryKey(QString caption = "", QObject* parent = nullptr);
 
   // DBObjectItem interface
 public:

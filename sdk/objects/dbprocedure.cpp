@@ -47,7 +47,11 @@ int DBProcedureItem::type() const
 
 ActionResult DBProcedureItem::deleteMe()
 {
+  return execSql(dropDDL(), connectionName());
+}
+
+QString DBProcedureItem::dropDDL() const
+{
   QString sql = "DROP PROCEDURE #identifier#";
-  QString preparedSql = fillSqlPatternWithFields(sql);
-  return execSql(preparedSql, connectionName());
+  return fillSqlPatternWithFields(sql);
 }
