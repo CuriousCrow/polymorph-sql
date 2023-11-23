@@ -145,8 +145,7 @@ void QueryEditorWindow::on_aExecScript_triggered()
     QSqlQuery query(sql.trimmed(), QSqlDatabase::database(connectionName()));
     if (!query.lastError().isValid()){
       success++;
-    }
-    if (query.lastError().isValid()){
+    } else {
       failed++;
       qDebug() << "Error:" << query.lastError().text();
     }

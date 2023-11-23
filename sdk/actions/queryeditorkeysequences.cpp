@@ -20,8 +20,8 @@ QSet<KeySequence> QETestHandler::keySequences()
 bool QETestHandler::handle(const KeySequence &keySequence)
 {
   Q_UNUSED(keySequence)
-  qDebug() << "Hello from Test key sequence handler!";
-  return true;
+//  qDebug() << "Hello from Test key sequence handler!";
+  return false;
 }
 
 
