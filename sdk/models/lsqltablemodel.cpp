@@ -99,11 +99,11 @@ QString LSqlTableModel::fieldName(int col) const
   return _patternRec.fieldName(col);
 }
 
-QVariant::Type LSqlTableModel::fieldType(int col) const
+QMetaType::Type LSqlTableModel::fieldType(int col) const
 {
   if (col < 0 || col >= _patternRec.count())
-    return QVariant::Invalid;
-  return _patternRec.field(col).type();
+    return QMetaType::UnknownType;
+  return QMetaType::Type(_patternRec.field(col).metaType().id());
 }
 
 bool LSqlTableModel::isDirty(const QModelIndex &index) const
@@ -241,8 +241,8 @@ bool LSqlTableModel::setData(const QModelIndex &index, const QVariant &value, in
     LSqlRecord &rec = _recMap[_recIndex.at(index.row())];
 
     QVariant oldVal = rec.value(index.column());
-    QVariant::Type fieldType = _patternRec.field(index.column()).type();
-    QVariant newVal = sqlValue(value, fieldType);
+    QMetaType fieldType = _patternRec.field(index.column()).metaType();
+    QVariant newVal = sqlValue(value, QMetaType::Type(fieldType.id()));
     if (oldVal != newVal || oldVal.isNull() != newVal.isNull()){
       qDebug() << "Record" << index.row() << "updated:"
                << oldVal << "->" << newVal;
@@ -495,14 +495,16 @@ bool LSqlTableModel::isNull(const QModelIndex &index)
   return field.isNull();
 }
 
-QVariant LSqlTableModel::sqlValue(QVariant val, QVariant::Type type)
+QVariant LSqlTableModel::sqlValue(QVariant val, QMetaType::Type type)
 {
-  QVariant varVal(type);
+  QVariant varVal;
+  varVal.convert(QMetaType(type));
+
   if (!val.isValid())
     return varVal;
 
   if (val.toString().isEmpty()) {
-    if (type == QVariant::String)
+    if (type == QMetaType::QString)
       return "";
     else
       return varVal;

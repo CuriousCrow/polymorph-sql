@@ -13,7 +13,7 @@ bool QETestHandler::supportsExtensionPoint(const ExtensionPoint &extensionPoint)
 QSet<KeySequence> QETestHandler::keySequences()
 {
   QSet<KeySequence> sequences;
-  sequences << KeySequence(Qt::CTRL + Qt::Key_G);
+  sequences << KeySequence(static_cast<QKeySequence>(Qt::CTRL | Qt::Key_G));
   return sequences;
 }
 
@@ -37,7 +37,7 @@ bool ToggleQueryCommentsHandler::supportsExtensionPoint(const ExtensionPoint &ex
 QSet<KeySequence> ToggleQueryCommentsHandler::keySequences()
 {
   QSet<KeySequence> sequences;
-  sequences << KeySequence(Qt::CTRL + Qt::Key_Slash);
+  sequences << KeySequence(static_cast<QKeySequence>(Qt::CTRL | Qt::Key_Slash));
   return sequences;
 }
 
@@ -95,7 +95,7 @@ GenerateTableAliasHandler::GenerateTableAliasHandler() : QueryEditorKeyHandler()
 QSet<KeySequence> GenerateTableAliasHandler::keySequences()
 {
   QSet<KeySequence> sequences;
-  sequences << KeySequence(Qt::CTRL + Qt::Key_T);
+  sequences << KeySequence(static_cast<QKeySequence>(Qt::CTRL | Qt::Key_T));
   return sequences;
 }
 

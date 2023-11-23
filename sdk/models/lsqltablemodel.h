@@ -51,7 +51,7 @@ public:
 
   int fieldIndex(QString fieldName) const;
   QString fieldName(int col) const;
-  QVariant::Type fieldType(int col) const;
+  QMetaType::Type fieldType(int col) const;
   bool isDirty(const QModelIndex & index) const;
   bool isDirty() const;
   void setCacheAction(qlonglong recId, LSqlRecord::CacheAction action);
@@ -110,7 +110,7 @@ private:
   bool submitRecord(LSqlRecord &rec);
   bool reloadRow(int row);
   bool isNull(const QModelIndex &index);
-  QVariant sqlValue(QVariant val, QVariant::Type type);
+  QVariant sqlValue(QVariant val, QMetaType::Type type);
   //Get next sequence value
   qlonglong nextSequenceNumber();
   bool returningInsertMode();
