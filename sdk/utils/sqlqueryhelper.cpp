@@ -20,9 +20,8 @@ QSqlQuery SqlQueryHelper::execSql(QString sql, QString connectionName)
   qDebug() << QString("SQL(%1): %2").arg(connectionName, sql);
 #endif
   QSqlQuery sqlResult(sql, QSqlDatabase::database(connectionName));
-  auto resOk = sqlResult.exec();
 #ifdef DEBUG_SQL
-  if (!resOk){
+  if (sqlResult.lastError().isValid()){
     qWarning() << "Error" << sqlResult.lastError().text();
   }
 #endif
