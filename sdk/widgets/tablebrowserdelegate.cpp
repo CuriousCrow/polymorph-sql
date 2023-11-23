@@ -27,8 +27,12 @@ TableBrowserDelegate::TableBrowserDelegate(DBSelectableItem* item, QObject *pare
           QString refTable = item->fieldValue(F_REFTABLE).toString();
 
           int colIdx = tableItem->columnsModel()->rowByName(column);
-          qDebug() << "Foreign key:" << colIdx << column << refTable << refColumn;
-          _foreignKeys.insert(colIdx, refTable);
+          if (colIdx >= 0) {
+            qDebug() << "Foreign key:" << colIdx << column << refTable << refColumn;
+            _foreignKeys.insert(colIdx, refTable);
+          } else {
+            qWarning() << "Can't define Foreign Key" << name << "column";
+          }
         }
       }
   }

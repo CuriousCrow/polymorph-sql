@@ -16,9 +16,13 @@ int DBCheckConstraint::type() const
 
 ActionResult DBCheckConstraint::insertMe()
 {
+  return execSql(toDDL(), connectionName());
+}
+
+QString DBCheckConstraint::toDDL() const
+{
   QString sql = "alter table #table# add constraint #caption# check (#expression#)";
-  QString preparedSql = fillSqlPatternWithFields(sql);
-  return execSql(preparedSql, connectionName());
+  return fillSqlPatternWithFields(sql);
 }
 
 bool DBCheckConstraint::refresh()

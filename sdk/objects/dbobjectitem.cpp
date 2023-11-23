@@ -328,7 +328,17 @@ bool DBObjectItem::inStatus(QString status) const
 
 QString DBObjectItem::toDDL() const
 {
-  return "";
+    return "";
+}
+
+QString DBObjectItem::dropDDL() const
+{
+    return "";
+}
+
+QString DBObjectItem::updateDDL() const
+{
+    return "";
 }
 
 QString DBObjectItem::toDML() const

@@ -212,7 +212,7 @@ void MainWindow::removeTabsByItemUrl(QString url)
   qDebug() << "Tabs total:" << tabCount;
   for (int i=tabCount-1; i>=0; i--){
     qDebug() << "Check tab:" << ui->tabWidget->widget(i)->objectName();
-    if (ui->tabWidget->widget(i)->objectName().endsWith(url, Qt::CaseInsensitive))
+    if (ui->tabWidget->widget(i)->objectName().startsWith(url, Qt::CaseInsensitive))
       removeTabByIndex(i);
   }
 }

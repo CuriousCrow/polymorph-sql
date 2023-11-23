@@ -99,6 +99,8 @@ public:
   bool inStatus(QString status) const;
   //SQL export
   virtual QString toDDL() const;
+  virtual QString dropDDL() const;
+  virtual QString updateDDL() const;
   virtual QString toDML() const;
 
   virtual QStringList validate();

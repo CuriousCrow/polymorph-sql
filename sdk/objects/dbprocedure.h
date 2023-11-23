@@ -20,6 +20,7 @@ public:
   virtual bool reloadChildren() Q_DECL_OVERRIDE;
   virtual int type() const Q_DECL_OVERRIDE;
   virtual ActionResult deleteMe() override;
+  virtual QString dropDDL() const Q_DECL_OVERRIDE;
 };
 
 #endif // DBPROCEDURE_H

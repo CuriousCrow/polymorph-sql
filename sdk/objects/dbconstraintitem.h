@@ -16,6 +16,7 @@ public:
   virtual int type() const Q_DECL_OVERRIDE;
   virtual ActionResult deleteMe() Q_DECL_OVERRIDE;
   virtual ActionResult updateMe() Q_DECL_OVERRIDE;
+
 protected:
   virtual QString fillSqlPatternWithFields(QString pattern) const Q_DECL_OVERRIDE;
 };

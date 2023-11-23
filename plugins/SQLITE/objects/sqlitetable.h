@@ -14,6 +14,7 @@ public:
     INJECT_INITIALIZE(SqlColumnModel*, _columnsModel, baseColumnModel)
 
     virtual void reloadColumnsModel() Q_DECL_OVERRIDE;
+    virtual void reloadConstraintsModel() Q_DECL_OVERRIDE;
     // DBObjectItem interface
 public:
     virtual ActionResult insertMe() Q_DECL_OVERRIDE;

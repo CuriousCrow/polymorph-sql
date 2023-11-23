@@ -15,13 +15,17 @@ int DBUniqueConstraint::type() const
 
 ActionResult DBUniqueConstraint::insertMe()
 {
-  QString sql = "alter table #table# add constraint #caption# unique (#column#)";
-  QString preparedSql = fillSqlPatternWithFields(sql);
-  return execSql(preparedSql, connectionName());
+  return execSql(toDDL(), connectionName());
 }
-
 
 bool DBUniqueConstraint::refresh()
 {
   return false;
+}
+
+QString DBUniqueConstraint::toDDL() const
+{
+  QString sql = "alter table #table# add constraint #caption# unique (#column#)";
+  QString preparedSql = fillSqlPatternWithFields(sql);
+  return preparedSql;
 }

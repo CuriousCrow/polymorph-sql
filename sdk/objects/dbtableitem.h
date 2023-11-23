@@ -43,7 +43,9 @@ public:
   virtual ActionResult updateMe() Q_DECL_OVERRIDE;
   virtual ActionResult deleteMe() Q_DECL_OVERRIDE;
   virtual bool refresh() Q_DECL_OVERRIDE;
+
   virtual QString toDML() const Q_DECL_OVERRIDE;
+  virtual QString dropDDL() const Q_DECL_OVERRIDE;
 
   virtual bool isModified() const Q_DECL_OVERRIDE;
 protected:
