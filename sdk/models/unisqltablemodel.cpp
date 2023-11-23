@@ -22,7 +22,7 @@ bool UniSqlTableModel::setTable(QString tableName)
   _patternRec = conn.record(preparedName);
   qDebug() << "setTable():" << _patternRec;
   _primaryKey = conn.primaryIndex(preparedName);
-  if (_primaryKey.count() == 1 && _primaryKey.field(0).type() == QVariant::Int) {
+  if (_primaryKey.count() == 1 && _primaryKey.field(0).typeID() == QMetaType::Int) {
     _intPkField = _primaryKey.fieldName(0);
   }
   else {

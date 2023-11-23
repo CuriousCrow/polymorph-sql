@@ -154,9 +154,9 @@ QString SqlFilter::toString() const
 
 QString SqlFilter::strVal(QVariant value) const
 {
-  switch (value.type()) {
-  case QVariant::Int:
-  case QVariant::Bool:
+  switch (value.typeId()) {
+  case QMetaType::Bool:
+  case QMetaType::Int:
     return value.toString();
   default:
     return "'" + value.toString() + "'";

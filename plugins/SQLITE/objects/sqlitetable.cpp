@@ -28,14 +28,14 @@ void SqliteTableItem::reloadColumnsModel()
   for (int i=0; i<sqlColumns.count(); i++) {
     QSqlField field = sqlColumns.field(i);
     QString colType = NoType;
-    switch (field.type()) {
-    case QVariant::String:
+    switch (field.typeID()) {
+    case QMetaType::QString:
       colType = "TEXT";
       break;
-    case QVariant::Int:
+    case QMetaType::Int:
       colType = "INTEGER";
       break;
-    case QVariant::Double:
+    case QMetaType::Double:
       colType = "REAL";
       break;
     default:
