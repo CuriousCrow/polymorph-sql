@@ -52,6 +52,34 @@ void SqliteTableItem::reloadColumnsModel()
   }
 }
 
+void SqliteTableItem::reloadConstraintsModel()
+{
+  //New table (not yet commited)
+  if (connectionName().isEmpty())
+    return;
+  _constraintsModel->clear();
+  QString sql =
+      "select sql \"name\" from sqlite_master\n"
+      "where type = 'table' and name = '#caption#'";
+  QString preparedSql = fillSqlPatternWithFields(sql);
+  QSqlQuery query = SqlQueryHelper::execSql(preparedSql, connectionName());
+  int fakeId = 1;
+  if (query.next()) {
+    QString sql = query.value(F_NAME).toString();
+
+    sql = sql.section('(', 1);
+    QStringList words = sql.split(' ', Qt::SkipEmptyParts);
+    int pkIdx = words.indexOf("PRIMARY");
+    if (pkIdx >= 2) {
+      QVariantMap item;
+      item.insert(F_ID, fakeId);
+      item.insert(F_NAME, words.at(pkIdx - 2));
+      item.insert(F_TYPE, "PRIMARY KEY");
+      _constraintsModel->addRow(item);
+    }
+  }
+}
+
 ActionResult SqliteTableItem::insertMe()
 {
   return execSql(toDDL(), connectionName());
