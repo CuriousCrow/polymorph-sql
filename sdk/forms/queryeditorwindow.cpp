@@ -142,8 +142,7 @@ void QueryEditorWindow::on_aExecScript_triggered()
   int failed = 0;
   QStringList queries = getActiveText().split(";");
   foreach(QString sql, queries) {
-    QSqlQuery query =
-        QSqlDatabase::database(connectionName()).exec(sql.trimmed());
+    QSqlQuery query(sql.trimmed(), QSqlDatabase::database(connectionName()));
     if (!query.lastError().isValid()){
       success++;
     }

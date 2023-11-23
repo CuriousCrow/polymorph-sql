@@ -134,9 +134,8 @@ ActionResult DBDatabaseItem::createDatabase()
 
     if (con.open()) {
       QString sql = "CREATE DATABASE \"%1\"";
-      QSqlQuery query = con.exec(sql.arg(fieldValue(F_DATABASE_NAME).toString()));
-
-      if (query.lastError().isValid()) {
+      QSqlQuery query(sql.arg(fieldValue(F_DATABASE_NAME).toString()), con);
+      if (!query.exec()) {
         res = ActionResult(ERR_QUERY_ERROR, "Cannot create database " + query.lastError().databaseText());
       }
     }
@@ -161,7 +160,7 @@ ActionResult DBDatabaseItem::dropDatabase()
 
     if (con.open()) {
       QString sql = "DROP DATABASE \"%1\"";
-      QSqlQuery query = con.exec(sql.arg(fieldValue(F_DATABASE_NAME).toString()));
+      QSqlQuery query(sql.arg(fieldValue(F_DATABASE_NAME).toString()), con);
       if (query.lastError().isValid()) {
         res = ActionResult(ERR_QUERY_ERROR, "Cannot drops database: " + query.lastError().databaseText());
       }

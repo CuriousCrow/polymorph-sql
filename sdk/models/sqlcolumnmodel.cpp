@@ -341,17 +341,6 @@ SqlColumn::SqlColumn(QString name, QString type) : SqlColumn()
   setType(type);
 }
 
-SqlColumn::SqlColumn(const SqlColumn &other)
-{
-  setName(other.name());
-  setType(other.type());
-  setPrecision(other.precision());
-  setLength(other.length());
-  setNotNull(other.notNull());
-  setIsPrimary(other.isPrimary());
-  setAutoIncrement(other.autoIncrement());
-}
-
 QString SqlColumn::name() const
 {
   return _colData.value(PRM_NAME).toString();

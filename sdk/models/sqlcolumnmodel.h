@@ -27,7 +27,6 @@ class SqlColumn
 public:
   SqlColumn();
   SqlColumn(QString name, QString type);
-  SqlColumn(const SqlColumn &other);
 
   QString name() const;
   void setName(const QString &name);
