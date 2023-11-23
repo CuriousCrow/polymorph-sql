@@ -23,7 +23,11 @@ inline bool operator==(const KeySequence &ks1, const KeySequence &ks2)
 
 inline bool operator<(const KeySequence &ks1, const KeySequence &ks2)
 {
-    return ks1[0] < ks2[0];
+    Q_UNUSED(ks1)
+    Q_UNUSED(ks2)
+    //TODO:
+    return false;
+//    return ks1[0] < ks2[0];
 }
 
 inline uint qHash(const KeySequence &key, uint seed)

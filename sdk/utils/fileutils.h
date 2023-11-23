@@ -6,7 +6,6 @@
 #include <QStringList>
 #include <QDebug>
 #include <QTextStream>
-#include <QTextCodec>
 
 class FileUtils
 {

@@ -39,7 +39,7 @@ bool KeySequenceInterceptor::eventFilter(QObject *watched, QEvent *event)
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         int key = keyEvent->key();
-        KeySequence eventSequence(key + keyEvent->modifiers());
+        KeySequence eventSequence(QKeySequence(key, keyEvent->modifiers()));
         qDebug() << "KeySequenceInterceptor:" << eventSequence;
         AbstractKeySequenceHandler* hander = _handlerHash.value(eventSequence);
         if (hander) {
