@@ -2,13 +2,14 @@
 #define DBTABLEITEM_H
 
 #include "dbselectableitem.h"
-#include "models/sqlcolumnmodel.h"
-#include "models/variantmaptablemodel.h"
-#include "core/lknowledgebase.h"
 #include "dbforeignkey.h"
 #include "dbuniqueconstraint.h"
 #include "dbcheckconstraint.h"
 #include "dbprimarykey.h"
+#include "core/lknowledgebase.h"
+#include "models/sqlcolumnmodel.h"
+#include "models/variantmaptablemodel.h"
+
 
 class DBTableItem : public DBSelectableItem
 {

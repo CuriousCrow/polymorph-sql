@@ -1,8 +1,8 @@
 #ifndef SDKPLUGIN_H
 #define SDKPLUGIN_H
 
-#include "../core/iocplugin.h"
 #include <QObject>
+#include "core/iocplugin.h"
 
 #define B_DATABASE "baseDatabaseObject"
 #define B_TABLE "baseTableObject"

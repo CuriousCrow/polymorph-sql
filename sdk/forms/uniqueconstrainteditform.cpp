@@ -1,6 +1,6 @@
 #include "uniqueconstrainteditform.h"
 #include "ui_uniqueconstrainteditform.h"
-#include "../core/datastore.h"
+#include "../objects/dbtableitem.h"
 #include "../objects/appconst.h"
 
 UniqueConstraintEditForm::UniqueConstraintEditForm(QWidget *parent) :

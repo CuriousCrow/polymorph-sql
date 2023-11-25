@@ -5,22 +5,11 @@
 #include <QSqlQueryModel>
 #include "core/datastore.h"
 #include "core/core.h"
-#include "core/extensions.h"
-#include "core/extensionpoints.h"
 #include "core/lknowledgebase.h"
 #include "core/dependencycontainer.h"
-#include "forms/queryparamsform.h"
-#include "models/lstructureitemmodel.h"
 #include "models/lactiveconnectionmodel.h"
-#include "models/ldbobjectmodel.h"
-#include "models/ldbobjecttablemodel.h"
 #include "models/lsqlquerymodel.h"
-#include "models/jointdbojbectmodel.h"
-#include "models/queryparamtablemodel.h"
-#include "tools/lsqlsyntaxhighlighter.h"
-#include "tools/ltextcompleter.h"
 #include "tools/sqleditorsupport.h"
-#include "utils/lsimpletooltip.h"
 
 #define STATUS_BAR_TIMEOUT 5000
 

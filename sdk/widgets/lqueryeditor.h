@@ -1,8 +1,8 @@
 #ifndef LQUERYEDITOR_H
 #define LQUERYEDITOR_H
 
-#include <QPlainTextEdit>
 #include <QKeySequence>
+#include <QPlainTextEdit>
 
 class LKeySequenceInterceptor : public QObject
 {

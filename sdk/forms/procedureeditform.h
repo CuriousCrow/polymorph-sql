@@ -4,10 +4,6 @@
 #include <QDialog>
 #include "abstractdatabaseitemform.h"
 #include "core/dependencycontainer.h"
-#include "tools/simplesqlcompletersupport.h"
-#include "tools/lsqlsyntaxhighlighter.h"
-#include "utils/lsimpletooltip.h"
-#include "core/sqlhelplookupprovider.h"
 #include "tools/sqleditorsupport.h"
 
 namespace Ui {

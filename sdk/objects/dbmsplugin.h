@@ -1,15 +1,15 @@
 #ifndef DBMSSUPPORT_H
 #define DBMSSUPPORT_H
 
+#include <QObject>
 #include "dbsequence.h"
 #include "dbprocedure.h"
 #include "dbtableitem.h"
 #include "dbtrigger.h"
 #include "dbview.h"
-#include <QObject>
 #include "dbdatabase.h"
-#include "../forms/abstractdatabaseitemform.h"
 #include "foldertreeitem.h"
+#include "forms/abstractdatabaseitemform.h"
 
 class DbmsPlugin : public QObject
 {

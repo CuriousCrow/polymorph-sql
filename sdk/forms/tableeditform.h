@@ -4,8 +4,6 @@
 #include <QDialog>
 #include <QMenu>
 #include "abstractdatabaseitemform.h"
-#include "models/tablerowmodel.h"
-#include "objects/dbtableitem.h"
 #include "objects/typeprovider.h"
 #include "models/comboboxitemdelegate.h"
 #include "core/core.h"

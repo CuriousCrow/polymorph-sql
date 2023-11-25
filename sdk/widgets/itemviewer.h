@@ -1,9 +1,9 @@
 #ifndef ITEMVIEWER_H
 #define ITEMVIEWER_H
 
-#include <QStackedWidget>
-#include <QObject>
 #include <QVariant>
+#include <QObject>
+#include <QStackedWidget>
 
 namespace Ui {
 class ItemViewer;

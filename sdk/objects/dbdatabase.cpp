@@ -5,13 +5,9 @@
 #include <QSqlQuery>
 #include "appurl.h"
 #include <QIcon>
-#include "dbtableitem.h"
-#include "dbview.h"
 #include "foldertreeitem.h"
-#include "dbsequence.h"
-#include "dbtrigger.h"
-#include "dbprocedure.h"
 #include "appconst.h"
+#include "utils/sqlqueryhelper.h"
 
 #define S_NOT_SUPPORTED " (not supported)"
 

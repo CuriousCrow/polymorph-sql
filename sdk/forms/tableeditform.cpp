@@ -3,10 +3,8 @@
 #include <QMessageBox>
 #include <QDebug>
 #include "objects/appconst.h"
-#include "objects/dbuniqueconstraint.h"
+#include "objects/dbtableitem.h"
 #include "foreignkeyform.h"
-#include "uniqueconstrainteditform.h"
-#include "checkconstrainteditform.h"
 #include "models/sqlcolumnmodel.h"
 
 

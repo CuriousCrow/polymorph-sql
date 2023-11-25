@@ -3,9 +3,9 @@
 
 #include <QObject>
 #include <QAbstractTableModel>
-#include "objects/dbobjectitem.h"
+#include "core/dependencycontainer.h"
 #include "core/lknowledgebase.h"
-#include "core/core.h"
+#include "objects/dbobjectitem.h"
 
 class DBType
 {

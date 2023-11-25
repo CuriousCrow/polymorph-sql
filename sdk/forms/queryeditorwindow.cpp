@@ -8,12 +8,11 @@
 #include <QStandardItem>
 #include <QComboBox>
 #include <QStringListModel>
-#include "core/maphelplookupprovider.h"
 #include "core/localeventnotifier.h"
 #include "objects/sdkplugin.h"
 #include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
 #include "queryhistoryform.h"
-#include "utils/messagedialogs.h"
 #include "widgets/lqueryeditor.h"
 
 QueryEditorWindow::QueryEditorWindow(QWidget *parent) :

@@ -1,8 +1,6 @@
 #include "sqlitedatabase.h"
-#include "objects/foldertreeitem.h"
-#include "objects/dbtableitem.h"
 #include "objects/appconst.h"
-#include "sqlitetable.h"
+#include "utils/sqlqueryhelper.h"
 
 
 SqliteDatabase::SqliteDatabase()

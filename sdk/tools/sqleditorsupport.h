@@ -2,15 +2,13 @@
 #define SQLEDITORSUPPORT_H
 
 #include <QObject>
-#include "tools/lsqlsyntaxhighlighter.h"
-#include "utils/lsimpletooltip.h"
+#include "actions/queryeditorkeysequences.h"
 #include "core/sqlhelplookupprovider.h"
 #include "core/extensions.h"
 #include "tools/simplesqlcompletersupport.h"
-#include "objects/dbdatabase.h"
-#include "widgets/lqueryeditor.h"
 #include "tools/keysequenceinterceptor.h"
-#include "actions/queryeditorkeysequences.h"
+#include "tools/lsqlsyntaxhighlighter.h"
+#include "utils/lsimpletooltip.h"
 
 
 class HelpKeyHandler : public SlotQueryEditorKeyHandler

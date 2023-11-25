@@ -1,8 +1,8 @@
 #ifndef DBSELECTABLEITEM_H
 #define DBSELECTABLEITEM_H
 
-#include "dbobjectitem.h"
 #include <QObject>
+#include "dbobjectitem.h"
 
 class DBSelectableItem : public DBObjectItem
 {

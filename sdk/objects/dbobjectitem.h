@@ -1,10 +1,10 @@
 #ifndef DBOBJECTITEM_H
 #define DBOBJECTITEM_H
 
-#include "../models/lstandardtreemodel.h"
-#include "abstractidentifiersupport.h"
 #include <QSqlDatabase>
 #include "appurl.h"
+#include "abstractidentifiersupport.h"
+#include "models/lstandardtreemodel.h"
 
 #define RES_OK_CODE 0
 #define RES_BASE_ERROR 100

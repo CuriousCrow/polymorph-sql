@@ -2,12 +2,6 @@
 #define DBDATABASE_H
 
 #include "dbobjectitem.h"
-#include "utils/sqlqueryhelper.h"
-#include "dbtableitem.h"
-#include "dbprocedure.h"
-#include "dbsequence.h"
-#include "dbtrigger.h"
-#include "dbview.h"
 
 class DBDatabaseItem : public DBObjectItem
 {

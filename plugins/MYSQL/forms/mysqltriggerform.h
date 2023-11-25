@@ -2,6 +2,7 @@
 #define MYSQLTRIGGERFORM_H
 
 #include "core/datastore.h"
+#include "core/dependencycontainer.h"
 #include "forms/abstractdatabaseitemform.h"
 
 namespace Ui {

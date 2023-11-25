@@ -4,6 +4,7 @@
 #include <QObject>
 #include "core/lknowledgebase.h"
 #include "core/datastore.h"
+#include "core/dependencycontainer.h"
 #include "models/jointdbojbectmodel.h"
 #include "tools/ltextcompleter.h"
 

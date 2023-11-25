@@ -5,6 +5,11 @@
 
 #include "core/datastore.h"
 #include "objects/appconst.h"
+#include "objects/dbtableitem.h"
+#include "objects/dbview.h"
+#include "objects/dbtrigger.h"
+#include "objects/dbprocedure.h"
+#include "objects/dbsequence.h"
 #include "utils/fileutils.h"
 #include "models/lstructureitemmodel.h"
 

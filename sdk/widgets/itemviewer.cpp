@@ -17,7 +17,7 @@ void ItemViewer::setValue(QVariant value)
 {
   _itemValue = value;
   ui->lblText->setText(_itemValue.toString());
-  if (_itemValue.type() == QVariant::ByteArray) {
+  if (_itemValue.typeId() == QMetaType::QByteArray) {
     QPixmap pic;
     pic.loadFromData(_itemValue.toByteArray());
     ui->lblImage->setPixmap(pic);
@@ -27,7 +27,7 @@ void ItemViewer::setValue(QVariant value)
 
 void ItemViewer::setTypeByValue()
 {
-  if (_itemValue.type() == QVariant::ByteArray) {
+  if (_itemValue.typeId() == QMetaType::QByteArray) {
     setCurrentIndex(EditorType::Image);
   }
   else {

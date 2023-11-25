@@ -10,12 +10,10 @@
 #include "sdk/objects/dbdatabase.h"
 #include "sdk/objects/dbobjectitem.h"
 #include "sdk/objects/foldertreeitem.h"
-#include "sdk/core/appsettings.h"
 #include "sdk/core/basecontextaction.h"
 #include "sdk/objects/appconst.h"
 #include "sdk/objects/sdkplugin.h"
-#include "sdk/utils/fileutils.h"
-#include "testmodule.h"
+// #include "testmodule.h"
 
 #include "sdk/forms/queryeditorwindow.h"
 

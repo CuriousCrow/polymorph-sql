@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "../objects/appconst.h"
 #include "../core/datastore.h"
-#include "../objects/appurl.h"
+#include "../objects/dbtableitem.h"
 
 ForeignKeyForm::ForeignKeyForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),

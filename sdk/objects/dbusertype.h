@@ -1,8 +1,8 @@
 #ifndef DBUSERTYPE_H
 #define DBUSERTYPE_H
 
-#include "dbobjectitem.h"
 #include <QObject>
+#include "dbobjectitem.h"
 
 class DBUserType : public DBObjectItem
 {

@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <QList>
-#include "../core/iocplugin.h"
-#include "../objects/appconst.h"
+#include "core/iocplugin.h"
+#include "forms/abstractdatabaseitemform.h"
+#include "objects/appconst.h"
 
 /** Dependency containter class extended with convenience methods and works with IocPlugin`s as dependency source */
 class Core : public DependencyContainer

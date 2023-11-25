@@ -5,15 +5,13 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QMenu>
-#include "sdk/models/lsqltablemodel.h"
 #include "sdk/forms/connectioneditdialog.h"
-#include "sdk/models/lstructureitemmodel.h"
 #include "sdk/core/localeventnotifier.h"
 #include "sdk/core/baseusercontext.h"
 #include "sdk/core/datastore.h"
 #include "sdk/core/core.h"
 #include "sdk/core/lknowledgebase.h"
-#include "core/extensionpoints.h"
+#include "sdk/objects/dbselectableitem.h"
 #include "core/extensions.h"
 
 #define MAIN_STATUS_BAR_TIMEOUT 5000

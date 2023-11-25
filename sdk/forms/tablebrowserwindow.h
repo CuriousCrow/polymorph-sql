@@ -7,11 +7,10 @@
 #include <QMenu>
 #include <QSortFilterProxyModel>
 #include "models/unisqltablemodel.h"
-#include "objects/dbtableitem.h"
 #include "core/datastore.h"
 #include "core/dependencycontainer.h"
-#include "core/extensionpoints.h"
 #include "core/extensions.h"
+#include "objects/dbselectableitem.h"
 
 namespace Ui {
 class TableBrowserWindow;

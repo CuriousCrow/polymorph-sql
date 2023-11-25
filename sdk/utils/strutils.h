@@ -1,9 +1,9 @@
 #ifndef STRUTILS_H
 #define STRUTILS_H
 
-#include <QString>
-#include <QMap>
 #include <QHash>
+#include <QMap>
+#include <QString>
 #include "math.h"
 
 class StrUtils

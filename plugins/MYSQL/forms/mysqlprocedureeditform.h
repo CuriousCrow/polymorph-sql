@@ -4,8 +4,9 @@
 #include <QDialog>
 #include "forms/abstractdatabaseitemform.h"
 #include "models/variantmaptablemodel.h"
-#include "tools/sqleditorsupport.h"
 #include "models/comboboxitemdelegate.h"
+#include "tools/sqleditorsupport.h"
+#include "objects/typeprovider.h"
 
 
 namespace Ui {

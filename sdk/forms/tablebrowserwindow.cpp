@@ -10,6 +10,7 @@
 #include "utils/fileutils.h"
 #include "utils/eventinterceptors.h"
 #include "core/datastore.h"
+#include "core/extensionpoints.h"
 #include "widgets/tablebrowserdelegate.h"
 #include "extensions/unisqltablefilteraction.h"
 

@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include "core/datastore.h"
-#include "core/dependencycontainer.h"
 
 namespace Ui {
 class QueryHistoryForm;

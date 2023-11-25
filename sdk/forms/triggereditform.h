@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include "abstractdatabaseitemform.h"
-#include "../objects/appconst.h"
 #include "core/datastore.h"
 #include "core/dependencycontainer.h"
 

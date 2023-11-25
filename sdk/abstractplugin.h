@@ -1,8 +1,7 @@
 #ifndef ABSTRACTPLUGIN_H
 #define ABSTRACTPLUGIN_H
 
-#include "../sdk/objects/dbobjectitem.h"
-#include "../sdk/forms/abstractdatabaseitemform.h"
+#include <QFlags>
 
 enum FeatureType {
     DbmsObjects = 1,

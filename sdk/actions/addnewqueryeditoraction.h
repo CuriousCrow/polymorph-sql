@@ -5,7 +5,6 @@
 #include "core/datastore.h"
 #include "core/core.h"
 #include <QObject>
-#include "core/extensionpoints.h"
 #include "core/extensions.h"
 
 class AddNewQueryEditorAction : public BaseContextAction, public MainMenuItem, public AbstractExtension
