@@ -215,9 +215,6 @@
  </widget>
  <resources>
   <include location="../icons.qrc"/>
-  <include location="../icons.qrc"/>
-  <include location="../icons.qrc"/>
-  <include location="../icons.qrc"/>
  </resources>
  <connections/>
 </ui>
