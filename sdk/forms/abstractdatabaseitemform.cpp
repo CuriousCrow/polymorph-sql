@@ -1,6 +1,6 @@
 #include "abstractdatabaseitemform.h"
 #include <QMessageBox>
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 
 
 AbstractDatabaseEditForm::AbstractDatabaseEditForm(QWidget *parent, Qt::WindowFlags f)

@@ -1,11 +1,11 @@
 #include "foldertreeitem.h"
 #include "appconst.h"
 #include "appurl.h"
-#include <QDebug>
-#include "../core/core.h"
-#include "../core/iocplugin.h"
 #include "dbtableitem.h"
 #include "dbview.h"
+#include "core/core.h"
+
+#include <QDebug>
 
 FolderTreeItem::FolderTreeItem(QObject* parent):
   DBObjectItem("", parent)

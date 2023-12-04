@@ -1,4 +1,5 @@
 #include "sqliteview.h"
+
 #include "objects/appconst.h"
 #include "utils/sqlqueryhelper.h"
 

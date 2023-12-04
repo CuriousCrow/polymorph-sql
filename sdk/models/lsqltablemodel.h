@@ -9,7 +9,7 @@
 #include <QSqlResult>
 #include <QSqlField>
 #include <QSqlIndex>
-#include "../utils/sqlfiltermanager.h"
+#include "utils/sqlfiltermanager.h"
 
 #define DEBUG_SQL //All queries are shown by qDebug()
 

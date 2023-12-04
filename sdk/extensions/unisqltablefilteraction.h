@@ -3,8 +3,8 @@
 
 #include <QAction>
 #include <QObject>
-#include "models/unisqltablemodel.h"
 #include <QListView>
+#include "utils/sqlfiltermanager.h"
 
 class UniSqlTableFilterAction : public QAction
 {

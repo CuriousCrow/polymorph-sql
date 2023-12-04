@@ -8,8 +8,7 @@
 #include <QSqlQuery>
 #include <QSqlIndex>
 #include <QSqlField>
-#include "../utils/sqlfiltermanager.h"
-#include "../utils/sqlutils.h"
+#include "utils/sqlfiltermanager.h"
 
 
 class UniSqlTableModel : public QAbstractTableModel

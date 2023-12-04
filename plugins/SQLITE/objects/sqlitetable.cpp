@@ -1,10 +1,12 @@
 #include "sqlitetable.h"
 #include <QStringList>
-#include "utils/sqlqueryhelper.h"
-#include <QDebug>
 #include <QSqlRecord>
 #include <QSqlField>
+
 #include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
+
+#include <QDebug>
 
 SqliteTableItem::SqliteTableItem()
   : DBTableItem()

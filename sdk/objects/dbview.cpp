@@ -1,8 +1,7 @@
 #include "dbview.h"
-#include <QIcon>
-#include "utils/sqlqueryhelper.h"
-#include "appconst.h"
 
+#include <QIcon>
+#include "appconst.h"
 
 DBViewItem::DBViewItem():
   DBSelectableItem("", nullptr)

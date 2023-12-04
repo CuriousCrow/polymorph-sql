@@ -1,8 +1,9 @@
 #ifndef MYSQLPRIMARYKEY_H
 #define MYSQLPRIMARYKEY_H
 
-#include "objects/dbprimarykey.h"
 #include <QObject>
+#include "objects/dbprimarykey.h"
+
 
 class MysqlPrimaryKey : public DBPrimaryKey
 {

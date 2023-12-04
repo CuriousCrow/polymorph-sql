@@ -1,7 +1,7 @@
 #include "postgrescheckconstraint.h"
-#include "utils/sqlqueryhelper.h"
-#include "objects/appconst.h"
 
+#include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
 
 PostgresCheckConstraint::PostgresCheckConstraint()
   : DBCheckConstraint("", nullptr)

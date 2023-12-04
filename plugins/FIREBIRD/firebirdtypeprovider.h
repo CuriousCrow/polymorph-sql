@@ -1,10 +1,10 @@
 #ifndef FIREBIRDTYPEPROVIDER_H
 #define FIREBIRDTYPEPROVIDER_H
 
+#include <QObject>
 #include "objects/typeprovider.h"
 #include "core/datastore.h"
 #include "core/lknowledgebase.h"
-#include <QObject>
 
 class FirebirdDomainType : public BaseDBType
 {

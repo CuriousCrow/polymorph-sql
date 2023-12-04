@@ -2,7 +2,6 @@
 
 DBUserType::DBUserType() : DBObjectItem(nullptr)
 {
-
 }
 
 

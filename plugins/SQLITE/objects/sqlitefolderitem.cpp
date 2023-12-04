@@ -1,8 +1,9 @@
 #include "sqlitefolderitem.h"
+
+#include "core/core.h"
 #include "objects/dbtrigger.h"
 #include "objects/dbsequence.h"
 #include "objects/appconst.h"
-#include "core/core.h"
 #include "utils/sqlqueryhelper.h"
 
 

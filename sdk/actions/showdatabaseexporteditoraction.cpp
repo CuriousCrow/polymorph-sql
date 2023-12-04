@@ -1,5 +1,7 @@
 #include "showdatabaseexporteditoraction.h"
 #include <QDebug>
+#include "core/extensionpoints.h"
+#include "forms/databaseexportform.h"
 
 ShowDatabaseExportEditorAction::ShowDatabaseExportEditorAction() : BaseContextAction(nullptr)
 {

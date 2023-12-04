@@ -2,8 +2,8 @@
 #define TABLEROWMODEL_H
 
 #include <QAbstractTableModel>
-#include "../objects/dbobjectitem.h"
 #include <QSqlRecord>
+#include "objects/dbobjectitem.h"
 
 
 class DBFieldItem : public DBObjectItem

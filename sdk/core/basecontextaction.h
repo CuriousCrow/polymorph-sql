@@ -5,9 +5,9 @@
 #include <QObject>
 #include <QSet>
 #include "objects/dbobjectitem.h"
+#include "extensions.h"
 #include "baseusercontext.h"
-#include "core/core.h"
-#include "core/extensions.h"
+
 
 #define I_MAINMENU_ITEM "MainMenuItem"
 

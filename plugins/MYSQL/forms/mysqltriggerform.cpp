@@ -1,5 +1,6 @@
 #include "mysqltriggerform.h"
 #include "ui_mysqltriggerform.h"
+
 #include "objects/appconst.h"
 
 MysqlTriggerForm::MysqlTriggerForm() :

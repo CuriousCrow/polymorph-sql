@@ -1,8 +1,8 @@
 #include "simplesqlcompletersupport.h"
-#include "objects/appconst.h"
-#include "objects/dbtableitem.h"
 #include <QTableView>
 #include <QHeaderView>
+#include "objects/appconst.h"
+#include "objects/dbtableitem.h"
 
 SimpleSqlCompleterSupport::SimpleSqlCompleterSupport(QObject *parent) : QObject(parent)
 {

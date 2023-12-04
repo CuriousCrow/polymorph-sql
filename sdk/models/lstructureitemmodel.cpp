@@ -1,10 +1,8 @@
 #include "lstructureitemmodel.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include "objects/appconst.h"
 #include <QDebug>
 #include "objects/appurl.h"
-#include "utils/sqlqueryhelper.h"
 
 #define TREEMODEL_DEBUG
 

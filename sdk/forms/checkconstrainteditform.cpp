@@ -1,6 +1,6 @@
 #include "checkconstrainteditform.h"
 #include "ui_checkconstrainteditform.h"
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 
 CheckConstraintEditForm::CheckConstraintEditForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),

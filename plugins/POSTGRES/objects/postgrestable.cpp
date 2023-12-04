@@ -1,14 +1,15 @@
 #include "postgrestable.h"
 #include <QSqlQuery>
-#include <QDebug>
-#include "models/sqlcolumnmodel.h"
-#include "objects/appconst.h"
-#include "objects/dbforeignkey.h"
-#include "utils/sqlqueryhelper.h"
 #include "postgresprimarykey.h"
 #include "postgresforeignkey.h"
 #include "postgresuniqueconstraint.h"
 #include "postgrescheckconstraint.h"
+#include "models/sqlcolumnmodel.h"
+#include "objects/appconst.h"
+#include "objects/dbforeignkey.h"
+#include "utils/sqlqueryhelper.h"
+
+#include <QDebug>
 
 PostgresTable::PostgresTable()
   : DBTableItem()

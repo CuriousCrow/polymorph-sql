@@ -1,6 +1,8 @@
 #include "sqleditorsupport.h"
-#include "tools/keysequenceinterceptor.h"
+
 #include "actions/queryeditorkeysequences.h"
+#include "core/extensionpoints.h"
+#include "tools/keysequenceinterceptor.h"
 
 SqlEditorSupport::SqlEditorSupport() : QObject()
 {

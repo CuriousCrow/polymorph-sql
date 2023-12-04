@@ -3,8 +3,8 @@
 
 #include <QMetaProperty>
 #include <QRegularExpression>
-#include "utils/sqlqueryhelper.h"
 #include "appconst.h"
+#include "utils/sqlqueryhelper.h"
 
 
 DBObjectItem::DBObjectItem(QString caption, QObject* parent):

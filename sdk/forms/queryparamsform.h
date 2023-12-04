@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QMenu>
-#include "../models/queryparamtablemodel.h"
+#include "models/queryparamtablemodel.h"
 
 namespace Ui {
 class QueryParamsForm;

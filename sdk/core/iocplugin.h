@@ -3,8 +3,8 @@
 
 #include "dependencycontainer.h"
 #include <QObject>
-#include "../objects/dbobjectitem.h"
-#include "../abstractplugin.h"
+#include "abstractplugin.h"
+#include "objects/dbobjectitem.h"
 
 class IocPlugin : public QObject, public AbstractPlugin
 {

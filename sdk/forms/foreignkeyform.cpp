@@ -1,9 +1,9 @@
 #include "foreignkeyform.h"
 #include "ui_foreignkeyform.h"
 #include <QDebug>
-#include "../objects/appconst.h"
-#include "../core/datastore.h"
-#include "../objects/dbtableitem.h"
+#include "core/datastore.h"
+#include "objects/appconst.h"
+#include "objects/dbtableitem.h"
 
 ForeignKeyForm::ForeignKeyForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),

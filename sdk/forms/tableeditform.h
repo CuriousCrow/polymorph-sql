@@ -4,11 +4,12 @@
 #include <QDialog>
 #include <QMenu>
 #include "abstractdatabaseitemform.h"
-#include "objects/typeprovider.h"
-#include "models/comboboxitemdelegate.h"
 #include "core/core.h"
 #include "core/dependencycontainer.h"
 #include "core/lknowledgebase.h"
+#include "models/comboboxitemdelegate.h"
+#include "objects/typeprovider.h"
+
 
 namespace Ui {
 class TableEditForm;

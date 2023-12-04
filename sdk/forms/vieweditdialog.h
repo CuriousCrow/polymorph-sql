@@ -4,12 +4,8 @@
 #include <QDialog>
 #include <QDataWidgetMapper>
 #include <QModelIndex>
-#include "core/datastore.h"
-#include "models/jointdbojbectmodel.h"
-#include "tools/ltextcompleter.h"
-#include "tools/lsqlsyntaxhighlighter.h"
-#include "tools/simplesqlcompletersupport.h"
 #include "abstractdatabaseitemform.h"
+#include "tools/simplesqlcompletersupport.h"
 
 namespace Ui {
 class ViewEditDialog;

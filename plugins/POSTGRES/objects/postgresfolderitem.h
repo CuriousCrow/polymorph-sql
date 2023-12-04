@@ -1,8 +1,8 @@
 #ifndef POSTGRESFOLDERITEM_H
 #define POSTGRESFOLDERITEM_H
 
-#include "objects/foldertreeitem.h"
 #include <QObject>
+#include "objects/foldertreeitem.h"
 
 /** PostgreSQL folder item */
 class PostgresFolderItem : public FolderTreeItem

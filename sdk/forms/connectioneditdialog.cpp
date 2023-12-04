@@ -5,10 +5,10 @@
 #include <QSqlDatabase>
 #include <QMessageBox>
 #include <QStringListModel>
-#include "../core/core.h"
-#include "../objects/appconst.h"
-#include "../objects/dbdatabase.h"
-#include "../utils/messagedialogs.h"
+#include "core/core.h"
+#include "objects/appconst.h"
+#include "objects/dbdatabase.h"
+#include "utils/messagedialogs.h"
 
 ConnectionEditDialog::ConnectionEditDialog(QWidget *parent) :
   AbstractDatabaseEditForm(parent),

@@ -1,9 +1,10 @@
 #include "postgresfolderitem.h"
+
+#include "core/core.h"
 #include "objects/appconst.h"
 #include "objects/dbsequence.h"
 #include "objects/dbprocedure.h"
 #include "objects/dbtrigger.h"
-#include "core/core.h"
 #include "utils/sqlqueryhelper.h"
 
 PostgresFolderItem::PostgresFolderItem() : FolderTreeItem()

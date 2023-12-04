@@ -2,7 +2,6 @@
 #include <QDebug>
 
 
-
 SimpleEventInterceptor::SimpleEventInterceptor(QObject* parent) : QObject(parent)
 {
 }

@@ -1,6 +1,8 @@
 #include "postgresview.h"
-#include "utils/sqlqueryhelper.h"
+
 #include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
+
 #include <QDebug>
 
 

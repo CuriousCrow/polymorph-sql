@@ -1,7 +1,5 @@
 #include "baseusercontext.h"
 
-
-
 BaseUserContext::BaseUserContext(QObject *parent) : AbstractUserContext(parent)
 {
 

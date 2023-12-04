@@ -36,7 +36,6 @@
 #include "actions/queryeditorkeysequences.h"
 #include "actions/removetablefilteraction.h"
 
-#include "core/lknowledgebase.h"
 #include "core/sqlhelplookupprovider.h"
 #include "tools/lsqlsyntaxhighlighter.h"
 #include "tools/simplesqlcompletersupport.h"
@@ -45,7 +44,7 @@
 #include "models/sqlcolumnmodel.h"
 #include "objects/typeprovider.h"
 
-#include "tools/testclasses.h"
+// #include "tools/testclasses.h"
 
 #define BASE_DRIVER ""
 

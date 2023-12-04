@@ -1,10 +1,10 @@
 #include "vieweditdialog.h"
 #include "ui_vieweditdialog.h"
-#include "../objects/appconst.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QTableView>
 #include <QHeaderView>
+#include "objects/appconst.h"
 
 ViewEditDialog::ViewEditDialog() :
   AbstractDatabaseEditForm(nullptr),

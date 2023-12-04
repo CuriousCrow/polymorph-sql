@@ -1,6 +1,5 @@
 #include "dbcheckconstraint.h"
 #include "appconst.h"
-#include "utils/sqlqueryhelper.h"
 
 
 DBCheckConstraint::DBCheckConstraint(QString caption, QObject *parent)

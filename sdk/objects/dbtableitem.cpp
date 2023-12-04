@@ -1,10 +1,10 @@
 #include "dbtableitem.h"
-#include "appurl.h"
 #include <QIcon>
-#include "utils/sqlqueryhelper.h"
 #include <QSqlField>
 #include <QSqlRecord>
+#include <QSqlDriver>
 #include "appconst.h"
+#include "utils/sqlqueryhelper.h"
 
 
 DBTableItem::DBTableItem():

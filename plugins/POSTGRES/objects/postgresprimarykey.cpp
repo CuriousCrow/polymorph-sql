@@ -1,6 +1,7 @@
 #include "postgresprimarykey.h"
-#include "utils/sqlqueryhelper.h"
+
 #include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
 
 PostgresPrimaryKey::PostgresPrimaryKey()
   : DBPrimaryKey("", nullptr)

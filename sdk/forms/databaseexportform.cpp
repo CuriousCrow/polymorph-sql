@@ -10,8 +10,8 @@
 #include "objects/dbtrigger.h"
 #include "objects/dbprocedure.h"
 #include "objects/dbsequence.h"
-#include "utils/fileutils.h"
 #include "models/lstructureitemmodel.h"
+#include "utils/fileutils.h"
 
 DatabaseExportForm* DatabaseExportForm::_singleton = nullptr;
 

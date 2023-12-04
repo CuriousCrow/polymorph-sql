@@ -1,8 +1,8 @@
 #ifndef MYSQLTRIGGER_H
 #define MYSQLTRIGGER_H
 
-#include "objects/dbtrigger.h"
 #include <QObject>
+#include "objects/dbtrigger.h"
 
 class MysqlTrigger : public DBTriggerItem
 {

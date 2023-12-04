@@ -1,12 +1,12 @@
 #include "datastore.h"
-#include "appsettings.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QApplication>
 #include <QSqlRecord>
+#include "appsettings.h"
+#include "core.h"
 #include "objects/appconst.h"
 #include "utils/sqlqueryhelper.h"
-#include "core.h"
 
 
 DataStore::DataStore(QObject *parent) : QObject(parent)

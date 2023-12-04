@@ -1,5 +1,6 @@
 #include "addnewqueryeditoraction.h"
 #include <QDebug>
+#include "core/extensionpoints.h"
 #include "forms/queryeditorwindow.h"
 
 

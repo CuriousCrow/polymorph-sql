@@ -1,6 +1,5 @@
 #include "dbconstraintitem.h"
 #include "appconst.h"
-#include <QSqlDriver>
 
 
 DBConstraintItem::DBConstraintItem(QString caption, QObject *parent)

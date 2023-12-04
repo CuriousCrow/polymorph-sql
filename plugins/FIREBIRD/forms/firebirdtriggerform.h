@@ -1,9 +1,9 @@
 #ifndef FIREBIRDTRIGGERFORM_H
 #define FIREBIRDTRIGGERFORM_H
 
-#include "forms/abstractdatabaseitemform.h"
 #include "core/datastore.h"
 #include "core/dependencycontainer.h"
+#include "forms/abstractdatabaseitemform.h"
 
 namespace Ui {
 class FirebirdTriggerForm;

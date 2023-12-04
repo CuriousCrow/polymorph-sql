@@ -8,11 +8,11 @@
 #include <QStandardItem>
 #include <QComboBox>
 #include <QStringListModel>
+#include "queryhistoryform.h"
 #include "core/localeventnotifier.h"
 #include "objects/sdkplugin.h"
 #include "objects/appconst.h"
 #include "utils/sqlqueryhelper.h"
-#include "queryhistoryform.h"
 #include "widgets/lqueryeditor.h"
 
 QueryEditorWindow::QueryEditorWindow(QWidget *parent) :

@@ -1,4 +1,6 @@
 #include "postgresplugin.h"
+
+#include "postgresconst.h"
 #include "objects/appconst.h"
 #include "objects/postgresdatabase.h"
 #include "objects/postgrestable.h"
@@ -11,7 +13,7 @@
 #include "objects/postgrescheckconstraint.h"
 #include "objects/postgresforeignkey.h"
 #include "objects/postgresuniqueconstraint.h"
-#include "postgresconst.h"
+
 
 
 PostgresPlugin::PostgresPlugin(QObject *parent) : IocPlugin(parent)

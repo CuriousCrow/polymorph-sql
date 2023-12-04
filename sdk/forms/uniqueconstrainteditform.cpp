@@ -1,7 +1,7 @@
 #include "uniqueconstrainteditform.h"
 #include "ui_uniqueconstrainteditform.h"
-#include "../objects/dbtableitem.h"
-#include "../objects/appconst.h"
+#include "objects/dbtableitem.h"
+#include "objects/appconst.h"
 
 UniqueConstraintEditForm::UniqueConstraintEditForm(QWidget *parent) :
   AbstractDatabaseEditForm(parent),

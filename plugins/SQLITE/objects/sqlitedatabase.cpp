@@ -1,7 +1,7 @@
 #include "sqlitedatabase.h"
-#include "objects/appconst.h"
-#include "utils/sqlqueryhelper.h"
 
+#include "utils/sqlqueryhelper.h"
+#include "objects/appconst.h"
 
 SqliteDatabase::SqliteDatabase()
   : DBDatabaseItem("")

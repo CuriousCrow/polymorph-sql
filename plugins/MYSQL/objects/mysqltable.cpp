@@ -1,8 +1,10 @@
 #include "mysqltable.h"
-#include "utils/sqlqueryhelper.h"
-#include <QDebug>
+
 #include "objects/appurl.h"
 #include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
+
+#include <QDebug>
 
 MysqlTableItem::MysqlTableItem()
   : DBTableItem()

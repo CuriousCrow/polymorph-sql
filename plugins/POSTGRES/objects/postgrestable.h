@@ -1,8 +1,8 @@
 #ifndef POSTGRESTABLE_H
 #define POSTGRESTABLE_H
 
-#include "objects/dbtableitem.h"
 #include <QSqlField>
+#include "objects/dbtableitem.h"
 
 /** PostgreSQL table item */
 class PostgresTable : public DBTableItem

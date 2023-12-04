@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "core/basecontextaction.h"
+#include "core/core.h"
 
 class ShowCreateFormAction : public BaseItemPopupAction
 {

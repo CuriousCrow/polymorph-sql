@@ -3,10 +3,10 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QSqlQuery>
-#include "appurl.h"
 #include <QIcon>
-#include "foldertreeitem.h"
 #include "appconst.h"
+#include "appurl.h"
+#include "foldertreeitem.h"
 #include "utils/sqlqueryhelper.h"
 
 #define S_NOT_SUPPORTED " (not supported)"

@@ -1,4 +1,6 @@
 #include "showsettingsformaction.h"
+
+#include "core/extensionpoints.h"
 #include "forms/settingsform.h"
 
 ShowSettingsFormAction::ShowSettingsFormAction() : BaseContextAction()

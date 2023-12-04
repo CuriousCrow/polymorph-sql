@@ -1,7 +1,8 @@
 #include "mysqldatabase.h"
+
 #include "mysqltable.h"
-#include "objects/foldertreeitem.h"
 #include "objects/appconst.h"
+#include "objects/foldertreeitem.h"
 
 #define MYSQL_PORT 3306
 

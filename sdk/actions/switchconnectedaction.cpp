@@ -1,5 +1,5 @@
 #include "switchconnectedaction.h"
-#include "../core/localeventnotifier.h"
+#include "core/localeventnotifier.h"
 
 #define T_CONNECT "Connect database"
 #define T_DISCONNECT "Disconnect database"

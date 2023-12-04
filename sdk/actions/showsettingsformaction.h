@@ -3,7 +3,7 @@
 
 #include "core/basecontextaction.h"
 #include <QObject>
-#include "core/extensionpoints.h"
+#include "core/core.h"
 #include "core/extensions.h"
 
 class ShowSettingsFormAction : public BaseContextAction, public MainMenuItem, public AbstractExtension

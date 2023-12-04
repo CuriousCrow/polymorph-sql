@@ -4,15 +4,15 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QUuid>
+#include "core/datastore.h"
+#include "core/extensionpoints.h"
+#include "extensions/unisqltablefilteraction.h"
 #include "objects/appconst.h"
 #include "objects/appurl.h"
 #include "objects/appconst.h"
 #include "utils/fileutils.h"
 #include "utils/eventinterceptors.h"
-#include "core/datastore.h"
-#include "core/extensionpoints.h"
 #include "widgets/tablebrowserdelegate.h"
-#include "extensions/unisqltablefilteraction.h"
 
 TableBrowserWindow::TableBrowserWindow(DBSelectableItem* tableItem) :
     QMainWindow(),

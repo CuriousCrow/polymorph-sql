@@ -1,8 +1,8 @@
 #ifndef MYSQLUNIQUECONSTRAINT_H
 #define MYSQLUNIQUECONSTRAINT_H
 
-#include "objects/dbuniqueconstraint.h"
 #include <QObject>
+#include "objects/dbuniqueconstraint.h"
 
 class MysqlUniqueConstraint : public DBUniqueConstraint
 {

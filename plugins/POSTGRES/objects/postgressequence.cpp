@@ -1,7 +1,7 @@
 #include "postgressequence.h"
-#include "utils/sqlqueryhelper.h"
-#include "objects/appconst.h"
 
+#include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
 
 PostgresSequence::PostgresSequence()
   : DBSequenceItem()

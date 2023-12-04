@@ -2,10 +2,10 @@
 #include "ui_tableeditform.h"
 #include <QMessageBox>
 #include <QDebug>
-#include "objects/appconst.h"
-#include "objects/dbtableitem.h"
 #include "foreignkeyform.h"
 #include "models/sqlcolumnmodel.h"
+#include "objects/appconst.h"
+#include "objects/dbtableitem.h"
 
 
 #define CHK_PREFIX "chk_"

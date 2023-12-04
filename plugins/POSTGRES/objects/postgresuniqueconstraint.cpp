@@ -1,7 +1,7 @@
 #include "postgresuniqueconstraint.h"
-#include "utils/sqlqueryhelper.h"
-#include "objects/appconst.h"
 
+#include "objects/appconst.h"
+#include "utils/sqlqueryhelper.h"
 
 PostgresUniqueConstraint::PostgresUniqueConstraint()
   : DBUniqueConstraint("", nullptr)

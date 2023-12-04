@@ -1,6 +1,6 @@
 #include "sequenceeditform.h"
 #include "ui_sequenceeditform.h"
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 #include <QDebug>
 
 SequenceEditForm::SequenceEditForm() :

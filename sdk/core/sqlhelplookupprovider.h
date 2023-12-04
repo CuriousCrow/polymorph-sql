@@ -3,8 +3,6 @@
 
 #include "lknowledgebase.h"
 #include "utils/lsimpletooltip.h"
-#include "models/lsqltablemodel.h"
-#include "core/dependencycontainer.h"
 
 class SqlHelpLookupProvider : public QObject, public HelpLookupProvider
 {

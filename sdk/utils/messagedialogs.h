@@ -2,7 +2,7 @@
 #define MESSAGEDIALOGS_H
 
 #include <QObject>
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 
 class MessageDialogs
 {

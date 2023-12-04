@@ -6,6 +6,7 @@
 #include <QTabWidget>
 #include "models/lstructureitemmodel.h"
 #include "models/unisqltablemodel.h"
+#include "objects/dbdatabase.h"
 
 class DataStore : public QObject
 {

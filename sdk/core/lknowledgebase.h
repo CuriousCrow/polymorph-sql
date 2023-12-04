@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
-#include "models/lsqltablemodel.h"
 #include "models/ldbobjecttablemodel.h"
 
 struct TypeInfo

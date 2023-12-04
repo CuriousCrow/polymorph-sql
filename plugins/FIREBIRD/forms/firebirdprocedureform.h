@@ -1,11 +1,11 @@
 #ifndef FIREBIRDPROCEDUREFORM_H
 #define FIREBIRDPROCEDUREFORM_H
 
-#include "forms/abstractdatabaseitemform.h"
-#include "tools/sqleditorsupport.h"
-#include "objects/firebirdprocedure.h"
 #include "firebirdtypeprovider.h"
+#include "forms/abstractdatabaseitemform.h"
 #include "models/comboboxitemdelegate.h"
+#include "objects/firebirdprocedure.h"
+#include "tools/sqleditorsupport.h"
 
 
 namespace Ui {

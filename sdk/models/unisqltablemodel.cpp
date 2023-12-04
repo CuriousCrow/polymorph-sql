@@ -4,6 +4,7 @@
 #include <QSqlError>
 #include <QSqlResult>
 #include <QColor>
+#include "utils/sqlutils.h"
 
 UniSqlTableModel::UniSqlTableModel(QObject *parent, QString connectionName)
   : QAbstractTableModel(parent)
@@ -38,7 +39,7 @@ bool UniSqlTableModel::execDDL(const QString &sql)
 
 QSqlQuery UniSqlTableModel::execDML(const QString &sql)
 {
-  QSqlQuery result = db().exec(sql);
+  QSqlQuery result(sql, db());
   qDebug() << QString("UniSqlTableModel::execQuery: %1").arg(sql);
   if (result.lastError().isValid()){
     QString errorMessage = result.lastError().databaseText();

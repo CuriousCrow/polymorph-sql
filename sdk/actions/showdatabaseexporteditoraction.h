@@ -1,13 +1,12 @@
 #ifndef SHOWDATABASEEXPORTEDITORACTION_H
 #define SHOWDATABASEEXPORTEDITORACTION_H
 
+#include <QObject>
 #include "core/basecontextaction.h"
-#include "forms/databaseexportform.h"
 #include "core/baseusercontext.h"
 #include "core/core.h"
-#include <QObject>
-#include "core/extensionpoints.h"
 #include "core/extensions.h"
+
 
 class ShowDatabaseExportEditorAction : public BaseContextAction, public MainMenuItem, public AbstractExtension
 {

@@ -3,6 +3,7 @@
 #include <QDebug>
 #include "blobeditor.h"
 #include "objects/appconst.h"
+#include "objects/dbtableitem.h"
 
 #define BLOB_COL -1 //Temperary disabled. Should be deleted when implementing uni-type item delegate
 

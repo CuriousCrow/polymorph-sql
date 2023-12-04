@@ -1,4 +1,6 @@
 #include "queryeditorkeysequences.h"
+
+#include "core/extensionpoints.h"
 #include <QDebug>
 
 QETestHandler::QETestHandler()

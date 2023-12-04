@@ -1,8 +1,8 @@
 #ifndef MYSQLSEQUENCE_H
 #define MYSQLSEQUENCE_H
 
-#include "objects/dbsequence.h"
 #include <QObject>
+#include "objects/dbsequence.h"
 
 class MysqlSequence : public DBSequenceItem
 {

@@ -1,4 +1,10 @@
 #include "firebirdplugin.h"
+
+#include "firebirdtypeprovider.h"
+#include "firebirdconst.h"
+#include "forms/firebirdtriggerform.h"
+#include "forms/firebirdprocedureform.h"
+#include "forms/firebirddomainform.h"
 #include "objects/appconst.h"
 #include "objects/firebirdfolderitem.h"
 #include "objects/firebirddatabase.h"
@@ -12,12 +18,6 @@
 #include "objects/firebirdtrigger.h"
 #include "objects/firebirdprocedure.h"
 #include "objects/firebirddomain.h"
-#include "forms/firebirdtriggerform.h"
-#include "forms/firebirdprocedureform.h"
-#include "forms/firebirddomainform.h"
-#include "firebirdtypeprovider.h"
-#include "firebirdconst.h"
-
 
 FirebirdPlugin::FirebirdPlugin(QObject *parent) : IocPlugin(parent)
 {

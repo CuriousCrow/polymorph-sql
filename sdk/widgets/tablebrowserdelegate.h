@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QStyledItemDelegate>
 #include "models/unisqltablemodel.h"
-#include "objects/dbtableitem.h"
+#include "objects/dbselectableitem.h"
 
 class TableBrowserDelegate : public QStyledItemDelegate
 {

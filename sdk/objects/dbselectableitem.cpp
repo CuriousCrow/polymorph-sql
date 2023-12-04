@@ -1,8 +1,5 @@
 #include "dbselectableitem.h"
 #include <QIcon>
-#include <QSqlDriver>
-#include "objects/appconst.h"
-
 
 DBSelectableItem::DBSelectableItem(QString caption, QObject *parent) : DBObjectItem(caption, parent)
 {

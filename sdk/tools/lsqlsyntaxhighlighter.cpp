@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QSqlTableModel>
 #include <QColor>
-#include "models/lsqltablemodel.h"
 #include "objects/appconst.h"
 
 LSqlSyntaxHighlighter::LSqlSyntaxHighlighter(QObject *parent):

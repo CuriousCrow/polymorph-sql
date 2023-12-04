@@ -1,7 +1,7 @@
 #include "dbtrigger.h"
-#include "utils/sqlqueryhelper.h"
-#include "appconst.h"
+
 #include <QIcon>
+#include "appconst.h"
 
 
 DBTriggerItem::DBTriggerItem():

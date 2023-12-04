@@ -2,9 +2,8 @@
 #define LSTRUCTUREITEMMODEL_H
 
 #include "lstandardtreemodel.h"
-#include "objects/dbobjectitem.h"
-#include "objects/dbdatabase.h"
 #include <QSqlDatabase>
+#include "objects/dbobjectitem.h"
 
 class LStructureItemModel : public LStandardTreeModel
 {

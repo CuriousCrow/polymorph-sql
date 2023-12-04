@@ -1,9 +1,9 @@
 #ifndef BASEUSERCONTEXT_H
 #define BASEUSERCONTEXT_H
 
+#include <QObject>
 #include "abstractusercontext.h"
 #include "objects/dbobjectitem.h"
-#include <QObject>
 
 class BaseUserContext : public AbstractUserContext
 {

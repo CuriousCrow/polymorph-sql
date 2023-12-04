@@ -2,8 +2,8 @@
 #define FIREBIRDDOMAINFORM_H
 
 #include <QDialog>
-#include "forms/abstractdatabaseitemform.h"
 #include "firebirdtypeprovider.h"
+#include "forms/abstractdatabaseitemform.h"
 
 namespace Ui {
 class FirebirdDomainForm;

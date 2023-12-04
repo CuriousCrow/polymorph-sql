@@ -1,4 +1,9 @@
 #include "mysqlplugin.h"
+
+#include "mysqlconst.h"
+#include "forms/simplesequenceeditform.h"
+#include "forms/mysqlprocedureeditform.h"
+#include "forms/mysqltriggerform.h"
 #include "objects/appconst.h"
 #include "objects/mysqldatabase.h"
 #include "objects/mysqltable.h"
@@ -16,10 +21,6 @@
 #include "objects/mysqluniqueconstraint.h"
 #include "objects/mysqlcheckconstraint.h"
 #include "objects/mysqltrigger.h"
-#include "forms/simplesequenceeditform.h"
-#include "forms/mysqlprocedureeditform.h"
-#include "forms/mysqltriggerform.h"
-#include "mysqlconst.h"
 
 
 MysqlPlugin::MysqlPlugin(QObject *parent) : IocPlugin(parent)

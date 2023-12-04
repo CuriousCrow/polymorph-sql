@@ -1,8 +1,8 @@
 #ifndef MYSQLVIEW_H
 #define MYSQLVIEW_H
 
-#include "objects/dbview.h"
 #include <QObject>
+#include "objects/dbview.h"
 
 class MysqlView : public DBViewItem
 {

@@ -2,9 +2,8 @@
 #define QUERYEDITORKEYSEQUENCES_H
 
 #include <QObject>
+#include <QPlainTextEdit>
 #include "core/extensions.h"
-#include "core/extensionpoints.h"
-#include "widgets/lqueryeditor.h"
 #include "tools/keysequenceinterceptor.h"
 
 class QETestHandler : public AbstractKeySequenceHandler, public AbstractExtension

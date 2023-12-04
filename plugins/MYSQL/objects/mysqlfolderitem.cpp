@@ -1,13 +1,14 @@
 #include "mysqlfolderitem.h"
-#include "utils/sqlqueryhelper.h"
+
+#include "core/iocplugin.h"
+#include "core/core.h"
 #include "objects/appconst.h"
 #include "objects/dbtrigger.h"
 #include "objects/dbprocedure.h"
 #include "objects/dbsequence.h"
 #include "objects/dbtableitem.h"
 #include "objects/dbview.h"
-#include "core/iocplugin.h"
-#include "core/core.h"
+#include "utils/sqlqueryhelper.h"
 
 
 MysqlFolderItem::MysqlFolderItem() : FolderTreeItem()

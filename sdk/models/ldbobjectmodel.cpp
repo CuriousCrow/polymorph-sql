@@ -1,6 +1,6 @@
 #include "ldbobjectmodel.h"
 #include <QDebug>
-#include "../objects/appconst.h"
+#include "objects/appconst.h"
 
 //Поиск имени таблицы по алиасу
 //(FROM|JOIN)\s+([^\s]+)\s+t

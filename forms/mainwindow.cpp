@@ -5,14 +5,15 @@
 #include <QSqlField>
 #include <QMessageBox>
 #include <QClipboard>
-#include "sdk/objects/appurl.h"
-#include "sdk/forms/tablebrowserwindow.h"
-#include "sdk/objects/dbdatabase.h"
-#include "sdk/objects/dbobjectitem.h"
-#include "sdk/objects/foldertreeitem.h"
-#include "sdk/core/basecontextaction.h"
-#include "sdk/objects/appconst.h"
-#include "sdk/objects/sdkplugin.h"
+#include "core/basecontextaction.h"
+#include "core/extensionpoints.h"
+#include "forms/tablebrowserwindow.h"
+#include "objects/appurl.h"
+#include "objects/dbdatabase.h"
+#include "objects/dbobjectitem.h"
+#include "objects/foldertreeitem.h"
+#include "objects/appconst.h"
+#include "objects/sdkplugin.h"
 // #include "testmodule.h"
 
 #include "sdk/forms/queryeditorwindow.h"

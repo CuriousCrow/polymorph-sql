@@ -2,6 +2,7 @@
 #define TESTCLASSES_H
 
 #include <QObject>
+#include "core/core.h"
 #include "core/extensions.h"
 #include "core/basecontextaction.h"
 

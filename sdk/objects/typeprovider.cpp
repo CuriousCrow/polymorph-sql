@@ -3,7 +3,6 @@
 
 TypeProvider::TypeProvider() : QAbstractTableModel()
 {
-
 }
 
 QStringList TypeProvider::typeNames() const

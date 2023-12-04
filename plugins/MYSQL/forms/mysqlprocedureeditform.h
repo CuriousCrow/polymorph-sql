@@ -5,8 +5,9 @@
 #include "forms/abstractdatabaseitemform.h"
 #include "models/variantmaptablemodel.h"
 #include "models/comboboxitemdelegate.h"
-#include "tools/sqleditorsupport.h"
 #include "objects/typeprovider.h"
+#include "tools/sqleditorsupport.h"
+
 
 
 namespace Ui {
