@@ -103,9 +103,9 @@ void SqlEditorSupport::injectExtension(ExtensionPoint ep, QObject *e)
   }
 }
 
-QSet<KeySequence> HelpKeyHandler::keySequences()
+QSet<QKeySequence> HelpKeyHandler::keySequences()
 {
-  QSet<KeySequence> sequences;
-  sequences << KeySequence(static_cast<QKeySequence>(Qt::CTRL | Qt::Key_Q));
+  QSet<QKeySequence> sequences;
+  sequences << QKeySequence(Qt::CTRL | Qt::Key_Q);
   return sequences;
 }

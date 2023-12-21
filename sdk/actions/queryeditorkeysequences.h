@@ -19,8 +19,8 @@ public:
 
   // AbstractKeySequenceHandler interface
 public:
-  virtual QSet<KeySequence> keySequences() override;
-  virtual bool handle(const KeySequence &keySequence) override;
+  virtual QSet<QKeySequence> keySequences() override;
+  virtual bool handle(const QKeySequence &keySequence) override;
 };
 
 class QueryEditorKeyHandler : public AbstractKeySequenceHandler
@@ -40,9 +40,9 @@ class SlotQueryEditorKeyHandler : public QueryEditorKeyHandler
   Q_OBJECT
   // AbstractKeySequenceHandler interface
 public:
-  virtual bool handle(const KeySequence &keySequence) override;
+  virtual bool handle(const QKeySequence &keySequence) override;
 signals:
-  void keySignal(const KeySequence &keySequence);
+  void keySignal(const QKeySequence &keySequence);
 };
 
 /** Toggles query editor line comments by Ctrl+/ key sequence */
@@ -58,8 +58,8 @@ public:
 
   // AbstractKeySequenceHandler interface
 public:
-  virtual QSet<KeySequence> keySequences() override;
-  virtual bool handle(const KeySequence &keySequence) override;
+  virtual QSet<QKeySequence> keySequences() override;
+  virtual bool handle(const QKeySequence &keySequence) override;
 };
 
 /** Generate table alias in query editor by Ctrl+T */
@@ -71,8 +71,8 @@ public:
 
   // AbstractKeySequenceHandler interface
 public:
-  virtual QSet<KeySequence> keySequences() override;
-  virtual bool handle(const KeySequence &keySequence) override;
+  virtual QSet<QKeySequence> keySequences() override;
+  virtual bool handle(const QKeySequence &keySequence) override;
 
   // AbstractExtension interface
 public:

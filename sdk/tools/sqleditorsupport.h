@@ -16,7 +16,7 @@ class HelpKeyHandler : public SlotQueryEditorKeyHandler
   Q_OBJECT
   // AbstractKeySequenceHandler interface
 public:
-  virtual QSet<KeySequence> keySequences() override;
+  virtual QSet<QKeySequence> keySequences() override;
 };
 
 class SqlEditorSupport : public QObject, public Extensible

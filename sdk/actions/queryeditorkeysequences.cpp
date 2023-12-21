@@ -12,14 +12,14 @@ bool QETestHandler::supportsExtensionPoint(const ExtensionPoint &extensionPoint)
   return extensionPoint.name() == EP_QUERYEDITOR_KEYSEQUENCE;
 }
 
-QSet<KeySequence> QETestHandler::keySequences()
+QSet<QKeySequence> QETestHandler::keySequences()
 {
-  QSet<KeySequence> sequences;
-  sequences << KeySequence(static_cast<QKeySequence>(Qt::CTRL | Qt::Key_G));
+  QSet<QKeySequence> sequences;
+  sequences << QKeySequence(Qt::CTRL | Qt::Key_G);
   return sequences;
 }
 
-bool QETestHandler::handle(const KeySequence &keySequence)
+bool QETestHandler::handle(const QKeySequence &keySequence)
 {
   Q_UNUSED(keySequence)
 //  qDebug() << "Hello from Test key sequence handler!";
@@ -36,14 +36,14 @@ bool ToggleQueryCommentsHandler::supportsExtensionPoint(const ExtensionPoint &ex
   return extensionPoint.name() == EP_QUERYEDITOR_KEYSEQUENCE;
 }
 
-QSet<KeySequence> ToggleQueryCommentsHandler::keySequences()
+QSet<QKeySequence> ToggleQueryCommentsHandler::keySequences()
 {
-  QSet<KeySequence> sequences;
-  sequences << KeySequence(static_cast<QKeySequence>(Qt::CTRL | Qt::Key_Slash));
+  QSet<QKeySequence> sequences;
+  sequences << QKeySequence(Qt::CTRL | Qt::Key_Slash);
   return sequences;
 }
 
-bool ToggleQueryCommentsHandler::handle(const KeySequence &keySequence)
+bool ToggleQueryCommentsHandler::handle(const QKeySequence &keySequence)
 {
   Q_UNUSED(keySequence)
   qDebug() << "Toggle comments!" << _editor->toPlainText();
@@ -94,10 +94,10 @@ GenerateTableAliasHandler::GenerateTableAliasHandler() : QueryEditorKeyHandler()
 {
 }
 
-QSet<KeySequence> GenerateTableAliasHandler::keySequences()
+QSet<QKeySequence> GenerateTableAliasHandler::keySequences()
 {
-  QSet<KeySequence> sequences;
-  sequences << KeySequence(static_cast<QKeySequence>(Qt::CTRL | Qt::Key_T));
+  QSet<QKeySequence> sequences;
+  sequences << QKeySequence(Qt::CTRL | Qt::Key_T);
   return sequences;
 }
 
@@ -112,7 +112,7 @@ QString GenerateTableAliasHandler::generateAlias(QString tableName)
   return alias;
 }
 
-bool GenerateTableAliasHandler::handle(const KeySequence &keySequence)
+bool GenerateTableAliasHandler::handle(const QKeySequence &keySequence)
 {
   Q_UNUSED(keySequence)
 
@@ -135,7 +135,7 @@ bool GenerateTableAliasHandler::supportsExtensionPoint(const ExtensionPoint &ext
   return extensionPoint.name() == EP_QUERYEDITOR_KEYSEQUENCE;
 }
 
-bool SlotQueryEditorKeyHandler::handle(const KeySequence &keySequence)
+bool SlotQueryEditorKeyHandler::handle(const QKeySequence &keySequence)
 {
   emit keySignal(keySequence);
   return true;

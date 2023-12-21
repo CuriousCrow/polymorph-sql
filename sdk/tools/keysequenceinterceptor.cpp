@@ -6,7 +6,6 @@
 
 KeySequenceInterceptor::KeySequenceInterceptor(QObject *parent) : QObject(parent)
 {
-
 }
 
 void KeySequenceInterceptor::attachToWidget(QWidget *widget)
@@ -14,7 +13,7 @@ void KeySequenceInterceptor::attachToWidget(QWidget *widget)
     widget->installEventFilter(this);
 }
 
-void KeySequenceInterceptor::registerHandler(KeySequence keySequence, AbstractKeySequenceHandler *keyHandler)
+void KeySequenceInterceptor::registerHandler(QKeySequence keySequence, AbstractKeySequenceHandler *keyHandler)
 {
     keyHandler->setParent(this);
     qDebug() << "registerHandler:" << keySequence;
@@ -23,9 +22,14 @@ void KeySequenceInterceptor::registerHandler(KeySequence keySequence, AbstractKe
 
 void KeySequenceInterceptor::registerHandler(AbstractKeySequenceHandler *keyHandler)
 {
-  foreach(KeySequence sequence, keyHandler->keySequences()) {
+  foreach(QKeySequence sequence, keyHandler->keySequences()) {
     registerHandler(sequence, keyHandler);
   }
+}
+
+void KeySequenceInterceptor::registerHandler(QKeySequence keySequence, KeyHandlerFunc handlerFunc)
+{
+    registerHandler(keySequence, new KeySequenceHandlerWrapper(handlerFunc));
 }
 
 QList<AbstractKeySequenceHandler *> KeySequenceInterceptor::handlers() const
@@ -38,9 +42,9 @@ bool KeySequenceInterceptor::eventFilter(QObject *watched, QEvent *event)
     Q_UNUSED(watched)
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        int key = keyEvent->key();
-        KeySequence eventSequence(QKeySequence(key, keyEvent->modifiers()));
-        qDebug() << "KeySequenceInterceptor:" << eventSequence;
+
+        QKeySequence eventSequence(keyEvent->keyCombination());
+        // qDebug() << "KeySequenceInterceptor:" << eventSequence;
         AbstractKeySequenceHandler* hander = _handlerHash.value(eventSequence);
         if (hander) {
             return hander->handle(eventSequence);
@@ -51,25 +55,25 @@ bool KeySequenceInterceptor::eventFilter(QObject *watched, QEvent *event)
 
 AbstractKeySequenceHandler::AbstractKeySequenceHandler() : QObject()
 {
-
 }
 
 AbstractKeySequenceHandler::~AbstractKeySequenceHandler()
 {
 }
 
-KeySequence::KeySequence(const QString &key, QKeySequence::SequenceFormat format) : QKeySequence(key, format)
+KeySequenceHandlerWrapper::KeySequenceHandlerWrapper(KeyHandlerFunc handerFunc) : AbstractKeySequenceHandler()
 {
+    _handlerFunc = handerFunc;
 }
 
-KeySequence::KeySequence(int k1, int k2, int k3, int k4) : QKeySequence(k1, k2, k3, k4)
+QSet<QKeySequence> KeySequenceHandlerWrapper::keySequences()
 {
+    QSet<QKeySequence> set;
+    return set;
 }
 
-KeySequence::KeySequence(const QKeySequence &ks) : QKeySequence(ks)
+bool KeySequenceHandlerWrapper::handle(const QKeySequence &keySequence)
 {
-}
-
-KeySequence::KeySequence(QKeySequence::StandardKey key) : QKeySequence(key)
-{
+    _handlerFunc(keySequence);
+    return true;
 }
